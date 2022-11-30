@@ -3,6 +3,7 @@ server:
 spring:
   main:
     banner-mode: off
+
   datasource:
     url: jdbc:mysql://localhost:3306/cloud_user?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: root
@@ -20,6 +21,16 @@ spring:
     testOnBorrow: false
     testOnReturn: false
     poolPreparedStatements: true
+
+  redis:
+    host: 121.41.107.144
+    port: 6379
+    password: 1234
+    database: 0
+    cache:
+      redis:
+        # 设置缓存过期时间
+        time-to-live: 1800000
 
 mybatis:
   mapper-locations:
