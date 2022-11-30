@@ -8,6 +8,7 @@ public class UserserviceApplication {
 
     public static void main(String[] args) {
         SpringApplication.run(UserserviceApplication.class, args);
+        System.out.println("------userservice启动成功------");
     }
 
 }
