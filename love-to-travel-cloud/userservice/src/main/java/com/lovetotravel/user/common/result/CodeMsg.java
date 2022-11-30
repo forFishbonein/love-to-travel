@@ -11,24 +11,7 @@ public class CodeMsg {
     public static CodeMsg BIND_ERROR = new CodeMsg(500101, "参数校验异常：%s");
     public static CodeMsg ACCESS_LIMIT_REACHED= new CodeMsg(500104, "访问高峰期，请稍等！");
     //登录模块 5002XX
-    public static CodeMsg SESSION_ERROR = new CodeMsg(500210, "Session不存在或者已经失效");
-    public static CodeMsg PASSWORD_EMPTY = new CodeMsg(500211, "登录密码不能为空");
-    public static CodeMsg EMAIL_EMPTY = new CodeMsg(500212, "邮箱不能为空");
-    public static CodeMsg EMAIL_ERROR = new CodeMsg(500213, "邮箱格式错误");
-    public static CodeMsg EMAIL_NOT_EXIST = new CodeMsg(500214, "邮箱不存在");
-    public static CodeMsg PASSWORD_ERROR = new CodeMsg(500215, "密码错误");
-    public static CodeMsg CODE_ERROR = new CodeMsg(500216, "验证码错误");
-    public static CodeMsg PRIMARY_ERROR = new CodeMsg(500217, "主键冲突");
-    public static CodeMsg USER_NOT_EXIST = new CodeMsg(500218, "用户不存在");
-    public static CodeMsg EMAIL_EXIST = new CodeMsg(500219, "用户已存在");
-    public static CodeMsg FILE_NOT_EXIST = new CodeMsg(500220, "文件不存在或已删除");
-    public static CodeMsg FILE_EXIST = new CodeMsg(500220, "文件已存在");
-    //新闻模块 5003XX
-    public static CodeMsg NEWS_NOT_EXIST = new CodeMsg(500300, "新闻不存在");
-    //竞赛模块 5004XX
-    public static CodeMsg CONTEST_NOT_EXIST = new CodeMsg(500400, "竞赛不存在");
-    //竞赛经验 5005XX
-    public static CodeMsg Experience_NOT_EXIST = new CodeMsg(500500, "竞赛经验不存在");
+    public static CodeMsg USER_EXIST= new CodeMsg(500201, "用户已存在");
 
 
     private CodeMsg() {
