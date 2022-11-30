@@ -1,10 +1,4 @@
 package com.lovetotravel.user.entity.vo;
-/*
- *
- * @Time : 2022/11/30
- * @Author : https://blog.csdn.net/m0_56170277
- * @File : love-to-travel
- */
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;

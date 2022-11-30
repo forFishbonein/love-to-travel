@@ -1,10 +1,4 @@
 package com.lovetotravel.user.entity;
-/*
- *
- * @Time : 2022/11/30
- * @Author : https://blog.csdn.net/m0_56170277
- * @File : love-to-travel
- */
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;

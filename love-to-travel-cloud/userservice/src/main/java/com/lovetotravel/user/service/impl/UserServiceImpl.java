@@ -4,16 +4,23 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.mapper.UserMapper;
 import com.lovetotravel.user.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
-
-/*
- *
- * @Time : 2022/11/30
- * @Author : https://blog.csdn.net/m0_56170277
- * @File : love-to-travel
- */
 
 @Service
 public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements UserService {
 
+    final
+    RedisTemplate redisTemplate;
+
+    public UserServiceImpl(RedisTemplate redisTemplate) {
+        this.redisTemplate = redisTemplate;
+    }
+
+
+    @Override
+    public User getById(long id) {
+        return null;
+    }
 }
