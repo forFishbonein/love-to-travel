@@ -25,14 +25,14 @@ public class LoginController {
     public Result<String> codeLogin(HttpServletResponse response, @RequestBody LoginVo loginVo) {
         loginService.checkCode(loginVo);
         userService.login(response, loginVo);
-        return Result.success("登录");
+        return Result.success("登录成功");
     }
 
     @PostMapping("/login")
     public Result<String> passLogin(HttpServletResponse response, @RequestBody LoginVo loginVo) {
         loginService.checkPass(loginVo);
         userService.login(response, loginVo);
-        return Result.success("登录");
+        return Result.success("登录成功");
     }
 
 }
