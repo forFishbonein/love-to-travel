@@ -8,6 +8,8 @@ public class RegisterVo {
 
     private String email;
 
+    private String code;
+
     private String password;
 
     private String url;
