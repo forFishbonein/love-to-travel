@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "baseUrl": "./",
+    "allowJs": true, // 编译时，允许有 js 文件
+    "allowSyntheticDefaultImports": true, // 允许引入没有默认导出的模块
+    "paths": {
+      "@/*": ["src/*"],
+      // "src/*": ["src/*"],
+      "@components/*": ["src/components/*"],
+      "@assets/*": ["src/assets/*"],
+      "@views/*": ["src/views/*"],
+      "@store/*": ["src/store/*"],
+      "@request/*": ["src/request/*"],
+      "@apis/*": ["src/apis/*"],
+      "@plugins/*": ["src/plugins/*"],
+      "@styles/*": ["src/styles/*"]
+    }
+  },
+  "include": ["src/**/*"],
+  "exclude": ["node_modules", "dist"]
+}
