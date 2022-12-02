@@ -8,6 +8,7 @@ public class UserKey extends BasePrefix {
     //缓存的前缀
     public static final String TOKEN_PREFIX = "token";
     public static final String GET_BY_ID = "id";
+    public static final String GET_BY_EMAIL = "email";
 
 
     /**
@@ -23,5 +24,6 @@ public class UserKey extends BasePrefix {
     public static UserKey token = new UserKey(TOKEN_EXPIRE, TOKEN_PREFIX);
     //不设置存在时间则一直存储
     public static UserKey getById = new UserKey(0, GET_BY_ID);
+    public static UserKey getByEmail = new UserKey(0, GET_BY_EMAIL);
 
 }
