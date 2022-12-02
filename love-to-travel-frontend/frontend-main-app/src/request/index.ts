@@ -4,26 +4,27 @@
 // 根据环境不同引入不同api地址
 import { config } from "@/config";
 import { Message } from "@/utils/resetMessage";
-import pinia from "@/store"; // 实际上这个pinia是createPinia()，这里必须传入，因为axios和router都获取不到全局的pinia
-import { mainStore } from "@/store/userLogin";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-// import store from "@/store";
-// const store = mainStore(pinia);
+import { store } from "@/main"; //引入在main.ts中创建的的store
 
+// 原来的在setup中的方式，在axios文件中行不通！
+// import { mainStore } from "@/store/user";
+// const store = mainStore(pinia);
 const service = axios.create({
   baseURL: config.baseApi, // 所有的请求地址前缀部分
   timeout: 10000, // 请求超时时间毫秒
   withCredentials: true, // 异步请求携带cookie
-  // headers: {
-  //   // 设置后端需要的传参类型
-  //   "Content-Type": "application/json",
-  //   // token: "your token",
-  //   "X-Requested-With": "XMLHttpRequest",
-  // },
+  headers: {
+    // 设置后端需要的传参类型
+    "Content-Type": "application/json",
+    // token: "your token",
+    "X-Requested-With": "XMLHttpRequest",
+  },
 });
 
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    // alert(store.pinia); //最早在这里可以获取
     // 加载动画
     if (config.loading) {
       //@ts-ignore
@@ -33,16 +34,16 @@ service.interceptors.request.use(
         background: "rgba(0, 0, 0, 0.7)",
       });
     }
-    // if (store.token) {
-    //   //@ts-ignore
-    //   config.headers["Authorization"] = store.token;
-    // }
+    if (store.token) {
+      //@ts-ignore
+      config.headers["Authorization"] = store.token;
+    }
 
-    // // 在此处添加请求头等，如添加 token
-    // if (store.token) {
-    //   //@ts-ignore //要不要前缀？
-    //   config.headers["Authorization"] = `Bearer ${store.token}`;
-    // }
+    // 在此处添加请求头等，如添加 token
+    if (store.token) {
+      //@ts-ignore //要不要前缀？
+      config.headers["Authorization"] = `Bearer ${store.token}`;
+    }
 
     return config;
   },
@@ -95,53 +96,53 @@ service.interceptors.response.use(
     }
   },
   (error: any) => {
-    // if (error && error.response) {
-    //   switch (error.response.status) {
-    //     case 400:
-    //       error.message = "请求错误(400)";
-    //       break;
-    //     case 401:
-    //       error.message = "未授权,请登录(401)";
-    //       break;
-    //     case 403:
-    //       error.message = "拒绝访问(403)";
-    //       break;
-    //     case 404:
-    //       error.message = `请求地址出错: ${error.response.config.url}`;
-    //       break;
-    //     case 405:
-    //       error.message = "请求方法未允许(405)";
-    //       break;
-    //     case 408:
-    //       error.message = "请求超时(408)";
-    //       break;
-    //     case 500:
-    //       error.message = "服务器内部错误(500)";
-    //       break;
-    //     case 501:
-    //       error.message = "服务未实现(501)";
-    //       break;
-    //     case 502:
-    //       error.message = "网络错误(502)";
-    //       break;
-    //     case 503:
-    //       error.message = "服务不可用(503)";
-    //       break;
-    //     case 504:
-    //       error.message = "网络超时(504)";
-    //       break;
-    //     case 505:
-    //       error.message = "HTTP版本不受支持(505)";
-    //       break;
-    //     default:
-    //       error.message = `连接错误: ${error.message}`;
-    //   }
-    // } else {
-    //   if (error.message == "Network Error") {
-    //     error.message == "网络异常，请检查后重试！";
-    //   }
-    //   error.message = "连接到服务器失败，请联系管理员qq：1558637209";
-    // }
+    if (error && error.response) {
+      switch (error.response.status) {
+        case 400:
+          error.message = "请求错误(400)";
+          break;
+        case 401:
+          error.message = "未授权,请登录(401)";
+          break;
+        case 403:
+          error.message = "拒绝访问(403)";
+          break;
+        case 404:
+          error.message = `请求地址出错: ${error.response.config.url}`;
+          break;
+        case 405:
+          error.message = "请求方法未允许(405)";
+          break;
+        case 408:
+          error.message = "请求超时(408)";
+          break;
+        case 500:
+          error.message = "服务器内部错误(500)";
+          break;
+        case 501:
+          error.message = "服务未实现(501)";
+          break;
+        case 502:
+          error.message = "网络错误(502)";
+          break;
+        case 503:
+          error.message = "服务不可用(503)";
+          break;
+        case 504:
+          error.message = "网络超时(504)";
+          break;
+        case 505:
+          error.message = "HTTP版本不受支持(505)";
+          break;
+        default:
+          error.message = `连接错误: ${error.message}`;
+      }
+    } else {
+      if (error.message == "Network Error") {
+        error.message == "网络异常，请检查后重试！";
+      }
+      error.message = "连接到服务器失败，请联系管理员qq：1558637209";
+    }
     Message({
       type: "warn",
       message: error.message,

@@ -4,7 +4,7 @@ export interface IResponseType<P = Record<string, unknown>> {
   data: P;
 }
 
-// 用户信息
+// 用户信息类型
 export interface UserInfo {
   author?: string;
   avator?: string;

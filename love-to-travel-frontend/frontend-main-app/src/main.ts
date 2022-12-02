@@ -1,12 +1,12 @@
 import { createApp } from "vue";
 import pinia from "@/store";
-// import "./style.css";
 import App from "./App.vue";
 import router from "@/router";
 // 引入element-plus的封装方法
 import { setupElementPlus } from "@plugins/elementPlus/index";
 // 引入全局样式
 import "@/styles/index.scss";
+import { mainStore } from "@/store/user";
 
 //创建实例
 const setupAll = async () => {
@@ -20,3 +20,5 @@ const setupAll = async () => {
 };
 
 setupAll();
+//用于在axios中使用pinia：
+export const store = mainStore();
