@@ -3,6 +3,17 @@
     "baseUrl": "./",
     "allowJs": true, // 编译时，允许有 js 文件
     "allowSyntheticDefaultImports": true, // 允许引入没有默认导出的模块
+    "target": "esnext",
+    "useDefineForClassFields": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "isolatedModules": true,
+    "strict": true,
+    "jsx": "preserve",
+    "sourceMap": true,
+    "resolveJsonModule": true,
+    "esModuleInterop": true,
+    "noImplicitAny": false,
     "paths": {
       "@/*": ["src/*"],
       // "src/*": ["src/*"],
@@ -14,8 +25,18 @@
       "@apis/*": ["src/apis/*"],
       "@plugins/*": ["src/plugins/*"],
       "@styles/*": ["src/styles/*"]
-    }
+    },
+    "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
+    "skipLibCheck": true
   },
-  "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist"]
+  "include": [
+    "vite.config.*",
+    "env.d.ts",
+    "src/**/*",
+    "src/**/*.vue",
+    "mock/**/*.ts",
+    "types/**/*.d.ts",
+    "build/**/*.ts"
+  ],
+  "exclude": ["node_modules", "tests/server/**/*.ts", "dist", "**/*.js"]
 }

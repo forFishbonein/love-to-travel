@@ -12,6 +12,8 @@ import "@/styles/index.scss";
 //创建实例
 const setupAll = async () => {
   const app = createApp(App);
+  //@ts-ignore
+  window.vm = app;
   setupElementPlus(app);
   app.use(router);
   app.use(pinia);

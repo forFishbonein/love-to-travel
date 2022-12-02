@@ -2,7 +2,7 @@
 import { ref, h } from "vue";
 import { onMounted } from "vue";
 import { apiGetUserInfo } from "@apis/user";
-import { mainStore } from "@store/store";
+import { mainStore } from "@/store/user";
 import useCurrentInstance from "@/utils/useCurrentInstance";
 defineProps({
   msg: String,
@@ -33,7 +33,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <h1>{{ (msg, store.helloPinia) }}</h1>
+  <h1>{{ (msg, store.token || "hello world") }}</h1>
 
   <div class="card">
     <button type="button" @click="showMessage">按钮</button>
@@ -58,8 +58,4 @@ onMounted(() => {
   <p class="read-the-docs">Click on the Vite and Vue logos to learn more</p>
 </template>
 
-<style scoped>
-.read-the-docs {
-  color: #888;
-}
-</style>
+<style scoped></style>
