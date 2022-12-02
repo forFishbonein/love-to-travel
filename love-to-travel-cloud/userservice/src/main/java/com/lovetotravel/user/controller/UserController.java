@@ -7,6 +7,9 @@ import com.lovetotravel.user.service.LoginService;
 import com.lovetotravel.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
+@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
@@ -32,4 +35,11 @@ public class UserController {
         loginService.insert(registerVo);
         return Result.success("注册成功");
     }
+
+    @GetMapping
+    public Result<List<User>> getAll() {
+
+        return Result.success(userService.getAll());
+    }
+
 }

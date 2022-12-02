@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovetotravel.user.mapper.UserMapper">
+
+    <select id="getAll" resultType="com.lovetotravel.user.entity.User">
+        select * from user u inner join login l
+        <where>
+            u.id = l.id
+            and
+            l.deleted = 0
+        </where>
+    </select>
+</mapper>

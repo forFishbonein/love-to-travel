@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 
+@CrossOrigin
 @RestController
 @RequestMapping
 public class LoginController {
@@ -29,7 +30,6 @@ public class LoginController {
         emailService.sendEmail(loginVo);
         return Result.success("已发送");
     }
-
 
     @PostMapping("/codeLogin")
     public Result<String> codeLogin(HttpServletResponse response, @RequestBody LoginVo loginVo) {
