@@ -112,4 +112,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return null;
     }
 
+    @Override
+    public List<User> getAll() {
+        return userMapper.getAll();
+    }
+
 }

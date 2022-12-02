@@ -39,7 +39,7 @@ public class UserController {
     @GetMapping
     public Result<List<User>> getAll() {
 
-        return Result.success(userService.list());
+        return Result.success(userService.getAll());
     }
 
 }

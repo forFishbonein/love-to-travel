@@ -6,6 +6,7 @@ import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.entity.vo.RegisterVo;
 
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 public interface UserService extends IService<User> {
 
@@ -29,6 +30,7 @@ public interface UserService extends IService<User> {
     //String registered(Teacher teacher);
 
     //ShowVo show(String id);
+    List<User> getAll();
 
 
 
