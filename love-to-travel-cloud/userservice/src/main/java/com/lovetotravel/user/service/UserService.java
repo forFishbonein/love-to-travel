@@ -30,7 +30,11 @@ public interface UserService extends IService<User> {
 
     List<User> getAll();
 
-    boolean updatePassword(UpdatePasswordVo updatePasswordVo);
+    void updatePassword(UpdatePasswordVo updatePasswordVo);
+
+    void updateProfile(User user);
+
+
 
 
 

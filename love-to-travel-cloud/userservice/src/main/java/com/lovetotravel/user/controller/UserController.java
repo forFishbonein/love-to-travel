@@ -7,6 +7,8 @@ import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
 import com.lovetotravel.user.service.UserService;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @CrossOrigin
@@ -36,10 +38,22 @@ public class UserController {
         return Result.success(userService.getAll());
     }
 
-    @PostMapping("/register")
+    @PostMapping("/updatepassword")
     public Result<String> updatePassword(@RequestBody UpdatePasswordVo updatePasswordVo) {
         userService.updatePassword(updatePasswordVo);
-        return Result.success("注册成功");
+        return Result.success("修改成功");
+    }
+
+    @PostMapping("/updateprofile")
+    public Result<String> updatePassword(@RequestBody User user) {
+        userService.updateProfile(user);
+        return Result.success("修改成功");
+    }
+
+    @GetMapping("/token")
+    public Result<User> getByToken(HttpServletRequest request, HttpServletResponse response) {
+        String token = request.getHeader("Authorization");
+        return Result.success(userService.getByToken(response, token));
     }
 
 }

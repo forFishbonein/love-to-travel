@@ -2,6 +2,7 @@ package com.lovetotravel.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+
 import com.lovetotravel.user.common.result.CodeMsg;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.LoginVo;
@@ -20,6 +21,8 @@ import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 
@@ -162,25 +165,21 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         response.addCookie(cookie);
     }
 
-    public boolean updatePassword(UpdatePasswordVo updatePasswordVo) {
+    public void updatePassword(UpdatePasswordVo updatePasswordVo) {
         UpdatePasswordVo up = updatePasswordVo;
         //取user
-        User user = getById(up.getId());
-        if (user == null) {
-            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
-        }
-        //更新数据库
-        String codeInRedis = redisService.get(CodeKey.code, up.getEmail(), String.class);
-        if (codeInRedis == null || !codeInRedis.equals(up.getCode())) {
-            throw new GlobalException(CodeMsg.CODE_ERROR);
-        }
-        redisService.delete(CodeKey.code, up.getEmail());
         QueryWrapper<User> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(User::getId, up.getId());
         User userInMysql = getOne(queryWrapper);
         if (userInMysql == null) {
             throw new GlobalException(CodeMsg.USER_NOT_EXIST);
         }
+        //判断验证码
+        String codeInRedis = redisService.get(CodeKey.code, up.getEmail(), String.class);
+        if (codeInRedis == null || !codeInRedis.equals(up.getCode())) {
+            throw new GlobalException(CodeMsg.CODE_ERROR);
+        }
+        redisService.delete(CodeKey.code, up.getEmail());
         String passInMysql = userInMysql.getPassword();
         String md5Password = DigestUtils.md5DigestAsHex(up.getOldPassword().getBytes());
         if (!passInMysql.equals(md5Password)) {
@@ -191,19 +190,43 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         //更新缓存：先删除再插入
         redisService.delete(UserKey.getById, "" + up.getId());
         redisService.delete(UserKey.token, up.getToken());
-        user.setPassword(userInMysql.getPassword());
-        redisService.set(UserKey.token, up.getToken(), user);
-        return true;
+        redisService.set(UserKey.token, up.getToken(), userInMysql);
+    }
+
+    @Override
+    public void updateProfile(User user) {
+        //取user
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(User::getId, user.getId());
+        User userInMysql = getOne(queryWrapper);
+        if (userInMysql == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        BeanUtils.copyProperties(user, userInMysql);
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        userInMysql.setUpdateTime(dateFormat.format(date));
+        userMapper.update(userInMysql, queryWrapper);
+        //更新缓存：先删除再插入
+        redisService.delete(UserKey.getById, "" + user.getId());
     }
 
     @Override
     public User getByToken(HttpServletResponse response, String token) {
-        return null;
+        if (token == null || "".equals(token)) {
+            return null;
+        }
+        User user = redisService.get(UserKey.token, token, User.class);
+        if (user != null) {
+            addCookie(response, token, user);
+        }
+        return user;
     }
 
 
     @Override
     public String logout(String token) {
+        redisService.delete(UserKey.token, token);
         return null;
     }
 

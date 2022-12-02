@@ -38,4 +38,9 @@ public class LoginController {
         return Result.success(userService.passLogin(response, loginVo));
     }
 
+    @PostMapping("/logout")
+    public Result<String> logout(String token) {
+        return Result.success(userService.logout(token));
+    }
+
 }
