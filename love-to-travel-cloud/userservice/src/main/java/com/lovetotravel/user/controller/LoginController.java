@@ -24,9 +24,9 @@ public class LoginController {
         this.emailService = emailService;
     }
 
-    @PostMapping("/sendEmail")
-    public Result<String> sendMimeMail(@RequestBody String email) {
-        emailService.sendEmail(email);
+    @PostMapping("/send")
+    public Result<String> sendMimeMail(@RequestBody LoginVo loginVo) {
+        emailService.sendEmail(loginVo);
         return Result.success("已发送");
     }
 

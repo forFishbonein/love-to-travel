@@ -7,7 +7,6 @@ import com.lovetotravel.user.redis.CodeKey;
 import com.lovetotravel.user.redis.RedisService;
 import com.lovetotravel.user.redis.utils.ValidateCodeUtils;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -68,7 +67,8 @@ public class EmailService {
         }
     }
 
-    public void sendEmail(String email) {
+    public void sendEmail(LoginVo loginVo) {
+        String email = loginVo.getEmail();
         if (email == null) {
             throw new GlobalException(CodeMsg.EMAIL_EMPTY);
         }
