@@ -4,12 +4,12 @@
 // 根据环境不同引入不同api地址
 import { config } from "@/config";
 import { Message } from "@/utils/resetMessage";
-import pinia from "@/store"; // 实际上这个pinia是createPinia()，这里必须传入，因为axios和router都获取不到全局的pinia
-import { mainStore } from "@/store/user";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-// import store from "@/store";
-// const store = mainStore(pinia);
+import { store } from "@/main"; //引入在main.ts中创建的的store
 
+// 原来的在setup中的方式，在axios文件中行不通！
+// import { mainStore } from "@/store/user";
+// const store = mainStore(pinia);
 const service = axios.create({
   baseURL: config.baseApi, // 所有的请求地址前缀部分
   timeout: 10000, // 请求超时时间毫秒
@@ -24,6 +24,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    // alert(store.pinia); //最早在这里可以获取
     // 加载动画
     if (config.loading) {
       //@ts-ignore
@@ -33,16 +34,16 @@ service.interceptors.request.use(
         background: "rgba(0, 0, 0, 0.7)",
       });
     }
-    // if (store.token) {
-    //   //@ts-ignore
-    //   config.headers["Authorization"] = store.token;
-    // }
+    if (store.token) {
+      //@ts-ignore
+      config.headers["Authorization"] = store.token;
+    }
 
-    // // 在此处添加请求头等，如添加 token
-    // if (store.token) {
-    //   //@ts-ignore //要不要前缀？
-    //   config.headers["Authorization"] = `Bearer ${store.token}`;
-    // }
+    // 在此处添加请求头等，如添加 token
+    if (store.token) {
+      //@ts-ignore //要不要前缀？
+      config.headers["Authorization"] = `Bearer ${store.token}`;
+    }
 
     return config;
   },

@@ -6,21 +6,38 @@ import { register } from "@/apis/register";
 export interface UserState {
   userInfo: UserInfo;
   token: string;
+  // pinia: string;
 }
 export const mainStore = defineStore("main", {
   state: () =>
     ({
       userInfo: {},
       token: getToken(),
+      // pinia: "hello world", //测试
     } as UserState),
   getters: {},
   actions: {
-    passLogin(codeData: any) {
+    passLogin(passData: any) {
       return new Promise((resolve, reject) => {
         try {
-          passLogin(codeData).then((res) => {
+          passLogin(passData).then((res) => {
             console.log(res.data);
-            this.token = res.data;
+            this.$state.token = res.data;
+            setToken(res.data);
+            resolve(res);
+          });
+        } catch (error) {
+          console.log(error);
+          reject(error);
+        }
+      });
+    },
+    codeLogin(codeData: any) {
+      return new Promise((resolve, reject) => {
+        try {
+          codeLogin(codeData).then((res) => {
+            console.log(res.data);
+            this.$state.token = res.data;
             setToken(res.data);
             resolve(res);
           });
@@ -35,7 +52,7 @@ export const mainStore = defineStore("main", {
         try {
           register(registerData).then((res) => {
             console.log(res.data);
-            this.token = res.data;
+            this.$state.token = res.data;
             setToken(res.data);
             resolve(res);
           });
@@ -57,10 +74,5 @@ export const mainStore = defineStore("main", {
       });
     },
   },
-  // persist: {
-  //   key: "main",
-  //   storage: window.localStorage,
-  //   // paths: ['name'],
-  //   overwrite: true,
-  // },
+  persist: true,
 });

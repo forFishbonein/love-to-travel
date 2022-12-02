@@ -1,15 +1,5 @@
 import httpRequest from "@/request";
 
-export function codeLogin(codeData: any) {
-  console.log(codeData);
-  return httpRequest({
-    data: codeData,
-    method: "post",
-    url: "/codelogin",
-    loading: true,
-  });
-}
-
 export const passLogin = (passData: any) => {
   console.log(passData);
   return httpRequest({
@@ -19,6 +9,16 @@ export const passLogin = (passData: any) => {
     loading: true,
   });
 };
+
+export function codeLogin(codeData: any) {
+  console.log(codeData);
+  return httpRequest({
+    data: codeData,
+    method: "post",
+    url: "/codelogin",
+    loading: true,
+  });
+}
 
 export function getUserInfo(token) {
   return httpRequest({

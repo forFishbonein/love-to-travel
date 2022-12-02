@@ -1,84 +1,49 @@
 <script lang="ts" setup>
-import { onMounted, reactive, toRefs } from "vue";
+import { onMounted, reactive, toRefs, ref } from "vue";
 import { loginOrRegister } from "@/assets/js/login";
 import { mainStore } from "@/store/user";
-import { postCode } from "@/apis/register";
+import {
+  a,
+  count,
+  curCount,
+  InterValObj,
+  setRemainTime,
+  getCode,
+} from "@/utils/getCode";
 import { Input } from "postcss";
-interface passLoginInfo {
-  email: string;
-  password: string;
-}
-const passData: passLoginInfo = reactive({
-  email: "",
-  password: "",
-});
-const { email, password } = toRefs(passData);
+import { useRouter } from "vue-router";
+
+const router = useRouter();
 const store = mainStore();
-const passLogin = () => {
-  store
-    .passLogin(passData)
-    .then((res: any) => {
-      console.log(res.code != 0);
-      if (res.code != 0) {
-        //@ts-ignore
-        ElMessage({
-          type: "error",
-          message: res.msg,
-        });
-      } else {
-        //@ts-ignore
-        ElMessage({
-          type: "success",
-          message: "登录成功",
-        });
-      }
-    })
-    .catch((error) => {
-      //@ts-ignore
-      ElMessage({
-        type: "error",
-        message: error.message,
-      });
-    });
+
+/**
+ * @description 密码验证码登录切换的功能
+ */
+// let passFlag: boolean = true;
+// let codeFlag: boolean = false;
+let flag: boolean = false; //false代表处于密码登录页面
+ref(flag);
+// ref(passFlag);
+// ref(codeFlag);
+const changeLogin = () => {
+  // passFlag = !passFlag;
+  // codeFlag = !codeFlag;
+  if (flag === false) {
+    //重定向到codeLogin
+    router.push("/login/codeLogin");
+  } else if (flag === true) {
+    //重定向到passLogin
+    router.push("/login/passLogin");
+  } else {
+    return;
+  }
+  flag = !flag;
+  console.log(flag);
 };
 
-// interface codeLoginInfo {
-//   email2: string;
-//   code: string;
-// }
-// const codeData: codeLoginInfo = reactive({
-//   email2: "",
-//   code: "",
-// });
-// const { email2, code } = toRefs(codeData);
-// const codeLogin = () => {
-//   store
-//     .codeLogin(codeData)
-//     .then((res: any) => {
-//       console.log(res.code != 0);
-//       if (res.code != 0) {
-//         //@ts-ignore
-//         ElMessage({
-//           type: "error",
-//           message: res.msg,
-//         });
-//       } else {
-//         //@ts-ignore
-//         ElMessage({
-//           type: "success",
-//           message: res.msg,
-//         });
-//       }
-//     })
-//     .catch((error) => {
-//       //@ts-ignore
-//       ElMessage({
-//         type: "error",
-//         message: error.message,
-//       });
-//     });
-// };
-
+/**
+ * @description 注册功能
+ */
 interface registerInfo {
   name: string;
   email3: string;
@@ -91,51 +56,6 @@ const registerData: registerInfo = reactive({
 });
 const { name, email3, code2 } = toRefs(registerData);
 
-let a: HTMLInputElement = document.createElement("input");
-let count = 30;
-let curCount = 0;
-let InterValObj: number = 0;
-const setRemainTime = () => {
-  if (curCount == 0) {
-    console.log("停止");
-    window.clearInterval(InterValObj);
-    a.disabled = false;
-    a.style.backgroundColor = "#e0e0e0";
-    a.setAttribute("value", "重新发送验证码");
-  } else {
-    curCount--;
-    a.setAttribute("value", curCount + "秒后可重新发送");
-  }
-};
-const getCode = () => {
-  if (email3.value === "") {
-    //@ts-ignore
-    ElMessage({
-      type: "warn",
-      message: "请将信息填写完整",
-    });
-    return;
-  }
-  //@ts-ignore
-  a = document.getElementsByClassName("getCode")[0];
-  a.disabled = true;
-  a.style.backgroundColor = "#f5f5f5";
-  postCode({ email: registerData.email3 })
-    .then((res) => {
-      if (res.code == 0) {
-        //@ts-ignore
-        ElMessage({
-          type: "success",
-          message: "验证码已发送",
-        });
-      }
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-  curCount = count;
-  InterValObj = window.setInterval(setRemainTime, 1000);
-};
 const register = () => {
   store
     .register({
@@ -175,26 +95,17 @@ onMounted(() => {
 <template>
   <div class="content">
     <div class="form sign-in">
-      <h2>欢迎回来</h2>
-      <label>
-        <span>邮箱</span>
-        <input type="email" v-model="email" />
-      </label>
-      <label>
-        <span>密码</span>
-        <input type="password" v-model="password" />
-      </label>
-      <p class="forgot-pass"><a href="javascript:">忘记密码？</a></p>
-      <button type="button" class="submit" @click="passLogin">登 录</button>
-      <button type="button" class="fb-btn">
-        使用 <span>facebook</span>帐号登录
+      <router-view />
+      <button type="button" class="fb-btn" @click="changeLogin">
+        使用 <span>{{ flag === false ? "验证码" : "密码" }}</span
+        >登录
       </button>
     </div>
     <div class="sub-cont">
       <div class="img">
         <div class="img__text m--up">
           <h2>还未注册？</h2>
-          <p>立即注册，发现大量机会！</p>
+          <p>立即注册，让我们一起爱上旅游！</p>
         </div>
         <div class="img__text m--in">
           <h2>已有帐号？</h2>
@@ -223,15 +134,12 @@ onMounted(() => {
           type="button"
           value="获取验证码"
           class="getCode"
-          @click="getCode"
+          @click="getCode(registerData.email3)"
         />
 
         <button type="button" class="submit register" @click="register">
           注册
         </button>
-        <!-- <button type="button" class="fb-btn">
-          使用 <span>facebook</span> 帐号注册
-        </button> -->
       </div>
     </div>
   </div>
@@ -246,7 +154,7 @@ onMounted(() => {
   margin-top: 15px;
   width: 100px;
   height: 30px;
-  background-color: #e0e0e0;
+  background-color: #f5f5f5;
   // float: right;
   position: absolute;
 
@@ -255,6 +163,13 @@ onMounted(() => {
   border-radius: 10px;
   border: 0;
   cursor: pointer;
+  color: #d4af7a;
+}
+.getCode:hover {
+  color: black;
+  border: 2px solid #d4af7a;
+  height: 26px;
+  line-height: 26px;
 }
 .register {
   margin-top: 60px;
