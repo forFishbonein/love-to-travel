@@ -12,5 +12,4 @@ public class LoginVo {
     private String code;
 
     private String status;
-
 }

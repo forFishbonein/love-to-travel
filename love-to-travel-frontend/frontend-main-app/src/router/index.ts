@@ -18,12 +18,12 @@ const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
-// 4. 配置路由守卫
-router.beforeEach((to, from, next) => {
-  next();
-});
+// // 4. 配置路由守卫
+// router.beforeEach((to, from, next) => {
+//   next();
+// });
 
-router.afterEach((to, from, next) => {});
+// router.afterEach((to, from, next) => {});
 
 // 5. 导出router
 export default router;

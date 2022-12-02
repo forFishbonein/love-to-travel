@@ -9,14 +9,14 @@ export function codeLogin(data) {
   });
 }
 
-export function passLogin(codeData) {
-  // console.log(login);
+export const passLogin = (codeData) => {
   return httpRequest({
     data: codeData,
     method: "post",
-    url: "/t/passLogin",
+    url: "/login",
+    loading: true,
   });
-}
+};
 
 export function getUserInfo(token) {
   return httpRequest({
