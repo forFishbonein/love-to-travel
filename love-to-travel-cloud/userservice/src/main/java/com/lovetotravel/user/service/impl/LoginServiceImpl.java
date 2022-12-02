@@ -4,20 +4,17 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.user.common.result.CodeMsg;
 import com.lovetotravel.user.entity.Login;
-import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.entity.vo.RegisterVo;
 import com.lovetotravel.user.exception.GlobalException;
 import com.lovetotravel.user.mapper.LoginMapper;
 import com.lovetotravel.user.redis.CodeKey;
 import com.lovetotravel.user.redis.RedisService;
-import com.lovetotravel.user.redis.utils.UUIDUtil;
 import com.lovetotravel.user.service.LoginService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
-import javax.servlet.http.HttpServletResponse;
 
 @Service
 public class LoginServiceImpl extends ServiceImpl<LoginMapper, Login> implements LoginService {
@@ -78,6 +75,10 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, Login> implements
         redisService.delete(CodeKey.code, email);
     }
 
+    /**
+     * 检验密码是否正确
+     * @param loginVo
+     */
     @Override
     public void checkPass(LoginVo loginVo) {
         if (loginVo == null) {

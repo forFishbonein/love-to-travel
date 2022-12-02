@@ -31,18 +31,16 @@ public class LoginController {
         return Result.success("已发送");
     }
 
-    @PostMapping("/codeLogin")
+    @PostMapping("/codelogin")
     public Result<String> codeLogin(HttpServletResponse response, @RequestBody LoginVo loginVo) {
         loginService.checkCode(loginVo);
-        userService.login(response, loginVo);
-        return Result.success("登录成功");
+        return Result.success(userService.login(response, loginVo));
     }
 
     @PostMapping("/login")
     public Result<String> passLogin(HttpServletResponse response, @RequestBody LoginVo loginVo) {
         loginService.checkPass(loginVo);
-        userService.login(response, loginVo);
-        return Result.success("登录成功");
+        return Result.success(userService.login(response, loginVo));
     }
 
 }
