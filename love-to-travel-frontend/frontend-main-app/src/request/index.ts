@@ -1,41 +1,69 @@
-import axios from "axios";
-import { getToken } from "@request/token";
-import { mainStore } from "@store/store";
+/**
+ * @description [ axios 请求封装]
+ */
+import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+// import store from "@/store";
+import { mainStore } from "@/store/user";
 import pinia from "@store/index"; // 实际上这个pinia是createPinia()，这里必须传入，因为axios和router都获取不到全局的pinia
-
 const store = mainStore(pinia);
 
+// 根据环境不同引入不同api地址
+import { config } from "@/config";
+import { Message } from "@/utils/resetMessage";
 const service = axios.create({
-  // baseURL: "/static/json",
-  baseURL: "http://localhost:8888", // 所有的请求地址前缀部分
-  timeout: 60000, // 请求超时时间毫秒
+  baseURL: config.baseApi, // 所有的请求地址前缀部分
+  timeout: 10000, // 请求超时时间毫秒
   withCredentials: true, // 异步请求携带cookie
   headers: {
     // 设置后端需要的传参类型
     "Content-Type": "application/json",
-    token: "your token",
+    // token: "your token",
     "X-Requested-With": "XMLHttpRequest",
   },
 });
 
 service.interceptors.request.use(
-  (config) => {
-    // config.headers['Content-Type'] = 'application/json;charset=utf-8';
-    if (store.token) {
-      config.headers["Authorization"] = getToken();
+  (config: AxiosRequestConfig) => {
+    // 加载动画
+    if (config.loading) {
+      //@ts-ignore
+      ElLoading.service({
+        lock: true,
+        text: "Loading",
+        background: "rgba(0, 0, 0, 0.7)",
+      });
     }
+    if (store.token) {
+      //@ts-ignore
+      config.headers["Authorization"] = store.token;
+    }
+
+    // 在此处添加请求头等，如添加 token
+    if (store.token) {
+      //@ts-ignore //要不要前缀？
+      config.headers["Authorization"] = `Bearer ${store.token}`;
+    }
+
     return config;
   },
-  (error) => {
+  (error: any) => {
     Promise.reject(error);
   }
 );
 
 service.interceptors.response.use(
   (response) => {
+    //@ts-ignore //并不会创建一个新的loading
+    const loading = ElLoading.service({
+      lock: true,
+      text: "Loading",
+      background: "rgba(0, 0, 0, 0.7)",
+    });
+    loading.close();
+
+    // session过期？
     if (response.headers["session_time_out"] == "timeout") {
       store.fedLogOut();
-      // store.dispatch("fedLogOut"); //vuex的写法
     }
 
     const res = response.data; //返回数据就是Promise的data，即整个后端返回的对象
@@ -43,35 +71,84 @@ service.interceptors.response.use(
       console.log(response);
       console.log(res);
       console.log("code不为0,默认报错!!!!要加一下code");
-
-      //90001 Session超时
-      // if (res.code === 90001) {
-      //   return Promise.reject("error");
-      // }
-
-      //90002 用户未登录
-      // if (res.code === 90002) {
-      // Message({
-      //   type: "warning",
-      //   showClose: true,
-      //   message: res.msg
-      // });
-
-      //   return Promise.reject("error");
-      // }
-
-      return Promise.reject(res.msg);
+      // token 过期
+      if (res.code === 401) {
+        // 警告提示窗
+        Message({
+          type: "warn",
+          message: res.msg,
+        });
+        return;
+      }
+      if (res.code == 403) {
+        Message({
+          type: "warn",
+          message: res.msg,
+        });
+        return;
+      }
+      // 若后台返回错误值，此处返回对应错误对象，下面 error 就会接收
+      return Promise.reject(new Error(res.msg || "Error"));
     } else {
-      return res; //成功的时候返回res，后面在使用数据的时候直接res.data
+      // 注意返回值
+      return response.data;
     }
   },
-  (error) => {
-    // Message({
-    //   type: "warning",
-    //   showClose: true,
-    //   message: "连接超时"
-    // });
-    return Promise.reject("error");
+  (error: any) => {
+    if (error && error.response) {
+      switch (error.response.status) {
+        case 400:
+          error.message = "请求错误(400)";
+          break;
+        case 401:
+          error.message = "未授权,请登录(401)";
+          break;
+        case 403:
+          error.message = "拒绝访问(403)";
+          break;
+        case 404:
+          error.message = `请求地址出错: ${error.response.config.url}`;
+          break;
+        case 405:
+          error.message = "请求方法未允许(405)";
+          break;
+        case 408:
+          error.message = "请求超时(408)";
+          break;
+        case 500:
+          error.message = "服务器内部错误(500)";
+          break;
+        case 501:
+          error.message = "服务未实现(501)";
+          break;
+        case 502:
+          error.message = "网络错误(502)";
+          break;
+        case 503:
+          error.message = "服务不可用(503)";
+          break;
+        case 504:
+          error.message = "网络超时(504)";
+          break;
+        case 505:
+          error.message = "HTTP版本不受支持(505)";
+          break;
+        default:
+          error.message = `连接错误: ${error.message}`;
+      }
+    } else {
+      if (error.message == "Network Error") {
+        error.message == "网络异常，请检查后重试！";
+      }
+      error.message = "连接到服务器失败，请联系管理员qq：1558637209";
+    }
+    Message({
+      type: "warn",
+      message: error.message,
+    });
+    // store.auth.clearAuth()
+    // store.dispatch('clearAuth')
+    return Promise.reject(error);
   }
 );
 
