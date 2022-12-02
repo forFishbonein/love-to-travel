@@ -1,13 +1,13 @@
 package com.lovetotravel.user.service;
 
+import com.baomidou.mybatisplus.extension.service.IService;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.entity.vo.RegisterVo;
 
 import javax.servlet.http.HttpServletResponse;
-import java.util.List;
 
-public interface UserService {
+public interface UserService extends IService<User> {
 
 
     User getById(long id);
@@ -30,7 +30,6 @@ public interface UserService {
 
     //ShowVo show(String id);
 
-    List<User> getAll();
 
 
 }

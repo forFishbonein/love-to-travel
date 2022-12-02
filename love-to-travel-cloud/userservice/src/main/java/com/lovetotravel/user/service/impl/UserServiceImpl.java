@@ -12,14 +12,12 @@ import com.lovetotravel.user.mapper.UserMapper;
 
 import com.lovetotravel.user.redis.CodeKey;
 import com.lovetotravel.user.redis.RedisService;
-import com.lovetotravel.user.redis.TeacherKey;
 import com.lovetotravel.user.redis.UserKey;
 import com.lovetotravel.user.redis.utils.UUIDUtil;
 import com.lovetotravel.user.service.UserService;
 import org.springframework.beans.BeanUtils;
 
 import org.springframework.stereotype.Service;
-import org.springframework.util.DigestUtils;
 
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
@@ -96,9 +94,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     public void addCookie(HttpServletResponse response, String token, User user) {
-        redisService.set(TeacherKey.token, token, user);
+        redisService.set(UserKey.token, token, user);
         Cookie cookie = new Cookie(COOKIE_NAME_TOKEN, token);
-        cookie.setMaxAge(TeacherKey.token.expireSeconds());
+        cookie.setMaxAge(UserKey.token.expireSeconds());
         cookie.setPath("/");//设置为网站根目录
         response.addCookie(cookie);
     }
@@ -111,11 +109,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public String logout(String token) {
-        return null;
-    }
-
-    @Override
-    public List<User> getAll() {
         return null;
     }
 
