@@ -17,6 +17,7 @@ public class LoginController {
     final UserService userService;
     final EmailService emailService;
 
+
     public LoginController(UserService userService, EmailService emailService) {
         this.userService = userService;
         this.emailService = emailService;
@@ -42,5 +43,6 @@ public class LoginController {
     public Result<String> logout(String token) {
         return Result.success(userService.logout(token));
     }
+
 
 }

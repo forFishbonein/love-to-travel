@@ -11,12 +11,12 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
-@CrossOrigin
 @RestController
 @RequestMapping("/user")
 public class UserController {
 
     final UserService userService;
+
 
     public UserController(UserService userService) {
         this.userService = userService;
@@ -38,6 +38,12 @@ public class UserController {
         return Result.success(userService.getAll());
     }
 
+    @GetMapping("/token")
+    public Result<User> getByToken(HttpServletRequest request, HttpServletResponse response) {
+        String token = request.getHeader("Authorization");
+        return Result.success(userService.getByToken(response, token));
+    }
+
     @PostMapping("/updatepassword")
     public Result<String> updatePassword(@RequestBody UpdatePasswordVo updatePasswordVo) {
         userService.updatePassword(updatePasswordVo);
@@ -50,10 +56,5 @@ public class UserController {
         return Result.success("修改成功");
     }
 
-    @GetMapping("/token")
-    public Result<User> getByToken(HttpServletRequest request, HttpServletResponse response) {
-        String token = request.getHeader("Authorization");
-        return Result.success(userService.getByToken(response, token));
-    }
 
 }

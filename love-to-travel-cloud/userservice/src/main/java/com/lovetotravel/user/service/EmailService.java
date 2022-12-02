@@ -23,13 +23,12 @@ import javax.mail.internet.MimeMessage;
 @Slf4j
 public class EmailService {
 
-    // 邮件发送人
-    @Value("${spring.mail.username}")
-    private String from;
-
     final RedisService redisService;
     final JavaMailSender mailSender;
     final TemplateEngine templateEngine;
+    // 邮件发送人
+    @Value("${spring.mail.username}")
+    private String from;
 
 
     public EmailService(RedisService redisService, JavaMailSender mailSender, TemplateEngine templateEngine) {
@@ -39,8 +38,7 @@ public class EmailService {
     }
 
     /**
-     *
-     * @param to 邮件接收人
+     * @param to      邮件接收人
      * @param subject 标题
      * @param content 内容
      */
