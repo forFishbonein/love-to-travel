@@ -1,17 +1,19 @@
 import httpRequest from "@/request";
 
-export function codeLogin(data) {
-  console.log(data);
+export function codeLogin(codeData: any) {
+  console.log(codeData);
   return httpRequest({
-    data: data,
+    data: codeData,
     method: "post",
-    url: "/t/login",
+    url: "/codelogin",
+    loading: true,
   });
 }
 
-export const passLogin = (codeData) => {
+export const passLogin = (passData: any) => {
+  console.log(passData);
   return httpRequest({
-    data: codeData,
+    data: passData,
     method: "post",
     url: "/login",
     loading: true,

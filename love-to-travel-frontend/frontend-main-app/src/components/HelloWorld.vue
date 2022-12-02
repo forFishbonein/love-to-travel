@@ -2,7 +2,7 @@
 import { ref, h } from "vue";
 import { onMounted } from "vue";
 import { apiGetUserInfo } from "@apis/user";
-import { mainStore } from "@/store/userLogin";
+import { mainStore } from "@/store/user";
 import useCurrentInstance from "@/utils/useCurrentInstance";
 defineProps({
   msg: String,
