@@ -12,6 +12,10 @@ public class CodeMsg {
     public static CodeMsg ACCESS_LIMIT_REACHED= new CodeMsg(500104, "访问高峰期，请稍等！");
     //登录模块 5002XX
     public static CodeMsg USER_EXIST= new CodeMsg(500201, "用户已存在");
+    public static CodeMsg USER_NOT_EXIST= new CodeMsg(500202, "用户不存在");
+    public static CodeMsg CODE_ERROR= new CodeMsg(500203, "验证码错误");
+    public static CodeMsg PASSWORD_ERROR= new CodeMsg(500204, "密码错误");
+    public static CodeMsg EMAIL_EMPTY= new CodeMsg(500205, "邮箱为空");
 
 
     private CodeMsg() {

@@ -8,15 +8,13 @@ public class RegisterVo {
 
     private String email;
 
+    private String code;
+
     private String password;
 
     private String url;
 
     private String name;
-
-    private String grade;
-
-    private String experience;
 
     private String tele;
 
@@ -26,13 +24,9 @@ public class RegisterVo {
 
     private String profession;
 
-    private String signature;
-
     private String gender;
 
     private String address;
-
-    private String visits;
 
     private String status;
 }
