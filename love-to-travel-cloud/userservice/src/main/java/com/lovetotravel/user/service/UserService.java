@@ -22,15 +22,13 @@ public interface UserService {
 
     User getByToken(HttpServletResponse response, String token);
 
-    void sendEmail(LoginVo loginVo);
-
-//    void register(HttpServletResponse response, TeacherRegisterVo registerVo);
+    //void register(HttpServletResponse response, TeacherRegisterVo registerVo);
 
     String logout(String token);
 
-//    String registered(Teacher teacher);
+    //String registered(Teacher teacher);
 
-//    ShowVo show(String id);
+    //ShowVo show(String id);
 
     List<User> getAll();
 

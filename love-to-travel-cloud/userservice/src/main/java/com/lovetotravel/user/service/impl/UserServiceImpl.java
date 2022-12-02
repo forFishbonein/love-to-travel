@@ -108,10 +108,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         return null;
     }
 
-    @Override
-    public void sendEmail(LoginVo loginVo) {
-
-    }
 
     @Override
     public String logout(String token) {
