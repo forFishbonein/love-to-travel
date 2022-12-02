@@ -16,10 +16,6 @@ public class RegisterVo {
 
     private String name;
 
-    private String grade;
-
-    private String experience;
-
     private String tele;
 
     private String birthday;
@@ -28,13 +24,9 @@ public class RegisterVo {
 
     private String profession;
 
-    private String signature;
-
     private String gender;
 
     private String address;
-
-    private String visits;
 
     private String status;
 }

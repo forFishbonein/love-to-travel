@@ -48,8 +48,8 @@ public class LoginServiceImpl extends ServiceImpl<LoginMapper, Login> implements
         Login login = new Login();
         String oldPassword = registerVo.getPassword();
         String newPassword = DigestUtils.md5DigestAsHex(oldPassword.getBytes());
-        login.setPassword(newPassword);
         BeanUtils.copyProperties(registerVo, login);
+        login.setPassword(newPassword);
         loginMapper.insert(login);
     }
 

@@ -24,7 +24,7 @@ public class UserController {
         return userService.getById(id);
     }
 
-    @PutMapping
+    @PostMapping("/register")
     public Result<String> register(@RequestBody RegisterVo registerVo) {
         userService.insert(registerVo);
         User user = userService.getByEmail(registerVo.getEmail());
