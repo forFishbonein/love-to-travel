@@ -1,8 +1,10 @@
 import { defineStore } from "pinia";
 import { getToken, removeToken, setToken } from "@request/token";
 import { UserInfo } from "@/apis/interface";
-import { passLogin, codeLogin, getUserInfo, logout } from "@/apis/login";
+import { passLogin, codeLogin, logout } from "@/apis/login";
 import { register } from "@/apis/register";
+import { getUserInfo } from "@/apis/user";
+
 export interface UserState {
   userInfo: UserInfo;
   token: string;
@@ -11,7 +13,9 @@ export interface UserState {
 export const mainStore = defineStore("main", {
   state: () =>
     ({
-      userInfo: {},
+      userInfo: {
+        email: "",
+      },
       token: getToken(),
       // pinia: "hello world", //测试
     } as UserState),
@@ -47,6 +51,26 @@ export const mainStore = defineStore("main", {
         }
       });
     },
+    getUserInfo() {
+      return new Promise((resolve, reject) => {
+        getUserInfo(this.$state.token)
+          .then((res) => {
+            if (res.code === 0) {
+              this.$state.userInfo = res.data;
+              resolve(res);
+            } else {
+              this.$state.userInfo = {}; //清空对象
+              removeToken();
+              resolve(res);
+            }
+          })
+          .catch((error) => {
+            this.$state.userInfo = {}; //清空对象
+            removeToken();
+            reject(error);
+          });
+      });
+    },
     register(registerData: any) {
       return new Promise((resolve, reject) => {
         try {
@@ -71,6 +95,23 @@ export const mainStore = defineStore("main", {
         } catch (error) {
           reject(error);
         }
+      });
+    },
+    logout() {
+      return new Promise((resolve, reject) => {
+        logout(this.$state.token)
+          .then((res) => {
+            console.log(res);
+            if (res) {
+              this.$state.userInfo = {}; //清空对象
+              removeToken();
+              resolve(res);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
       });
     },
   },

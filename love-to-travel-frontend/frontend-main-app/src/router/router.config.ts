@@ -1,26 +1,28 @@
 import { RouteRecordRaw } from "vue-router";
-// import Layout from "@/views/layouts/index.vue";
-import HelloWorld from "@components/HelloWorld.vue";
-import LoginAndRegister from "@/views/LoginAndRegister.vue";
 import Index from "@/views/Index.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
-    name: "Index",
+    name: "Index", //App中包裹Index
     meta: {
       title: "首页",
       keepAlive: false,
+      // requireLogin: true, //先加在这里，表示需要登录！
     },
     component: Index,
-    redirect: "/login",
+    // redirect: "/login", //Index中包裹LoginAndRegister
     children: [
       {
         path: "/login",
         name: "LoginAndRegister",
         component: () => import("@/views/LoginAndRegister.vue"),
-        meta: { title: "登录页", keepAlive: false, showTab: true },
-        redirect: "/login/passLogin",
+        meta: {
+          title: "登录页",
+          keepAlive: false,
+          showTab: true,
+        },
+        redirect: "/login/passLogin", //LoginAndRegister中包裹passLogin
         children: [
           {
             path: "passLogin",

@@ -1,16 +1,16 @@
 import httpRequest from "@/request";
-
-export const passLogin = (passData: any) => {
+import { passLoginInfo, codeLoginInfo } from "@/apis/interface";
+export const passLogin = (passData: passLoginInfo) => {
   console.log(passData);
   return httpRequest({
     data: passData,
     method: "post",
     url: "/login",
-    loading: true,
+    loading: true, //显示加载圈
   });
 };
 
-export function codeLogin(codeData: any) {
+export function codeLogin(codeData: codeLoginInfo) {
   console.log(codeData);
   return httpRequest({
     data: codeData,
@@ -20,18 +20,10 @@ export function codeLogin(codeData: any) {
   });
 }
 
-export function getUserInfo(token) {
+export function logout(token: string) {
   return httpRequest({
-    headers: { Authorization: token },
-    url: "/t/user",
-    method: "get",
-  });
-}
-
-export function logout(token) {
-  return httpRequest({
-    headers: { Authorization: token },
-    url: "/t/logout",
+    data: token,
+    url: "/logout",
     method: "post",
   });
 }

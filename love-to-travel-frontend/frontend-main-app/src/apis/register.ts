@@ -1,6 +1,6 @@
 import httpRequest from "@/request";
-
-export const postCode = (email: any) => {
+import { registerInfo } from "@/apis/interface";
+export const postCode = (email: string) => {
   console.log(email);
   return httpRequest({
     data: email,
@@ -9,7 +9,7 @@ export const postCode = (email: any) => {
   });
 };
 
-export const register = (registerData: any) => {
+export const register = (registerData: registerInfo) => {
   console.log(registerData);
   return httpRequest({
     data: registerData,
