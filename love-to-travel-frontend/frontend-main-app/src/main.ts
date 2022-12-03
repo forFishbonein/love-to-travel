@@ -7,7 +7,7 @@ import { setupElementPlus } from "@plugins/elementPlus/index";
 // 引入全局样式
 // import "@/styles/index.scss";
 import { mainStore } from "@/store/user";
-
+import "./style.css";
 //创建实例
 const setupAll = async () => {
   const app = createApp(App);

@@ -1,5 +1,5 @@
 import { RouteRecordRaw } from "vue-router";
-import Index from "@/views/Index.vue";
+import Index from "@/Index.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {

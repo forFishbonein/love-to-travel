@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import BaseHeader from "@/components/common/BaseHeader.vue";
+// import BaseHeader from "@/components/common/BaseHeader.vue";
 console.log("---环境变量----", import.meta.env);
 </script>
 <template>
