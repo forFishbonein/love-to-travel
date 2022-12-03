@@ -1,16 +1,17 @@
-import { defineConfig, ConfigEnv, loadEnv } from 'vite'
+import { defineConfig, ConfigEnv, loadEnv } from "vite";
 import AutoImport from "unplugin-auto-import/vite";
 import Components from "unplugin-vue-components/vite";
 import { ElementPlusResolver } from "unplugin-vue-components/resolvers";
 import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
-import pkg from './package.json'
-import dayjs from 'dayjs'
-const { dependencies, devDependencies, name, version } = pkg
+import pkg from "./package.json";
+import dayjs from "dayjs";
+// import inject from "@rollup/plugin-inject";
+const { dependencies, devDependencies, name, version } = pkg;
 const __APP_INFO__ = {
-	pkg: { dependencies, devDependencies, name, version },
-	lastBuildTime: dayjs().format('YYYY-MM-DD HH:mm:ss')
-}
+  pkg: { dependencies, devDependencies, name, version },
+  lastBuildTime: dayjs().format("YYYY-MM-DD HH:mm:ss"),
+};
 export default defineConfig({
   plugins: [
     vue(),
@@ -20,6 +21,11 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
+    // inject({
+    //   $: "jquery", // 这里会自动载入 node_modules 中的 jquery
+    //   jQuery: "jquery",
+    //   "windows.jQuery": "jquery",
+    // }),
   ],
   server: {
     //启动的ip
@@ -55,8 +61,6 @@ export default defineConfig({
     },
   },
   define: {
-    __APP_INFO__: JSON.stringify(__APP_INFO__)
-  }
+    __APP_INFO__: JSON.stringify(__APP_INFO__),
+  },
 });
-
-

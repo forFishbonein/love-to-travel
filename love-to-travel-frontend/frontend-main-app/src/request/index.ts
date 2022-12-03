@@ -5,11 +5,8 @@
 import { config } from "@/config";
 import { Message } from "@/utils/resetMessage";
 import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-import { store } from "@/main"; //引入在main.ts中创建的的store
+import { store } from "@/main";
 
-// 原来的在setup中的方式，在axios文件中行不通！
-// import { mainStore } from "@/store/user";
-// const store = mainStore(pinia);
 const service = axios.create({
   baseURL: config.baseApi, // 所有的请求地址前缀部分
   timeout: 10000, // 请求超时时间毫秒
@@ -34,15 +31,11 @@ service.interceptors.request.use(
         background: "rgba(0, 0, 0, 0.7)",
       });
     }
-    if (store.token) {
-      //@ts-ignore
-      config.headers["Authorization"] = store.token;
-    }
 
     // 在此处添加请求头等，如添加 token
     if (store.token) {
-      //@ts-ignore //要不要前缀？
-      config.headers["Authorization"] = `Bearer ${store.token}`;
+      //@ts-ignore
+      config.headers["Authorization"] = store.token;
     }
 
     return config;
@@ -76,14 +69,14 @@ service.interceptors.response.use(
       if (res.code === 401) {
         // 警告提示窗
         Message({
-          type: "warn",
+          type: "warning",
           message: res.msg,
         });
         return;
       }
       if (res.code == 403) {
         Message({
-          type: "warn",
+          type: "warning",
           message: res.msg,
         });
         return;
@@ -144,7 +137,7 @@ service.interceptors.response.use(
       error.message = "连接到服务器失败，请联系管理员qq：1558637209";
     }
     Message({
-      type: "warn",
+      type: "warning",
       message: error.message,
     });
     // store.auth.clearAuth()
