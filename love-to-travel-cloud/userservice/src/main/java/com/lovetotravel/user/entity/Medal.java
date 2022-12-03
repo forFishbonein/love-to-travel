@@ -1,17 +1,23 @@
 package com.lovetotravel.user.entity;
 
+
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
 
 @Data
-public class Login {
-    private Long id;
+public class Medal {
 
-    private String email;
+    @TableId
+    private Integer id;
 
-    private String password;
+    private String name;
 
-    private String status;
+    private String url;
+
+    private Integer experience;
+
+    private String describe;
 
     @TableLogic
     private String deleted;

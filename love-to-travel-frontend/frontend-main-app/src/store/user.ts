@@ -1,25 +1,82 @@
 import { defineStore } from "pinia";
 import { getToken, removeToken, setToken } from "@request/token";
 import { UserInfo } from "@/apis/interface";
-import { passLogin, codeLogin, getUserInfo, logout } from "@/apis/login";
+import { passLogin, codeLogin, logout } from "@/apis/login";
+import { register } from "@/apis/register";
+import { getUserInfo } from "@/apis/user";
+
 export interface UserState {
   userInfo: UserInfo;
   token: string;
+  // pinia: string;
 }
 export const mainStore = defineStore("main", {
   state: () =>
     ({
-      userInfo: {},
+      userInfo: {
+        email: "",
+      },
       token: getToken(),
+      // pinia: "hello world", //测试
     } as UserState),
   getters: {},
   actions: {
-    passLogin(codeData) {
+    passLogin(passData: any) {
       return new Promise((resolve, reject) => {
         try {
-          passLogin(codeData).then((res) => {
+          passLogin(passData).then((res) => {
             console.log(res.data);
-            this.token = res.data;
+            this.$state.token = res.data;
+            setToken(res.data);
+            resolve(res);
+          });
+        } catch (error) {
+          console.log(error);
+          reject(error);
+        }
+      });
+    },
+    codeLogin(codeData: any) {
+      return new Promise((resolve, reject) => {
+        try {
+          codeLogin(codeData).then((res) => {
+            console.log(res.data);
+            this.$state.token = res.data;
+            setToken(res.data);
+            resolve(res);
+          });
+        } catch (error) {
+          console.log(error);
+          reject(error);
+        }
+      });
+    },
+    getUserInfo() {
+      return new Promise((resolve, reject) => {
+        getUserInfo(this.$state.token)
+          .then((res) => {
+            if (res.code === 0) {
+              this.$state.userInfo = res.data;
+              resolve(res);
+            } else {
+              this.$state.userInfo = {}; //清空对象
+              removeToken();
+              resolve(res);
+            }
+          })
+          .catch((error) => {
+            this.$state.userInfo = {}; //清空对象
+            removeToken();
+            reject(error);
+          });
+      });
+    },
+    register(registerData: any) {
+      return new Promise((resolve, reject) => {
+        try {
+          register(registerData).then((res) => {
+            console.log(res.data);
+            this.$state.token = res.data;
             setToken(res.data);
             resolve(res);
           });
@@ -40,11 +97,23 @@ export const mainStore = defineStore("main", {
         }
       });
     },
+    logout() {
+      return new Promise((resolve, reject) => {
+        logout(this.$state.token)
+          .then((res) => {
+            console.log(res);
+            if (res) {
+              this.$state.userInfo = {}; //清空对象
+              removeToken();
+              resolve(res);
+            }
+          })
+          .catch((error) => {
+            console.log(error);
+            reject(error);
+          });
+      });
+    },
   },
-  // persist: {
-  //   key: "main",
-  //   storage: window.localStorage,
-  //   // paths: ['name'],
-  //   overwrite: true,
-  // },
+  persist: true,
 });

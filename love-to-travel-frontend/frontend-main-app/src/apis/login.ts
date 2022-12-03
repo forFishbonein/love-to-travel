@@ -1,35 +1,29 @@
 import httpRequest from "@/request";
-
-export function codeLogin(data) {
-  console.log(data);
+import { passLoginInfo, codeLoginInfo } from "@/apis/interface";
+export const passLogin = (passData: passLoginInfo) => {
+  console.log(passData);
   return httpRequest({
-    data: data,
+    data: passData,
     method: "post",
-    url: "/t/login",
+    url: "/login",
+    loading: true, //显示加载圈
   });
-}
+};
 
-export function passLogin(codeData) {
-  // console.log(login);
+export function codeLogin(codeData: codeLoginInfo) {
+  console.log(codeData);
   return httpRequest({
     data: codeData,
     method: "post",
-    url: "/t/passLogin",
+    url: "/codelogin",
+    loading: true,
   });
 }
 
-export function getUserInfo(token) {
+export function logout(token: string) {
   return httpRequest({
-    headers: { Authorization: token },
-    url: "/t/user",
-    method: "get",
-  });
-}
-
-export function logout(token) {
-  return httpRequest({
-    headers: { Authorization: token },
-    url: "/t/logout",
+    data: token,
+    url: "/logout",
     method: "post",
   });
 }

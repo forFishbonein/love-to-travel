@@ -16,6 +16,10 @@ public class User implements Serializable {
 
     private String email;
 
+    private String password;
+
+    private String status;
+
     private String url;
 
     private String name;
@@ -40,6 +44,11 @@ public class User implements Serializable {
 
     private String visits;
 
-    private String status;
+    @TableLogic
+    private String deleted;
+
+    private String createTime;
+
+    private String updateTime;
 
 }

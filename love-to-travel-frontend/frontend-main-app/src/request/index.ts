@@ -1,15 +1,12 @@
 /**
  * @description [ axios 请求封装]
  */
-import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
-// import store from "@/store";
-import { mainStore } from "@/store/user";
-import pinia from "@store/index"; // 实际上这个pinia是createPinia()，这里必须传入，因为axios和router都获取不到全局的pinia
-const store = mainStore(pinia);
-
 // 根据环境不同引入不同api地址
 import { config } from "@/config";
 import { Message } from "@/utils/resetMessage";
+import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
+import { store } from "@/main";
+
 const service = axios.create({
   baseURL: config.baseApi, // 所有的请求地址前缀部分
   timeout: 10000, // 请求超时时间毫秒
@@ -24,6 +21,7 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config: AxiosRequestConfig) => {
+    // alert(store.pinia); //最早在这里可以获取
     // 加载动画
     if (config.loading) {
       //@ts-ignore
@@ -33,15 +31,11 @@ service.interceptors.request.use(
         background: "rgba(0, 0, 0, 0.7)",
       });
     }
-    if (store.token) {
-      //@ts-ignore
-      config.headers["Authorization"] = store.token;
-    }
 
     // 在此处添加请求头等，如添加 token
     if (store.token) {
-      //@ts-ignore //要不要前缀？
-      config.headers["Authorization"] = `Bearer ${store.token}`;
+      //@ts-ignore
+      config.headers["Authorization"] = store.token;
     }
 
     return config;
@@ -62,9 +56,9 @@ service.interceptors.response.use(
     loading.close();
 
     // session过期？
-    if (response.headers["session_time_out"] == "timeout") {
-      store.fedLogOut();
-    }
+    // if (response.headers["session_time_out"] == "timeout") {
+    //   store.fedLogOut();
+    // }
 
     const res = response.data; //返回数据就是Promise的data，即整个后端返回的对象
     if (res.code !== 0) {
@@ -75,14 +69,14 @@ service.interceptors.response.use(
       if (res.code === 401) {
         // 警告提示窗
         Message({
-          type: "warn",
+          type: "warning",
           message: res.msg,
         });
         return;
       }
       if (res.code == 403) {
         Message({
-          type: "warn",
+          type: "warning",
           message: res.msg,
         });
         return;
@@ -143,7 +137,7 @@ service.interceptors.response.use(
       error.message = "连接到服务器失败，请联系管理员qq：1558637209";
     }
     Message({
-      type: "warn",
+      type: "warning",
       message: error.message,
     });
     // store.auth.clearAuth()

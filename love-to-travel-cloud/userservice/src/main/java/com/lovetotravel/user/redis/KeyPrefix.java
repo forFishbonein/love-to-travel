@@ -5,13 +5,15 @@ public interface KeyPrefix {
 
     /**
      * 有效期
+     *
      * @return
      */
-    public int expireSeconds();
+    int expireSeconds();
 
     /**
      * 前缀
+     *
      * @return
      */
-    public String getPrefix();
+    String getPrefix();
 }
