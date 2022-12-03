@@ -8,8 +8,6 @@ import { setupElementPlus } from "@plugins/elementPlus/index";
 // import "@/styles/index.scss";
 import { mainStore } from "@/store/user";
 
-// import $ from "jquery";
-
 //创建实例
 const setupAll = async () => {
   const app = createApp(App);
@@ -18,7 +16,6 @@ const setupAll = async () => {
   setupElementPlus(app);
   app.use(router);
   app.use(pinia);
-  // app.use($);
   app.mount("#app");
 };
 
