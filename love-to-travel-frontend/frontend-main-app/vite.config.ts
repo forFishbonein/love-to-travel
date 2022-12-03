@@ -21,21 +21,12 @@ export default defineConfig({
     Components({
       resolvers: [ElementPlusResolver()],
     }),
-    // inject({
-    //   $: "jquery", // 这里会自动载入 node_modules 中的 jquery
-    //   jQuery: "jquery",
-    //   "windows.jQuery": "jquery",
-    // }),
   ],
+  publicDir: "static", //这里很重要，配置了基础公共路径，保证我们获取的静态资源都是以static文件夹为基础的
   server: {
     //启动的ip
     host: "0.0.0.0",
   },
-  // alias: {
-  //   "@": "/src/",
-  //   "@components": "/src/components/",
-  //   "@assets": "/src/assets/",
-  // },
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),

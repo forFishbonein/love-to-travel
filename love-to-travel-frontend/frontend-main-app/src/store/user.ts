@@ -59,12 +59,14 @@ export const mainStore = defineStore("main", {
               this.$state.userInfo = res.data;
               resolve(res);
             } else {
+              //@ts-ignore
               this.$state.userInfo = {}; //清空对象
               removeToken();
               resolve(res);
             }
           })
           .catch((error) => {
+            //@ts-ignore
             this.$state.userInfo = {}; //清空对象
             removeToken();
             reject(error);
@@ -103,6 +105,7 @@ export const mainStore = defineStore("main", {
           .then((res) => {
             console.log(res);
             if (res) {
+              //@ts-ignore
               this.$state.userInfo = {}; //清空对象
               removeToken();
               resolve(res);

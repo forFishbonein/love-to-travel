@@ -34,7 +34,7 @@ router.beforeEach((to, from, next) => {
       to.path === "/login/passLogin" ||
       to.path === "/login/codeLogin"
     ) {
-      //如果是从内部由路径跳转到登录页面，拦截拦截
+      //如果是从内部由路径跳转到登录页面，拦截拦截，回到首页
       next({ path: "/" });
     } else {
       //如果不是跳转到登录页面！那么获取用户信息！
@@ -47,7 +47,7 @@ router.beforeEach((to, from, next) => {
         store
           .getUserInfo() //获取用户信息
           .then((res) => {
-            alert("获取用户信息成功");
+            // alert("获取用户信息成功");
             console.log(store.userInfo);
             next();
           })
@@ -64,7 +64,7 @@ router.beforeEach((to, from, next) => {
       }
     }
   } else {
-    //如果本地不存在token //但如果是需要登录的页面
+    //如果本地不存在token //但如果是要去到需要登录的页面
     if (to.matched.some((r) => r.meta.requireLogin)) {
       //@ts-ignore
       ElMessage({
@@ -74,7 +74,7 @@ router.beforeEach((to, from, next) => {
       //@ts-ignore //不知道会不会出错
       router.push(-1);
     } else {
-      next(); //其余不需要登录的就直接放开
+      next(); //其余不需要登录的页面就直接放开
     }
   }
 });
