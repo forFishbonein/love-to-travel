@@ -1,4 +1,4 @@
-package com.example.demo.config;
+package com.lovetotravel.user.config;
 //package com.oycbest.springbootswagger.config;
 
 
@@ -24,7 +24,7 @@ public class SwaggerConfig {
         // 调用apiInfo方法,创建一个ApiInfo实例,里面是展示在文档页面信息内容
         docket.apiInfo(apiInfo())
                 .select()
-                .apis(RequestHandlerSelectors.basePackage("com.example.demo.controller"))
+                .apis(RequestHandlerSelectors.basePackage("com.lovetotravel.user.controller"))
                 .build();
         return docket;
     }

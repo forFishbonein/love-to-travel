@@ -4,6 +4,10 @@ spring:
   main:
     banner-mode: off
 
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+
   datasource:
     url: jdbc:mysql://47.98.138.0:3306/userservice?serverTimezone=GMT%2B8&useSSL=false&useUnicode=true&characterEncoding=UTF-8&allowPublicKeyRetrieval=true
     username: userservice
