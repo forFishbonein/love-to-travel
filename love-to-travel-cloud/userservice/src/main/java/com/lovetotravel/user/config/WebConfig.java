@@ -11,6 +11,7 @@ import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -51,7 +52,7 @@ public class WebConfig implements WebMvcConfigurer {
                 //禁止循环引用
                 SerializerFeature.DisableCircularReferenceDetect);
         config.setDateFormat("yyyy-MM-dd HH:mm:ss");
-        config.setCharset(Charset.forName("UTF-8"));
+        config.setCharset(StandardCharsets.UTF_8);
         convert.setFastJsonConfig(config);
         convert.setSupportedMediaTypes(getSupportedMediaTypes());
         converters.add(convert);

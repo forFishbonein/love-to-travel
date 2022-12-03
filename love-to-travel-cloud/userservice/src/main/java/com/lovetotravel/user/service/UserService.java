@@ -2,6 +2,7 @@ package com.lovetotravel.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lovetotravel.user.entity.User;
+import com.lovetotravel.user.entity.vo.FollowerVo;
 import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.entity.vo.RegisterVo;
 import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
@@ -34,8 +35,17 @@ public interface UserService extends IService<User> {
 
     void updateProfile(User user);
 
+    void addFollower(FollowerVo followerVo);
 
+    void removeFollower(FollowerVo followerVo);
 
+    Long sumFollower(Long id);
+
+    List<User> getAllFollower(Long id);
+
+    Long sumFollowee(Long id);
+
+    List<User> getAllFollowee(Long id);
 
 
 }

@@ -6,6 +6,7 @@ import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPool;
 
 import javax.annotation.Resource;
+import java.util.Set;
 
 /**
  * redis服务
@@ -19,6 +20,39 @@ public class RedisService {
     /*
      * 使用get和set的时候，传入的prefix前缀是需要包含过期时间的，再get和set方法内部会进行get和set操作
      */
+
+    public static <T> String beanToString(T value) {
+        if (value == null) {
+            return null;
+        }
+        Class<?> clazz = value.getClass();
+        if (clazz == int.class || clazz == Integer.class) {
+            return String.valueOf(value);
+        } else if (clazz == long.class || clazz == Long.class) {
+            return String.valueOf(value);
+        } else if (clazz == String.class) {
+            return (String) value;
+        } else {
+            return JSON.toJSONString(value);
+        }
+
+    }
+
+    //alibaba fastjson
+    public static <T> T stringToBean(String str, Class<T> clazz) {
+        if (str == null || str.length() <= 0 || clazz == null) {
+            return null;
+        }
+        if (clazz == int.class || clazz == Integer.class) {
+            return (T) Integer.valueOf(str);
+        } else if (clazz == long.class || clazz == Long.class) {
+            return (T) Long.valueOf(str);
+        } else if (clazz == String.class) {
+            return (T) str;
+        } else {
+            return JSON.toJavaObject(JSON.parseObject(str), clazz);
+        }
+    }
 
     /**
      * 从redis连接池获取redis实例
@@ -127,44 +161,111 @@ public class RedisService {
         }
     }
 
-
-    public static <T> String beanToString(T value) {
-        if (value == null) {
-            return null;
-        }
-        Class<?> clazz = value.getClass();
-        if (clazz == int.class || clazz == Integer.class) {
-            return String.valueOf(value);
-        } else if (clazz == long.class || clazz == Long.class) {
-            return String.valueOf(value);
-        } else if (clazz == String.class) {
-            return (String) value;
-        } else {
-            return JSON.toJSONString(value);
-        }
-
-    }
-
-    //alibaba fastjson
-    public static <T> T stringToBean(String str, Class<T> clazz) {
-        if (str == null || str.length() <= 0 || clazz == null) {
-            return null;
-        }
-        if (clazz == int.class || clazz == Integer.class) {
-            return (T) Integer.valueOf(str);
-        } else if (clazz == long.class || clazz == Long.class) {
-            return (T) Long.valueOf(str);
-        } else if (clazz == String.class) {
-            return (T) str;
-        } else {
-            return JSON.toJavaObject(JSON.parseObject(str), clazz);
-        }
-    }
-
     private void returnToPool(Jedis jedis) {
         if (jedis != null) {
             jedis.close();//不是关闭，只是返回连接池
         }
+    }
+
+    /**
+     * 集合增加元素
+     *
+     * @param key
+     * @param member
+     * @return
+     */
+    public Long sadd(KeyPrefix prefix, String key, String member) {
+        Long result = null;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix() + key;
+            result = jedis.sadd(realKey, member);
+        } finally {
+            returnToPool(jedis);
+        }
+        return result;
+    }
+
+    /**
+     * 返回集合所有元素
+     *
+     * @param key
+     * @return
+     */
+    public Set<String> smembers(KeyPrefix prefix, String key) {
+        Set<String> result = null;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix() + key;
+            result = jedis.smembers(realKey);
+        } finally {
+            returnToPool(jedis);
+        }
+        return result;
+    }
+
+    /**
+     * 删除key中的member
+     *
+     * @param key
+     * @param member
+     * @return
+     */
+    public Long srem(KeyPrefix prefix, String key, String member) {
+        Long result = null;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix() + key;
+            result = jedis.srem(realKey, member);
+        } finally {
+            returnToPool(jedis);
+        }
+        return result;
+    }
+
+    /**
+     * 返回集合基数
+     *
+     * @param prefix
+     * @param key
+     * @return
+     */
+    public Long scard(KeyPrefix prefix, String key) {
+        Long result = null;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix() + key;
+            result = jedis.scard(realKey);
+        } finally {
+            returnToPool(jedis);
+        }
+        return result;
+
+    }
+
+
+    /**
+     * 判断元素是否在集合中
+     *
+     * @param key
+     * @param member
+     * @return
+     */
+    public Boolean sismember(KeyPrefix prefix, String key, String member) {
+        Boolean result = null;
+        Jedis jedis = null;
+        try {
+            jedis = jedisPool.getResource();
+            String realKey = prefix.getPrefix() + key;
+            result = jedis.sismember(realKey, member);
+        } finally {
+            returnToPool(jedis);
+        }
+        return result;
     }
 
 }

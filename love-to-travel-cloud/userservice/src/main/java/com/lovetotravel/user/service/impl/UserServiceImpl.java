@@ -2,15 +2,16 @@ package com.lovetotravel.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-
 import com.lovetotravel.user.common.result.CodeMsg;
 import com.lovetotravel.user.entity.User;
+import com.lovetotravel.user.entity.vo.FollowerVo;
 import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.entity.vo.RegisterVo;
 import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
 import com.lovetotravel.user.exception.GlobalException;
 import com.lovetotravel.user.mapper.UserMapper;
 import com.lovetotravel.user.redis.CodeKey;
+import com.lovetotravel.user.redis.FollowKey;
 import com.lovetotravel.user.redis.RedisService;
 import com.lovetotravel.user.redis.UserKey;
 import com.lovetotravel.user.redis.utils.UUIDUtil;
@@ -24,6 +25,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Set;
 
 
 @Service
@@ -89,6 +91,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 根据email获取user
+     *
      * @param email
      * @return
      */
@@ -102,6 +105,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 检验验证码是否正确
+     *
      * @param loginVo
      * @return
      */
@@ -131,6 +135,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     /**
      * 检验密码是否正确
+     *
      * @param loginVo
      */
     @Override
@@ -234,5 +239,139 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public List<User> getAll() {
         return userMapper.getAll();
     }
+
+    /**
+     * 关注别人
+     *
+     * @param followerVo
+     */
+    @Override
+    public void addFollower(FollowerVo followerVo) {
+        if (followerVo == null) {
+            throw new GlobalException(CodeMsg.SERVER_ERROR);
+        }
+        String id = followerVo.getId().toString();
+        String followerId = followerVo.getFollowerId().toString();
+        if (id.equals(followerId)) {
+            throw new GlobalException(CodeMsg.FOLLOW_ERROR);
+        }
+        QueryWrapper<User> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.lambda().eq(User::getId, id);
+        User u1 = getOne(queryWrapper1);
+        QueryWrapper<User> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.lambda().eq(User::getId, followerId);
+        User u2 = getOne(queryWrapper2);
+        if (u1 == null || u2 == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        redisService.sadd(FollowKey.getFollower, id, followerId);
+        redisService.sadd(FollowKey.getFollowee, followerId, id);
+    }
+
+    /**
+     * 移除关注
+     *
+     * @param followerVo
+     */
+    @Override
+    public void removeFollower(FollowerVo followerVo) {
+        if (followerVo == null) {
+            throw new GlobalException(CodeMsg.SERVER_ERROR);
+        }
+        String id = followerVo.getId().toString();
+        String followerId = followerVo.getFollowerId().toString();
+        if (id.equals(followerId)) {
+            throw new GlobalException(CodeMsg.SERVER_ERROR);
+        }
+        QueryWrapper<User> queryWrapper1 = new QueryWrapper<>();
+        queryWrapper1.lambda().eq(User::getId, id);
+        User u1 = getOne(queryWrapper1);
+        QueryWrapper<User> queryWrapper2 = new QueryWrapper<>();
+        queryWrapper2.lambda().eq(User::getId, followerId);
+        User u2 = getOne(queryWrapper2);
+        if (u1 == null || u2 == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        redisService.srem(FollowKey.getFollower, id, followerId);
+        redisService.srem(FollowKey.getFollowee, followerId, id);
+    }
+
+    /**
+     * 总关注数
+     *
+     * @param id
+     */
+    public Long sumFollower(Long id) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(User::getId, id);
+        User userInMysql = getOne(queryWrapper);
+        if (userInMysql == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        String idToString = id.toString();
+        return redisService.scard(FollowKey.getFollower, idToString);
+    }
+
+    /**
+     * 获取id所有关注
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<User> getAllFollower(Long id) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(User::getId, id);
+        User userInMysql = getOne(queryWrapper);
+        if (userInMysql == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        String idToString = id.toString();
+        Set<String> set = redisService.smembers(FollowKey.getFollower, idToString);
+        List<User> users = listByIds(set);
+        System.out.println(users);
+
+        return users;
+    }
+
+    /**
+     * 总粉丝数
+     *
+     * @param id
+     */
+    public Long sumFollowee(Long id) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(User::getId, id);
+        User userInMysql = getOne(queryWrapper);
+        if (userInMysql == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        String idToString = id.toString();
+        return redisService.scard(FollowKey.getFollowee, idToString);
+    }
+
+    /**
+     * 获取id所有粉丝
+     *
+     * @param id
+     * @return
+     */
+    @Override
+    public List<User> getAllFollowee(Long id) {
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(User::getId, id);
+        User userInMysql = getOne(queryWrapper);
+        if (userInMysql == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        String idToString = id.toString();
+        Set<String> set = redisService.smembers(FollowKey.getFollowee, idToString);
+        List<User> users = listByIds(set);
+        System.out.println(users);
+        return users;
+    }
+
+
+
 
 }
