@@ -2,6 +2,8 @@ import { RouteRecordRaw } from "vue-router";
 import Index from "@/Index.vue";
 import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
+import PassLogin from "@/components/passOrCode/PassLogin.vue";
+import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -13,6 +15,17 @@ export const routes: Array<RouteRecordRaw> = [
       // requireLogin: true, //先加在这里，表示需要登录！
     },
     component: Index,
+    beforeEnter: (to, from, next) => {
+      // 路由独享守卫
+      // console.log(from.path);
+      if (
+        from.path === "/login/passLogin" ||
+        from.path === "/login/codeLogin"
+      ) {
+        location.reload(); //刷新一下页面
+      }
+      next();
+    },
     redirect: "/home", //Index中包裹Home等组件
     children: [
       {
@@ -38,14 +51,16 @@ export const routes: Array<RouteRecordRaw> = [
       {
         path: "passLogin",
         name: "PassLogin",
-        component: () => import("@/components/passOrCode/PassLogin.vue"),
-        meta: { title: "测试案例", keepAlive: false, showTab: true },
+        // component: () => import("@/components/passOrCode/PassLogin.vue"),
+        component: PassLogin,
+        meta: { title: "密码登录", keepAlive: false, showTab: true },
       },
       {
         path: "codeLogin",
         name: "CodeLogin",
-        component: () => import("@/components/passOrCode/CodeLogin.vue"),
-        meta: { title: "测试案例", keepAlive: false, showTab: true },
+        // component: () => import("@/components/passOrCode/CodeLogin.vue"),
+        component: CodeLogin,
+        meta: { title: "验证码登录", keepAlive: false, showTab: true },
       },
     ],
   },

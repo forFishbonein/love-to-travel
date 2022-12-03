@@ -28,7 +28,7 @@ const router = createRouter({
 // 4. 配置路由守卫
 router.beforeEach((to, from, next) => {
   // 如果本地存在token
-  if (getToken()) {
+  if (getToken() && getToken() !== "") {
     if (
       to.path === "/login" ||
       to.path === "/login/passLogin" ||
@@ -43,11 +43,13 @@ router.beforeEach((to, from, next) => {
         store.userInfo.email.length === 0 ||
         store.userInfo.email === undefined
       ) {
-        //如果还没有用户信息
+        // 如果还没有用户信息
+        // alert("获取用户信息");
         store
-          .getUserInfo() //获取用户信息
+          .getUserInfo() // 获取用户信息
           .then((res) => {
             // alert("获取用户信息成功");
+            console.log("用户信息：");
             console.log(store.userInfo);
             next();
           })

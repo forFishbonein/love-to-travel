@@ -10,7 +10,7 @@ import { store } from "@/main";
 const service = axios.create({
   baseURL: config.baseApi, // 所有的请求地址前缀部分
   timeout: 10000, // 请求超时时间毫秒
-  withCredentials: true, // 异步请求携带cookie
+  // withCredentials: true, // 异步请求携带cookie
   headers: {
     // 设置后端需要的传参类型
     "Content-Type": "application/json",
@@ -27,12 +27,12 @@ service.interceptors.request.use(
       //@ts-ignore
       ElLoading.service({
         lock: true,
-        text: "Loading",
+        text: "Loading...",
         background: "rgba(0, 0, 0, 0.7)",
       });
     }
 
-    // 在此处添加请求头等，如添加 token
+    // 在此处添加请求头等，如添加 token，这样登录之后每次请求都会自动带上token，实际上在apis中就不需要写token了
     if (store.token) {
       //@ts-ignore
       config.headers["Authorization"] = store.token;

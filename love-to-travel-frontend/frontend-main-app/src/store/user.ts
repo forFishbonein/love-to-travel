@@ -16,7 +16,7 @@ export const mainStore = defineStore("main", {
       userInfo: {
         email: "",
       },
-      token: getToken(),
+      token: getToken() || "",
       // pinia: "hello world", //测试
     } as UserState),
   getters: {},
