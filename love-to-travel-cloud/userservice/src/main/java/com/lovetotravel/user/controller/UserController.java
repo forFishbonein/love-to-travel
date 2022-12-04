@@ -28,9 +28,8 @@ public class UserController {
 
     @ApiOperation("注册")
     @PostMapping("/register")
-    public Result<String> register(@RequestBody RegisterVo registerVo) {
-        userService.insert(registerVo);
-        return Result.success("注册成功");
+    public Result<String> register(HttpServletResponse response, @RequestBody RegisterVo registerVo) {
+        return Result.success(userService.insert(response, registerVo));
     }
 
     @ApiOperation("根据id查询用户")

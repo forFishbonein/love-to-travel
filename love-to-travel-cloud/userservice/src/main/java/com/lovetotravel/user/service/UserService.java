@@ -15,7 +15,7 @@ public interface UserService extends IService<User> {
 
     User getById(long id);
 
-    void insert(RegisterVo registerVo);
+    String insert(HttpServletResponse response, RegisterVo registerVo);
 
     User getByEmail(String email);
 
@@ -27,7 +27,7 @@ public interface UserService extends IService<User> {
 
     String passLogin(HttpServletResponse response, LoginVo loginVo);
 
-    String logout(String token);
+    void logout(String token);
 
     List<User> getAll();
 

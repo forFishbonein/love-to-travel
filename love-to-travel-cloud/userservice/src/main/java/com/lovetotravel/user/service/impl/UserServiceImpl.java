@@ -65,7 +65,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
      * @param registerVo
      */
     @Override
-    public void insert(RegisterVo registerVo) {
+    public String insert(HttpServletResponse response, RegisterVo registerVo) {
         // 填写内容为空
         if (registerVo == null) {
             throw new GlobalException(CodeMsg.SERVER_ERROR);
@@ -84,9 +84,18 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new GlobalException(CodeMsg.CODE_ERROR);
         }
         redisService.delete(CodeKey.code, email);
+
         User user = new User();
         BeanUtils.copyProperties(registerVo, user);
+        if (registerVo.getPassword() == null) {
+            throw new GlobalException(CodeMsg.SERVER_ERROR);
+        }
+        String md5Password = DigestUtils.md5DigestAsHex(registerVo.getPassword().getBytes());
+        user.setPassword(md5Password);
         userMapper.insert(user);
+        String token = UUIDUtil.uuid();
+        addCookie(response, token, user);
+        return token;
     }
 
     /**
@@ -230,9 +239,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public String logout(String token) {
+    public void logout(String token) {
         redisService.delete(UserKey.token, token);
-        return null;
     }
 
     @Override
