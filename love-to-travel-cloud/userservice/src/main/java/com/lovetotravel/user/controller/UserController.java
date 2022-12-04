@@ -53,17 +53,24 @@ public class UserController {
     }
 
     @ApiOperation("更改密码")
-    @PostMapping("/updatepassword")
+    @PutMapping("/updatepassword")
     public Result<String> updatePassword(@RequestBody UpdatePasswordVo updatePasswordVo) {
         userService.updatePassword(updatePasswordVo);
         return Result.success("修改成功");
     }
 
     @ApiOperation("更改个人信息")
-    @PostMapping("/updateprofile")
+    @PutMapping("/updateprofile")
     public Result<String> updatePassword(@RequestBody User user) {
         userService.updateProfile(user);
         return Result.success("修改成功");
+    }
+
+    @ApiOperation("删除用户")
+    @DeleteMapping("/{id}")
+    public Result<String> removeById(@PathVariable("id") Long id) {
+        userService.removeById(id);
+        return Result.success("删除成功");
     }
 
 

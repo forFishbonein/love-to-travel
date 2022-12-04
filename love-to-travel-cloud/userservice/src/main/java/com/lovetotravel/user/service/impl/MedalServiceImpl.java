@@ -1,5 +1,6 @@
 package com.lovetotravel.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.user.common.result.CodeMsg;
 import com.lovetotravel.user.entity.Medal;
@@ -36,7 +37,36 @@ public class MedalServiceImpl extends ServiceImpl<MedalMapper, Medal> implements
 
     @Override
     public void insert(Medal medal) {
+        if (medal == null) {
+            throw new GlobalException(CodeMsg.MEDAL_NOT_EXIST);
+        }
         medalMapper.insert(medal);
+    }
+
+    @Override
+    public void update(Medal medal) {
+        if (medal == null) {
+            throw new GlobalException(CodeMsg.MEDAL_NOT_EXIST);
+        }
+        QueryWrapper<Medal> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Medal::getId, medal.getId());
+        Medal MedalInMysql = getOne(queryWrapper);
+        if (MedalInMysql == null) {
+            throw new GlobalException(CodeMsg.MEDAL_NOT_EXIST);
+        }
+        medalMapper.update(medal, queryWrapper);
+    }
+
+    @Override
+    public void removeById(Integer id) {
+        if (id == null) {
+            throw new GlobalException(CodeMsg.MEDAL_NOT_EXIST);
+        }
+        Medal medal = getById(id);
+        if (medal == null) {
+            throw new GlobalException(CodeMsg.MEDAL_NOT_EXIST);
+        }
+        medalMapper.deleteById(id);
     }
 
     @Override

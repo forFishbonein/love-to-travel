@@ -30,9 +30,23 @@ public class MedalController {
 
     @ApiOperation("新增勋章")
     @PostMapping
-    public Result<String> applyMedal(@RequestBody Medal medal) {
+    public Result<String> insert(@RequestBody Medal medal) {
         medalService.insert(medal);
         return Result.success("新增成功");
+    }
+
+    @ApiOperation("修改勋章")
+    @PutMapping
+    public Result<String> update(@RequestBody Medal medal) {
+        medalService.insert(medal);
+        return Result.success("新增成功");
+    }
+
+    @ApiOperation("根据id删除勋章")
+    @DeleteMapping("/{id}")
+    public Result<String> delete(@PathVariable("id") Integer id) {
+        medalService.removeById(id);
+        return Result.success("删除成功");
     }
 
     @ApiOperation("申请勋章")

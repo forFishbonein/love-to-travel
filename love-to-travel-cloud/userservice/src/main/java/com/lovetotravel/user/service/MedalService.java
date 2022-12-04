@@ -25,6 +25,10 @@ public interface MedalService  extends IService<Medal> {
 
     void insert(Medal medal);
 
+    void update(Medal medal);
+
+    void removeById(Integer id);
+
     /**
      * 申请勋章
      * @param medalVo
