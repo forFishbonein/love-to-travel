@@ -1,30 +1,4 @@
-<script setup lang="ts">
-import { onMounted, onBeforeMount } from "vue";
-import { utilStore } from "@/store/util";
-const store = utilStore();
-// 保证每次进入页面都会刷新一次的工具方法：
-// const refresh = () => {
-//   if (!store.refreshFlag) {
-//     //还没刷新过
-//     store.refreshFlag = true;
-//     // location.reload(); //那就刷新一下
-//     setTimeout(function () {
-//       location.reload();
-//     }, 1000);
-//     return;
-//   } else {
-//     //已经刷新过了
-//     store.refreshFlag = false;
-//     return; //那就不刷新了
-//   }
-// };
-// onBeforeMount(() => {
-//   refresh();
-// });
-// onMounted(() => {
-//   refresh();
-// });
-</script>
+<script setup lang="ts"></script>
 
 <template>
   <!--Main Slider Start-->
