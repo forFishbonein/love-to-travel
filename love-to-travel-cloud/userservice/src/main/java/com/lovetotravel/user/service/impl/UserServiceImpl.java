@@ -239,14 +239,8 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
 
     @Override
-    public String logout(String token) {
-        User user = redisService.get(UserKey.token, token, User.class);
-        System.out.println(user);
-
+    public void logout(String token) {
         redisService.delete(UserKey.token, token);
-        User user2 = redisService.get(UserKey.token, token, User.class);
-        System.out.println(user2);
-        return null;
     }
 
     @Override

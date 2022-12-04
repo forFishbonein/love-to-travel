@@ -9,6 +9,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 @Api(tags = "登录信息管理接口")
@@ -46,8 +47,10 @@ public class LoginController {
 
     @ApiOperation("登出")
     @PostMapping("/logout")
-    public Result<String> logout(String token) {
-        return Result.success(userService.logout(token));
+    public Result<String> logout(HttpServletRequest request) {
+        String token = request.getHeader("Authorization");
+        userService.logout(token);
+        return Result.success("退出登录成功");
     }
 
 

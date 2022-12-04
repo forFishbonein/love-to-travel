@@ -27,7 +27,7 @@ public interface UserService extends IService<User> {
 
     String passLogin(HttpServletResponse response, LoginVo loginVo);
 
-    String logout(String token);
+    void logout(String token);
 
     List<User> getAll();
 
