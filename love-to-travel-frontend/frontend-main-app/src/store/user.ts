@@ -107,6 +107,7 @@ export const mainStore = defineStore("main", {
             if (res) {
               //@ts-ignore
               this.$state.userInfo = {}; //清空对象
+              console.log(this.$state.userInfo);
               removeToken();
               resolve(res);
             }
