@@ -84,8 +84,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
             throw new GlobalException(CodeMsg.CODE_ERROR);
         }
         redisService.delete(CodeKey.code, email);
+
         User user = new User();
         BeanUtils.copyProperties(registerVo, user);
+        if (registerVo.getPassword() == null) {
+            throw new GlobalException(CodeMsg.SERVER_ERROR);
+        }
+        String md5Password = DigestUtils.md5DigestAsHex(registerVo.getPassword().getBytes());
+        user.setPassword(md5Password);
         userMapper.insert(user);
         String token = UUIDUtil.uuid();
         addCookie(response, token, user);
