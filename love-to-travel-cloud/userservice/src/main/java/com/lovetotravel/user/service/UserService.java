@@ -15,7 +15,7 @@ public interface UserService extends IService<User> {
 
     User getById(long id);
 
-    void insert(RegisterVo registerVo);
+    String insert(HttpServletResponse response, RegisterVo registerVo);
 
     User getByEmail(String email);
 
