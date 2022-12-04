@@ -1,0 +1,9 @@
+/* 去除number类型的input的上下箭头 */
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none !important;
+}
+
+input[type='number'] {
+    -moz-appearance: textfield;
+}
