@@ -19,5 +19,6 @@ export const getUserInfo = (token: string) => {
     url: "/user/token",
     method: "get",
     headers: { Authorization: token },
+    loading: true, //这里好像必须开启，不知道为啥！！！这样有token时配合路由监测进主页的时候才不会报错！
   });
 };

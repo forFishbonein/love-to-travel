@@ -6,7 +6,6 @@ import vue from "@vitejs/plugin-vue";
 import { resolve } from "path";
 import pkg from "./package.json";
 import dayjs from "dayjs";
-// import inject from "@rollup/plugin-inject";
 const { dependencies, devDependencies, name, version } = pkg;
 const __APP_INFO__ = {
   pkg: { dependencies, devDependencies, name, version },
@@ -38,6 +37,7 @@ export default defineConfig({
       "@apis": resolve(__dirname, "src/apis"),
       "@plugins": resolve(__dirname, "src/plugins"),
       "@styles": resolve(__dirname, "src/styles"),
+      "@config": resolve(__dirname, "src/config"),
     },
   },
   css: {

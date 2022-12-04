@@ -5,10 +5,10 @@ import router from "@/router";
 // 引入element-plus的封装方法
 import { setupElementPlus } from "@plugins/elementPlus/index";
 // 引入全局样式
-import "@/styles/index.scss";
+import "./styles/index.scss";
 import { mainStore } from "@/store/user";
 // 引入全局基本样式
-import "@/style.css";
+import "./style.css";
 //创建实例
 const setupAll = async () => {
   const app = createApp(App);

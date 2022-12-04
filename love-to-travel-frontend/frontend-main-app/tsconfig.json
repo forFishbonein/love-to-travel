@@ -24,7 +24,8 @@
       "@request/*": ["src/request/*"],
       "@apis/*": ["src/apis/*"],
       "@plugins/*": ["src/plugins/*"],
-      "@styles/*": ["src/styles/*"]
+      "@styles/*": ["src/styles/*"],
+      "@config/*": ["src/config/*"]
     },
     "lib": ["esnext", "dom", "dom.iterable", "scripthost"],
     "skipLibCheck": true

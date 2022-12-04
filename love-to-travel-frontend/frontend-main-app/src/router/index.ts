@@ -51,6 +51,9 @@ router.beforeEach((to, from, next) => {
             // alert("获取用户信息成功");
             console.log("用户信息：");
             console.log(store.userInfo);
+            console.log(store.userInfo.email);
+            // console.log(store.userInfo.email.length);
+            // alert("跳转");
             next();
           })
           .catch(() => {
@@ -59,7 +62,7 @@ router.beforeEach((to, from, next) => {
               type: "warning",
               message: "登录已过期",
             });
-            next({ path: "/" });
+            next();
           });
       } else {
         next();

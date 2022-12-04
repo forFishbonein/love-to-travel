@@ -57,6 +57,8 @@ export const mainStore = defineStore("main", {
           .then((res) => {
             if (res.code === 0) {
               this.$state.userInfo = res.data;
+              // alert("调用store方法获取用户信息");
+              console.log(this.$state.userInfo);
               resolve(res);
             } else {
               //@ts-ignore
@@ -119,5 +121,5 @@ export const mainStore = defineStore("main", {
       });
     },
   },
-  persist: true,
+  persist: true, //开启缓存
 });
