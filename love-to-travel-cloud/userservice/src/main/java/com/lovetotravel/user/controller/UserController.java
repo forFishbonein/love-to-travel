@@ -45,7 +45,7 @@ public class UserController {
         return Result.success(userService.getAll());
     }
 
-    @ApiOperation("根据token获取用户")
+    @ApiOperation("根据token获取用户信息")
     @GetMapping("/token")
     public Result<User> getByToken(HttpServletRequest request, HttpServletResponse response) {
         String token = request.getHeader("Authorization");

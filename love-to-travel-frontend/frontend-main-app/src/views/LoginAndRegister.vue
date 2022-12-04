@@ -19,15 +19,9 @@ const store = mainStore();
 /**
  * @description 密码验证码登录切换的功能
  */
-// let passFlag: boolean = true;
-// let codeFlag: boolean = false;
 let flag: boolean = false; //false代表处于密码登录页面
 ref(flag);
-// ref(passFlag);
-// ref(codeFlag);
 const changeLogin = () => {
-  // passFlag = !passFlag;
-  // codeFlag = !codeFlag;
   if (flag === false) {
     //重定向到codeLogin
     router.push("/login/codeLogin");

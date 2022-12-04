@@ -10,12 +10,25 @@
 
 // 用户信息类型
 export interface UserInfo {
-  author?: string;
-  avator?: string;
-  projectAddress?: string;
-  demoUrl?: string;
-  demoCodeUrl?: string;
-  email?: string;
+  id: string;
+  email: string;
+  password?: string;
+  status?: string;
+  url?: string;
+  name?: string;
+  grade?: string;
+  experience?: string;
+  tele?: string;
+  birthday?: string;
+  post?: string;
+  profession?: string;
+  signature?: string;
+  gender?: string;
+  address?: string;
+  visits?: string;
+  deleted?: string;
+  createTime?: string;
+  updateTime?: string;
 }
 // 密码登录参数类型
 export interface passLoginInfo {
