@@ -71,6 +71,7 @@ const register = () => {
           type: "success",
           message: "注册成功",
         });
+        router.replace("/");
       }
     })
     .catch((error) => {
