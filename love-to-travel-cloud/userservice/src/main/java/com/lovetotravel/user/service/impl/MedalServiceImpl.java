@@ -73,10 +73,15 @@ public class MedalServiceImpl extends ServiceImpl<MedalMapper, Medal> implements
     public void applyMedal(MedalVo medalVo) {
         User user = userService.getById(medalVo.getUserId());
         Medal medal = getById(medalVo.getMedalId());
+        if (user == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        if (medal == null) {
+            throw new GlobalException(CodeMsg.MEDAL_NOT_EXIST);
+        }
         if (user.getExperience() < medal.getExperience()) {
             throw new GlobalException(CodeMsg.EXPERIENCE_LACK);
         }
         medalMapper.applyMedal(medalVo);
     }
-
 }

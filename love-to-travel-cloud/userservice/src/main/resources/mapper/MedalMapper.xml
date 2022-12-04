@@ -4,5 +4,4 @@
     <insert id="applyMedal">
         insert into user_medal value (#{medalId},#{userId})
     </insert>
-
 </mapper>

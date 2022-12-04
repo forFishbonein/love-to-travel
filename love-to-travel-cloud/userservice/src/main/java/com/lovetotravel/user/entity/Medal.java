@@ -25,7 +25,7 @@ public class Medal {
     private Integer experience;
 
     @ApiModelProperty("勋章描述")
-    private String describe;
+    private String description;
 
     @ApiModelProperty("逻辑删除")
     @TableLogic

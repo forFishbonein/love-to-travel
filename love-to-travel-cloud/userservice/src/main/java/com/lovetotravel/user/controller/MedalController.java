@@ -28,6 +28,15 @@ public class MedalController {
         this.medalService = medalService;
     }
 
+
+
+    @ApiOperation("申请勋章")
+    @PostMapping("/apply")
+    public Result<String> applyMedal(@RequestBody MedalVo medalVo) {
+        medalService.applyMedal(medalVo);
+        return Result.success("申请成功");
+    }
+
     @ApiOperation("新增勋章")
     @PostMapping
     public Result<String> insert(@RequestBody Medal medal) {
@@ -48,15 +57,6 @@ public class MedalController {
         medalService.removeById(id);
         return Result.success("删除成功");
     }
-
-    @ApiOperation("申请勋章")
-    @PostMapping("/apply")
-    public Result<String> applyMedal(@RequestBody MedalVo medalVo) {
-        medalService.applyMedal(medalVo);
-        return Result.success("申请成功");
-    }
-
-
 
 
 
