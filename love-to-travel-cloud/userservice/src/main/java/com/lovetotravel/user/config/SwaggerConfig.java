@@ -19,7 +19,6 @@ public class SwaggerConfig {
                 .apiInfo(new ApiInfoBuilder()
                         .title("我的标题")
                         .description("我的描述")
-                        // .termsOfServiceUrl("http://www.xx.com/")
                         .contact(new Contact("knife", "https://knife.blog.csdn.net/", "xx@qq.com"))
                         .version("1.0")
                         .build())
@@ -30,7 +29,7 @@ public class SwaggerConfig {
                 .apis(RequestHandlerSelectors.basePackage("com.lovetotravel.user.controller"))
                 .paths(PathSelectors.any())
                 .build();
-
         return docket;
     }
 }
+

@@ -14,6 +14,12 @@ public class CodeMsg {
     public static CodeMsg PASSWORD_ERROR = new CodeMsg(500204, "密码错误");
     public static CodeMsg EMAIL_EMPTY = new CodeMsg(500205, "邮箱为空");
     public static CodeMsg FOLLOW_ERROR = new CodeMsg(500206, "您不能关注自己");
+
+    //勋章模块 5003XX
+    public static CodeMsg MEDAL_NOT_EXIST = new CodeMsg(500301, "勋章为空");
+    public static CodeMsg EXPERIENCE_LACK = new CodeMsg(500302, "经验值不足");
+
+
     private int code;
     private String msg;
 
