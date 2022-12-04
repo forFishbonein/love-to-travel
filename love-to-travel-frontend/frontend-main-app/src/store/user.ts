@@ -1,5 +1,6 @@
 import { defineStore } from "pinia";
 import { getToken, removeToken, setToken } from "@request/token";
+import { getFlag, setFlag } from "@request/flag";
 import { UserInfo } from "@/apis/interface";
 import { passLogin, codeLogin, logout } from "@/apis/login";
 import { register } from "@/apis/register";
@@ -8,15 +9,17 @@ import { getUserInfo } from "@/apis/user";
 export interface UserState {
   userInfo: UserInfo;
   token: string;
+  flag: boolean;
   // pinia: string;
 }
 export const mainStore = defineStore("main", {
   state: () =>
     ({
       userInfo: {
-        email: "",
+        // email: "", //不需要了！
       },
       token: getToken() || "",
+      flag: getFlag() || false,
       // pinia: "hello world", //测试
     } as UserState),
   getters: {},
@@ -111,6 +114,8 @@ export const mainStore = defineStore("main", {
               this.$state.userInfo = {}; //清空对象
               console.log(this.$state.userInfo);
               removeToken();
+              this.$state.flag = false; //改变用户信息标志变量
+              setFlag(false);
               resolve(res);
             }
           })
