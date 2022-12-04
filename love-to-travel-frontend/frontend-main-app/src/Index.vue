@@ -11,8 +11,10 @@ const route = useRoute();
 // 保证每次进入页面都会刷新一次的工具方法：
 const refresh = () => {
   if (!store.refreshFlag) {
+    // alert("刷新");
     //还没刷新过
     store.refreshFlag = true;
+    // console.log(store.refreshFlag);
     location.reload(); //那就刷新一下
     // setTimeout(function () {
     //   location.reload();
@@ -21,12 +23,13 @@ const refresh = () => {
   } else {
     //已经刷新过了
     store.refreshFlag = false;
+    // console.log(store.refreshFlag);
+
     return; //那就不刷新了
   }
 };
-onMounted(() => {
-  refresh();
-});
+refresh();
+onMounted(() => {});
 </script>
 
 <template>

@@ -8,6 +8,7 @@ import {
 import pinia from "@/store"; // 实际上这个pinia是createPinia()，这里必须传入，因为router获取不到全局的pinia
 import { mainStore } from "@/store/user";
 import { getToken } from "@/request/token";
+import { getFlag, setFlag } from "@request/flag";
 const store = mainStore(pinia);
 
 // 1. 定义路由组件， 注意，这里一定要使用 文件的全名（包含文件后缀名）
@@ -38,12 +39,18 @@ router.beforeEach((to, from, next) => {
       next({ path: "/" });
     } else {
       //如果不是跳转到登录页面！那么获取用户信息！
+      //不要用这种笨方法了，没有任何意义！识别不到！
+      // if (
+      //   //@ts-ignore
+      //   store.userInfo.email.length === 0 ||
+      //   store.userInfo.email === undefined
+      // )
       if (
         //@ts-ignore
-        store.userInfo.email.length === 0 ||
-        store.userInfo.email === undefined
+        store.flag == false
       ) {
-        // 如果还没有用户信息
+        //这里用flag标志变量有奇效，注意还需要进行本地存储才可以生效，保证了在路由跳转包括页面刷新时可以识别到用户信息已被获取，防止多次获取用户信息
+        // 如果还没有获取到用户信息
         // alert("获取用户信息");
         store
           .getUserInfo() // 获取用户信息
@@ -54,6 +61,8 @@ router.beforeEach((to, from, next) => {
             console.log(store.userInfo.email);
             // console.log(store.userInfo.email.length);
             // alert("跳转");
+            store.flag = true;
+            setFlag(true);
             next();
           })
           .catch(() => {
@@ -65,6 +74,8 @@ router.beforeEach((to, from, next) => {
             next();
           });
       } else {
+        // 如果已经获取到了用户信息
+        // alert("跳转2");
         next();
       }
     }
@@ -79,6 +90,7 @@ router.beforeEach((to, from, next) => {
       //@ts-ignore //不知道会不会出错
       router.push(-1);
     } else {
+      // alert("跳转3");
       next(); //其余不需要登录的页面就直接放开
     }
   }
