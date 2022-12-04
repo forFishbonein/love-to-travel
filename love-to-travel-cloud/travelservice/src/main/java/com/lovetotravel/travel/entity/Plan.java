@@ -4,13 +4,11 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
-import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "note")
-public class Note {
+public class Plan {
 
-    @ApiModelProperty("游记id")
+    @ApiModelProperty("行程id")
     @Id
     private Long id;
 
@@ -18,19 +16,24 @@ public class Note {
     private Long userId;
 
     @ApiModelProperty("行程")
-    private Plan plan;
+    private Integer[] origin;
 
-    @ApiModelProperty("图片地址")
-    private String url;
+    @ApiModelProperty("出行时间")
+    private String depart;
 
-    @ApiModelProperty("内容")
-    private String content;
+    @ApiModelProperty("出行方式")
+    private String vehicle;
 
-    @ApiModelProperty("评分")
-    private String score;
+    @ApiModelProperty("总体预算")
+    private String budget;
 
-    @ApiModelProperty("浏览量")
-    private String views;
+
+
+
+
+
+
+
 
     @ApiModelProperty("逻辑删除")
     @TableLogic
@@ -41,5 +44,7 @@ public class Note {
 
     @ApiModelProperty("修改时间")
     private String updateTime;
+
+
 
 }
