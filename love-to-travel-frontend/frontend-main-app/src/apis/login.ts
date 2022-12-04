@@ -25,5 +25,6 @@ export function logout(token: string) {
     data: token,
     url: "/logout",
     method: "post",
+    loading: true,
   });
 }

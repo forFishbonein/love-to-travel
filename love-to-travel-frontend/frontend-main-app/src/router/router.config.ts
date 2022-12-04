@@ -4,7 +4,6 @@ import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
-
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -15,17 +14,6 @@ export const routes: Array<RouteRecordRaw> = [
       // requireLogin: true, //先加在这里，表示需要登录！
     },
     component: Index,
-    beforeEnter: (to, from, next) => {
-      // 路由独享守卫
-      // console.log(from.path);
-      if (
-        from.path === "/login/passLogin" ||
-        from.path === "/login/codeLogin"
-      ) {
-        location.reload(); //刷新一下页面
-      }
-      next();
-    },
     redirect: "/home", //Index中包裹Home等组件
     children: [
       {
