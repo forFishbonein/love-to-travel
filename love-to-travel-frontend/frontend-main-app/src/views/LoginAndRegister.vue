@@ -42,13 +42,15 @@ interface registerInfo {
   name: string;
   email3: string;
   code2: string;
+  password: string;
 }
 const registerData: registerInfo = reactive({
   name: "",
   email3: "",
   code2: "",
+  password: "",
 });
-const { name, email3, code2 } = toRefs(registerData);
+const { name, email3, code2, password } = toRefs(registerData);
 
 const register = () => {
   store
@@ -56,6 +58,7 @@ const register = () => {
       name: registerData.name,
       email: registerData.email3,
       code: registerData.code2,
+      password: registerData.password,
     })
     .then((res: any) => {
       console.log(res.code != 0);
@@ -118,6 +121,10 @@ onMounted(() => {
           <input type="text" v-model="name" />
         </label>
         <label>
+          <span>密码</span>
+          <input type="password" v-model="password" />
+        </label>
+        <label>
           <span>邮箱</span>
           <input type="email" v-model="email3" />
         </label>
@@ -142,6 +149,9 @@ onMounted(() => {
 
 <style lang="scss" scoped>
 @import url(@/assets/css/login.css);
+.sign-up > label {
+  margin: 0 auto;
+}
 .passWord {
   position: relative;
 }

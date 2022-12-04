@@ -14,18 +14,6 @@ export const routes: Array<RouteRecordRaw> = [
       // requireLogin: true, //先加在这里，表示需要登录！
     },
     component: Index,
-    beforeEnter: (to, from, next) => {
-      if (
-        from.path === "/login/passLogin" ||
-        from.path === "/login/codeLogin"
-      ) {
-        //如果是登录或者注册之后跳转过来的，那么就刷新
-        location.reload();
-        //好像还可以试一下返回上一个页面
-      }
-      // 路由独享守卫
-      next();
-    },
     redirect: "/home", //Index中包裹Home等组件
     children: [
       {
