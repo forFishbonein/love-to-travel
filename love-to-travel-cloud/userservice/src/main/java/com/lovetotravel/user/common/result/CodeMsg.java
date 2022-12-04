@@ -14,6 +14,7 @@ public class CodeMsg {
     public static CodeMsg PASSWORD_ERROR = new CodeMsg(500204, "密码错误");
     public static CodeMsg EMAIL_EMPTY = new CodeMsg(500205, "邮箱为空");
     public static CodeMsg FOLLOW_ERROR = new CodeMsg(500206, "您不能关注自己");
+    public static CodeMsg EXPERIENCE_LACK = new CodeMsg(500207, "经验值不足");
     private int code;
     private String msg;
 

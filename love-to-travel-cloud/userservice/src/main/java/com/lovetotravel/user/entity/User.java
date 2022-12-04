@@ -35,7 +35,7 @@ public class User implements Serializable {
     private String grade;
 
     @ApiModelProperty("经验")
-    private String experience;
+    private Integer experience;
 
     @ApiModelProperty("电话")
     private String tele;
