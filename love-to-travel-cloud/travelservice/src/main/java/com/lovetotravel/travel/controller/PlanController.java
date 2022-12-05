@@ -10,6 +10,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(tags = "行程接口")
 @RestController
 @RequestMapping("/plan")
@@ -26,6 +28,13 @@ public class PlanController {
     @GetMapping("/{id}")
     public Result<Note> getById(@PathVariable("id") String id) {
         return null;
+    }
+
+    @ApiOperation("根据用户id查询行程")
+    @GetMapping("/user/{id}")
+    public Result<List<Plan>> getByUserId(@PathVariable("id") String id) {
+        System.out.println(id);
+        return Result.success(planService.getByUserId(id));
     }
 
     @ApiOperation("新增行程")
