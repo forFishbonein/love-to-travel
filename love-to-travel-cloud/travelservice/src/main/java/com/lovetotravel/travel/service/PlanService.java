@@ -6,4 +6,6 @@ public interface PlanService {
 
     void insert(Plan plan);
 
+    void update(Plan plan);
+
 }

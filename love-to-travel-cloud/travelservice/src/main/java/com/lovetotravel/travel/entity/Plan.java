@@ -1,7 +1,7 @@
 package com.lovetotravel.travel.entity;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.lovetotravel.travel.entity.dto.SubPlan;
+import com.lovetotravel.travel.entity.dto.Days;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.bson.types.ObjectId;
@@ -23,7 +23,7 @@ public class Plan {
     private String budget;
 
     @ApiModelProperty("行程中的一天")
-    private SubPlan[] subPlan;
+    private Days[] days;
 
     //===========
 
