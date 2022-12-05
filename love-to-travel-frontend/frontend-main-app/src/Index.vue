@@ -28,7 +28,7 @@ const refresh = () => {
     return; //那就不刷新了
   }
 };
-// refresh();
+refresh();
 onMounted(() => {});
 </script>
 

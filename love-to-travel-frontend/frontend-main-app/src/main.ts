@@ -9,6 +9,8 @@ import "./styles/index.scss";
 import { mainStore } from "@/store/user";
 // 引入全局基本样式
 import "@/style.css";
+// 引入全局element-icon
+import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 //创建实例
 const setupAll = async () => {
   const app = createApp(App);
@@ -17,6 +19,9 @@ const setupAll = async () => {
   setupElementPlus(app);
   app.use(router);
   app.use(pinia);
+  for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
+    app.component(key, component);
+  }
   app.mount("#app");
 };
 
