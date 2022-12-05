@@ -2,12 +2,12 @@ package com.lovetotravel.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lovetotravel.user.result.CodeMsg;
 import com.lovetotravel.user.entity.Medal;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.MedalVo;
 import com.lovetotravel.user.exception.GlobalException;
 import com.lovetotravel.user.mapper.MedalMapper;
+import com.lovetotravel.user.result.CodeMsg;
 import com.lovetotravel.user.service.MedalService;
 import com.lovetotravel.user.service.UserService;
 import org.springframework.stereotype.Service;

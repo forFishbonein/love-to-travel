@@ -15,7 +15,6 @@ public class Note {
     @MongoId
     private ObjectId id;
 
-
     @ApiModelProperty("用户id")
     private String userId;
 

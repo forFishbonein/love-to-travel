@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -39,14 +40,30 @@ public class NoteServiceImpl implements NoteService {
     }
 
     /**
+     * 根据用户id获取游记
+     *
+     * @param userId
+     * @return
+     */
+    @Override
+    public List<Note> getByUserId(String userId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        return mongoTemplate.find(query, Note.class);
+    }
+
+    /**
      * 新增
      *
      * @param noteVo
      */
     @Override
     public void insert(NoteVo noteVo) {
+        System.out.println(noteVo);
         Note note = new Note();
-        BeanUtils.copyProperties(note, noteVo);
+        BeanUtils.copyProperties(noteVo, note);
+        System.out.println(note);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
@@ -80,8 +97,6 @@ public class NoteServiceImpl implements NoteService {
         mongoTemplate.updateFirst(query, update, Note.class);
         System.out.println(update);
     }
-
-
 
     /**
      * 删除

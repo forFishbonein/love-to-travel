@@ -29,7 +29,7 @@ spring:
 
   data:
     mongodb:
-#      uri: mongodb://admin:12345678@121.41.107.144:27017/travelservice?authMechanism=DEFAULT&authSource=admin&authMechanism=SCRAM-SHA-1
+      #      uri: mongodb://admin:12345678@121.41.107.144:27017/travelservice?authMechanism=DEFAULT&authSource=admin&authMechanism=SCRAM-SHA-1
       uri: mongodb://admin:12345678@121.41.107.144:27017/template?authMechanism=DEFAULT&authSource=admin&authMechanism=SCRAM-SHA-1
 
 

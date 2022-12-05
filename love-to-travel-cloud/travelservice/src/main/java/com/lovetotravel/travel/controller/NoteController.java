@@ -8,6 +8,8 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @Api(tags = "游记接口")
 @RestController
 @RequestMapping("/note")
@@ -26,6 +28,13 @@ public class NoteController {
     public Result<Note> getById(@PathVariable("id") String id) {
         System.out.println(id);
         return Result.success(noteService.getById(id));
+    }
+
+    @ApiOperation("根据用户id查询游记")
+    @GetMapping("/user/{id}")
+    public Result<List<Note>> getByUserId(@PathVariable("id") String id) {
+        System.out.println(id);
+        return Result.success(noteService.getByUserId(id));
     }
 
     @ApiOperation("新增游记")

@@ -8,6 +8,7 @@ public class FollowKey extends BasePrefix {
     public static final String GET_FOLLOWEE = "followee";
     public static FollowKey getFollower = new FollowKey(0, GET_FOLLOWER);
     public static FollowKey getFollowee = new FollowKey(0, GET_FOLLOWEE);
+
     /**
      * 防止被外面实例化
      */

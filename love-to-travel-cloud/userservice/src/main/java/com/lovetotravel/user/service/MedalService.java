@@ -6,10 +6,11 @@ import com.lovetotravel.user.entity.vo.MedalVo;
 
 import java.util.List;
 
-public interface MedalService  extends IService<Medal> {
+public interface MedalService extends IService<Medal> {
 
     /**
      * 根据勋章id获取勋章信息
+     *
      * @param id
      * @return
      */
@@ -17,6 +18,7 @@ public interface MedalService  extends IService<Medal> {
 
     /**
      * 获取用户的全部勋章
+     *
      * @param userId
      * @return
      */
@@ -31,6 +33,7 @@ public interface MedalService  extends IService<Medal> {
 
     /**
      * 申请勋章
+     *
      * @param medalVo
      */
     void applyMedal(MedalVo medalVo);
