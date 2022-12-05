@@ -3,18 +3,27 @@ package com.lovetotravel.travel.entity;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.bson.types.ObjectId;
+import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Data
+@Document(collection = "note")
 public class Note {
 
     @ApiModelProperty("游记id")
-    private Long id;
+    @MongoId
+    private ObjectId id;
+
 
     @ApiModelProperty("用户id")
-    private Long userId;
+    private String userId;
 
-    @ApiModelProperty("行程id")
-    private Long planId;
+    @ApiModelProperty("标题")
+    private String title;
+
+    @ApiModelProperty("行程")
+    private Plan plan;
 
     @ApiModelProperty("图片地址")
     private String url;

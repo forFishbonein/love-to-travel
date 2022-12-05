@@ -1,8 +1,8 @@
-package com.lovetotravel.user.exception;
+package com.lovetotravel.travel.exception;
 
 
-import com.lovetotravel.user.result.CodeMsg;
-import com.lovetotravel.user.result.Result;
+import com.lovetotravel.travel.result.CodeMsg;
+import com.lovetotravel.travel.result.Result;
 import org.springframework.validation.BindException;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.ControllerAdvice;

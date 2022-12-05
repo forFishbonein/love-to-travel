@@ -1,6 +1,6 @@
 package com.lovetotravel.user.service;
 
-import com.lovetotravel.user.common.result.CodeMsg;
+import com.lovetotravel.user.result.CodeMsg;
 import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.exception.GlobalException;
 import com.lovetotravel.user.redis.CodeKey;
