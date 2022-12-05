@@ -1,5 +1,6 @@
 package com.lovetotravel.travel.service.impl;
 
+import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.dto.Route;
 import com.lovetotravel.travel.entity.dto.Days;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 @Service
 public class PlanServiceImpl implements PlanService {
@@ -81,5 +83,12 @@ public class PlanServiceImpl implements PlanService {
         System.out.println(update);
     }
 
+    @Override
+    public List<Plan> getByUserId(String userId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(userId));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        return mongoTemplate.find(query, Plan.class);
+    }
 
 }
