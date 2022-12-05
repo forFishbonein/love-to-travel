@@ -30,9 +30,22 @@ public class NoteController {
     @ApiOperation("新增游记")
     @PostMapping
     public Result<String> insert(@RequestBody Note note) {
-        System.out.println("note2"+note);
         noteService.insert(note);
         return Result.success("新增成功");
+    }
+
+    @ApiOperation("修改游记")
+    @PutMapping
+    public Result<String> update(@RequestBody Note note) {
+        noteService.update(note);
+        return Result.success("修改成功");
+    }
+
+    @ApiOperation("删除游记")
+    @DeleteMapping("/{id}")
+    public Result<String> RemoveById(@PathVariable("id") String id) {
+        noteService.removeById(id);
+        return Result.success("删除成功");
     }
 
 }

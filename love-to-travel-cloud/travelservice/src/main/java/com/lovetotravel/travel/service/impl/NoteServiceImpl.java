@@ -1,6 +1,8 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.lovetotravel.travel.entity.Note;
+import com.lovetotravel.travel.exception.GlobalException;
+import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.NoteService;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -83,6 +85,12 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public void removeById(String id) {
-
+        if (id == null) {
+            throw new GlobalException(CodeMsg.NOTE_NOT_EXIST);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(id));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        mongoTemplate.remove(query, Note.class);
     }
 }
