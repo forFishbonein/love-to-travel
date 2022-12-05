@@ -9,6 +9,7 @@
     "prod": "vite --mode production"
   },
   "dependencies": {
+    "@amap/amap-jsapi-loader": "^1.0.1",
     "axios": "^1.2.0",
     "element-plus": "^2.2.25",
     "jquery": "^3.6.1",

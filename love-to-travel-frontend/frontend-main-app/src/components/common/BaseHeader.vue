@@ -310,4 +310,12 @@ const displayText = () => {
   /* 这样可以水平垂直居中 */
   transform: translate(-50%, -50%);
 }
+.el-radio,
+.is-checked {
+  color: #e8604c !important;
+  border-color: #e8604c !important;
+}
+.el-radio {
+  --el-radio-input-border-color-hover: #e8604c !important;
+}
 </style>
