@@ -1,6 +1,6 @@
 import { defineStore } from "pinia";
-import { getToken, removeToken, setToken } from "@request/token";
-import { getFlag, setFlag } from "@request/flag";
+import { getToken, removeToken, setToken } from "@/store/util/token";
+import { getFlag, setFlag } from "@/store/util/flag";
 import { UserInfo } from "@/apis/interface";
 import { passLogin, codeLogin, logout } from "@/apis/login";
 import { register } from "@/apis/register";

@@ -142,9 +142,13 @@
                   </div>
                 </div>
                 <div class="tour-search-one__btn-wrap">
-                  <button type="submit" class="thm-btn tour-search-one__btn">
+                  <router-link
+                    :to="{ path: '/plan' }"
+                    target="_blank"
+                    class="thm-btn tour-search-one__btn"
+                  >
                     制定行程
-                  </button>
+                  </router-link>
                 </div>
               </div>
             </form>

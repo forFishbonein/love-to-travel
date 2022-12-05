@@ -7,8 +7,8 @@ import {
 //router中使用pinia：
 import pinia from "@/store"; // 实际上这个pinia是createPinia()，这里必须传入，因为router获取不到全局的pinia
 import { mainStore } from "@/store/user";
-import { getToken } from "@/request/token";
-import { getFlag, setFlag } from "@request/flag";
+import { getToken } from "@/store/util/token";
+import { getFlag, setFlag } from "@/store/util/flag";
 const store = mainStore(pinia);
 
 // 1. 定义路由组件， 注意，这里一定要使用 文件的全名（包含文件后缀名）
