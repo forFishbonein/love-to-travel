@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Note;
+import com.lovetotravel.travel.entity.vo.NoteVo;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.NoteService;
 import io.swagger.annotations.Api;
@@ -29,15 +30,15 @@ public class NoteController {
 
     @ApiOperation("新增游记")
     @PostMapping
-    public Result<String> insert(@RequestBody Note note) {
-        noteService.insert(note);
+    public Result<String> insert(@RequestBody NoteVo noteVo) {
+        noteService.insert(noteVo);
         return Result.success("新增成功");
     }
 
     @ApiOperation("修改游记")
     @PutMapping
-    public Result<String> update(@RequestBody Note note) {
-        noteService.update(note);
+    public Result<String> update(@RequestBody NoteVo noteVo) {
+        noteService.update(noteVo);
         return Result.success("修改成功");
     }
 

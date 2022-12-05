@@ -1,9 +1,11 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.lovetotravel.travel.entity.Note;
+import com.lovetotravel.travel.entity.vo.NoteVo;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.NoteService;
+import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -39,10 +41,12 @@ public class NoteServiceImpl implements NoteService {
     /**
      * 新增
      *
-     * @param note
+     * @param noteVo
      */
     @Override
-    public void insert(Note note) {
+    public void insert(NoteVo noteVo) {
+        Note note = new Note();
+        BeanUtils.copyProperties(note, noteVo);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
@@ -56,12 +60,13 @@ public class NoteServiceImpl implements NoteService {
     /**
      * 更新
      *
-     * @param note
+     * @param noteVo
      */
     @Override
-    public void update(Note note) {
+    public void update(NoteVo noteVo) {
+
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(note.getId()));
+        query.addCriteria(Criteria.where("id").is(noteVo.getId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
 
         Update update = new Update();
@@ -69,8 +74,8 @@ public class NoteServiceImpl implements NoteService {
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
-        update.set("title", note.getTitle())
-                .set("content", note.getContent())
+        update.set("title", noteVo.getTitle())
+                .set("content", noteVo.getContent())
                 .set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Note.class);
         System.out.println(update);
@@ -91,6 +96,12 @@ public class NoteServiceImpl implements NoteService {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
         query.addCriteria(Criteria.where("deleted").is("0"));
-        mongoTemplate.remove(query, Note.class);
+        Update update = new Update();
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTimeStamp = dateFormat.format(date);
+        update.set("deleted", "1")
+                .set("updateTime", currentTimeStamp);
+        mongoTemplate.updateFirst(query, update, Note.class);
     }
 }
