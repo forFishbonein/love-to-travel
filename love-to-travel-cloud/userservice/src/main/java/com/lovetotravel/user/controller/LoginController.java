@@ -1,13 +1,16 @@
 package com.lovetotravel.user.controller;
 
 
-import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.entity.vo.LoginVo;
+import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.service.EmailService;
 import com.lovetotravel.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;

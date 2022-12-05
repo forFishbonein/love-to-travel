@@ -16,6 +16,7 @@ public class UserKey extends BasePrefix {
     //不设置存在时间则一直存储
     public static UserKey getById = new UserKey(0, GET_BY_ID);
     public static UserKey getByEmail = new UserKey(0, GET_BY_EMAIL);
+
     /**
      * 防止被外面实例化
      */

@@ -10,6 +10,7 @@ public class SubPlan {
     private String city;
 
     @ApiModelProperty("路线")
-    private Route route;
+    private Route[] route;
+
 
 }

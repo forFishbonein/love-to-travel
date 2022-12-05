@@ -13,9 +13,7 @@ public class CodeMsg {
     public static CodeMsg NOTE_NOT_EXIST = new CodeMsg(500401, "游记不存在");
 
 
-
     //行程模块 5005XX
-
 
 
     private int code;

@@ -1,8 +1,8 @@
 package com.lovetotravel.user.controller;
 
-import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.entity.Medal;
 import com.lovetotravel.user.entity.vo.MedalVo;
+import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.service.MedalService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -19,7 +19,6 @@ public class MedalController {
     public MedalController(MedalService medalService) {
         this.medalService = medalService;
     }
-
 
 
     @ApiOperation("申请勋章")
@@ -49,7 +48,6 @@ public class MedalController {
         medalService.removeById(id);
         return Result.success("删除成功");
     }
-
 
 
 }

@@ -2,7 +2,6 @@ package com.lovetotravel.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.lovetotravel.user.result.CodeMsg;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.FollowerVo;
 import com.lovetotravel.user.entity.vo.LoginVo;
@@ -15,6 +14,7 @@ import com.lovetotravel.user.redis.FollowKey;
 import com.lovetotravel.user.redis.RedisService;
 import com.lovetotravel.user.redis.UserKey;
 import com.lovetotravel.user.redis.utils.UUIDUtil;
+import com.lovetotravel.user.result.CodeMsg;
 import com.lovetotravel.user.service.UserService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;

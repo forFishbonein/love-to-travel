@@ -1,8 +1,8 @@
 package com.lovetotravel.user.controller;
 
-import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.FollowerVo;
+import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
