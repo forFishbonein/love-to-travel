@@ -1,7 +1,7 @@
-package com.lovetotravel.user.exception;
+package com.lovetotravel.travel.exception;
 
 
-import com.lovetotravel.user.result.CodeMsg;
+import com.lovetotravel.travel.result.CodeMsg;
 
 /**
  * Created by jiangyunxiong on 2018/5/22.

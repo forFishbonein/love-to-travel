@@ -4,36 +4,21 @@ import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
+@Document(collection = "plan")
 public class Plan {
 
     @ApiModelProperty("行程id")
     @Id
-    private Long id;
+    private String id;
 
     @ApiModelProperty("用户id")
-    private Long userId;
-
-    @ApiModelProperty("行程")
-    private Integer[] origin;
-
-    @ApiModelProperty("出行时间")
-    private String depart;
-
-    @ApiModelProperty("出行方式")
-    private String vehicle;
+    private String userId;
 
     @ApiModelProperty("总体预算")
     private String budget;
-
-
-
-
-
-
-
-
 
     @ApiModelProperty("逻辑删除")
     @TableLogic

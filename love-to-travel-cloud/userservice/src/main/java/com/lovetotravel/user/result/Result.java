@@ -1,4 +1,4 @@
-package com.lovetotravel.user.common.result;
+package com.lovetotravel.user.result;
 
 public class Result<T> {
 

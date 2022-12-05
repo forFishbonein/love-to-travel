@@ -1,7 +1,7 @@
 package com.lovetotravel.user.controller;
 
 
-import com.lovetotravel.user.common.result.Result;
+import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.service.EmailService;
 import com.lovetotravel.user.service.UserService;

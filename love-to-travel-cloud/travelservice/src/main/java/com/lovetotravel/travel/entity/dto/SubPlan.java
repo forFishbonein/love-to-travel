@@ -1,6 +1,5 @@
 package com.lovetotravel.travel.entity.dto;
 
-import com.lovetotravel.travel.entity.dto.Route;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
