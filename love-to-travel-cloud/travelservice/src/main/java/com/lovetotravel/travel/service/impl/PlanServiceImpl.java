@@ -2,7 +2,7 @@ package com.lovetotravel.travel.service.impl;
 
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.dto.Route;
-import com.lovetotravel.travel.entity.dto.SubPlan;
+import com.lovetotravel.travel.entity.dto.Days;
 import com.lovetotravel.travel.service.PlanService;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -49,25 +49,25 @@ public class PlanServiceImpl implements PlanService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
 
-        if (plan.getSubPlan() != null) {
-            int subPlanLength = plan.getSubPlan().length;
+        if (plan.getDays() != null) {
+            int daysLength = plan.getDays().length;
 
-            SubPlan[] subPlans = plan.getSubPlan();
+            Days[] days = plan.getDays();
 
-            for (int i = 0; i < subPlanLength; i++) {
-                update.set("subPlan." + i + ".city", subPlans[i].getCity());
+            for (int i = 0; i < daysLength; i++) {
+//                update.set("days." + i + ".city", days[i].getCity());
 
-                if (subPlans[i].getRoute() != null) {
-                    int routeLength = subPlans[i].getRoute().length;
+                if (days[i].getRoute() != null) {
+                    int routeLength = days[i].getRoute().length;
 
-                    Route[] routes = subPlans[i].getRoute();
+                    Route[] routes = days[i].getRoute();
                     for (int j = 0; j < routeLength; j++) {
-                        update.set("subPlan." + i + ".route." + j + ".origin", routes[j].getOrigin());
-                        update.set("subPlan." + i + ".route." + j + ".destination", routes[j].getDestination());
-                        update.set("subPlan." + i + ".route." + j + ".departTime", routes[j].getDepartTime());
-                        update.set("subPlan." + i + ".route." + j + ".vehicle", routes[j].getVehicle());
-                        update.set("subPlan." + i + ".route." + j + ".budget", routes[j].getBudget());
-                        update.set("subPlan." + i + ".route." + j + ".weather", routes[j].getWeather());
+                        update.set("days." + i + ".route." + j + ".origin", routes[j].getOrigin());
+                        update.set("days." + i + ".route." + j + ".destination", routes[j].getDestination());
+                        update.set("days." + i + ".route." + j + ".departTime", routes[j].getDepartTime());
+                        update.set("days." + i + ".route." + j + ".vehicle", routes[j].getVehicle());
+                        update.set("days." + i + ".route." + j + ".budget", routes[j].getBudget());
+                        update.set("days." + i + ".route." + j + ".weather", routes[j].getWeather());
                     }
                 }
             }

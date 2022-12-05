@@ -6,11 +6,10 @@ import lombok.Data;
 @Data
 public class SubPlan {
 
+    @ApiModelProperty("城市id")
+    private Integer cityId;
+
     @ApiModelProperty("城市")
     private String city;
-
-    @ApiModelProperty("路线")
-    private Route[] route;
-
 
 }
