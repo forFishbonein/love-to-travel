@@ -60,10 +60,8 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public void insert(NoteVo noteVo) {
-        System.out.println(noteVo);
         Note note = new Note();
         BeanUtils.copyProperties(noteVo, note);
-        System.out.println(note);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
