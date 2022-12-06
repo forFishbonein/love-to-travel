@@ -12,6 +12,7 @@ export default {
   setup() {
     const color = ref("#e8604c");
     const color2 = ref("#FFFFFF");
+    const color3 = ref("#A8ABB2");
     const value1 = ref("");
     // alert(111);
     const map = shallowRef(null);
@@ -113,7 +114,7 @@ export default {
       initMap();
     });
 
-    return { map, initMap, color, value1, color2 };
+    return { map, initMap, color, value1, color2, color3 };
   },
 };
 (function ($) {
@@ -195,8 +196,12 @@ export default {
           <div class="plan-items">
             <el-scrollbar max-height="150px">
               <div v-for="item in 20" :key="item" class="scrollbar-item2">
-                <div class="left-name-icon"></div>
-                <div class="right-days"></div>
+                <div class="left-name-icon">
+                  <el-icon :size="23" :color="color3"
+                    ><CircleCloseFilled /></el-icon
+                  >北京
+                </div>
+                <div class="right-days"><input type="number" />天</div>
               </div>
             </el-scrollbar>
           </div>
@@ -430,13 +435,13 @@ export default {
         color: #606266;
         margin-top: -2px;
         margin-left: 20px;
-        margin-right: 10px;
+        margin-right: 15px;
       }
     }
     .right-body {
       width: 100%;
       height: 89%;
-      background-color: white;
+      background-color: rgba(255, 255, 255, 0.8);
       .plan-container {
         width: 100%;
         height: 80%;
@@ -472,9 +477,63 @@ export default {
         .plan-items {
           height: 60%;
           width: 340px;
-          border: 1px #e8604c solid;
+          // border: 1px #e8604c solid;
           position: absolute;
           top: 52px;
+          .scrollbar-item2 {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px;
+            height: 50px;
+            width: 300px;
+            // margin: 10px;
+            margin: 10px 0;
+            border-radius: 4px;
+            background: rgba(232, 96, 76, 0.2);
+            color: var(--el-color-primary);
+            .left-name-icon {
+              // border: 1px #e8604c solid;
+              width: 80px;
+              height: 50px;
+              font-size: 15px;
+              display: flex;
+              justify-content: space-around;
+              align-items: center;
+              color: #000000;
+              i {
+                border-radius: 16px;
+                transition: all 0.3s linear;
+                cursor: pointer;
+              }
+              i:hover {
+                box-shadow: 0 12px 5px -10px rgba(0, 0, 0, 0.1),
+                  0 0 4px 0 rgba(0, 0, 0, 0.1);
+                color: #e8604c;
+              }
+            }
+            .right-days {
+              width: 50px;
+              height: 50px;
+              // border: 1px #e8604c solid;
+              font-size: 15px;
+              color: #606266;
+              input {
+                color: #606266;
+                font-size: 15px;
+                width: 25px;
+                height: 20px;
+                outline: none;
+                border: 0;
+                margin-right: 5px;
+                border-radius: 2px;
+                transition: all 0.1s linear;
+              }
+              input:focus {
+                border: 1px #e8604c solid;
+              }
+            }
+          }
         }
       }
       .next-button {
