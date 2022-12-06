@@ -7,6 +7,9 @@ import com.lovetotravel.travel.service.NoteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
+import org.aspectj.lang.JoinPoint;
+import org.aspectj.lang.annotation.After;
+import org.aspectj.lang.annotation.Pointcut;
 
 import java.util.List;
 
@@ -36,6 +39,18 @@ public class NoteController {
         System.out.println(id);
         return Result.success(noteService.getByUserId(id));
     }
+
+    @Pointcut("execution(public * com.lovetotravel.travel.controller.NoteController.getById(..))")
+    public void viewPointCut(){}
+
+    @After("viewPointCut()")
+    public void doAfter(JoinPoint joinPoint) throws Throwable {
+        Object[] objs=joinPoint.getArgs();
+        String id=(String) objs[0];
+        //根据id更新浏览量
+        noteService.incrView(id);
+    }
+
 
     @ApiOperation("查询所有游记（未删除）")
     @GetMapping("/user/{id}")

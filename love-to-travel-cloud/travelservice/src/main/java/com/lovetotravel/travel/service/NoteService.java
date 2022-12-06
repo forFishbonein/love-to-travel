@@ -19,5 +19,11 @@ public interface NoteService {
 
     void removeById(String id);
 
+    void incrComment(String id);
+
+    void incrLike(String id);
+
+    void incrView(String id);
+
 
 }

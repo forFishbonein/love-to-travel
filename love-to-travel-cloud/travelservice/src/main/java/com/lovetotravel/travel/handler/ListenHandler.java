@@ -54,9 +54,9 @@ public class ListenHandler {
         List<Note> noteList = noteService.getAll();
         noteList.forEach(note -> {
             //将浏览量、点赞数和评论数写入redis
-            Long commentNum = redisService.scard(NoteKey.getLike, note.getId().toString());
-            Long likeNum = redisService.scard(NoteKey.getView, note.getId().toString());
-            Long viewNum = redisService.scard(NoteKey.getComment, note.getId().toString());
+            Long commentNum = redisService.scard(NoteKey.getComment, note.getId().toString());
+            Long likeNum = redisService.scard(NoteKey.getLike, note.getId().toString());
+            Long viewNum = redisService.scard(NoteKey.getView, note.getId().toString());
 
             writeNum(commentNum, NoteKey.getComment.getPrefix(), note.getId().toString());
             writeNum(likeNum, NoteKey.getLike.getPrefix(), note.getId().toString());

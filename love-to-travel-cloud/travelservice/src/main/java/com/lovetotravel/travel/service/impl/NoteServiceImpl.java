@@ -3,6 +3,8 @@ package com.lovetotravel.travel.service.impl;
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.vo.NoteVo;
 import com.lovetotravel.travel.exception.GlobalException;
+import com.lovetotravel.travel.redis.NoteKey;
+import com.lovetotravel.travel.redis.RedisService;
 import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.NoteService;
 import org.springframework.beans.BeanUtils;
@@ -20,9 +22,11 @@ import java.util.List;
 public class NoteServiceImpl implements NoteService {
 
     final MongoTemplate mongoTemplate;
+    final RedisService redisService;
 
-    public NoteServiceImpl(MongoTemplate mongoTemplate) {
+    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService) {
         this.mongoTemplate = mongoTemplate;
+        this.redisService = redisService;
     }
 
     /**
@@ -123,5 +127,20 @@ public class NoteServiceImpl implements NoteService {
         update.set("deleted", "1")
                 .set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Note.class);
+    }
+
+    @Override
+    public void incrComment(String id) {
+        redisService.incr(NoteKey.getComment, id);
+    }
+
+    @Override
+    public void incrLike(String id) {
+        redisService.incr(NoteKey.getLike, id);
+    }
+
+    @Override
+    public void incrView(String id) {
+        redisService.incr(NoteKey.getView, id);
     }
 }
