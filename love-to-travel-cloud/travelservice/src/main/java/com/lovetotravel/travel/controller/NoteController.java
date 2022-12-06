@@ -41,7 +41,7 @@ public class NoteController {
     }
 
     @ApiOperation("查询所有游记（未删除）")
-    @GetMapping("/user/{id}")
+    @GetMapping
     public Result<List<Note>> getAll() {
         return Result.success(noteService.getAll());
     }
