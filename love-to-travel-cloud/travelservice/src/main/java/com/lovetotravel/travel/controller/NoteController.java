@@ -40,18 +40,6 @@ public class NoteController {
         return Result.success(noteService.getByUserId(id));
     }
 
-    @Pointcut("execution(public * com.lovetotravel.travel.controller.NoteController.getById(..))")
-    public void viewPointCut(){}
-
-    @After("viewPointCut()")
-    public void doAfter(JoinPoint joinPoint) throws Throwable {
-        Object[] objs=joinPoint.getArgs();
-        String id=(String) objs[0];
-        //根据id更新浏览量
-        noteService.incrView(id);
-    }
-
-
     @ApiOperation("查询所有游记（未删除）")
     @GetMapping("/user/{id}")
     public Result<List<Note>> getAll() {
@@ -74,7 +62,7 @@ public class NoteController {
 
     @ApiOperation("删除游记")
     @DeleteMapping("/{id}")
-    public Result<String> RemoveById(@PathVariable("id") String id) {
+    public Result<String> removeById(@PathVariable("id") String id) {
         noteService.removeById(id);
         return Result.success("删除成功");
     }
