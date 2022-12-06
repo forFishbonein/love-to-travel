@@ -23,13 +23,13 @@ public class NoteVo {
     private String title;
 
     @ApiModelProperty("内容")
-    private String content;
+    private Long content;
 
     @ApiModelProperty("评论量")
-    private String comment;
+    private Long comment;
 
     @ApiModelProperty("浏览量")
-    private String view;
+    private Long view;
 
     @ApiModelProperty("点赞量")
     private String like;

@@ -37,9 +37,13 @@ public class ListenHandler {
         List<Note> noteList = noteService.getAll();
         noteList.forEach(note -> {
             //将浏览量、点赞数和评论数写入redis
-            redisService.sadd(NoteKey.getComment, note.getId().toString(), note.getComment());
-            redisService.sadd(NoteKey.getLike, note.getId().toString(), note.getLike());
-            redisService.sadd(NoteKey.getView, note.getId().toString(), note.getView());
+            log.warn(note.toString());
+            System.out.println(NoteKey.getComment);
+            System.out.println(note.getId().toString());
+            System.out.println(note.getComment().toString());
+            redisService.set(NoteKey.getComment, note.getId().toString(), note.getComment().toString());
+            redisService.set(NoteKey.getLike, note.getId().toString(), note.getLike().toString());
+            redisService.set(NoteKey.getView, note.getId().toString(), note.getView().toString());
         });
         log.info("数据已写入redis...");
     }
@@ -54,9 +58,9 @@ public class ListenHandler {
         List<Note> noteList = noteService.getAll();
         noteList.forEach(note -> {
             //将浏览量、点赞数和评论数写入redis
-            Long commentNum = redisService.scard(NoteKey.getComment, note.getId().toString());
-            Long likeNum = redisService.scard(NoteKey.getLike, note.getId().toString());
-            Long viewNum = redisService.scard(NoteKey.getView, note.getId().toString());
+            Long commentNum = redisService.get(NoteKey.getComment, note.getId().toString(), Long.class);
+            Long likeNum = redisService.get(NoteKey.getLike, note.getId().toString(), Long.class);
+            Long viewNum = redisService.get(NoteKey.getView, note.getId().toString(), Long.class);
 
             writeNum(commentNum, NoteKey.getComment.getPrefix(), note.getId().toString());
             writeNum(likeNum, NoteKey.getLike.getPrefix(), note.getId().toString());
@@ -86,13 +90,13 @@ public class ListenHandler {
         Note note = noteService.getById(id);
         switch (fieldName) {
             case "comment":
-                note.setComment(num.toString());
+                note.setComment(num);
                 break;
             case "like":
-                note.setLike(num.toString());
+                note.setLike(num);
                 break;
             case "view":
-                note.setView(num.toString());
+                note.setView(num);
                 break;
             default:
                 return;

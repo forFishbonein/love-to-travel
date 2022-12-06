@@ -34,13 +34,13 @@ public class Note {
     private String score;
 
     @ApiModelProperty("评论量")
-    private String comment;
+    private Long comment;
 
     @ApiModelProperty("浏览量")
-    private String view;
+    private Long view;
 
     @ApiModelProperty("点赞量")
-    private String like;
+    private Long like;
 
     @ApiModelProperty("逻辑删除")
     @TableLogic

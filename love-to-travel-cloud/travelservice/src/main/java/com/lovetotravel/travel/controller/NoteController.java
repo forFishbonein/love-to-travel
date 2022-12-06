@@ -7,9 +7,7 @@ import com.lovetotravel.travel.service.NoteService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
-import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.annotation.After;
-import org.aspectj.lang.annotation.Pointcut;
+
 
 import java.util.List;
 
