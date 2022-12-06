@@ -37,6 +37,12 @@ public class NoteController {
         return Result.success(noteService.getByUserId(id));
     }
 
+    @ApiOperation("查询所有游记（未删除）")
+    @GetMapping("/user/{id}")
+    public Result<List<Note>> getAll() {
+        return Result.success(noteService.getAll());
+    }
+
     @ApiOperation("新增游记")
     @PostMapping
     public Result<String> insert(@RequestBody NoteVo noteVo) {
@@ -57,5 +63,7 @@ public class NoteController {
         noteService.removeById(id);
         return Result.success("删除成功");
     }
+
+
 
 }

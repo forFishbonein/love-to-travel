@@ -53,6 +53,13 @@ public class NoteServiceImpl implements NoteService {
         return mongoTemplate.find(query, Note.class);
     }
 
+    @Override
+    public List<Note> getAll() {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        return mongoTemplate.find(query, Note.class);
+    }
+
     /**
      * 新增
      *

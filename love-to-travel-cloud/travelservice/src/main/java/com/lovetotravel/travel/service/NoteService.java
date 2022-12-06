@@ -11,6 +11,8 @@ public interface NoteService {
 
     List<Note> getByUserId(String userId);
 
+    List<Note> getAll();
+
     void insert(NoteVo noteVo);
 
     void update(NoteVo noteVo);
