@@ -11,11 +11,19 @@ public interface NoteService {
 
     List<Note> getByUserId(String userId);
 
+    List<Note> getAll();
+
     void insert(NoteVo noteVo);
 
     void update(NoteVo noteVo);
 
     void removeById(String id);
+
+    void incrComment(String id);
+
+    void incrLike(String id);
+
+    void incrView(String id);
 
 
 }

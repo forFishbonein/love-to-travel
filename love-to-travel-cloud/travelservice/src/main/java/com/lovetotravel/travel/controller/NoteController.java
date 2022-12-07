@@ -8,6 +8,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+
 import java.util.List;
 
 @Api(tags = "游记接口")
@@ -37,6 +38,12 @@ public class NoteController {
         return Result.success(noteService.getByUserId(id));
     }
 
+    @ApiOperation("查询所有游记（未删除）")
+    @GetMapping
+    public Result<List<Note>> getAll() {
+        return Result.success(noteService.getAll());
+    }
+
     @ApiOperation("新增游记")
     @PostMapping
     public Result<String> insert(@RequestBody NoteVo noteVo) {
@@ -53,9 +60,11 @@ public class NoteController {
 
     @ApiOperation("删除游记")
     @DeleteMapping("/{id}")
-    public Result<String> RemoveById(@PathVariable("id") String id) {
+    public Result<String> removeById(@PathVariable("id") String id) {
         noteService.removeById(id);
         return Result.success("删除成功");
     }
+
+
 
 }
