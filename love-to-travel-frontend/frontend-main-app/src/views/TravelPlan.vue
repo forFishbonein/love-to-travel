@@ -6,14 +6,32 @@ const color = ref("#e8604c");
 import AMapLoader from "@amap/amap-jsapi-loader"; // 使用加载器加载JSAPI，可以避免异步加载、重复加载等常见错误加载错误
 import { shallowRef } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
 export default {
   // 简单功能的实现
   setup() {
+    const router = useRouter();
+    /* 定义变量值 */
     const color = ref("#e8604c");
     const color2 = ref("#FFFFFF");
     const color3 = ref("#A8ABB2");
     const value1 = ref("");
+    const outerVisible = ref(false);
+    const innerVisible = ref(false);
+    const formLabelWidth = "100px";
+    // const radio1 = ref("1000元左右");
+    const radio1 = ref("");
+
+    const budget = reactive({
+      money: "",
+    });
+    const confirmPlan = () => {
+      // alert(1111);
+      // innerVisible = false; //不需要关闭了，直接跳走即可
+      router.replace("/result");
+    };
+    /* 高德地图实现 */
     // alert(111);
     const map = shallowRef(null);
 
@@ -55,7 +73,7 @@ export default {
             title: "中心点",
           });
           let marker2 = new AMap.Marker({
-            position: new AMap.LngLat(114.298572, 30.584355),
+            position: new AMap.LngLat(114.298572, 30.584355), //2位小数就可以
             title: "武汉",
           });
           let markerList = [marker1, marker2];
@@ -114,7 +132,20 @@ export default {
       initMap();
     });
 
-    return { map, initMap, color, value1, color2, color3 };
+    return {
+      map,
+      initMap,
+      color,
+      color2,
+      color3,
+      value1,
+      outerVisible,
+      innerVisible,
+      budget,
+      formLabelWidth,
+      radio1,
+      confirmPlan,
+    };
   },
 };
 (function ($) {
@@ -216,7 +247,7 @@ export default {
             </div>
           </div>
         </div>
-        <div class="next-button">
+        <div class="next-button" @click="outerVisible = true">
           <div class="content-next">
             <span class="next-text">下一步</span>
             <span class="next-icon">
@@ -229,9 +260,100 @@ export default {
       </div>
     </div>
   </div>
+  <el-dialog v-model="outerVisible" title="智能推荐行程方案">
+    <template #default>
+      <div class="select-budget">
+        <div>请选择您的旅行预算</div>
+        <div class="select-body">
+          <el-radio-group v-model="radio1" size="large">
+            <el-radio-button label="1000元左右" />
+            <el-radio-button label="3000元左右" />
+            <el-radio-button label="5000元左右" />
+          </el-radio-group>
+          <div class="select-confirm">
+            <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
+          </div>
+        </div>
+      </div>
+      <el-dialog
+        v-model="innerVisible"
+        title="自定义预算"
+        width="30%"
+        append-to-body
+      >
+        <el-form :model="budget">
+          <el-form-item label="您的预算：" :label-width="formLabelWidth">
+            <el-input
+              v-model="budget.money"
+              autocomplete="off"
+              type="number"
+              class="money-input"
+            />
+            元
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <!-- <el-button @click="dialogFormVisible = false">Cancel</el-button> -->
+            <el-button type="primary" @click.native="confirmPlan">
+              确认
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>
+    </template>
+    <template #footer>
+      <div class="dialog-footer">
+        <div class="custom-plan">
+          <div>没有您想要的方案？</div>
+          <el-button type="primary" @click="innerVisible = true">
+            自定义
+          </el-button>
+        </div>
+      </div>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
+.dialog-footer button:first-child {
+  margin-right: 10px;
+}
+.select-budget {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  align-items: center;
+}
+.select-budget > div:first-child {
+  font-size: 18px;
+  margin-right: 50px;
+}
+.select-body {
+  margin-top: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  .select-confirm {
+    margin-left: 20px;
+  }
+}
+.custom-plan {
+  display: flex;
+  justify-content: end;
+  button {
+    background-color: #4ec483 !important;
+    border: 1px solid #4ec483;
+  }
+  button:hover {
+    background-color: #71d09c !important;
+    border: 1px solid #71d09c;
+  }
+}
+.money-input {
+  width: 200px;
+  margin-right: 10px;
+}
 #map {
   margin: 0px;
   width: 100%;
@@ -441,7 +563,7 @@ export default {
     .right-body {
       width: 100%;
       height: 89%;
-      background-color: rgba(255, 255, 255, 0.8);
+      background-color: rgba(255, 255, 255, 0.9);
       .plan-container {
         width: 100%;
         height: 80%;
@@ -573,6 +695,9 @@ export default {
             }
           }
         }
+      }
+      .next-button:hover {
+        background-color: rgba(78, 196, 131, 0.8);
       }
     }
   }

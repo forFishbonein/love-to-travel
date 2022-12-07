@@ -31,8 +31,11 @@
     --thm-clr-extra: #e3e3e3;
     --thm-border-radius: 8px;
     --thm-letter-spacing: -0.02em;
-    --el-color-primary: #e8604c !important;
     /* 修改element-plus的默认颜色 */
+    --el-color-primary: #e8604c !important;
+    --el-color-primary-light-3: #f48f80 !important;
+    --el-color-primary-dark-2: #e74128 !important;
+    --el-color-primary-light-9: rgb(238, 238, 238) !important;
 }
 
 .row {
