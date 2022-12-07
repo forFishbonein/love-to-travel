@@ -11,4 +11,6 @@ public interface FootpointService {
 
     void update(Footpoint footpoint);
 
+    void remove(Footpoint footpoint);
+
 }
