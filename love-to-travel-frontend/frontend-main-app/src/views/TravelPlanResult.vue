@@ -6,7 +6,7 @@ const addACity = () => {
   citys.value.push("天津");
 };
 
-const activeIndex = ref("1");
+const activeIndex = ref("/result/route/list");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
@@ -81,13 +81,16 @@ const handleSelect = (key: string, keyPath: string[]) => {
           class="el-menu"
           mode="horizontal"
           @select="handleSelect"
-          router="false"
+          router="true"
         >
-          <el-menu-item index="1">路线</el-menu-item>
-          <el-menu-item index="2">游玩</el-menu-item>
+          <!-- 前面加/就是覆盖路径，不加就是在后面添加路径 -->
+          <el-menu-item index="/result/route/list">路线</el-menu-item>
+          <el-menu-item index="/result/scenicSpot/list">游玩</el-menu-item>
         </el-menu>
       </div>
-      <div class="right-body"></div>
+      <div class="right-body">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
 </template>
@@ -98,7 +101,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
   height: 10%;
   // border: 1px #e8604c solid;
   background-color: #ffffff;
-  border-bottom: 2px #dcdfe6 solid;
+  border-bottom: 2px #e8604c solid;
   // box-shadow: 0px 20px 10px rgba(0, 0, 0, 0.9);
 }
 .base-container {
@@ -309,6 +312,11 @@ const handleSelect = (key: string, keyPath: string[]) => {
           padding: 0 50px;
         }
       }
+    }
+    .right-body {
+      width: auto;
+      height: 350px;
+      // border: 1px #e8604c solid;
     }
   }
 }
