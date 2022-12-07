@@ -38,13 +38,13 @@ public class LoginController {
 
     @ApiOperation("验证码登录")
     @PostMapping("/codelogin")
-    public Result<String> codeLogin(HttpServletResponse response, @RequestBody LoginVo loginVo) {
+    public Result<String> codeLogin(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginVo loginVo) {
         return Result.success(userService.codeLogin(response, loginVo));
     }
 
     @ApiOperation("密码登录")
     @PostMapping("/login")
-    public Result<String> passLogin(HttpServletResponse response, @RequestBody LoginVo loginVo) {
+    public Result<String> passLogin(HttpServletRequest request, HttpServletResponse response, @RequestBody LoginVo loginVo) {
         return Result.success(userService.passLogin(response, loginVo));
     }
 

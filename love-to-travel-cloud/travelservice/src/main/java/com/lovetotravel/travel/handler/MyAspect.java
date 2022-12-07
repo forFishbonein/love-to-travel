@@ -25,10 +25,12 @@ public class MyAspect {
     public void viewPointCut(){}
 
     @After("viewPointCut()")
-    public void doAfter(JoinPoint joinPoint) throws Throwable {
+    public void doViewAfter(JoinPoint joinPoint) throws Throwable {
         Object[] objs=joinPoint.getArgs();
         String id=(String) objs[0];
         //根据id更新浏览量
         noteService.incrView(id);
     }
+
+
 }

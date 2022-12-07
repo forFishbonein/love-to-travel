@@ -52,7 +52,7 @@ public class FootpointServiceImpl implements FootpointService {
                 update.set("wants." + i + ".score", beens[i].getScore());
             }
         }
-        mongoTemplate.updateFirst(query, update, Footpoint.class);
+        mongoTemplate.upsert(query, update, Footpoint.class);
         System.out.println(update);
 
     }
