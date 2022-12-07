@@ -1,12 +1,38 @@
 <script setup lang="ts">
-import { ref } from "vue";
-
-const citys = ref(["北京", "上海", "杭州", "广州", "重庆"]);
-const addACity = () => {
-  citys.value.push("天津");
+import { ref, reactive } from "vue";
+const dialogFormVisible = ref(false);
+const formLabelWidth = "140px";
+const city = ref("");
+const citys = ref([
+  { id: 1, name: "北京" },
+  { id: 2, name: "上海" },
+  { id: 3, name: "杭州" },
+  { id: 4, name: "广州" },
+  { id: 5, name: "重庆" },
+]);
+const openCityDialog = () => {
+  dialogFormVisible.value = true;
 };
-
-const activeIndex = ref("1");
+const addACity = () => {
+  citys.value.push({ id: 0, name: city.value });
+  dialogFormVisible.value = false;
+};
+const addBefore = (index: any) => {
+  console.log("----------");
+  console.log(index);
+  console.log("----------");
+  citys.value.splice(index, 0, { id: 0, name: "天津" });
+};
+const addAfter = (index: any) => {
+  console.log("----------");
+  console.log(index);
+  console.log("----------");
+  citys.value.splice(index + 1, 0, { id: 0, name: "天津" });
+};
+const deleteCity = (index: any) => {
+  citys.value.splice(index, 1);
+};
+const activeIndex = ref("/result/route/list");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
@@ -19,12 +45,16 @@ const handleSelect = (key: string, keyPath: string[]) => {
       <div class="left-header">武汉——>上海</div>
       <div class="left-body">
         <el-scrollbar max-height="400px">
-          <div v-for="item in citys" :key="item" class="left-scrollbar-item">
+          <div
+            v-for="(item, index) in citys"
+            :key="item.id"
+            class="left-scrollbar-item"
+          >
             <div class="item-left">
               <el-icon :size="35"><LocationInformation /></el-icon>
               <div class="item-left-text">
                 <p>12月6日</p>
-                <p>{{ item }}</p>
+                <p>{{ item.name }}</p>
               </div>
             </div>
             <div class="item-right">
@@ -34,13 +64,13 @@ const handleSelect = (key: string, keyPath: string[]) => {
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click="addBefore(index)">
                       <el-icon><Plus /></el-icon> 之前添加一个城市
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click="addAfter(index)">
                       <el-icon><Plus /></el-icon> 之后添加一个城市
                     </el-dropdown-item>
-                    <el-dropdown-item>
+                    <el-dropdown-item @click="deleteCity(index)">
                       <el-icon><DeleteFilled /></el-icon> 删除该城市
                     </el-dropdown-item>
                   </el-dropdown-menu>
@@ -48,7 +78,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
               </el-dropdown>
             </div>
           </div>
-          <div class="add-city" @click="addACity">+添加城市</div>
+          <div class="add-city" @click="openCityDialog">+ 添加城市</div>
         </el-scrollbar>
       </div>
       <div class="left-footer">上海——>武汉</div>
@@ -81,15 +111,34 @@ const handleSelect = (key: string, keyPath: string[]) => {
           class="el-menu"
           mode="horizontal"
           @select="handleSelect"
-          router="false"
+          router="true"
         >
-          <el-menu-item index="1">路线</el-menu-item>
-          <el-menu-item index="2">游玩</el-menu-item>
+          <!-- 前面加/就是覆盖路径，不加就是在后面添加路径 -->
+          <el-menu-item index="/result/route/list">路线</el-menu-item>
+          <el-menu-item index="/result/scenicSpot/list">游玩</el-menu-item>
         </el-menu>
       </div>
-      <div class="right-body"></div>
+      <div class="right-body">
+        <router-view></router-view>
+      </div>
     </div>
   </div>
+  <el-dialog v-model="dialogFormVisible" title="添加一个城市">
+    <el-form :model="city">
+      <el-form-item label="热门城市" :label-width="formLabelWidth">
+        <el-select v-model="city" placeholder="选择一个城市">
+          <el-option label="上海" value="上海" />
+          <el-option label="北京" value="北京" />
+        </el-select>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="addACity"> 确认 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
@@ -98,7 +147,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
   height: 10%;
   // border: 1px #e8604c solid;
   background-color: #ffffff;
-  border-bottom: 2px #dcdfe6 solid;
+  border-bottom: 2px #e8604c solid;
   // box-shadow: 0px 20px 10px rgba(0, 0, 0, 0.9);
 }
 .base-container {
@@ -120,7 +169,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
     .left-header {
       width: auto;
       height: 12%;
-      // border: 1px #e8604c solid;
+      border-bottom: 2px #e8604c solid;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -129,6 +178,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
       width: auto;
       height: 12%;
       // border: 1px #e8604c solid;
+      border-top: 2px #e8604c solid;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -148,6 +198,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
         transition: all 0.3s linear;
         padding-right: 15px;
         padding-left: 10px;
+        border-bottom: 1px #dcdfe6 solid;
         .item-left {
           width: 100px;
           height: 80px;
@@ -187,6 +238,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
         cursor: pointer;
         background: rgba(255, 255, 255);
         transition: all 0.3s linear;
+        background-color: #f2f6fc;
       }
       .add-city:hover {
         background: rgba(245, 245, 245);
@@ -309,6 +361,11 @@ const handleSelect = (key: string, keyPath: string[]) => {
           padding: 0 50px;
         }
       }
+    }
+    .right-body {
+      width: auto;
+      height: 350px;
+      // border: 1px #e8604c solid;
     }
   }
 }

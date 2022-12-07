@@ -35,7 +35,7 @@ public class FootpointController {
     }
 
     @ApiOperation("想去/去过 删除")
-    @PostMapping
+    @DeleteMapping
     public Result<String> remove(@RequestBody Footpoint footpoint) {
         footpointService.remove(footpoint);
         return Result.success("修改成功");

@@ -83,15 +83,55 @@ export const routes: Array<RouteRecordRaw> = [
       keepAlive: false,
       showTab: true,
     },
-    // redirect: "/login/passLogin", //LoginAndRegister中包裹passLogin
+    redirect: "/result/route/list",
     children: [
-      // {
-      //   path: "passLogin",
-      //   name: "PassLogin",
-      //   // component: () => import("@/components/passOrCode/PassLogin.vue"),
-      //   component: PassLogin,
-      //   meta: { title: "密码登录", keepAlive: false, showTab: true },
-      // },
+      {
+        path: "route",
+        name: "Route",
+        component: () => import("@/components/planResult/Route/Route.vue"),
+        meta: { title: "路线", keepAlive: false, showTab: true },
+        // redirect: "/result/route/list",
+        children: [
+          {
+            path: "list",
+            name: "RouteList",
+            component: () =>
+              import("@/components/planResult/Route/RouteList.vue"),
+            meta: { title: "路线列表", keepAlive: false, showTab: true },
+          },
+          {
+            path: "detail",
+            name: "RouteDetail",
+            component: () =>
+              import("@/components/planResult/Route/RouteDetail.vue"),
+            meta: { title: "路线详情", keepAlive: false, showTab: true },
+          },
+        ],
+      },
+      {
+        path: "scenicSpot",
+        name: "ScenicSpot",
+        component: () =>
+          import("@/components/planResult/ScenicSpot/ScenicSpot.vue"),
+        meta: { title: "景区", keepAlive: false, showTab: true },
+        // redirect: "/result/route/detail",
+        children: [
+          {
+            path: "list",
+            name: "ScenicSpotList",
+            component: () =>
+              import("@/components/planResult/ScenicSpot/ScenicSpotList.vue"),
+            meta: { title: "景区列表", keepAlive: false, showTab: true },
+          },
+          {
+            path: "detail",
+            name: "ScenicSpotDetail",
+            component: () =>
+              import("@/components/planResult/ScenicSpot/ScenicSpotDetail.vue"),
+            meta: { title: "景区详情", keepAlive: false, showTab: true },
+          },
+        ],
+      },
     ],
   },
 ];
