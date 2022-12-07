@@ -3,6 +3,7 @@ import Index from "@/Index.vue";
 import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
 import TravelPlan from "@views/TravelPlan.vue";
+import TravelPlanResult from "@views/TravelPlanResult.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 export const routes: Array<RouteRecordRaw> = [
@@ -59,6 +60,26 @@ export const routes: Array<RouteRecordRaw> = [
     component: TravelPlan,
     meta: {
       title: "行程制定地图页",
+      keepAlive: false,
+      showTab: true,
+    },
+    // redirect: "/login/passLogin", //LoginAndRegister中包裹passLogin
+    children: [
+      // {
+      //   path: "passLogin",
+      //   name: "PassLogin",
+      //   // component: () => import("@/components/passOrCode/PassLogin.vue"),
+      //   component: PassLogin,
+      //   meta: { title: "密码登录", keepAlive: false, showTab: true },
+      // },
+    ],
+  },
+  {
+    path: "/result",
+    name: "TrvalPlanResult",
+    component: TravelPlanResult,
+    meta: {
+      title: "行程制定结果页",
       keepAlive: false,
       showTab: true,
     },
