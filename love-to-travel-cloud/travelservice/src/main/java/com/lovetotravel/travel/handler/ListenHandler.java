@@ -9,6 +9,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
+import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -18,6 +19,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@EnableScheduling
 @Order(Ordered.HIGHEST_PRECEDENCE)
 public class ListenHandler {
 
@@ -37,10 +39,6 @@ public class ListenHandler {
         List<Note> noteList = noteService.getAll();
         noteList.forEach(note -> {
             //将浏览量、点赞数和评论数写入redis
-            log.warn(note.toString());
-            System.out.println(NoteKey.getComment);
-            System.out.println(note.getId().toString());
-            System.out.println(note.getComment().toString());
             redisService.set(NoteKey.getComment, note.getId().toString(), note.getComment().toString());
             redisService.set(NoteKey.getLike, note.getId().toString(), note.getLike().toString());
             redisService.set(NoteKey.getView, note.getId().toString(), note.getView().toString());
@@ -70,15 +68,17 @@ public class ListenHandler {
         log.info("redis写入数据库完毕");
     }
 
-    @Scheduled(cron = "*/15 * * * * ?")
+    @Scheduled(cron = "30 * * * * ?")
     public void updateNum() {
         log.info("周期任务开始执行...");
         List<Note> noteList = noteService.getAll();
         noteList.forEach(note -> {
-            //将浏览量、点赞数和评论数写入redis
-            Long likeNum = redisService.scard(NoteKey.getView, note.getId().toString());
-            Long viewNum = redisService.scard(NoteKey.getComment, note.getId().toString());
-
+            //从redis获取将浏览量、点赞数和评论数
+            Long commentNum = redisService.get(NoteKey.getComment, note.getId().toString(), Long.class);
+            Long likeNum = redisService.get(NoteKey.getLike, note.getId().toString(), Long.class);
+            Long viewNum = redisService.get(NoteKey.getView, note.getId().toString(), Long.class);
+            //写入数据库
+            writeNum(commentNum, NoteKey.getComment.getPrefix(), note.getId().toString());
             writeNum(likeNum, NoteKey.getLike.getPrefix(), note.getId().toString());
             writeNum(viewNum, NoteKey.getView.getPrefix(), note.getId().toString());
         });
@@ -86,24 +86,26 @@ public class ListenHandler {
     }
 
     private void writeNum(Long num, String fieldName, String id) {
-
         Note note = noteService.getById(id);
         switch (fieldName) {
-            case "comment":
+            case "NoteKey:comment":
                 note.setComment(num);
                 break;
-            case "like":
+            case "NoteKey:like":
                 note.setLike(num);
                 break;
-            case "view":
+            case "NoteKey:view":
                 note.setView(num);
                 break;
             default:
                 return;
         }
         NoteVo noteVo = new NoteVo();
+
         BeanUtils.copyProperties(note, noteVo);
 
+        System.out.println("note = " + note);
+        System.out.println("noteVo = " + noteVo);
         //更新数据库
         noteService.update(noteVo);
         log.info("{} 更新完毕", fieldName);

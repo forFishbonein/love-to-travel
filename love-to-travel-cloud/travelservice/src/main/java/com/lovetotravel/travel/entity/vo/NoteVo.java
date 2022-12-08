@@ -23,7 +23,7 @@ public class NoteVo {
     private String title;
 
     @ApiModelProperty("内容")
-    private Long content;
+    private String content;
 
     @ApiModelProperty("评论量")
     private Long comment;
@@ -32,6 +32,6 @@ public class NoteVo {
     private Long view;
 
     @ApiModelProperty("点赞量")
-    private String like;
+    private Long like;
 
 }

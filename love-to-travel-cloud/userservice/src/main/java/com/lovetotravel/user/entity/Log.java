@@ -6,19 +6,22 @@ import lombok.Data;
 @Data
 public class Log {
 
-    @ApiModelProperty("用户邮箱")
+    @ApiModelProperty("uuid")
     private String uuid;
 
     @ApiModelProperty("用户邮箱")
     private String userEmail;
 
-    @ApiModelProperty("用户邮箱")
+    @ApiModelProperty("操作系统")
     private String osName;
 
-    @ApiModelProperty("用户邮箱")
+    @ApiModelProperty("浏览器")
     private String browserName;
 
-    @ApiModelProperty("用户邮箱")
+    @ApiModelProperty("IP地址")
     private String ipAddress;
+
+    @ApiModelProperty("创建时间")
+    private String createTime;
 
 }

@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.lovetotravel.travel.mapper.SceneryMapper">
+    <select id="getById" resultType="com.lovetotravel.travel.entity.Scenery">
+        SELECT
+        s.id,s.name,s.introduction,s.ticket,s.opening,s.lng,s.lat,s.level,s.address,s.url,s.tele,c.city_name,p.province_name
+        FROM scenery s, city c,cp cp , province p
+        select * from user u inner join login l
+        <where>
+            s.id=#{id} AND s.city_id = c.city_id AND c.city_id = cp.city_id AND cp.province_id = p.province_id
+        </where>
+    </select>
+</mapper>

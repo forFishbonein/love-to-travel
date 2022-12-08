@@ -1,4 +1,4 @@
-package com.lovetotravel.travel.entity;
+package com.lovetotravel.travel.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -7,11 +7,10 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class Scenery {
-
-    @ApiModelProperty("景区id")
-    @TableId(type = IdType.ASSIGN_ID)
-    private Long Id;
+public class SceneryVo {
+//    @ApiModelProperty("景区id")
+//    @TableId(type = IdType.ASSIGN_ID)
+//    private Long Id;
 
     @ApiModelProperty("景区名称")
     private String name;
@@ -37,8 +36,11 @@ public class Scenery {
     @ApiModelProperty("地址")
     private String address;
 
-    @ApiModelProperty("对应城市id")
-    private String cityId;
+    @ApiModelProperty("对应城市名称")
+    private String cityName;
+
+    @ApiModelProperty("对应省份名称")
+    private String provinceName;
 
     @ApiModelProperty("图片地址")
     private String url;
@@ -46,14 +48,14 @@ public class Scenery {
     @ApiModelProperty("联系方式")
     private String tele;
 
-    @ApiModelProperty("逻辑删除")
-    @TableLogic
-    private String deleted;
-
-    @ApiModelProperty("创建时间")
-    private String createTime;
-
-    @ApiModelProperty("更新时间")
-    private String updateTime;
+//    @ApiModelProperty("逻辑删除")
+//    @TableLogic
+//    private String deleted;
+//
+//    @ApiModelProperty("创建时间")
+//    private String createTime;
+//
+//    @ApiModelProperty("更新时间")
+//    private String updateTime;
 
 }

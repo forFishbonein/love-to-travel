@@ -33,7 +33,6 @@ public class PlanController {
     @ApiOperation("根据用户id查询行程")
     @GetMapping("/user/{id}")
     public Result<List<Plan>> getByUserId(@PathVariable("id") String id) {
-        System.out.println(id);
         return Result.success(planService.getByUserId(id));
     }
 

@@ -33,9 +33,9 @@ export function getTree(data: object) {
 // 新增
 export function add(data: object) {
   return request({
-    url: '/table/add',
+    url: '/user',
     method: 'post',
-    baseURL: '/mock',
+    baseURL: 'http://localhost:8081',
     data
   })
 }
@@ -43,9 +43,9 @@ export function add(data: object) {
 // 编辑
 export function update(data: object) {
   return request({
-    url: '/table/update',
-    method: 'post',
-    baseURL: '/mock',
+    url: '/user/updateprofile',
+    method: 'put',
+    baseURL: 'http://localhost:8081',
     data
   })
 }

@@ -101,7 +101,12 @@ public class NoteServiceImpl implements NoteService {
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
         update.set("title", noteVo.getTitle())
+                .set("url", noteVo.getUrl())
+                .set("plan", noteVo.getPlanId())
                 .set("content", noteVo.getContent())
+                .set("comment", noteVo.getComment())
+                .set("view", noteVo.getView())
+                .set("like", noteVo.getLike())
                 .set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Note.class);
         System.out.println(update);
