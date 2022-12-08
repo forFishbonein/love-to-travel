@@ -22,28 +22,30 @@ import { createNameComponent } from './createNode'
 import Dashboard from './modules/dashboard'
 import Document from './modules/document'
 import Pages from './modules/pages'
-import Menu from './modules/menu'
+// import Menu from './modules/menu'
 import Component from './modules/component'
 import Directive from './modules/directive'
-import SystemManage from './modules/systemManage'
+// import SystemManage from './modules/systemManage'
+import UserManage from './modules/userManage'
 import Chart from './modules/chart'
-import Print from './modules/print'
-import Community from './modules/community'
-import Tab from './modules/tab'
+// import Print from './modules/print'
+// import Community from './modules/community'
+// import Tab from './modules/tab'
 
 /** 登录后需要动态加入的本地路由 */
 const asyncRoutes: Route[] = [
   ...Dashboard,
   ...Document,
-  ...Component,
+  // ...Component,
   ...Pages,
-  ...Menu,
+  // ...Menu,
   ...Directive,
+  // ...SystemManage,
+  ...UserManage,
   ...Chart,
-  ...SystemManage,
-  ...Print,
-  ...Community,
-  ...Tab,
+  // ...Print,
+  // ...Community,
+  // ...Tab,
 ]
 
 /** 
