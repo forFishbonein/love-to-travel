@@ -98,7 +98,7 @@
 <script lang="ts">
 import {defineComponent, reactive, ref} from "vue";
 import {Page} from "@/components/table/type";
-import {del, getData, updateStatus} from "@/api/system/user";
+import {del, getAllUser, getByUserId, updateStatus} from "@/api/system/user";
 import {LayerInterface} from "@/components/layer/index.vue";
 import {ElMessage} from "element-plus";
 import Table from "@/components/table/index.vue";
@@ -147,7 +147,7 @@ export default defineComponent({
       //   pageSize: page.size,
       //   ...query
       // }
-      getData().then((res) => {
+      getAllUser().then((res) => {
         console.log(res)
         tableData.value = res.data.data
         // let data = res.data
@@ -191,8 +191,17 @@ export default defineComponent({
       layer.show = true;
       delete layer.row;
     }
-    //查看弹窗功能
+
+    // 查看用户详情
     const handleShow = (row: any) => {
+
+      getByUserId(row.id).then((res) => {
+
+      }).catch((error) => {
+
+      }).finally(() => {
+
+      });
 
 
     }

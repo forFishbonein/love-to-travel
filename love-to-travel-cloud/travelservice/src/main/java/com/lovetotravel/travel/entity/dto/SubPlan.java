@@ -12,4 +12,7 @@ public class SubPlan {
     @ApiModelProperty("城市")
     private String city;
 
+    @ApiModelProperty("行程中的一天")
+    private Days[] days;
+
 }

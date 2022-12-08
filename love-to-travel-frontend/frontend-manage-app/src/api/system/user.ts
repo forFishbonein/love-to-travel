@@ -2,14 +2,22 @@ import request from '@/utils/system/request'
 
 // 获取数据api
 // export function getData(data: object) {
-export function getData() {
+export function getAllUser() {
   return request({
     url: '/user',
     method: 'get',
     baseURL: 'http://localhost:8081',
     // data
   })
+}
 
+export function getByUserId(id: string) {
+  return request({
+    url: '/user'+id,
+    method: 'get',
+    baseURL: 'http://localhost:8081',
+    // data
+  })
 }
 
 // 新增
