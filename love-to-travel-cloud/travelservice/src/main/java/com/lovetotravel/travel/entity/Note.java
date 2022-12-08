@@ -30,8 +30,8 @@ public class Note {
     @ApiModelProperty("内容")
     private String content;
 
-    @ApiModelProperty("评分")
-    private String score;
+//    @ApiModelProperty("评分")
+//    private String score;
 
     @ApiModelProperty("评论量")
     private Long comment;
