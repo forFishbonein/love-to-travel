@@ -4,6 +4,33 @@
       <el-form-item label="名称：" prop="name">
         <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
       </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
+      <el-form-item label="名称：" prop="name">
+        <el-input v-model="ruleForm.name" placeholder="请输入名称"></el-input>
+      </el-form-item>
       <el-form-item label="数字：" prop="sort">
         <el-input v-model="ruleForm.sort" oninput="value=value.replace(/[^\d]/g,'')" placeholder="只能输入正整数"></el-input>
       </el-form-item>

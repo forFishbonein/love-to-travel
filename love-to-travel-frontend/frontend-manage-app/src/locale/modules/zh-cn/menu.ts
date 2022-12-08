@@ -38,7 +38,7 @@ export default {
       name: '用户管理板块',
       user: '用户管理',
       admin: '管理员',
-      log: '用户日志'
+      log: '登录日志'
     },
     echarts: {
       name: '统计分析',

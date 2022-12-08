@@ -245,7 +245,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     @Override
     public List<User> getAll() {
-        return userMapper.getAll();
+        return userMapper.selectList(null);
     }
 
     /**
