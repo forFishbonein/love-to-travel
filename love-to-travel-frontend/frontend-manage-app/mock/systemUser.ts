@@ -12,10 +12,10 @@ export default [
           [`list|${pageSize}`]: [{
             'id|+1': 0,
             name: '@name',
-            nickName: '@cname',
+            email: '@email',
+            gender: '男',
+            createTime: '2011-12-13 14:15:16',
             'status|1': [0,1],
-            'role|1': roles,
-            'isAdmin|1': [0,1]
           }],
           pager: {
             page: page,

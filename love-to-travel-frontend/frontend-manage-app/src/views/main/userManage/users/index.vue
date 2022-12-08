@@ -43,15 +43,10 @@
         @getTableData="getTableData"
         @selection-change="handleSelectionChange"
       >
-        <el-table-column prop="id" label="Id" align="center" width="80" />
+        <el-table-column prop="email" label="邮箱" align="center" />
         <el-table-column prop="name" label="用户名" align="center" />
-        <el-table-column prop="nickName" label="昵称" align="center" />
-        <el-table-column prop="role" label="角色" align="center" />
-        <el-table-column prop="isAdmin" label="超级管理员" align="center">
-          <template #default="scope">
-            <span class="statusName">{{ scope.row.isAdmin === 1 ? "是" : "否" }}</span>
-          </template>
-        </el-table-column>
+        <el-table-column prop="gender" label="性别" align="center" width="80" />
+        <el-table-column prop="createTime" label="注册时间" align="center" />
         <el-table-column prop="status" label="状态" align="center">
           <template #default="scope">
             <span class="statusName">{{ scope.row.status === 1 ? "启用" : "禁用" }}</span>
