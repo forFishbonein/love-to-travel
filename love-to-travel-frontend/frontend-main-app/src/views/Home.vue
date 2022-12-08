@@ -1,5 +1,22 @@
-<script setup lang="ts"></script>
-
+<script setup lang="ts">
+const planInfo = {
+  fromCity: "",
+  backCity: "",
+  goDate: "",
+};
+</script>
+<script lang="ts">
+/* 控制日历弹出 */
+//@ts-ignore
+(function ($) {
+  $(document).ready(function () {
+    if ($("#datepicker").length) {
+      $("#datepicker").datepicker();
+    }
+  });
+  //@ts-ignore
+})(jQuery);
+</script>
 <template>
   <!--Main Slider Start-->
   <section class="main-slider">
@@ -101,49 +118,54 @@
             <form class="tour-search-one" action="tour-sidebar.html">
               <div class="tour-search-one__inner">
                 <div class="tour-search-one__inputs">
-                  <div class="tour-search-one__input-box">
+                  <div
+                    class="tour-search-one__input-box tour-search-one__input-box-last"
+                  >
                     <label for="type">出发城市</label>
-                    <select class="selectpicker" id="type">
-                      <option value="Adventure">北京</option>
-                      <option value="Wildlife">Wildlife</option>
-                      <option value="Sightseeing">Sightseeing</option>
+                    <select class="selectpicker" id="type" value="">
+                      <!-- v-model="planInfo.fromCity" -->
+                      <option value="Adventure" v-for="item in 10" :key="item">
+                        北京
+                      </option>
+                      <!-- <option value="Wildlife">Wildlife</option>
+                      <option value="Sightseeing">Sightseeing</option> -->
                     </select>
-                    <!-- <input
-                      type="text"
-                      placeholder="Enter keywords"
-                      name="place"
-                      id="place"
-                    /> -->
-                  </div>
-                  <div class="tour-search-one__input-box">
-                    <label for="type2">目的城市</label>
-                    <select class="selectpicker" id="type2">
-                      <option value="Adventure">上海</option>
-                      <option value="Wildlife">Wildlife</option>
-                      <option value="Sightseeing">Sightseeing</option>
-                    </select>
-                    <!-- <input
-                      type="text"
-                      placeholder="September"
-                      name="when"
-                      id="datepicker"
-                    /> -->
                   </div>
                   <div
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
-                    <label for="time">旅行时长</label>
+                    <label for="type2">返回城市</label>
+                    <select
+                      class="selectpicker"
+                      id="type2"
+                      v-model="planInfo.backCity"
+                    >
+                      <option value="Adventure">上海</option>
+                      <option value="Wildlife">Wildlife</option>
+                      <option value="Sightseeing">Sightseeing</option>
+                    </select>
+                  </div>
+                  <div class="tour-search-one__input-box">
+                    <label>出发日期</label>
                     <input
-                      type="number"
-                      placeholder="请输入数字"
-                      name="输入时长"
-                      id="time"
+                      type="text"
+                      placeholder="选择日期"
+                      name="选择日期"
+                      id="datepicker"
+                      v-model="planInfo.goDate"
                     />
                   </div>
                 </div>
                 <div class="tour-search-one__btn-wrap">
                   <router-link
-                    :to="{ path: '/plan' }"
+                    :to="{
+                      path: '/plan',
+                      parmas: {
+                        fromCity: planInfo.fromCity,
+                        backCity: planInfo.backCity,
+                        goDate: planInfo.fromCity,
+                      },
+                    }"
                     target="_blank"
                     class="thm-btn tour-search-one__btn"
                   >
