@@ -9,8 +9,10 @@ import { onMounted } from "@vue/runtime-core";
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
 export default {
+  props: ["fromCity", "backCity", "goDate"],
   // 简单功能的实现
-  setup() {
+  setup(props, context) {
+    console.log(props);
     const router = useRouter();
     /* 定义变量值 */
     const color = ref("#e8604c");

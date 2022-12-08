@@ -63,6 +63,21 @@ export const routes: Array<RouteRecordRaw> = [
       keepAlive: false,
       showTab: true,
     },
+    props($route) {
+      return {
+        fromCity: $route.params.fromCity,
+        backCity: $route.params.backCity,
+        goDate: $route.params.goDate,
+      };
+    },
+    // 高级写法：把$route对象直接拆出属性
+    // props({ params: { fromCity, backCity, goDate } }) {
+    //   return {
+    //     fromCity,
+    //     backCity,
+    //     goDate,
+    //   };
+    // },
     // redirect: "/login/passLogin", //LoginAndRegister中包裹passLogin
     children: [
       // {
