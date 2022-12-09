@@ -1,5 +1,7 @@
 package com.lovetotravel.travel.controller;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lovetotravel.travel.entity.*;
 import com.lovetotravel.travel.mapper.CityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
@@ -58,6 +60,8 @@ public class SceneryController {
     @GetMapping("/scenery/hot")
     public Result<List<Scenery>> getHotScenery() {
         // TODO*******************
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Scenery::getCityId,"310000");
         return Result.success(sceneryService.getAll());
     }
 
@@ -65,7 +69,7 @@ public class SceneryController {
 
     @ApiOperation("根据景区id查询景区")
     @GetMapping("/scenery/{id}")
-    public Result<Scenery> getById(@PathVariable("id") String id) {
+    public Result<Scenery> getById(@PathVariable("id") Long id) {
         System.out.println(id);
         return Result.success(sceneryService.getById(id));
     }

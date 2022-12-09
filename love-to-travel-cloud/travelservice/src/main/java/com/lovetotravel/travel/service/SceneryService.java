@@ -9,6 +9,8 @@ public interface SceneryService  extends IService<Scenery> {
 
     List<Scenery> getAll();
 
+    Scenery getById(Long id);
+
 
 
 }
