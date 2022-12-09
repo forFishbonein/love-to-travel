@@ -1,5 +1,7 @@
 package com.lovetotravel.travel.service.impl;
 
+import com.lovetotravel.feign.clients.UserClient;
+import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.Team;
@@ -13,6 +15,7 @@ import com.lovetotravel.travel.entity.vo.TeamKickVo;
 import com.lovetotravel.travel.entity.vo.TeamUpdateVo;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.result.CodeMsg;
+import com.lovetotravel.travel.service.EmailService;
 import com.lovetotravel.travel.service.TeamService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -27,9 +30,13 @@ import java.util.List;
 public class TeamServiceImpl implements TeamService {
 
     final MongoTemplate mongoTemplate;
+    final UserClient userClient;
+    final EmailService emailService;
 
-    public TeamServiceImpl(MongoTemplate mongoTemplate) {
+    public TeamServiceImpl(MongoTemplate mongoTemplate, UserClient userClient, EmailService emailService) {
         this.mongoTemplate = mongoTemplate;
+        this.userClient = userClient;
+        this.emailService = emailService;
     }
 
     @Override
@@ -122,10 +129,15 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void invite(TeamInviteVo teamInviteVo) {
-
-        //TODO 根据用户id获取昵称
-
-
+        User inviter = userClient.getById(Long.valueOf(teamInviteVo.getInviterId()));
+        if (inviter == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        User user = userClient.getByEmail(teamInviteVo.getUserEmail());
+        if (user == null) {
+            throw new GlobalException(CodeMsg.EMAIL_EMPTY);
+        }
+        emailService.sendEmail(teamInviteVo,inviter, user);
 
     }
 

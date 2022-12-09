@@ -1,15 +1,7 @@
 package com.lovetotravel.travel.service;
 
+import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.vo.TeamInviteVo;
-import com.lovetotravel.travel.exception.GlobalException;
-import com.lovetotravel.travel.redis.utils.ValidateCodeUtils;
-import com.lovetotravel.travel.result.CodeMsg;
-import com.lovetotravel.user.entity.vo.LoginVo;
-import com.lovetotravel.user.exception.GlobalException;
-import com.lovetotravel.user.redis.CodeKey;
-import com.lovetotravel.user.redis.RedisService;
-import com.lovetotravel.user.redis.utils.ValidateCodeUtils;
-import com.lovetotravel.user.result.CodeMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
@@ -66,18 +58,21 @@ public class EmailService {
         }
     }
 
-    public void sendEmail(TeamInviteVo teamInviteVo) {
+    public void sendEmail(TeamInviteVo teamInviteVo, User inviter, User user) {
         String email = teamInviteVo.getUserEmail();
-        if (email == null) {
-            throw new GlobalException(CodeMsg.EMAIL_EMPTY);
+
+        String subject = "来自团队"+ teamInviteVo.getTeamName() +"的邀请函";
+
+        String content = "亲爱的";
+
+        if (user.getName() != null) {
+            content = content + user.getName();
+
+        } else {
+            content = content + user.getEmail();
         }
 
-
-
-
-        String subject = "来自"+""+"的邀请函";
-
-
+        content = content + "，您收到了来自团队" + teamInviteVo.getTeamName() + "的邀请函，赶快访问爱旅游官网并加入吧！";
 
         sendMimeMail(email, subject, content);
 

@@ -9,6 +9,7 @@ public class CodeMsg {
     public static CodeMsg ACCESS_LIMIT_REACHED = new CodeMsg(500104, "访问高峰期，请稍等！");
 
     //用户模块 5002XX
+    public static CodeMsg USER_NOT_EXIST = new CodeMsg(500202, "用户不存在");
     public static CodeMsg EMAIL_EMPTY = new CodeMsg(500205, "邮箱为空");
 
 
