@@ -1,10 +1,8 @@
 package com.lovetotravel.travel.controller;
 
-import com.lovetotravel.travel.entity.City;
-import com.lovetotravel.travel.entity.Note;
-import com.lovetotravel.travel.entity.Province;
-import com.lovetotravel.travel.entity.Scenery;
+import com.lovetotravel.travel.entity.*;
 import com.lovetotravel.travel.mapper.CityMapper;
+import com.lovetotravel.travel.mapper.HotCityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.SceneryService;
@@ -23,11 +21,13 @@ import java.util.List;
 public class SceneryController {
 
     final CityMapper cityMapper;
+    final HotCityMapper hotCityMapper;
     final ProvinceMapper provinceMapper;
     final SceneryService sceneryService;
 
-    public SceneryController(CityMapper cityMapper, ProvinceMapper provinceMapper, SceneryService sceneryService) {
+    public SceneryController(CityMapper cityMapper, HotCityMapper hotCityMapper, ProvinceMapper provinceMapper, SceneryService sceneryService) {
         this.cityMapper = cityMapper;
+        this.hotCityMapper = hotCityMapper;
         this.provinceMapper = provinceMapper;
         this.sceneryService = sceneryService;
     }
@@ -49,6 +49,14 @@ public class SceneryController {
     public Result<List<Scenery>> getAll() {
         return Result.success(sceneryService.getAll());
     }
+
+    //TODO 定时任务更新hotcity数据库
+    @ApiOperation("获取热门城市")
+    @GetMapping("/city/hot")
+    public Result<List<HotCity>> getHotCity() {
+        return Result.success(hotCityMapper.selectList(null));
+    }
+
 
     @ApiOperation("根据景区id查询景区")
     @GetMapping("/{id}")
