@@ -8,6 +8,9 @@ public class CodeMsg {
     public static CodeMsg BIND_ERROR = new CodeMsg(500101, "参数校验异常：%s");
     public static CodeMsg ACCESS_LIMIT_REACHED = new CodeMsg(500104, "访问高峰期，请稍等！");
 
+    //用户模块 5002XX
+    public static CodeMsg EMAIL_EMPTY = new CodeMsg(500205, "邮箱为空");
+
 
     //游记模块 5004XX
     public static CodeMsg NOTE_NOT_EXIST = new CodeMsg(500401, "游记不存在");

@@ -8,6 +8,7 @@ import com.lovetotravel.travel.entity.dto.Member;
 import com.lovetotravel.travel.entity.dto.Route;
 import com.lovetotravel.travel.entity.dto.SubPlan;
 import com.lovetotravel.travel.entity.vo.TeamCreateVo;
+import com.lovetotravel.travel.entity.vo.TeamInviteVo;
 import com.lovetotravel.travel.entity.vo.TeamKickVo;
 import com.lovetotravel.travel.entity.vo.TeamUpdateVo;
 import com.lovetotravel.travel.exception.GlobalException;
@@ -120,7 +121,11 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void invite(String email) {
+    public void invite(TeamInviteVo teamInviteVo) {
+
+        //TODO 根据用户id获取昵称
+
+
 
     }
 

@@ -37,6 +37,12 @@ public class UserController {
         return userService.getById(id);
     }
 
+    @ApiOperation("根据邮箱查询用户")
+    @GetMapping("/{email}")
+    public User getByEmail(@PathVariable("email") String email) {
+        return userService.getByEmail(email);
+    }
+
     @ApiOperation("查询所有用户")
     @GetMapping
     public Result<List<User>> getAll() {

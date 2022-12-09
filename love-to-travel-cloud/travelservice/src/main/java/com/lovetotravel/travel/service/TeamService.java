@@ -2,6 +2,7 @@ package com.lovetotravel.travel.service;
 
 import com.lovetotravel.travel.entity.Team;
 import com.lovetotravel.travel.entity.vo.TeamCreateVo;
+import com.lovetotravel.travel.entity.vo.TeamInviteVo;
 import com.lovetotravel.travel.entity.vo.TeamKickVo;
 import com.lovetotravel.travel.entity.vo.TeamUpdateVo;
 
@@ -21,7 +22,7 @@ public interface TeamService {
 
     void removeById(String id);
 
-    void invite(String email);
+    void invite(TeamInviteVo teamInviteVo);
 
     void kick(TeamKickVo teamKickVo);
 
