@@ -2,7 +2,6 @@ package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.*;
 import com.lovetotravel.travel.mapper.CityMapper;
-import com.lovetotravel.travel.mapper.HotCityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.SceneryService;
@@ -17,17 +16,15 @@ import java.util.List;
 
 @Api(tags = "景点接口")
 @RestController
-@RequestMapping("/scenery")
+@RequestMapping
 public class SceneryController {
 
     final CityMapper cityMapper;
-    final HotCityMapper hotCityMapper;
     final ProvinceMapper provinceMapper;
     final SceneryService sceneryService;
 
-    public SceneryController(CityMapper cityMapper, HotCityMapper hotCityMapper, ProvinceMapper provinceMapper, SceneryService sceneryService) {
+    public SceneryController(CityMapper cityMapper, ProvinceMapper provinceMapper, SceneryService sceneryService) {
         this.cityMapper = cityMapper;
-        this.hotCityMapper = hotCityMapper;
         this.provinceMapper = provinceMapper;
         this.sceneryService = sceneryService;
     }
@@ -38,6 +35,13 @@ public class SceneryController {
         return Result.success(cityMapper.selectList(null));
     }
 
+    //TODO 定时任务更新hotcity数据库
+    @ApiOperation("获取热门城市")
+    @GetMapping("/city/hot")
+    public Result<List<City>> getHotCity() {
+        return Result.success(cityMapper.getHotCity());
+    }
+
     @ApiOperation("获取所有省份")
     @GetMapping("/province")
     public Result<List<Province>> getAllProvince() {
@@ -45,22 +49,22 @@ public class SceneryController {
     }
 
     @ApiOperation("获取所有景区")
-    @GetMapping
-    public Result<List<Scenery>> getAll() {
+    @GetMapping("/scenery")
+    public Result<List<Scenery>> getAllScenery() {
         return Result.success(sceneryService.getAll());
     }
 
-    //TODO 定时任务更新hotcity数据库
-    @ApiOperation("获取热门城市")
-    @GetMapping("/city/hot")
-    public Result<List<HotCity>> getHotCity() {
-        return Result.success(hotCityMapper.selectList(null));
+    @ApiOperation("获取热门景区")
+    @GetMapping("/scenery/hot")
+    public Result<List<Scenery>> getHotScenery() {
+        // TODO*******************
+        return Result.success(sceneryService.getAll());
     }
 
 
 
     @ApiOperation("根据景区id查询景区")
-    @GetMapping("/{id}")
+    @GetMapping("/scenery/{id}")
     public Result<Scenery> getById(@PathVariable("id") String id) {
         System.out.println(id);
         return Result.success(sceneryService.getById(id));
