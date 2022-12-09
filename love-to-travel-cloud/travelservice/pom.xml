@@ -71,7 +71,6 @@
             <version>2.7.2</version>
         </dependency>
 
-
         <!-- nacos客户端依赖包 -->
         <dependency>
             <groupId>com.alibaba.cloud</groupId>
@@ -92,11 +91,12 @@
         <dependency>
             <groupId>io.github.openfeign</groupId>
             <artifactId>feign-httpclient</artifactId>
+            <version>11.8</version>
         </dependency>
         <!--引入feign的统一api-->
         <dependency>
-            <groupId>cn.lovetotravel</groupId>
-            <artifactId>feign-api</artifactId>
+            <groupId>com.lovetotravel</groupId>
+            <artifactId>feign</artifactId>
             <version>1.0</version>
         </dependency>
 
@@ -155,6 +155,10 @@
             <groupId>com.github.xiaoymin</groupId>
             <artifactId>swagger-bootstrap-ui</artifactId>
             <version>1.8.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-openfeign-core</artifactId>
         </dependency>
 
     </dependencies>
