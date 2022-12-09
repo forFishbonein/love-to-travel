@@ -60,6 +60,7 @@ public class PlanServiceImpl implements PlanService {
             for (int i = 0; i < subPlanLength; i++) {
                 update.set("subPlans." + i + ".cityId", subPlans[i].getCityId());
                 update.set("subPlans." + i + ".city", subPlans[i].getCity());
+                update.set("subPlans." + i + ".dayLength", subPlans[i].getDayLength());
 
                 if (subPlans[i].getDays() != null) {
                     Days[] days = subPlans[i].getDays();
