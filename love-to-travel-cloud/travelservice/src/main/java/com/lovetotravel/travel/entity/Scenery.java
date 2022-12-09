@@ -37,6 +37,12 @@ public class Scenery {
     @ApiModelProperty("地址")
     private String address;
 
+    @ApiModelProperty("适宜时节")
+    private String session;
+
+    @ApiModelProperty("小贴士")
+    private String tips;
+
     @ApiModelProperty("对应城市id")
     private String cityId;
 
