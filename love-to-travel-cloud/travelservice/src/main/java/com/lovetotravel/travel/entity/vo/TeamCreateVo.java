@@ -1,20 +1,14 @@
-package com.lovetotravel.travel.entity;
+package com.lovetotravel.travel.entity.vo;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import com.lovetotravel.travel.entity.dto.Member;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.bson.types.ObjectId;
-import org.springframework.data.mongodb.core.mapping.Document;
 import org.springframework.data.mongodb.core.mapping.MongoId;
 
 @Data
-@Document(collection = "team")
-public class Team {
-
-    @ApiModelProperty("组队id")
-    @MongoId
-    private ObjectId id;
+public class TeamCreateVo {
 
     @ApiModelProperty("行程id")
     private String planId;
@@ -36,19 +30,4 @@ public class Team {
 
     @ApiModelProperty("预期成员数量")
     private String num;
-
-    @ApiModelProperty("成员信息")
-    private Member[] members;
-
-    @ApiModelProperty("逻辑删除")
-    @TableLogic
-    private String deleted;
-
-    @ApiModelProperty("创建时间")
-    private String createTime;
-
-    @ApiModelProperty("修改时间")
-    private String updateTime;
-
-
 }
