@@ -44,7 +44,7 @@ const seeTheDetail = () => {
   });
 };
 onMounted(() => {
-  // requestRouteListInfo();
+  requestRouteListInfo();
 });
 </script>
 

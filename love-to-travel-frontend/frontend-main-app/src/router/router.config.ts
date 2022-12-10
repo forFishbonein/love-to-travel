@@ -128,11 +128,11 @@ export const routes: Array<RouteRecordRaw> = [
             component: () =>
               import("@/components/planResult/Route/RouteDetail.vue"),
             meta: { title: "路线详情", keepAlive: false, showTab: true },
-            // props(route) {
-            //   return {
-            //     id: route.params.cityId,
-            //   };
-            // },
+            props(route) {
+              return {
+                routeListInfo: route.params.routeListInfo,
+              };
+            },
           },
         ],
       },
@@ -162,6 +162,11 @@ export const routes: Array<RouteRecordRaw> = [
             component: () =>
               import("@/components/planResult/ScenicSpot/ScenicSpotDetail.vue"),
             meta: { title: "景区详情", keepAlive: false, showTab: true },
+            props(route) {
+              return {
+                routeListInfo: route.params.routeListInfo,
+              };
+            },
           },
         ],
       },

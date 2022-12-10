@@ -7,7 +7,7 @@ import {
   citysInfoType,
   citysPlansInfoType,
 } from "@apis/interface/iPlan";
-import { getCitysInfo } from "@apis/travelService/city";
+import { getHotCitysInfo } from "@apis/travelService/city";
 import { onMounted } from "@vue/runtime-core";
 import { cityStore } from "@/store/city";
 // import router from "@/router";
@@ -81,7 +81,7 @@ const initSubPlans = () => {
 const dialogFormVisible = ref(false);
 let citysInfo = ref([] as citysInfoType[]);
 const requestCitysInfo = async () => {
-  await getCitysInfo()
+  await getHotCitysInfo()
     .then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
@@ -90,7 +90,8 @@ const requestCitysInfo = async () => {
           message: res.msg,
         });
       } else {
-        citysInfo.value = res.data.slice(0, 10);
+        // citysInfo.value = res.data.slice(0, 10);
+        citysInfo.value = res.data;
         // console.log(citysInfo);
       }
     })
@@ -180,7 +181,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="base-header">header</div>
+  <div class="base-header">Aron的行程</div>
   <div class="base-container">
     <div class="body-left">
       <div class="left-header">出发城市：{{ fromTheCity }}</div>
@@ -230,7 +231,15 @@ onMounted(() => {
         <p>{{ goTheDate }}</p>
         <p>
           <span>{{ searchCityName }}</span>
-          <span> {{ budget }}元预算 </span>
+          <span>
+            <el-input
+              v-model="budget"
+              type="number"
+              placeholder="金额"
+              clearable
+              style="width: 80px; height: 25px; padding-right: 10px"
+            />元预算
+          </span>
         </p>
       </div>
       <div class="middle-body">
@@ -333,6 +342,9 @@ onMounted(() => {
   background-color: #ffffff;
   border-bottom: 2px #e8604c solid;
   // box-shadow: 0px 20px 10px rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  padding-left: 20px;
 }
 .base-container {
   width: 100%;
@@ -465,6 +477,8 @@ onMounted(() => {
           color: #606266;
           font-weight: 700;
           margin-right: 30px;
+          display: inline-block;
+          line-height: 25px;
         }
       }
     }

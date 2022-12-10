@@ -1,20 +1,32 @@
 <script setup lang="ts">
+import { ref } from "vue";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const props = defineProps<{
   id: string;
 }>();
 console.log("scenic页面" + props);
+const routeListInfo = ref([1, 2, 3, 4]); //改类型
+const seeTheDetail = () => {
+  router.push({
+    name: "ScenicSpotDetail",
+    params: {
+      routeListInfo: JSON.stringify(routeListInfo),
+    },
+  });
+};
 </script>
 
 <template>
   <el-scrollbar height="350px">
     <div v-for="item in 20" :key="item" class="right-scrollbar-item">
       <div class="circle">
-        <div class="imgBx">
+        <div class="imgBx" @click="seeTheDetail">
           <img src="@/assets/images/login-pic.jpg" alt="" />
         </div>
       </div>
       <div class="content">
-        <div class="add-button">+添加到行程</div>
+        <div class="add-button">+ 添加到行程</div>
       </div>
     </div>
   </el-scrollbar>
