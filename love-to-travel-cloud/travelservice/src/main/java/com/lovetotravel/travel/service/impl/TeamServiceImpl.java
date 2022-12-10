@@ -55,7 +55,7 @@ public class TeamServiceImpl implements TeamService {
     @Override
     public List<Team> getJoinedById(String id) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("ownerId").is(id));
+        query.addCriteria(Criteria.where("members").elemMatch(Criteria.where("userId").is(id)));
         query.addCriteria(Criteria.where("deleted").is("0"));
 
         return mongoTemplate.find(query, Team.class);
