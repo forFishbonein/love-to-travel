@@ -7,7 +7,7 @@ import lombok.Data;
 public class SubPlan {
 
     @ApiModelProperty("城市id")
-    private Integer cityId;
+    private String cityId;
 
     @ApiModelProperty("城市")
     private String city;

@@ -114,4 +114,14 @@ public class PlanServiceImpl implements PlanService {
         return mongoTemplate.find(query, Plan.class);
     }
 
+    @Override
+    public List<Plan> getByCityId(String cityId) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("subPlans").elemMatch(Criteria.where("cityId").is(cityId)));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        System.out.println(query);
+        return mongoTemplate.find(query, Plan.class);
+
+    }
+
 }
