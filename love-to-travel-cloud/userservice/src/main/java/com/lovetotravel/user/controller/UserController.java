@@ -38,7 +38,7 @@ public class UserController {
     }
 
     @ApiOperation("根据邮箱查询用户")
-    @GetMapping("/{email}")
+    @GetMapping("/email/{email}")
     public User getByEmail(@PathVariable("email") String email) {
         return userService.getByEmail(email);
     }
