@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { theCityScenerysInfoType } from "@/apis/interface/iPlan";
 const router = useRouter();
 const props = defineProps<{
-  routeListInfo: [];
+  sceneryDetailInfoString: string;
 }>();
-console.log("scenic detail页面" + props.routeListInfo);
-const routeListInfo = props.routeListInfo;
+console.log("scenic detail页面");
+console.log(props.sceneryDetailInfoString);
+let sceneryDetailInfo = ref({} as theCityScenerysInfoType);
+if (props.sceneryDetailInfoString) {
+  sceneryDetailInfo.value = JSON.parse(props.sceneryDetailInfoString);
+}
 const backToList = () => {
   router.go(-1);
 };
@@ -20,7 +26,7 @@ const backToList = () => {
   <el-scrollbar max-height="300px" class="detail-main">
     <div class="detail-main-header">
       <div class="left-img">
-        <img src="@/assets/images/login-pic.jpg" alt="" />
+        <img :src="sceneryDetailInfo.url" alt="" />
       </div>
       <div class="right-info"></div>
     </div>
@@ -28,7 +34,17 @@ const backToList = () => {
       <div class="title">
         <el-icon><Document /></el-icon>详情信息
       </div>
-      <div class="content">内容</div>
+      <div class="content">
+        <p>{{ sceneryDetailInfo.name }}</p>
+        <p>
+          <span style="color: #303133">地址：</span>
+          {{ sceneryDetailInfo.address }}
+        </p>
+        <p>
+          <span style="color: #303133">简介：</span>
+          {{ sceneryDetailInfo.introduction }}
+        </p>
+      </div>
     </div>
   </el-scrollbar>
 </template>
@@ -100,8 +116,26 @@ const backToList = () => {
     .content {
       width: auto;
       display: flex;
+      flex-direction: column;
       min-height: 150px;
       border: 1px #e8604c solid;
+      padding: 0 8px;
+      p {
+        margin: 0;
+        line-height: 1.2em;
+        margin: 3px 0;
+      }
+      p:first-child {
+        font-size: 15px;
+        color: #e8604c;
+        font-weight: 700;
+      }
+      p:nth-child(2) {
+        font-size: 12px;
+      }
+      p:nth-child(3) {
+        font-size: 12px;
+      }
     }
   }
 }
