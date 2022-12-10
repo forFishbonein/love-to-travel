@@ -1,5 +1,5 @@
 import httpRequest from "@/request";
-import { passLoginInfo, codeLoginInfo } from "@/apis/interface";
+import { passLoginInfo, codeLoginInfo } from "@/apis/userService/uInterface";
 export const passLogin = (passData: passLoginInfo) => {
   console.log(passData);
   return httpRequest({

@@ -1,4 +1,9 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+const props = defineProps<{
+  id: string;
+}>();
+console.log("scenic页面" + props);
+</script>
 
 <template>
   <el-scrollbar height="350px">
