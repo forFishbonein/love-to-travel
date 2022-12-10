@@ -104,6 +104,7 @@ export default {
       console.log(planCityInfo.wantCitys);
       planCityInfo.wantCitys.splice(index, 1);
       console.log(planCityInfo.wantCitys);
+      initMap(planCityInfo.wantCitys);
     };
 
     // 确认计划

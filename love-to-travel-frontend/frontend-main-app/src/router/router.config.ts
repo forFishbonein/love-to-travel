@@ -164,7 +164,7 @@ export const routes: Array<RouteRecordRaw> = [
             meta: { title: "景区详情", keepAlive: false, showTab: true },
             props(route) {
               return {
-                routeListInfo: route.params.routeListInfo,
+                sceneryDetailInfoString: route.params.sceneryDetailInfo,
               };
             },
           },

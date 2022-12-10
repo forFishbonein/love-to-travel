@@ -75,3 +75,24 @@ export interface finalPlansInfoType {
 //   time: number | null; //游玩的天数
 //   days: routesType[];
 // }
+
+/* 4 */
+export interface theCityScenerysInfoType {
+  name: string;
+  introduction: string | null;
+  ticket: string | null;
+  opening: string | null;
+  lng: string | null;
+  lat: string | null;
+  level: string | null;
+  address: string;
+  season: string | null;
+  tips: string | null;
+  cityId: string;
+  url: string;
+  tele: string | null;
+  deleted: string;
+  createTime: string | null;
+  updateTime: string | null;
+  id: number;
+}

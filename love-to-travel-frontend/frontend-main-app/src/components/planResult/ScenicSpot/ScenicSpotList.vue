@@ -1,31 +1,80 @@
 <script setup lang="ts">
 import { ref } from "vue";
+import { onMounted } from "@vue/runtime-core";
+import { getSceneryList } from "@apis/travelService/scenery";
 import { useRouter } from "vue-router";
+import { theCityScenerysInfoType } from "@/apis/interface/iPlan";
 const router = useRouter();
 const props = defineProps<{
   id: string;
 }>();
 console.log("scenic页面" + props);
-const routeListInfo = ref([1, 2, 3, 4]); //改类型
-const seeTheDetail = () => {
+const cityId = props.id;
+const sceneryListInfo = ref([] as theCityScenerysInfoType[]); //改类型
+const requestSceneryListInfo = async () => {
+  await getSceneryList(cityId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        sceneryListInfo.value = res.data;
+        console.log(sceneryListInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+let sceneryDetailInfo = {} as theCityScenerysInfoType;
+const seeTheDetail = (index: number) => {
+  // alert(index);
+  sceneryDetailInfo = sceneryListInfo.value[index]; //这里必须要.value才可以
+  console.log(sceneryDetailInfo);
+  // sceneryListInfo.value.forEach((element) => {});
   router.push({
     name: "ScenicSpotDetail",
     params: {
-      routeListInfo: JSON.stringify(routeListInfo),
+      sceneryDetailInfo: JSON.stringify(sceneryDetailInfo),
     },
   });
 };
+onMounted(() => {
+  requestSceneryListInfo();
+});
 </script>
 
 <template>
   <el-scrollbar height="350px">
-    <div v-for="item in 20" :key="item" class="right-scrollbar-item">
+    <div
+      v-for="(item, index) in sceneryListInfo"
+      :key="item.id"
+      class="right-scrollbar-item"
+    >
       <div class="circle">
-        <div class="imgBx" @click="seeTheDetail">
-          <img src="@/assets/images/login-pic.jpg" alt="" />
+        <div class="imgBx" @click="seeTheDetail(index)">
+          <img :src="item.url" alt="" />
         </div>
       </div>
       <div class="content">
+        <el-scrollbar max-height="80px" class="content-body">
+          <p>{{ item.name }}</p>
+          <p>
+            <span style="color: #303133">地址：</span>
+            {{ item.address }}
+          </p>
+          <p>
+            <span style="color: #303133">简介：</span>
+            北京故宫看看看看破Koop近几年来可能萨
+          </p>
+        </el-scrollbar>
         <div class="add-button">+ 添加到行程</div>
       </div>
     </div>
@@ -130,6 +179,29 @@ const seeTheDetail = () => {
   width: 100%;
   height: 140px;
   // padding: 20px 30px;
+  .content-body {
+    margin-top: 20px;
+    width: 200px;
+    height: 80px;
+    // border: 1px #e8604c solid;
+    padding: 0 8px;
+    p {
+      margin: 0;
+      line-height: 1.2em;
+      margin: 3px 0;
+    }
+    p:first-child {
+      font-size: 15px;
+      color: #e8604c;
+      font-weight: 700;
+    }
+    p:nth-child(2) {
+      font-size: 12px;
+    }
+    p:nth-child(3) {
+      font-size: 12px;
+    }
+  }
 }
 
 .fa-linkedin {
