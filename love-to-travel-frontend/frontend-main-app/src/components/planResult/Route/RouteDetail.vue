@@ -23,19 +23,39 @@ const backToList = () => {
       <el-icon :size="30"><Close /></el-icon>
     </div>
   </div>
-  <div class="right-scrollbar-item2">
+  <el-scrollbar max-height="300px" class="right-scrollbar-item2">
     <div class="route-body">
       <div class="body-left">
         <el-icon :size="30"><Collection /></el-icon>
       </div>
       <div class="body-right">
-        <p class="body-title">上海暴走三日游</p>
+        <p class="body-title">
+          {{ routeDetailInfo.city }}{{ routeDetailInfo.days.length }}日游
+        </p>
         <div class="body-content">
-          大苏打实打实大苏打撒大苏打撒大苏打撒旦大撒大撒大撒大撒大大
+          预算消费：{{ routeDetailInfo.budget }}元 &nbsp;&nbsp; 预计时长：{{
+            routeDetailInfo.days.length
+          }}天
+        </div>
+      </div>
+      <div class="content-main">
+        <p class="title">路线规划详情</p>
+        <div
+          v-for="(item, index) in routeDetailInfo.days"
+          :key="index"
+          class="content-item"
+        >
+          <p>第{{ index + 1 }}天</p>
+          <p v-for="(i, index) in item.route" :key="index">
+            目的地：{{ i.originName }} &nbsp; &nbsp;交通工具：{{
+              i.vehicle
+            }}
+            &nbsp;&nbsp;停留时间：{{ i.departTime }}小时
+          </p>
         </div>
       </div>
     </div>
-  </div>
+  </el-scrollbar>
 </template>
 
 <style lang="scss" scoped>
@@ -62,29 +82,25 @@ const backToList = () => {
 }
 .right-scrollbar-item2 {
   float: left;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  height: 200px;
-  margin: 10px;
-  width: 420px;
-  text-align: center;
-  background: #fff;
-  overflow: hidden;
-  position: relative;
+  height: 300px;
+  width: 450px;
+  margin: 0 auto;
   // border: 1px #dcdfe6 solid;
+  padding: 10px;
   .route-body {
+    border: 1px #dcdfe6 solid;
+    // border: 1px #e8604c solid;
     width: 100%;
-    height: 160px;
-    position: absolute;
-    top: 0;
     display: flex;
     justify-content: space-between;
-    padding: 20px 10px;
+    padding: 0 10px;
+    flex-wrap: wrap;
     .body-left {
-      width: 50px;
+      width: 40px;
       height: 40px;
-      //   border: 1px #e8604c solid;
+      padding-top: 20px;
+      padding-left: 10px;
+      // border: 1px #e8604c solid;
       float: left;
       margin-top: 10px;
       i {
@@ -94,7 +110,8 @@ const backToList = () => {
     .body-right {
       width: 350px;
       height: 120px;
-      //   border: 1px #e8604c solid;
+      // border: 1px #e8604c solid;
+      padding-top: 20px;
       float: right;
       display: flex;
       flex-direction: column;
@@ -117,6 +134,36 @@ const backToList = () => {
         text-align: left;
         line-height: 1.5em;
         overflow: hidden;
+      }
+    }
+
+    .content-main {
+      width: 400px;
+      display: flex;
+      min-height: 150px;
+      flex-direction: column;
+      .title {
+        width: 400px;
+        border-top: 1px #dcdfe6 solid;
+        border-bottom: 1px #dcdfe6 solid;
+        height: 40px;
+        line-height: 40px;
+        text-align: center;
+        color: #303133;
+        font-size: 18px;
+        font-weight: 700;
+      }
+      .content-item {
+        > p {
+          margin: 0;
+          line-height: 1.6em;
+          font-size: 14px;
+        }
+        > p:first-child {
+          color: #e8604c;
+          font-weight: 700;
+          font-size: 16px;
+        }
       }
     }
   }
