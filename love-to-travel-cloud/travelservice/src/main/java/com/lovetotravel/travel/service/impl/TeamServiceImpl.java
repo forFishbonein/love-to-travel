@@ -2,13 +2,8 @@ package com.lovetotravel.travel.service.impl;
 
 import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.User;
-import com.lovetotravel.travel.entity.Note;
-import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.Team;
-import com.lovetotravel.travel.entity.dto.Days;
 import com.lovetotravel.travel.entity.dto.Member;
-import com.lovetotravel.travel.entity.dto.Route;
-import com.lovetotravel.travel.entity.dto.SubPlan;
 import com.lovetotravel.travel.entity.vo.TeamCreateVo;
 import com.lovetotravel.travel.entity.vo.TeamInviteVo;
 import com.lovetotravel.travel.entity.vo.TeamKickVo;
@@ -22,11 +17,13 @@ import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
+import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
 
+@Service
 public class TeamServiceImpl implements TeamService {
 
     final MongoTemplate mongoTemplate;
@@ -57,7 +54,11 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public List<Team> getJoinedById(String id) {
-        return null;
+        Query query = new Query();
+        query.addCriteria(Criteria.where("ownerId").is(id));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+
+        return mongoTemplate.find(query, Team.class);
     }
 
     @Override
@@ -142,8 +143,6 @@ public class TeamServiceImpl implements TeamService {
 
         if (team.getMembers() != null) {
             Member[] members = team.getMembers();
-
-
 
             int membersLength = members.length;
 

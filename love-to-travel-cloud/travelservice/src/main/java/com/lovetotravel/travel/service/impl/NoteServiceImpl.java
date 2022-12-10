@@ -79,6 +79,9 @@ public class NoteServiceImpl implements NoteService {
         note.setCreateTime(currentTimeStamp);
         note.setUpdateTime(currentTimeStamp);
         note.setDeleted("0");
+        note.setLike(0L);
+        note.setComment(0L);
+        note.setView(0L);
         mongoTemplate.insert(note);
     }
 

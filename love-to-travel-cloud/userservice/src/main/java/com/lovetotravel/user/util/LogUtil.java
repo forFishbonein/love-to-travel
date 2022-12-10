@@ -8,14 +8,14 @@ import javax.servlet.http.HttpServletRequest;
 
 public class LogUtil {
 
-    public static String browserName(HttpServletRequest request){
+    public static String browserName(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
         UserAgent ua = UserAgent.parseUserAgentString(userAgent);
         Browser browser = ua.getBrowser();
         return browser.getName() + "-" + browser.getVersion(userAgent);
     }
 
-    public static String osName(HttpServletRequest request){
+    public static String osName(HttpServletRequest request) {
         String userAgent = request.getHeader("User-Agent");
         UserAgent ua = UserAgent.parseUserAgentString(userAgent);
         OperatingSystem os = ua.getOperatingSystem();
@@ -63,7 +63,6 @@ public class LogUtil {
             return ip;
         }
     }
-
 
 
 }

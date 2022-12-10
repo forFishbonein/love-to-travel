@@ -2,10 +2,7 @@ package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Team;
-import com.lovetotravel.travel.entity.vo.NoteVo;
-import com.lovetotravel.travel.entity.vo.TeamCreateVo;
-import com.lovetotravel.travel.entity.vo.TeamKickVo;
-import com.lovetotravel.travel.entity.vo.TeamUpdateVo;
+import com.lovetotravel.travel.entity.vo.*;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.NoteService;
 import com.lovetotravel.travel.service.TeamService;
@@ -71,8 +68,8 @@ public class TeamController {
 
     @ApiOperation("发送邀请邮件")
     @PostMapping("/invite/{email}")
-    public Result<String> invite(@PathVariable("email") String email) {
-        teamService.invite(email);
+    public Result<String> invite(TeamInviteVo teamInviteVo) {
+        teamService.invite(teamInviteVo);
         return Result.success("邀请成功");
     }
 

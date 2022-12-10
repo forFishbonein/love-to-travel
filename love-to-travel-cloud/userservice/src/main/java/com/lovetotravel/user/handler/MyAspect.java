@@ -34,11 +34,11 @@ public class MyAspect {
     @Pointcut("execution(public * com.lovetotravel.user.controller.LoginController.passLogin(..)) || execution(public * com.lovetotravel.user.controller.LoginController.codeLogin(..))")
     public void loginPointCut(){}
 
-    @AfterReturning(value = "loginPointCut()",returning = "result")
+    @AfterReturning(value = "loginPointCut()", returning = "result")
     public void doLoginAfter(JoinPoint joinPoint, Object result) throws Throwable {
 
-        Object[] objs=joinPoint.getArgs();
-        HttpServletRequest request=(HttpServletRequest) objs[0];
+        Object[] objs = joinPoint.getArgs();
+        HttpServletRequest request = (HttpServletRequest) objs[0];
         LoginVo login = (LoginVo) objs[2];
         String email = login.getEmail();
 

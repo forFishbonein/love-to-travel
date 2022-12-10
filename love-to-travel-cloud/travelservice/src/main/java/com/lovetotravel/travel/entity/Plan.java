@@ -1,7 +1,6 @@
 package com.lovetotravel.travel.entity;
 
 import com.baomidou.mybatisplus.annotation.TableLogic;
-import com.lovetotravel.travel.entity.dto.Days;
 import com.lovetotravel.travel.entity.dto.SubPlan;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

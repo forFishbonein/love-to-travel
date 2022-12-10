@@ -38,6 +38,7 @@ public class ListenHandler {
         //将数据库中的数据写入redis
         List<Note> noteList = noteService.getAll();
         noteList.forEach(note -> {
+            System.out.println("note = " + note);
             //将浏览量、点赞数和评论数写入redis
             redisService.set(NoteKey.getComment, note.getId().toString(), note.getComment().toString());
             redisService.set(NoteKey.getLike, note.getId().toString(), note.getLike().toString());
