@@ -2,6 +2,7 @@ package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
+import com.lovetotravel.travel.entity.dto.SubPlan;
 import com.lovetotravel.travel.entity.vo.NoteVo;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.NoteService;
@@ -52,7 +53,7 @@ public class PlanController {
 
     @ApiOperation("根据城市id查询行程")
     @GetMapping("/city/{id}")
-    public Result<List<Plan>> getByCityId(@PathVariable("id") String id) {
+    public Result<List<SubPlan>> getByCityId(@PathVariable("id") String id) {
         return Result.success(planService.getByCityId(id));
     }
 

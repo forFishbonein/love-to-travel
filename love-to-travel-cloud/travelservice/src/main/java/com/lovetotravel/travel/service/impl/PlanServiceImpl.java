@@ -1,9 +1,8 @@
 package com.lovetotravel.travel.service.impl;
 
-import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
-import com.lovetotravel.travel.entity.dto.Route;
 import com.lovetotravel.travel.entity.dto.Days;
+import com.lovetotravel.travel.entity.dto.Route;
 import com.lovetotravel.travel.entity.dto.SubPlan;
 import com.lovetotravel.travel.service.PlanService;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,6 +12,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -58,7 +58,6 @@ public class PlanServiceImpl implements PlanService {
                 update.set("subPlans." + i + ".city", subPlans[i].getCity());
                 update.set("subPlans." + i + ".dayLength", subPlans[i].getDayLength());
                 update.set("subPlans." + i + ".budget", subPlans[i].getBudget());
-                update.set("subPlans." + i + ".weather", subPlans[i].getWeather());
                 if (subPlans[i].getDays() != null) {
                     Days[] days = subPlans[i].getDays();
                     int daysLength = days.length;
@@ -91,12 +90,23 @@ public class PlanServiceImpl implements PlanService {
     }
 
     @Override
-    public List<Plan> getByCityId(String cityId) {
+    public List<SubPlan> getByCityId(String cityId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("subPlans").elemMatch(Criteria.where("cityId").is(cityId)));
         query.addCriteria(Criteria.where("deleted").is("0"));
         System.out.println(query);
-        return mongoTemplate.find(query, Plan.class);
+        List<Plan> plans = mongoTemplate.find(query, Plan.class);
+        List<SubPlan> result = new ArrayList<>();
+        plans.forEach(plan -> {
+            SubPlan[] subPlans = plan.getSubPlans();
+            for (SubPlan subPlan : subPlans) {
+                if (subPlan.getCityId().equals(cityId)) {
+                    result.add(subPlan);
+                }
+            }
+
+        });
+        return result;
     }
 
 }
