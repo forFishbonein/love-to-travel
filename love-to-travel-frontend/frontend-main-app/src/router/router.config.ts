@@ -2,8 +2,8 @@ import { RouteRecordRaw } from "vue-router";
 import Index from "@/Index.vue";
 import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
-import TravelPlan from "@views/TravelPlan.vue";
-import TravelPlanResult from "@views/TravelPlanResult.vue";
+import TravelPlan from "@/views/makePlan/TravelPlan.vue";
+import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 export const routes: Array<RouteRecordRaw> = [
