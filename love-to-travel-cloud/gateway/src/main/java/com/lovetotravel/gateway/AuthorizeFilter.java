@@ -21,15 +21,24 @@ public class AuthorizeFilter implements GlobalFilter, Ordered {
         // 2.获取参数中的 authorization 参数
         String auth = params.getFirst("authorization");
         // 3.判断参数值是否等于 admin
-        if ("admin".equals(auth)) {
-            // 4.是，放行
-            return chain.filter(exchange);
-        }
-        // 5.否，拦截
-        // 5.1.设置状态码
-        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
-        // 5.2.拦截请求
-        return exchange.getResponse().setComplete();
+        return chain.filter(exchange);
+//        if ("admin".equals(auth)) {
+//            // 4.是，放行
+//            System.out.println("666666666666666666");
+//            System.out.println("666666666666666666");
+//            System.out.println("666666666666666666");
+//            System.out.println("666666666666666666");
+//            return chain.filter(exchange);
+//        }
+//        System.out.println("==================");
+//        System.out.println("==================");
+//        System.out.println("==================");
+//        System.out.println("==================");
+//        // 5.否，拦截
+//        // 5.1.设置状态码
+//        exchange.getResponse().setStatusCode(HttpStatus.UNAUTHORIZED);
+//        // 5.2.拦截请求
+//        return exchange.getResponse().setComplete();
     }
 
     @Override

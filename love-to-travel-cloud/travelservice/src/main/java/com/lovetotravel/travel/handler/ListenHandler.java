@@ -122,7 +122,5 @@ public class ListenHandler {
         BeanUtils.copyProperties(note, noteVo);
         //更新数据库
         noteService.update(noteVo);
-        log.info("{} 更新完毕", fieldName);
-
     }
 }

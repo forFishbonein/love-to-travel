@@ -9,13 +9,25 @@ spring:
     nacos:
       server-addr: 121.41.107.144:8848
 
+
+
     gateway:
+      discovery:
+        locator:
+          enabled: true
+          lowerCaseServiceId: true  #这个配置是设置在URL请求是项目名称的字母使用小写，默认是大写
       routes:
-        - id: user-service # 路由标示，必须唯一
-          uri: lb://userservice # 路由的目标地址，lb即loadbalance负载均衡
-          predicates: # 路由断言，判断请求是否符合规则
-            - Path=/** # 路径断言，判断路径是否是以/user开头，如果是则符合
         - id: travel-service
           uri: lb://travelservice
           predicates:
-            - Path=/**
+            - Path=/travel/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+            - StripPrefix=1
+        - id: user-service # 路由标示，必须唯一
+          uri: lb://userservice # 路由的目标地址，lb即loadbalance负载均衡
+          predicates:
+            - Path=/user/**
+            - Method=GET,POST,PUT,DELETE
+          filters:
+            - StripPrefix=1
