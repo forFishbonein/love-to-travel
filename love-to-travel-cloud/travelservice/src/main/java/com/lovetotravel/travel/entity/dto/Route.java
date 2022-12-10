@@ -24,9 +24,6 @@ public class Route {
     @ApiModelProperty("交通工具")
     private String vehicle;
 
-    @ApiModelProperty("预算")
-    private String budget;
-
     @ApiModelProperty("天气")
     private String weather;
 }
