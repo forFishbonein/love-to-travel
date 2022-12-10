@@ -7,13 +7,13 @@ import lombok.Data;
 public class Route {
 
     @ApiModelProperty("起点")
-    private Integer[] origin;
+    private Double[] origin;
 
     @ApiModelProperty("起点名称")
     private String originName;
 
     @ApiModelProperty("终点")
-    private Integer[] destination;
+    private Double[] destination;
 
     @ApiModelProperty("终点名称")
     private String destinationName;

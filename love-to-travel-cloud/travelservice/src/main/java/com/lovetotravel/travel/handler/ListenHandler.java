@@ -47,7 +47,6 @@ public class ListenHandler {
             if (note.getView() == null) {
                 note.setView(0L);
             }
-            System.out.println("note = " + note);
             //将浏览量、点赞数和评论数写入redis
             redisService.set(NoteKey.getComment, note.getId().toString(), note.getComment().toString());
             redisService.set(NoteKey.getLike, note.getId().toString(), note.getLike().toString());
@@ -120,11 +119,7 @@ public class ListenHandler {
                 return;
         }
         NoteVo noteVo = new NoteVo();
-
         BeanUtils.copyProperties(note, noteVo);
-
-        System.out.println("note = " + note);
-        System.out.println("noteVo = " + noteVo);
         //更新数据库
         noteService.update(noteVo);
         log.info("{} 更新完毕", fieldName);
