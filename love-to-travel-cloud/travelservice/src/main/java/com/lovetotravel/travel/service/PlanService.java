@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.service;
 
 import com.lovetotravel.travel.entity.Plan;
+import com.lovetotravel.travel.entity.dto.SubPlan;
 
 import java.util.List;
 
@@ -12,6 +13,6 @@ public interface PlanService {
 
     List<Plan> getByUserId(String userId);
 
-    List<Plan> getByCityId(String cityId);
+    List<SubPlan> getByCityId(String cityId);
 
 }
