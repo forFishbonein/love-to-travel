@@ -348,7 +348,7 @@ export default {
               :key="index"
               class="scrollbar-item"
             >
-              <div><img src="../assets/images/login-pic.jpg" /></div>
+              <div><img src="@/assets/images/login-pic.jpg" /></div>
               <div>
                 <div class="title-city">
                   <p>
