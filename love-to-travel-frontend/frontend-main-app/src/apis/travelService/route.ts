@@ -3,7 +3,7 @@ export const getRouteList = (id: string) => {
   // alert("哈哈" + id);
   return httpRequest({
     method: "get",
-    url: "/city",
+    url: "/travelservice/city",
     loading: true, //显示加载圈
   });
 };
