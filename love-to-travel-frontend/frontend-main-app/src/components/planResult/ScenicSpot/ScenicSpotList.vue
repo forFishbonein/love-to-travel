@@ -3,14 +3,15 @@ import { ref } from "vue";
 import { onMounted } from "@vue/runtime-core";
 import { getSceneryList } from "@apis/travelService/scenery";
 import { useRouter } from "vue-router";
-import { theCityScenerysInfoType } from "@/apis/interface/iPlan";
+import { theCityScenerysInfoType, routeInfoType } from "@/apis/interface/iPlan";
+import emitter from "@/mitt/event";
 const router = useRouter();
 const props = defineProps<{
   id: string;
 }>();
 console.log("scenic页面" + props);
 const cityId = props.id;
-const sceneryListInfo = ref([] as theCityScenerysInfoType[]); //改类型
+const sceneryListInfo = ref([] as theCityScenerysInfoType[]);
 const requestSceneryListInfo = async () => {
   await getSceneryList(cityId)
     .then((res: any) => {
@@ -33,7 +34,9 @@ const requestSceneryListInfo = async () => {
       });
     });
 };
+/* 要在详情页展示的数据 */
 let sceneryDetailInfo = {} as theCityScenerysInfoType;
+/* 给详情页面传数据 */
 const seeTheDetail = (index: number) => {
   // alert(index);
   sceneryDetailInfo = sceneryListInfo.value[index]; //这里必须要.value才可以
@@ -45,6 +48,22 @@ const seeTheDetail = (index: number) => {
       sceneryDetailInfo: JSON.stringify(sceneryDetailInfo),
     },
   });
+};
+/* 添加到行程需要的数据 */
+let routeInfo = ref({} as routeInfoType);
+
+/* 添加到行程 */
+const dialogFormVisible = ref(false);
+const openSceneryToPlanDialog = (index: number) => {
+  const theSceneryInfo = sceneryListInfo.value[index];
+  //只需要下面两项信息即可！
+  routeInfo.value.originName = theSceneryInfo.name;
+  routeInfo.value.origin = [theSceneryInfo.lng, theSceneryInfo.lat];
+  dialogFormVisible.value = true;
+};
+const addSceneryToPlan = () => {
+  dialogFormVisible.value = false;
+  emitter.emit("addAScenery", routeInfo.value);
 };
 onMounted(() => {
   requestSceneryListInfo();
@@ -75,10 +94,36 @@ onMounted(() => {
             北京故宫看看看看破Koop近几年来可能萨
           </p>
         </el-scrollbar>
-        <div class="add-button">+ 添加到行程</div>
+        <div class="add-button" @click="openSceneryToPlanDialog(index)">
+          + 添加到行程
+        </div>
       </div>
     </div>
   </el-scrollbar>
+  <el-dialog v-model="dialogFormVisible" title="添加景区到行程">
+    <el-form :model="routeInfo">
+      <el-form-item label="目的景区" label-width="70px">
+        <el-input
+          v-model="routeInfo.originName"
+          disabled
+          :placeholder="routeInfo.originName"
+        />
+      </el-form-item>
+      <el-form-item label="出发时间" label-width="70px">
+        <el-input v-model="routeInfo.departTime" autocomplete="off" clearable />
+      </el-form-item>
+
+      <el-form-item label="交通工具" label-width="70px">
+        <el-input v-model="routeInfo.vehicle" autocomplete="off" clearable />
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="addSceneryToPlan"> 确认 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>

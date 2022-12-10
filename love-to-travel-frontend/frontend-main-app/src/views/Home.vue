@@ -11,6 +11,14 @@ import { onMounted } from "@vue/runtime-core";
 const router = useRouter();
 let citysInfos = [
   {
+    cityId: "110000",
+    cityName: "北京市",
+    lng: "110",
+    lat: "33",
+    url: null,
+    introduction: null,
+  },
+  {
     cityId: "140700",
     cityName: "晋中市",
     lng: "112.759595",
