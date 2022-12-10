@@ -20,7 +20,7 @@ public class Scenery {
     private String introduction;
 
     @ApiModelProperty("票价")
-    private String ticker;
+    private String ticket;
 
     @ApiModelProperty("开放时间")
     private String opening;
@@ -36,6 +36,12 @@ public class Scenery {
 
     @ApiModelProperty("地址")
     private String address;
+
+    @ApiModelProperty("适宜时节")
+    private String season;
+
+    @ApiModelProperty("小贴士")
+    private String tips;
 
     @ApiModelProperty("对应城市id")
     private String cityId;

@@ -15,4 +15,7 @@ public class SubPlan {
     @ApiModelProperty("行程中的一天")
     private Days[] days;
 
+    @ApiModelProperty("当前城市停留天数")
+    private Integer dayLength;
+
 }

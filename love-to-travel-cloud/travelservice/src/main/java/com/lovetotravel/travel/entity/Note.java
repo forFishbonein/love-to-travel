@@ -22,7 +22,7 @@ public class Note {
     private String title;
 
     @ApiModelProperty("行程")
-    private Plan plan;
+    private String planId;
 
     @ApiModelProperty("图片地址")
     private String url;

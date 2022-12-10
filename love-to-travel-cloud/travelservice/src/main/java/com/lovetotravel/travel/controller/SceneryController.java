@@ -1,9 +1,8 @@
 package com.lovetotravel.travel.controller;
 
-import com.lovetotravel.travel.entity.City;
-import com.lovetotravel.travel.entity.Note;
-import com.lovetotravel.travel.entity.Province;
-import com.lovetotravel.travel.entity.Scenery;
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lovetotravel.travel.entity.*;
 import com.lovetotravel.travel.mapper.CityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
 import com.lovetotravel.travel.result.Result;
@@ -19,7 +18,7 @@ import java.util.List;
 
 @Api(tags = "景点接口")
 @RestController
-@RequestMapping("/scenery")
+@RequestMapping
 public class SceneryController {
 
     final CityMapper cityMapper;
@@ -38,6 +37,13 @@ public class SceneryController {
         return Result.success(cityMapper.selectList(null));
     }
 
+    //TODO 定时任务更新hotcity数据库
+    @ApiOperation("获取热门城市")
+    @GetMapping("/city/hot")
+    public Result<List<City>> getHotCity() {
+        return Result.success(cityMapper.getHotCity());
+    }
+
     @ApiOperation("获取所有省份")
     @GetMapping("/province")
     public Result<List<Province>> getAllProvince() {
@@ -45,14 +51,25 @@ public class SceneryController {
     }
 
     @ApiOperation("获取所有景区")
-    @GetMapping
-    public Result<List<Scenery>> getAll() {
+    @GetMapping("/scenery")
+    public Result<List<Scenery>> getAllScenery() {
         return Result.success(sceneryService.getAll());
     }
 
+    @ApiOperation("获取热门景区")
+    @GetMapping("/scenery/hot")
+    public Result<List<Scenery>> getHotScenery() {
+        // TODO*******************
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Scenery::getCityId,"310000");
+        return Result.success(sceneryService.getAll());
+    }
+
+
+
     @ApiOperation("根据景区id查询景区")
-    @GetMapping("/{id}")
-    public Result<Scenery> getById(@PathVariable("id") String id) {
+    @GetMapping("/scenery/{id}")
+    public Result<Scenery> getById(@PathVariable("id") Long id) {
         System.out.println(id);
         return Result.success(sceneryService.getById(id));
     }
