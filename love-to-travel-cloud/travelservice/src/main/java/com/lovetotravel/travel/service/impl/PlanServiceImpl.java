@@ -82,7 +82,6 @@ public class PlanServiceImpl implements PlanService {
                                 update.set("subPlans." + i + "days." + k + ".route." + k + ".destinationName", routes[j].getDestinationName());
                                 update.set("subPlans." + i + "days." + k + ".route." + k + ".departTime", routes[j].getDepartTime());
                                 update.set("subPlans." + i + "days." + k + ".route." + k + ".vehicle", routes[j].getVehicle());
-                                update.set("subPlans." + i + "days." + k + ".route." + k + ".budget", routes[j].getBudget());
                                 update.set("subPlans." + i + "days." + k + ".route." + k + ".weather", routes[j].getWeather());
                             }
                         }
