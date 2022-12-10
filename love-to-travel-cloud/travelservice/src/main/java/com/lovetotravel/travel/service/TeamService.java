@@ -1,10 +1,7 @@
 package com.lovetotravel.travel.service;
 
 import com.lovetotravel.travel.entity.Team;
-import com.lovetotravel.travel.entity.vo.TeamCreateVo;
-import com.lovetotravel.travel.entity.vo.TeamInviteVo;
-import com.lovetotravel.travel.entity.vo.TeamKickVo;
-import com.lovetotravel.travel.entity.vo.TeamUpdateVo;
+import com.lovetotravel.travel.entity.vo.team.*;
 
 import java.util.List;
 
@@ -25,6 +22,10 @@ public interface TeamService {
     void invite(TeamInviteVo teamInviteVo);
 
     void kick(TeamKickVo teamKickVo);
+
+    void join(TeamJoinVo teamJoinVo);
+
+    void leave(TeamJoinVo teamJoinVo);
 
 
 }

@@ -4,16 +4,15 @@ import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Team;
 import com.lovetotravel.travel.entity.dto.Member;
-import com.lovetotravel.travel.entity.vo.TeamCreateVo;
-import com.lovetotravel.travel.entity.vo.TeamInviteVo;
-import com.lovetotravel.travel.entity.vo.TeamKickVo;
-import com.lovetotravel.travel.entity.vo.TeamUpdateVo;
+import com.lovetotravel.travel.entity.vo.team.*;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.EmailService;
 import com.lovetotravel.travel.service.TeamService;
+import org.bson.Document;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -128,7 +127,6 @@ public class TeamServiceImpl implements TeamService {
             throw new GlobalException(CodeMsg.EMAIL_EMPTY);
         }
         emailService.sendEmail(teamInviteVo,inviter, user);
-
     }
 
     @Override
@@ -164,6 +162,24 @@ public class TeamServiceImpl implements TeamService {
         update.set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Team.class);
 
+
+    }
+
+    @Override
+    public void join(TeamJoinVo teamJoinVo) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(teamJoinVo.getTeamId()));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        Document updateDoc = new Document();
+        Member member = new Member();
+        BeanUtils.copyProperties(teamJoinVo, member);
+        updateDoc.append("$addToSet", new Document().append("members", member));
+        BasicUpdate update = new BasicUpdate(updateDoc);
+        mongoTemplate.upsert(query, update, Team.class);
+    }
+
+    @Override
+    public void leave(TeamJoinVo teamJoinVo) {
 
     }
 

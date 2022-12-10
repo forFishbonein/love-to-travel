@@ -1,7 +1,7 @@
 package com.lovetotravel.travel.service;
 
 import com.lovetotravel.feign.entity.User;
-import com.lovetotravel.travel.entity.vo.TeamInviteVo;
+import com.lovetotravel.travel.entity.vo.team.TeamInviteVo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
