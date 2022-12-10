@@ -11,6 +11,8 @@ public interface SceneryService  extends IService<Scenery> {
 
     Scenery getById(Long id);
 
+    List<Scenery> getByCityId(String id);
+
 
 
 }

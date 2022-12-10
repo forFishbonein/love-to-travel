@@ -29,4 +29,11 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
     public Scenery getById(Long id) {
         return sceneryMapper.getById(id);
     }
+
+    @Override
+    public List<Scenery> getByCityId(String id) {
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Scenery::getDeleted, "0").eq(Scenery::getCityId, id);
+        return sceneryMapper.selectList(queryWrapper);
+    }
 }
