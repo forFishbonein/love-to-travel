@@ -19,6 +19,9 @@ public class Scenery {
     @ApiModelProperty("简介")
     private String introduction;
 
+    @ApiModelProperty("评分")
+    private String score;
+
     @ApiModelProperty("票价")
     private String ticket;
 
