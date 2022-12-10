@@ -18,6 +18,4 @@ public class Route {
     @ApiModelProperty("交通工具")
     private String vehicle;
 
-    @ApiModelProperty("天气")
-    private String weather;
 }

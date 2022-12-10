@@ -15,6 +15,9 @@ public class SubPlan {
     @ApiModelProperty("预算")
     private String budget;
 
+    @ApiModelProperty("天气")
+    private String weather;
+
     @ApiModelProperty("行程中的一天")
     private Days[] days;
 

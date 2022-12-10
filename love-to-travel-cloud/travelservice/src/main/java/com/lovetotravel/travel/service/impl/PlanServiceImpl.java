@@ -43,67 +43,43 @@ public class PlanServiceImpl implements PlanService {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(plan.getId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
-
         Update update = new Update();
-
         update.set("budget", plan.getBudget());
         update.set("start", plan.getStart());
         update.set("end", plan.getEnd());
-
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
-
         if (plan.getSubPlans() != null) {
             SubPlan[] subPlans = plan.getSubPlans();
-
             int subPlanLength = subPlans.length;
-
             for (int i = 0; i < subPlanLength; i++) {
                 update.set("subPlans." + i + ".cityId", subPlans[i].getCityId());
                 update.set("subPlans." + i + ".city", subPlans[i].getCity());
                 update.set("subPlans." + i + ".dayLength", subPlans[i].getDayLength());
                 update.set("subPlans." + i + ".budget", subPlans[i].getBudget());
-
+                update.set("subPlans." + i + ".weather", subPlans[i].getWeather());
                 if (subPlans[i].getDays() != null) {
                     Days[] days = subPlans[i].getDays();
-
                     int daysLength = days.length;
-
                     for (int j = 0; j < daysLength; j++) {
-
                         if (days[j].getRoute() != null) {
-
                             Route[] routes = days[i].getRoute();
-
                             int routeLength = routes.length;
-
                             for (int k = 0; k < routeLength; k++) {
                                 update.set("subPlans." + i + "days." + k + ".route." + k + ".origin", routes[j].getOrigin());
                                 update.set("subPlans." + i + "days." + k + ".route." + k + ".originName", routes[j].getOriginName());
                                 update.set("subPlans." + i + "days." + k + ".route." + k + ".departTime", routes[j].getDepartTime());
                                 update.set("subPlans." + i + "days." + k + ".route." + k + ".vehicle", routes[j].getVehicle());
-                                update.set("subPlans." + i + "days." + k + ".route." + k + ".weather", routes[j].getWeather());
                             }
                         }
                     }
                 }
-
-
-
             }
-
-
         }
-
-
-
         update.set("updateTime", currentTimeStamp);
         System.out.println(update);
-        System.out.println("=====================");
-        System.out.println("=====================");
         mongoTemplate.updateFirst(query, update, Plan.class);
-        System.out.println(update);
     }
 
     @Override
@@ -121,7 +97,6 @@ public class PlanServiceImpl implements PlanService {
         query.addCriteria(Criteria.where("deleted").is("0"));
         System.out.println(query);
         return mongoTemplate.find(query, Plan.class);
-
     }
 
 }
