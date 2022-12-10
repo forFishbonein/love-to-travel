@@ -22,7 +22,7 @@ public class TeamController {
     }
 
 
-    @ApiOperation("根据组队id查询组队信息")
+    @ApiOperation("根据队伍id查询队伍信息")
     @GetMapping("/{id}")
     public Result<Team> getById(@PathVariable("id") String id) {
         System.out.println(id);
