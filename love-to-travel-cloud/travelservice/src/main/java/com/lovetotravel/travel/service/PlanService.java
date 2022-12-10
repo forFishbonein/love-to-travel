@@ -12,4 +12,6 @@ public interface PlanService {
 
     List<Plan> getByUserId(String userId);
 
+    List<Plan> getByCityId(String cityId);
+
 }

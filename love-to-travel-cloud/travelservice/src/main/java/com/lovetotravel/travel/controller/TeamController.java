@@ -1,10 +1,8 @@
 package com.lovetotravel.travel.controller;
 
-import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Team;
-import com.lovetotravel.travel.entity.vo.*;
+import com.lovetotravel.travel.entity.vo.team.*;
 import com.lovetotravel.travel.result.Result;
-import com.lovetotravel.travel.service.NoteService;
 import com.lovetotravel.travel.service.TeamService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -80,5 +78,18 @@ public class TeamController {
         return Result.success("移出成员成功");
     }
 
+    @ApiOperation("加入队伍")
+    @PostMapping("/join")
+    public Result<String> join(@RequestBody TeamJoinVo teamJoinVo) {
+        teamService.join(teamJoinVo);
+        return Result.success("加入成功");
+    }
+
+    @ApiOperation("退出队伍")
+    @PostMapping("/leave")
+    public Result<String> leave(@RequestBody TeamLeaveVo teamLeaveVo) {
+        teamService.leave(teamLeaveVo);
+        return Result.success("退出成功");
+    }
 
 }

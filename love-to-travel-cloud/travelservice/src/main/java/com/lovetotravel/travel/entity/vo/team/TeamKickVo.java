@@ -1,4 +1,4 @@
-package com.lovetotravel.travel.entity.vo;
+package com.lovetotravel.travel.entity.vo.team;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;

@@ -65,13 +65,18 @@ public class SceneryController {
         return Result.success(sceneryService.getAll());
     }
 
-
-
     @ApiOperation("根据景区id查询景区")
     @GetMapping("/scenery/{id}")
     public Result<Scenery> getById(@PathVariable("id") Long id) {
         System.out.println(id);
         return Result.success(sceneryService.getById(id));
+    }
+
+    @ApiOperation("根据城市id查询景区")
+    @GetMapping("/scenery/city/{id}")
+    public Result<List<Scenery>> getByCityId(@PathVariable("id") String id) {
+        System.out.println(id);
+        return Result.success(sceneryService.getByCityId(id));
     }
 
 

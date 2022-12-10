@@ -50,6 +50,12 @@ public class PlanController {
         return Result.success("更新成功");
     }
 
+    @ApiOperation("根据城市id查询行程")
+    @GetMapping("/city/{id}")
+    public Result<List<Plan>> getByCityId(@PathVariable("id") String id) {
+        return Result.success(planService.getByCityId(id));
+    }
+
 
 
 }
