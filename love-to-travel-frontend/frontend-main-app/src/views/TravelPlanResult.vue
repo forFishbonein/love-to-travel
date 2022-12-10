@@ -159,7 +159,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
 
 /* 实现根据城市id查询路线和景点 */
 // 全局变量
-// let searchCityId: string;
+// let searchCityId: string; //不在这里定义了
 let searchCityName = ref("");
 const searchRoutes = (cityId: string, cityName: string) => {
   store.searchCityId = cityId;

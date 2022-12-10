@@ -3,6 +3,8 @@ import { ref } from "vue";
 import { getRouteList } from "@apis/travelService/route";
 import { onMounted } from "@vue/runtime-core";
 import emitter from "@/mitt/event";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const props = defineProps<{
   id: string;
 }>();
@@ -33,8 +35,16 @@ const requestRouteListInfo = async () => {
 const addToTheCityPlan = () => {
   emitter.emit("addPlan", routeListInfo[0]);
 };
+const seeTheDetail = () => {
+  router.push({
+    name: "RouteDetail",
+    params: {
+      routeListInfo: JSON.stringify(routeListInfo),
+    },
+  });
+};
 onMounted(() => {
-  requestRouteListInfo();
+  // requestRouteListInfo();
 });
 </script>
 
@@ -53,7 +63,7 @@ onMounted(() => {
         </div>
       </div>
       <div class="route-buttons">
-        <div>
+        <div @click="seeTheDetail">
           <el-icon :size="15"><Document /></el-icon>
           查看详情
         </div>
