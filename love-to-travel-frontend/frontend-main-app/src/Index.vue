@@ -36,7 +36,6 @@ onMounted(() => {});
   <div class="preloader">
     <img class="preloader__image" width="60" src="/images/loader.png" alt="" />
   </div>
-  <!-- /.preloader -->
   <div class="page-wrapper">
     <BaseHeader></BaseHeader>
     <router-view v-slot="{ Component }">
@@ -47,7 +46,6 @@ onMounted(() => {});
     </router-view>
     <BaseFooter></BaseFooter>
   </div>
-  <!-- /.page-wrapper -->
 </template>
 
 <style lang="scss" scoped></style>

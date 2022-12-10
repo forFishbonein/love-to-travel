@@ -175,7 +175,7 @@ const displayText = () => {
                     <a href="#">阅旅游</a>
                     <ul>
                       <li><a href="tours.html">旅行游记</a></li>
-                      <li><a href="tours-list.html">旅行攻略</a></li>
+                      <!-- <li><a href="tours-list.html">旅行攻略</a></li> -->
                     </ul>
                   </li>
                   <li class="dropdown">
@@ -192,7 +192,7 @@ const displayText = () => {
                       <li><a href="news-details.html">机票</a></li>
                     </ul>
                   </li>
-                  <li><a href="contact.html">旅游脉络</a></li>
+                  <li><a href="#">旅游脉络</a></li>
                 </ul>
               </div>
             </div>
