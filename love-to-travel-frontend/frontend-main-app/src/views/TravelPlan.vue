@@ -2,43 +2,143 @@
 import { ref } from "vue";
 const color = ref("#e8604c");
 </script> -->
-<script>
+<script lang="ts">
 import AMapLoader from "@amap/amap-jsapi-loader"; // 使用加载器加载JSAPI，可以避免异步加载、重复加载等常见错误加载错误
 import { shallowRef } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
-import { ref, reactive } from "vue";
-import { useRouter } from "vue-router";
+import { ref, reactive, toRefs } from "vue";
+import { useRouter, useRoute } from "vue-router";
+import {
+  wantCityWithLalType,
+  citysInfoType,
+  planCityInfoType,
+} from "@apis/interface/iPlan";
+import { getCitysInfo } from "@apis/travelService/city";
 export default {
-  props: ["fromCity", "backCity", "goDate"],
+  props: ["fromCity", "toCity", "goDate"],
   // 简单功能的实现
   setup(props, context) {
-    console.log(props);
     const router = useRouter();
+    // const route = useRoute();
+    // console.log(route.params);
+
     /* 定义变量值 */
     const color = ref("#e8604c");
     const color2 = ref("#FFFFFF");
     const color3 = ref("#A8ABB2");
-    const value1 = ref("");
     const outerVisible = ref(false);
     const innerVisible = ref(false);
-    const formLabelWidth = "100px";
-    // const radio1 = ref("1000元左右");
-    const radio1 = ref("");
+    const size = ref<"default" | "large" | "small">("default");
+    const goDate = props.goDate;
+    const fromCity = props.fromCity;
+    let toCity = {} as citysInfoType;
+    if (props.toCity) {
+      toCity = JSON.parse(props.toCity);
+    }
 
-    const budget = reactive({
-      money: "",
+    //这个地方是数组的增删改查，就可以用reative，还是会响应到页面上，但是axios请求的数据就必须用ref
+    // let wantCitysData: wantCityType[] = reactive([]);
+    //@ts-ignore //下面用了toRefs
+    let planCityInfo: planCityInfoType = reactive({
+      fromTheCity: fromCity,
+      wantCitys: [],
+      backCity: "",
+      goTheDate: goDate,
+      budget: "",
     });
-    const confirmPlan = () => {
-      // alert(1111);
-      // innerVisible = false; //不需要关闭了，直接跳走即可
-      router.replace("/result");
-    };
-    /* 高德地图实现 */
-    // alert(111);
-    const map = shallowRef(null);
 
-    // 初始化地图
-    function initMap() {
+    /* 定义方法 */
+    // 初始化左边的数据
+    // 大坑：只有在用ref定义的数据时，在后面修改的时候才会响应到页面中（否则页面不刷新，那么修改了页面也不会响应到最新的数据）
+    let citysInfo = ref([] as citysInfoType[]);
+    const requestCitysInfo = async () => {
+      await getCitysInfo()
+        .then((res: any) => {
+          if (res.code != 0) {
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: res.msg,
+            });
+          } else {
+            citysInfo.value = res.data.slice(0, 10);
+            console.log(citysInfo);
+          }
+        })
+        .catch((error) => {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: error.message,
+          });
+        });
+    };
+    // 初始化右边的数据
+    const initWantCityInfo = () => {
+      if (toCity) {
+        planCityInfo.wantCitys.push({
+          //这里必须要转一下，因为数据类型不一样，字段不一样！
+          id: toCity.cityId,
+          toCity: toCity.cityName,
+          days: null,
+          lng: toCity.lng,
+          lat: toCity.lat,
+        });
+        console.log(planCityInfo.wantCitys);
+        console.log(planCityInfo);
+      }
+    };
+    // 管理右边的数据
+    const addToWant = (index: number) => {
+      planCityInfo.wantCitys.push({
+        id: citysInfo.value[index].cityId,
+        toCity: citysInfo.value[index].cityName,
+        days: null,
+        lng: citysInfo.value[index].lng,
+        lat: citysInfo.value[index].lat,
+      });
+      console.log(planCityInfo);
+      initMap(planCityInfo.wantCitys);
+    };
+    const deleteTheCity = (index: number) => {
+      console.log(planCityInfo.wantCitys);
+      planCityInfo.wantCitys.splice(index, 1);
+      console.log(planCityInfo.wantCitys);
+    };
+
+    // 确认计划
+    const confirmPlan = () => {
+      innerVisible.value = false;
+      // console.log(planCityInfo);
+      // console.log(planCityInfo.wantCitys);
+      let array = [];
+      planCityInfo.wantCitys.forEach((e) => {
+        // console.log(e);
+        // console.log(JSON.parse(JSON.stringify(e)));
+        Reflect.deleteProperty(e, "lng"); //去掉两个字段，因为这两个在第三个页面用不到
+        Reflect.deleteProperty(e, "lat");
+        // @ts-ignore
+        array.push(JSON.parse(JSON.stringify(e)));
+      });
+      // console.log(array);
+      router.replace({
+        name: "TrvalPlanResult",
+        //@ts-ignore
+        params: {
+          fromTheCity: planCityInfo.fromTheCity,
+          //这里必须要转换成json字符串再传输，因为router的参数只接受数字和字符串类型，否则会被转换成字符串"Object object"
+          wantCitys: JSON.stringify(array),
+          backCity: planCityInfo.backCity,
+          goTheDate: planCityInfo.goTheDate,
+          budget: planCityInfo.budget,
+        },
+      });
+    };
+
+    /* 高德地图实现 */
+    const map = shallowRef(null);
+    // 初始化地图方法
+    function initMap(toCitys?: wantCityWithLalType[]) {
       AMapLoader.load({
         key: "c3e09b00e68a28103b9377d18f5c2101", // 申请好的Web端开发者Key，首次调用 load 时必填
         version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
@@ -47,6 +147,7 @@ export default {
           "AMap.ToolBar", //比例尺，显示当前地图中心的比例尺
           "AMap.Geolocation", //定位，提供了获取用户当前准确位置、所在城市的方法
           "AMap.HawkEye", //鹰眼，显示缩略图
+          "AMap.Weather", //获取实时天气
         ], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
       })
         .then((AMap) => {
@@ -55,7 +156,7 @@ export default {
             zoom: 4.5, //初始化地图层级
             viewMode: "3D", //是否为3D地图模式
             // center: [116.397436, 39.909165], //初始化地图中心点位置，北京
-            center: [105.602725, 37.076636], //初始化地图中心点位置
+            center: [105.602725, 37.076636], //初始化地图中心点位置，兰州
             dragEnable: true, //禁止鼠标拖拽
             scrollWheel: true, //鼠标滚轮放大缩小
             doubleClickZoom: true, //双击放大缩小
@@ -69,17 +170,81 @@ export default {
             position: "RB", //控件停靠位置（LT/RT/LB/RB）
           });
           map.addControl(HawkEye);
-          let marker1 = new AMap.Marker({
-            // icon: "//a.amap.com/jsapi_demos/static/demo-center/icons/poi-marker-default.png",
-            position: map.getCenter(),
-            title: "中心点",
-          });
-          let marker2 = new AMap.Marker({
-            position: new AMap.LngLat(114.298572, 30.584355), //2位小数就可以
-            title: "武汉",
-          });
-          let markerList = [marker1, marker2];
-          map.add(markerList); // 地图添加标记
+          // let marker1 = new AMap.Marker({
+          //   position: map.getCenter(),
+          //   title: "中心点",
+          // });
+          // let marker2 = new AMap.Marker({
+          //   position: new AMap.LngLat(114.298572, 30.584355), //2位小数就可以
+          //   title: "武汉",
+          // });
+          // let markerList = [marker1, marker2];
+          let Obj = {
+            markerList: [],
+            windowList: [],
+          };
+          // let markerList = [];
+          if (toCitys) {
+            // 封装一下
+            toCitys.forEach((e: wantCityWithLalType) => {
+              // var weather = new AMap.Weather();
+              // let info = {};
+              // //执行实时天气信息查询
+              // weather.getLive(e.toCity, function (err, data) {
+              //   console.log(err, data);
+              //   info = data;
+              // });
+              Obj.markerList.push(
+                // @ts-ignore
+                new AMap.Marker({
+                  position: new AMap.LngLat(e.lng, e.lat),
+                  title: e.toCity,
+                })
+              );
+              Obj.windowList.push(
+                // @ts-ignore
+                new AMap.InfoWindow({
+                  //创建信息窗体
+                  isCustom: false, //使用自定义窗体
+                  anchor: "top-right", //信息窗体的三角所在位置
+                  content: `<p style="color:#e8604c;margin:0">目的地：${e.toCity}</p>
+                <p style="color:#e8604c;margin:0">经度：${e.lng}</p>
+                <p style="color:#e8604c;margin:0">纬度：${e.lat}</p>`, //信息窗体的内容可以是任意html片段
+                  offset: new AMap.Pixel(0, 0), //不需要偏移量
+                })
+              );
+            });
+
+            map.add(Obj.markerList); // 地图添加标记
+            for (let i = 0; i < Obj.markerList.length; i++) {
+              // @ts-ignore
+              Obj.markerList[i].on("click", () => {
+                // @ts-ignore
+                Obj.windowList[i].open(map, Obj.markerList[i].getPosition());
+                map.on("click", () => {
+                  // @ts-ignore
+                  Obj.windowList[i] && Obj.windowList[i].close();
+                });
+              });
+            }
+          }
+          // let infoWindow = new AMap.InfoWindow({
+          //   //创建信息窗体
+          //   isCustom: false, //使用自定义窗体
+          //   anchor: "top-right", //信息窗体的三角所在位置
+          //   content: `<h4>信息窗体</h4>`, //信息窗体的内容可以是任意html片段
+          //   offset: new AMap.Pixel(16, -45),
+          // });
+          // 这样不能个性化显示每个标点的信息
+          // Obj.markerList.forEach((marker) => {
+          //   // @ts-ignore
+          //   marker.on("click", () => {
+          //     // @ts-ignore
+          //     infoWindow.open(map, marker.getPosition());
+          //   });
+          // });
+
+          // @ts-ignore
           AMapLoader.load({
             //可多次调用load
             plugins: ["AMap.MapType"],
@@ -94,44 +259,46 @@ export default {
           function logMapinfo() {
             let zoom = map.getZoom(); //获取当前地图级别
             let center = map.getCenter(); //获取当前地图中心位置
+            // @ts-ignore
             document.querySelector("#map-zoom").innerText = zoom;
+            // @ts-ignore
             document.querySelector("#map-center").innerText = center.toString();
           }
           //绑定地图移动与缩放事件
           map.on("moveend", logMapinfo);
           map.on("zoomend", logMapinfo);
-          let infoWindow = new AMap.InfoWindow({
-            //创建信息窗体
-            isCustom: false, //使用自定义窗体
-            anchor: "top-right", //信息窗体的三角所在位置
-            content: `<h4>信息窗体</h4>`, //信息窗体的内容可以是任意html片段
-            offset: new AMap.Pixel(16, -45),
-          });
-          //为地图注册click事件获取鼠标点击出的经纬度坐标
+
+          //为地图注册mouseover事件获取鼠标放上去就显示经纬度坐标
           // map.on("mouseover", function (e) {
           //   document.getElementById("lnglat").value =
           //     e.lnglat.getLng() + "," + e.lnglat.getLat();
           // });
+
+          // let infoWindow = new AMap.InfoWindow({
+          //   //创建信息窗体
+          //   isCustom: false, //使用自定义窗体
+          //   anchor: "top-right", //信息窗体的三角所在位置
+          //   content: `<h4>信息窗体</h4>`, //信息窗体的内容可以是任意html片段
+          //   offset: new AMap.Pixel(16, -45),
+          // });
           map.on("click", function (e) {
+            // @ts-ignore
             document.getElementById("lnglat").innerText =
               e.lnglat.getLng() + "," + e.lnglat.getLat();
-            infoWindow.open(map, [e.lnglat.getLng(), e.lnglat.getLat()]);
+            // infoWindow.open(map, [e.lnglat.getLng(), e.lnglat.getLat()]);
           });
           // infoWindow.open(map, [121.939253, 29.905078]); //填写想要窗体信息指示的坐标
-
-          // map.on("click", function (e) {
-          //   //监听点标记的点击事件
-          //   infoWindow.open(map, marker1.getPosition()); //信息窗体打开
-          // });
         })
         .catch((e) => {
           console.log(e);
         });
     }
 
-    // 调用地图初始化函数：onMounted 函数会在 DOM 初始化完成后调用，建议在 mounted 函数中调用地图初始化方法
     onMounted(() => {
-      initMap();
+      initWantCityInfo();
+      requestCitysInfo();
+      // 调用地图初始化函数：onMounted 函数会在 DOM 初始化完成后调用，建议在 mounted 函数中调用地图初始化方法
+      initMap(planCityInfo.wantCitys);
     });
 
     return {
@@ -140,27 +307,17 @@ export default {
       color,
       color2,
       color3,
-      value1,
       outerVisible,
       innerVisible,
-      budget,
-      formLabelWidth,
-      radio1,
       confirmPlan,
+      deleteTheCity,
+      citysInfo,
+      addToWant,
+      ...toRefs(planCityInfo),
+      size,
     };
   },
 };
-(function ($) {
-  $(document).ready(function () {
-    $(".input-search")
-      .focus(function () {
-        $(this).css("background-color", "white");
-      })
-      .blur(function () {
-        $(this).css("background-color", "#e0e0e0");
-      });
-  });
-})(jQuery);
 </script>
 <template>
   <div class="info">
@@ -184,19 +341,27 @@ export default {
           <input type="text" class="input-search" />
         </div>
         <div class="items">
-          <el-scrollbar height="400px">
-            <div v-for="item in 20" :key="item" class="scrollbar-item">
+          <el-scrollbar height="360px">
+            <div
+              v-for="(item, index) in citysInfo"
+              :key="index"
+              class="scrollbar-item"
+            >
               <div><img src="../assets/images/login-pic.jpg" /></div>
               <div>
                 <div class="title-city">
-                  <p><a>上海</a></p>
-                  <p>ShangHai</p>
+                  <p>
+                    <a>{{ item.cityName }}</a>
+                  </p>
+                  <p>{{ item.cityName }}</p>
                 </div>
                 <div class="content-city">20%的人会去，87360人去过</div>
               </div>
               <div>
                 <div class="button-city">
-                  <el-icon><Plus :size="30" :color="color" /></el-icon>
+                  <el-icon @click="addToWant(index)"
+                    ><Plus :size="30" :color="color"
+                  /></el-icon>
                 </div>
               </div>
             </div>
@@ -208,7 +373,7 @@ export default {
       <div class="right-title">
         <p>我的行程</p>
         <el-date-picker
-          v-model="value1"
+          v-model="goTheDate"
           type="date"
           placeholder="选择出发日期"
           :size="size"
@@ -220,7 +385,7 @@ export default {
             <div>
               <el-icon><Position /></el-icon>
               <el-input
-                v-model="input"
+                v-model="fromTheCity"
                 placeholder="出发城市"
                 class="inputel"
               />
@@ -228,13 +393,22 @@ export default {
           </div>
           <div class="plan-items">
             <el-scrollbar max-height="150px">
-              <div v-for="item in 20" :key="item" class="scrollbar-item2">
+              <div
+                v-for="(item, index) in wantCitys"
+                :key="item.id"
+                class="scrollbar-item2"
+              >
                 <div class="left-name-icon">
-                  <el-icon :size="23" :color="color3"
+                  <el-icon
+                    :size="23"
+                    :color="color3"
+                    @click="deleteTheCity(index)"
                     ><CircleCloseFilled /></el-icon
-                  >北京
+                  >{{ item.toCity }}
                 </div>
-                <div class="right-days"><input type="number" />天</div>
+                <div class="right-days">
+                  <input type="number" v-model.number="item.days" />天
+                </div>
               </div>
             </el-scrollbar>
           </div>
@@ -242,7 +416,7 @@ export default {
             <div>
               <el-icon><Position /></el-icon>
               <el-input
-                v-model="input"
+                v-model="backCity"
                 placeholder="返回城市"
                 class="inputel"
               />
@@ -267,10 +441,10 @@ export default {
       <div class="select-budget">
         <div>请选择您的旅行预算</div>
         <div class="select-body">
-          <el-radio-group v-model="radio1" size="large">
-            <el-radio-button label="1000元左右" />
-            <el-radio-button label="3000元左右" />
-            <el-radio-button label="5000元左右" />
+          <el-radio-group v-model="budget" size="large">
+            <el-radio-button label="1000" />
+            <el-radio-button label="3000" />
+            <el-radio-button label="5000" />
           </el-radio-group>
           <div class="select-confirm">
             <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
@@ -284,9 +458,9 @@ export default {
         append-to-body
       >
         <el-form :model="budget">
-          <el-form-item label="您的预算：" :label-width="formLabelWidth">
+          <el-form-item label="您的预算：" label-width="100px">
             <el-input
-              v-model="budget.money"
+              v-model="budget"
               autocomplete="off"
               type="number"
               class="money-input"
@@ -297,9 +471,7 @@ export default {
         <template #footer>
           <span class="dialog-footer">
             <!-- <el-button @click="dialogFormVisible = false">Cancel</el-button> -->
-            <el-button type="primary" @click.native="confirmPlan">
-              确认
-            </el-button>
+            <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
           </span>
         </template>
       </el-dialog>
@@ -445,6 +617,9 @@ export default {
           border-left: 0;
           padding-left: 10px;
           transition: all 0.3s linear;
+        }
+        .input-search:focus {
+          background-color: #ffffff;
         }
       }
       .items {
@@ -618,7 +793,7 @@ export default {
             color: var(--el-color-primary);
             .left-name-icon {
               // border: 1px #e8604c solid;
-              width: 80px;
+              width: 120px;
               height: 50px;
               font-size: 15px;
               display: flex;

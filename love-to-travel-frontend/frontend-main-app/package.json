@@ -14,6 +14,7 @@
     "axios": "^1.2.0",
     "element-plus": "^2.2.25",
     "jquery": "^3.6.1",
+    "mitt": "^3.0.0",
     "pinia": "^2.0.27",
     "pinia-plugin-persistedstate": "^3.0.1",
     "vue": "^3.2.41"

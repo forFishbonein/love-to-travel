@@ -1,5 +1,5 @@
 import httpRequest from "@/request";
-import { registerInfo } from "@/apis/interface";
+import { registerInfo } from "@/apis/userService/uInterface";
 export const postCode = (email: string) => {
   console.log(email);
   return httpRequest({

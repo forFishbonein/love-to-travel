@@ -1,4 +1,4 @@
-import { postCode } from "@/apis/register";
+import { postCode } from "@/apis/userService/register";
 let a: HTMLInputElement = document.createElement("input");
 let count = 30;
 let curCount = 0;

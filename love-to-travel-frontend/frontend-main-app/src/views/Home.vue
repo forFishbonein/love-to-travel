@@ -1,18 +1,138 @@
 <script setup lang="ts">
-const planInfo = {
+import { ref, reactive } from "vue";
+import { useRouter } from "vue-router";
+import {
+  citysInfoType,
+  planInfoType,
+  wantCityWithLalType,
+} from "@apis/interface/iPlan";
+import { getCitysInfo } from "@apis/travelService/city";
+import { onMounted } from "@vue/runtime-core";
+const router = useRouter();
+let citysInfos = [
+  {
+    cityId: "110000",
+    cityName: "北京市",
+    lng: "116.413384",
+    lat: "39.910925",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "120000",
+    cityName: "天津市",
+    lng: "117.208093",
+    lat: "39.091103",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130100",
+    cityName: "石家庄市",
+    lng: "114.521403",
+    lat: "38.048292",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130200",
+    cityName: "唐山市",
+    lng: "118.186459",
+    lat: "39.636584",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130300",
+    cityName: "秦皇岛市",
+    lng: "119.525967",
+    lat: "39.894727",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130400",
+    cityName: "邯郸市",
+    lng: "114.545628",
+    lat: "36.631263",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130500",
+    cityName: "邢台市",
+    lng: "114.511462",
+    lat: "37.076686",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130600",
+    cityName: "保定市",
+    lng: "115.471464",
+    lat: "38.879988",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130700",
+    cityName: "张家口市",
+    lng: "114.892572",
+    lat: "40.773237",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130800",
+    cityName: "承德市",
+    lng: "118.180456",
+    lat: "40.774367",
+    url: null,
+    introduction: null,
+  },
+  {
+    cityId: "130900",
+    cityName: "沧州市",
+    lng: "116.845581",
+    lat: "38.310215",
+    url: null,
+    introduction: null,
+  },
+];
+const planInfo: planInfoType = reactive({
   fromCity: "",
-  backCity: "",
+  toCity: {} as citysInfoType,
   goDate: "",
+});
+
+const createPlan = () => {
+  console.log(planInfo);
+  router.push({
+    name: "TrvalPlan",
+    params: {
+      fromCity: planInfo.fromCity,
+      toCity: JSON.stringify(planInfo.toCity),
+      goDate: planInfo.goDate,
+    },
+  });
 };
+onMounted(() => {});
 </script>
 <script lang="ts">
 /* 控制日历弹出 */
 //@ts-ignore
 (function ($) {
   $(document).ready(function () {
+    /* 绑定日历弹出事件 */
     if ($("#datepicker").length) {
       $("#datepicker").datepicker();
     }
+    /* 获取日历变化的值赋值给隐藏表单，从而传输给vue */
+    $("#datepicker").bind("input propertychange change", function () {
+      $("#hiddenInput").val($("#datepicker").val());
+      $("#hiddenInput")[0].dispatchEvent(new Event("input")); //为了触发v-model的绑定
+      // console.log($("#hiddenInput").val());
+    });
   });
   //@ts-ignore
 })(jQuery);
@@ -122,55 +242,58 @@ const planInfo = {
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
                     <label for="type">出发城市</label>
-                    <select class="selectpicker" id="type" value="">
-                      <!-- v-model="planInfo.fromCity" -->
-                      <option value="Adventure" v-for="item in 10" :key="item">
-                        北京
+                    <select
+                      class="selectpicker"
+                      id="type"
+                      v-model="planInfo.fromCity"
+                    >
+                      <option
+                        v-for="item in citysInfos"
+                        :value="item.cityName"
+                        :key="item.cityId"
+                      >
+                        {{ item.cityName }}
                       </option>
-                      <!-- <option value="Wildlife">Wildlife</option>
-                      <option value="Sightseeing">Sightseeing</option> -->
+                      <!-- <option v-for="item in 20" :value="1">
+                        {{ item }}
+                      </option> -->
                     </select>
                   </div>
                   <div
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
-                    <label for="type2">返回城市</label>
+                    <label for="type2">目的城市</label>
                     <select
                       class="selectpicker"
                       id="type2"
-                      v-model="planInfo.backCity"
+                      v-model="planInfo.toCity"
                     >
-                      <option value="Adventure">上海</option>
-                      <option value="Wildlife">Wildlife</option>
-                      <option value="Sightseeing">Sightseeing</option>
+                      <option
+                        v-for="item in citysInfos"
+                        :value="item"
+                        :key="item.cityId"
+                      >
+                        {{ item.cityName }}
+                      </option>
                     </select>
                   </div>
                   <div class="tour-search-one__input-box">
                     <label>出发日期</label>
                     <input
                       type="text"
-                      placeholder="选择日期"
-                      name="选择日期"
+                      placeholder="Nothing selected"
+                      name="Nothing selected"
                       id="datepicker"
-                      v-model="planInfo.goDate"
                     />
                   </div>
                 </div>
                 <div class="tour-search-one__btn-wrap">
-                  <router-link
-                    :to="{
-                      path: '/plan',
-                      parmas: {
-                        fromCity: planInfo.fromCity,
-                        backCity: planInfo.backCity,
-                        goDate: planInfo.fromCity,
-                      },
-                    }"
-                    target="_blank"
+                  <button
+                    @click="createPlan"
                     class="thm-btn tour-search-one__btn"
                   >
                     制定行程
-                  </router-link>
+                  </button>
                 </div>
               </div>
             </form>
@@ -180,7 +303,10 @@ const planInfo = {
     </div>
   </section>
   <!--Tour Search End-->
-
+  <!-- {{ planInfo.fromCity }} 哈哈哈 {{ planInfo.backCity }} 呵呵呵{{
+    planInfo.goDate
+  }} -->
+  <input type="text" id="hiddenInput" v-model="planInfo.goDate" />
   <!--Destinations One Start-->
   <section class="destinations-one">
     <div class="container">
@@ -576,5 +702,8 @@ const planInfo = {
 }
 .brand-one {
   margin-bottom: 150px;
+}
+#hiddenInput {
+  display: none;
 }
 </style>

@@ -63,21 +63,14 @@ export const routes: Array<RouteRecordRaw> = [
       keepAlive: false,
       showTab: true,
     },
-    props($route) {
+    //把route对象直接拆出属性
+    props({ params: { fromCity, toCity, goDate } }) {
       return {
-        fromCity: $route.params.fromCity,
-        backCity: $route.params.backCity,
-        goDate: $route.params.goDate,
+        fromCity,
+        toCity,
+        goDate,
       };
     },
-    // 高级写法：把$route对象直接拆出属性
-    // props({ params: { fromCity, backCity, goDate } }) {
-    //   return {
-    //     fromCity,
-    //     backCity,
-    //     goDate,
-    //   };
-    // },
     // redirect: "/login/passLogin", //LoginAndRegister中包裹passLogin
     children: [
       // {
@@ -98,7 +91,17 @@ export const routes: Array<RouteRecordRaw> = [
       keepAlive: false,
       showTab: true,
     },
-    redirect: "/result/route/list",
+    // redirect: "/result/route/list", //这里不能重定向，否则下面传的props就没了
+    // 把route对象直接拆出属性
+    props({ params: { fromTheCity, wantCitys, backCity, goTheDate, budget } }) {
+      return {
+        fromTheCity,
+        wantCitys,
+        backCity,
+        goTheDate,
+        budget,
+      };
+    },
     children: [
       {
         path: "route",
@@ -108,11 +111,16 @@ export const routes: Array<RouteRecordRaw> = [
         // redirect: "/result/route/list",
         children: [
           {
-            path: "list",
+            path: "list/:searchCityId",
             name: "RouteList",
             component: () =>
               import("@/components/planResult/Route/RouteList.vue"),
             meta: { title: "路线列表", keepAlive: false, showTab: true },
+            props(route) {
+              return {
+                id: route.params.searchCityId,
+              };
+            },
           },
           {
             path: "detail",
@@ -132,11 +140,16 @@ export const routes: Array<RouteRecordRaw> = [
         // redirect: "/result/route/detail",
         children: [
           {
-            path: "list",
+            path: "list/:searchCityId",
             name: "ScenicSpotList",
             component: () =>
               import("@/components/planResult/ScenicSpot/ScenicSpotList.vue"),
             meta: { title: "景区列表", keepAlive: false, showTab: true },
+            props(route) {
+              return {
+                id: route.params.searchCityId,
+              };
+            },
           },
           {
             path: "detail",

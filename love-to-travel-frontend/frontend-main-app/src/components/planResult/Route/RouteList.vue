@@ -1,4 +1,42 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { getRouteList } from "@apis/travelService/route";
+import { onMounted } from "@vue/runtime-core";
+import emitter from "@/mitt/event";
+const props = defineProps<{
+  id: string;
+}>();
+console.log("route页面" + props);
+const cityId = props.id;
+const routeListInfo = ref([]); //改类型
+const requestRouteListInfo = async () => {
+  await getRouteList(cityId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        routeListInfo.value = res.data.slice(0, 10);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+const addToTheCityPlan = () => {
+  emitter.emit("addPlan", routeListInfo[0]);
+};
+onMounted(() => {
+  requestRouteListInfo();
+});
+</script>
 
 <template>
   <el-scrollbar max-height="350px">
@@ -19,7 +57,7 @@
           <el-icon :size="15"><Document /></el-icon>
           查看详情
         </div>
-        <div>+ 添加到行程</div>
+        <div @click="addToTheCityPlan">+ 添加到行程</div>
       </div>
     </div>
   </el-scrollbar>
