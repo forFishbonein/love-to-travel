@@ -1,11 +1,17 @@
 <script setup lang="ts">
+import { ref } from "vue";
 import { useRouter } from "vue-router";
+import { everyCityPlansInfoType } from "@/apis/interface/iPlan";
 const router = useRouter();
 const props = defineProps<{
-  routeListInfo: [];
+  routeDetailInfoString: string;
 }>();
-console.log("route detail页面" + props.routeListInfo);
-const routeListInfo = props.routeListInfo;
+console.log("route detail页面");
+console.log(props.routeDetailInfoString);
+let routeDetailInfo = ref({} as everyCityPlansInfoType);
+if (props.routeDetailInfoString) {
+  routeDetailInfo.value = JSON.parse(props.routeDetailInfoString);
+}
 const backToList = () => {
   router.go(-1);
 };

@@ -3,9 +3,11 @@ import { ref, reactive, toRef } from "vue";
 import { Place, MapLocation, InfoFilled } from "@element-plus/icons-vue";
 import {
   wantCityType,
-  finalPlansInfoType,
+  finalAllCityPlansInfoType,
   citysInfoType,
-  citysPlansInfoType,
+  everyCityPlansInfoType,
+  routeInfoType,
+  everyDayRoutesType,
 } from "@apis/interface/iPlan";
 import { getHotCitysInfo } from "@apis/travelService/city";
 import { onMounted } from "@vue/runtime-core";
@@ -15,10 +17,10 @@ import { useRouter } from "vue-router";
 // 注册全局事件
 import emitter from "@/mitt/event";
 emitter.on("addPlan", (e) => {
-  // alert(e);
-  citysPlansInfo.cityId = store.searchCityId;
+  alert("添加行程信息到行程");
+  // oneCityDaysDisplay.value.cityId = store.searchCityId;
   // @ts-ignore
-  citysPlansInfo.days = e;
+  // oneCityDaysDisplay.days = e;
   //修改数组中某一个对象的值？
   // subPlans.value.push({
   //       city: item.toCity,
@@ -27,7 +29,62 @@ emitter.on("addPlan", (e) => {
   //       days: [],
   //     });
 });
-
+emitter.on("addAScenery", (routeInfo) => {
+  alert("添加景区信息到行程");
+  // if (oneCityDaysDisplay.value === ([] as everyDayRoutesType[])) {
+  if (oneCityDaysDisplay.value.length == 0) {
+    alert("方法1:新增");
+    //在该城市没有行程内容的情况下
+    //给subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days的route数组新增一个信息
+    // 这些应该都不需要，需要我们展示的就只是days的内容而已，所以把citysPlansInfo舍弃换成days即everyDayRoutesType[]
+    // citysPlansInfo.value.cityId = store.searchCityId;
+    // citysPlansInfo.value.budget = "";
+    // citysPlansInfo.value.dayLength = null;
+    // citysPlansInfo.value.weather = "";
+    // citysPlansInfo.value.city = "";
+    let routes = [] as routeInfoType[];
+    // @ts-ignore
+    routes.push(routeInfo);
+    oneCityDaysDisplay.value.push({
+      route: routes,
+    });
+    console.log("-------");
+    console.log(oneCityDaysDisplay.value);
+    console.log("-------");
+    //给subPlans整体新增中符合cityId的一项的days新增信息
+    subPlans.value.forEach((e: everyCityPlansInfoType) => {
+      if (e.cityId == store.searchCityId) {
+        e.days = oneCityDaysDisplay.value; //将days全部赋值给该城市的days，并且只需要赋值days即可，其他的本来就有了
+      }
+    });
+    console.log("+++++++");
+    console.log(subPlans.value);
+    console.log("+++++++");
+  } else {
+    alert("方法2:合并");
+    //在该城市已经有行程内容的情况下
+    //把subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days合并
+    //给最后一天的route里面加一项
+    oneCityDaysDisplay.value[oneCityDaysDisplay.value.length - 1].route.push(
+      // @ts-ignore
+      routeInfo
+    );
+    console.log("-------");
+    console.log(oneCityDaysDisplay.value);
+    console.log("-------");
+    //给subPlans整体新增中符合cityId的一项的days的最后一天的route里面加一项
+    subPlans.value.forEach((e: everyCityPlansInfoType) => {
+      if (e.cityId == store.searchCityId) {
+        // @ts-ignore
+        e.days[e.days.length - 1].route.push(routeInfo);
+        //只需要给最后一天新增一个route即可
+      }
+    });
+    console.log("+++++++");
+    console.log(subPlans.value);
+    console.log("+++++++");
+  }
+});
 const store = cityStore();
 const $router = useRouter();
 const props = defineProps<{
@@ -40,29 +97,25 @@ const props = defineProps<{
 // console.log(props);
 
 /* 中间页面的显示效果 */
-// 这个是要展示在中间的内容！
+// 这个是要展示在中间的内容！等价于subPlans的一项内容！
 //这个可能要改成ref的，页面要想自动刷新就必须用ref，如果只是获取一次值不再更改就可以用reactive
-let citysPlansInfo: citysPlansInfoType = reactive({
-  city: "",
-  cityId: "",
-  time: null,
-  days: [],
-});
+let oneCityDaysDisplay = ref([] as everyDayRoutesType[]);
 let showFlag = ref(true);
 
 /* 最终方案对象 */
-let finalPlansInfo: finalPlansInfoType = reactive({
-  budget: props.budget,
+let finalPlansInfo: finalAllCityPlansInfoType = reactive({
+  budget: props.budget, //前面写的预算在这里当作总的预算
   id: "",
   subPlans: [],
   userId: "",
-  fromCity: props.fromTheCity,
-  backCity: props.backCity,
-  goDate: props.goTheDate,
+  start: props.fromTheCity,
+  end: props.backCity,
+  depart: props.goTheDate,
 });
+// 这个是用于修改整体预算的
 const budget = toRef(finalPlansInfo, "budget");
 // 这个是用于展示在左边的内容！
-const subPlans = toRef(finalPlansInfo, "subPlans");
+const subPlans = toRef(finalPlansInfo, "subPlans"); //这里也不是最终的内容，也是用于展示的，后面保存行程的时候要拼接给final
 const initSubPlans = () => {
   // console.log(props.wantCitys);
   if (props.wantCitys) {
@@ -71,8 +124,10 @@ const initSubPlans = () => {
       subPlans.value.push({
         city: item.toCity,
         cityId: item.id,
-        time: item.days,
+        dayLength: item.days,
         days: [],
+        budget: "",
+        weather: "",
       });
     });
     console.log(subPlans.value);
@@ -126,24 +181,30 @@ const addACity = () => {
     subPlans.value.push({
       city: aCityInfo.cityName,
       cityId: aCityInfo.cityId,
-      time: 1,
+      dayLength: null,
       days: [],
+      budget: "",
+      weather: "",
     });
   } else if (theFlag === 1) {
     //在前面插入
     subPlans.value.splice(theIndex, 0, {
       city: aCityInfo.cityName,
       cityId: aCityInfo.cityId,
-      time: 1,
+      dayLength: null,
       days: [],
+      budget: "",
+      weather: "",
     });
   } else if (theFlag === 2) {
     //在后面插入
     subPlans.value.splice(theIndex + 1, 0, {
       city: aCityInfo.cityName,
       cityId: aCityInfo.cityId,
-      time: 1,
+      dayLength: null,
       days: [],
+      budget: "",
+      weather: "",
     });
   }
   theFlag = 0;
@@ -166,6 +227,19 @@ const searchRoutes = (cityId: string, cityName: string) => {
   store.searchCityId = cityId;
   // alert(store.searchCityId);
   searchCityName.value = cityName;
+  // 有可能subPlans里面在这个城市下本来就有值，那么需要赋值给展示对象
+  subPlans.value.forEach((e: everyCityPlansInfoType) => {
+    if (e.cityId == cityId && e.days.length != 0) {
+      oneCityDaysDisplay.value = e.days;
+      alert("赋值了");
+      console.log(".........");
+      console.log(oneCityDaysDisplay.value);
+      console.log(".........");
+    } else {
+      oneCityDaysDisplay.value = [] as everyDayRoutesType[]; //每次要初始化一下展示内容的对象
+    }
+    //如果没有，说明这个城市下还没有制定任何行程
+  });
   $router.push({
     //默认跳转到routelist页面
     name: "RouteList",
@@ -197,7 +271,7 @@ onMounted(() => {
               <el-icon :size="35"><LocationInformation /></el-icon>
               <div class="item-left-text">
                 <p>{{ item.city }}</p>
-                <p>旅行{{ item.time }}天</p>
+                <p>旅行{{ item.dayLength }}天</p>
               </div>
             </div>
             <div class="item-right">
@@ -244,13 +318,17 @@ onMounted(() => {
       </div>
       <div class="middle-body">
         <el-scrollbar max-height="320px" v-if="showFlag">
-          <div v-for="item in 20" :key="item" class="scrollbar-middle-items">
-            <h2>标题{{ item }}</h2>
-            <div v-for="item in 10" :key="item">
+          <div
+            v-for="(item, index) in oneCityDaysDisplay"
+            :key="index"
+            class="scrollbar-middle-items"
+          >
+            <h2>One Day</h2>
+            <div v-for="(i, index) in item.route" :key="index">
               <div class="item-step-content">
                 <el-steps :space="50" :active="1" simple class="item-step">
-                  <el-step :title="item" :icon="MapLocation" />
-                  <el-step title="Step 2" :icon="Place" />
+                  <el-step title="出发地" :icon="MapLocation" />
+                  <el-step :title="i.originName" :icon="Place" />
                 </el-steps>
                 <el-collapse accordion class="item-content">
                   <el-collapse-item name="1">
@@ -261,14 +339,10 @@ onMounted(() => {
                       </el-icon>
                     </template>
                     <div>
-                      Consistent with real life: in line with the process and
-                      logic of real life, and comply with languages and habits
-                      that the users are used to;
+                      {{ i.departTime }}
                     </div>
                     <div>
-                      Consistent within interface: all elements should be
-                      consistent, such as: design style, icons and texts,
-                      position of elements, etc.
+                      {{ i.vehicle }}
                     </div>
                   </el-collapse-item>
                 </el-collapse>

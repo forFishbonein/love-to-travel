@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { getRouteList } from "@apis/travelService/route";
 import { onMounted } from "@vue/runtime-core";
+import { everyCityPlansInfoType } from "@/apis/interface/iPlan";
 import emitter from "@/mitt/event";
 import { useRouter } from "vue-router";
 const router = useRouter();
@@ -21,7 +22,7 @@ const requestRouteListInfo = async () => {
           message: res.msg,
         });
       } else {
-        routeListInfo.value = res.data.slice(0, 10);
+        routeListInfo.value = res.data;
       }
     })
     .catch((error) => {
@@ -32,16 +33,32 @@ const requestRouteListInfo = async () => {
       });
     });
 };
-const addToTheCityPlan = () => {
-  emitter.emit("addPlan", routeListInfo[0]);
-};
-const seeTheDetail = () => {
+/* 要在详情页展示的数据 */
+let routeDetailInfo = {} as everyCityPlansInfoType;
+
+/* 查看行程详细信息 */
+const seeTheDetail = (index: number) => {
+  routeDetailInfo = routeListInfo.value[index]; //这里必须要.value才可以
+  console.log(routeDetailInfo);
   router.push({
     name: "RouteDetail",
     params: {
-      routeListInfo: JSON.stringify(routeListInfo),
+      routeDetailInfo: JSON.stringify(routeDetailInfo),
     },
   });
+};
+/* 添加推荐行程信息到行程 */
+const dialogVisible = ref(false);
+let theRouteIndex: number;
+const openTheWarnDialog = (index: number) => {
+  dialogVisible.value = true;
+  theRouteIndex = index;
+};
+//但是传到结果页时的应该只需要里面的days即可！！！，要重新赋值
+//要定义一个新的类型，不应该直接用routeListInfo[theRouteIndex]
+const addToTheCityPlan = () => {
+  dialogVisible.value = false;
+  emitter.emit("addPlan", routeListInfo[theRouteIndex]);
 };
 onMounted(() => {
   requestRouteListInfo();
@@ -50,7 +67,7 @@ onMounted(() => {
 
 <template>
   <el-scrollbar max-height="350px">
-    <div v-for="item in 4" :key="item" class="right-scrollbar-item2">
+    <div v-for="(item, index) in 4" :key="item" class="right-scrollbar-item2">
       <div class="route-body">
         <div class="body-left">
           <el-icon :size="30"><Collection /></el-icon>
@@ -63,14 +80,23 @@ onMounted(() => {
         </div>
       </div>
       <div class="route-buttons">
-        <div @click="seeTheDetail">
+        <div @click="seeTheDetail(index)">
           <el-icon :size="15"><Document /></el-icon>
           查看详情
         </div>
-        <div @click="addToTheCityPlan">+ 添加到行程</div>
+        <div @click="openTheWarnDialog(index)">+ 添加到行程</div>
       </div>
     </div>
   </el-scrollbar>
+  <el-dialog v-model="dialogVisible" title="警告" width="30%">
+    <span>此操作会覆盖此前制定的行程，确定要继续吗？</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="addToTheCityPlan"> 确认 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>

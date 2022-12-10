@@ -130,7 +130,7 @@ export const routes: Array<RouteRecordRaw> = [
             meta: { title: "路线详情", keepAlive: false, showTab: true },
             props(route) {
               return {
-                routeListInfo: route.params.routeListInfo,
+                routeDetailInfo: route.params.routeDetailInfo,
               };
             },
           },

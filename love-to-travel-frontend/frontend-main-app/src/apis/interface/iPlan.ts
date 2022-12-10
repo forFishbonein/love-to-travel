@@ -40,34 +40,40 @@ export interface citysInfoType {
 }
 
 /* 3 */
+/* 一个路线，对应route里面的每一项 */
 export interface routeInfoType {
-  budget: string;
   departTime: string;
-  destination: string;
-  destinationName: string;
-  origin: string;
+  origin: Array<number | null>; //目的地
   originName: string;
   vehicle: string;
-  weather: string;
 }
-export interface routesType {
-  route: routeInfoType[];
+/* 一个城市每一天的所有路线 */
+//对应days里面的每一项
+export interface everyDayRoutesType {
+  route: routeInfoType[]; //对应route
 }
 //要展示的只是这个
-export interface citysPlansInfoType {
+/* 所有城市的每一天的所有路线 */
+//对应subPlans里面的每一项
+export interface everyCityPlansInfoType {
   city: string;
   cityId: string;
-  time: number | null; //游玩的天数
-  days: routesType[];
-}
-export interface finalPlansInfoType {
+  dayLength: number | null; //游玩的天数
+  days: everyDayRoutesType[]; //对应days
   budget: string;
+  weather: string;
+}
+export interface finalAllCityPlansInfoType {
   id: string;
-  subPlans: citysPlansInfoType[];
   userId: string;
-  fromCity: string;
-  backCity: string;
-  goDate: string;
+  budget: string;
+  depart: string;
+  start: string;
+  end: string;
+  subPlans: everyCityPlansInfoType[]; //对应subPlans
+  // fromCity: string;
+  // backCity: string;
+  // goDate: string;
 }
 // export interface displayACityPlanInfo {
 //   city: string;
@@ -82,8 +88,8 @@ export interface theCityScenerysInfoType {
   introduction: string | null;
   ticket: string | null;
   opening: string | null;
-  lng: string | null;
-  lat: string | null;
+  lng: number | null;
+  lat: number | null;
   level: string | null;
   address: string;
   season: string | null;
