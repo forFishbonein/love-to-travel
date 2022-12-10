@@ -87,8 +87,8 @@ public class TeamController {
 
     @ApiOperation("退出队伍")
     @PostMapping("/leave")
-    public Result<String> leave(@RequestBody TeamJoinVo teamJoinVo) {
-        teamService.leave(teamJoinVo);
+    public Result<String> leave(@RequestBody TeamLeaveVo teamLeaveVo) {
+        teamService.leave(teamLeaveVo);
         return Result.success("退出成功");
     }
 

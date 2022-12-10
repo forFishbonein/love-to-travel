@@ -25,7 +25,7 @@ public interface TeamService {
 
     void join(TeamJoinVo teamJoinVo);
 
-    void leave(TeamJoinVo teamJoinVo);
+    void leave(TeamLeaveVo teamLeaveVo);
 
 
 }
