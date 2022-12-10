@@ -25,6 +25,12 @@ public class Plan {
     @ApiModelProperty("出行时间")
     private String depart;
 
+    @ApiModelProperty("出发城市")
+    private String start;
+
+    @ApiModelProperty("返回城市")
+    private String end;
+
     @ApiModelProperty("行程中的一个城市")
     private SubPlan[] subPlans;
 

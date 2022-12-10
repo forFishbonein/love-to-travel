@@ -38,7 +38,15 @@ public class ListenHandler {
         //将数据库中的数据写入redis
         List<Note> noteList = noteService.getAll();
         noteList.forEach(note -> {
-            System.out.println("note = " + note);
+            if (note.getComment() == null) {
+                note.setComment(0L);
+            }
+            if (note.getLike() == null) {
+                note.setLike(0L);
+            }
+            if (note.getView() == null) {
+                note.setView(0L);
+            }
             //将浏览量、点赞数和评论数写入redis
             redisService.set(NoteKey.getComment, note.getId().toString(), note.getComment().toString());
             redisService.set(NoteKey.getLike, note.getId().toString(), note.getLike().toString());
@@ -74,6 +82,15 @@ public class ListenHandler {
         log.info("周期任务开始执行...");
         List<Note> noteList = noteService.getAll();
         noteList.forEach(note -> {
+            if (note.getComment() == null) {
+                note.setComment(0L);
+            }
+            if (note.getLike() == null) {
+                note.setLike(0L);
+            }
+            if (note.getView() == null) {
+                note.setView(0L);
+            }
             //从redis获取将浏览量、点赞数和评论数
             Long commentNum = redisService.get(NoteKey.getComment, note.getId().toString(), Long.class);
             Long likeNum = redisService.get(NoteKey.getLike, note.getId().toString(), Long.class);
@@ -102,11 +119,7 @@ public class ListenHandler {
                 return;
         }
         NoteVo noteVo = new NoteVo();
-
         BeanUtils.copyProperties(note, noteVo);
-
-        System.out.println("note = " + note);
-        System.out.println("noteVo = " + noteVo);
         //更新数据库
         noteService.update(noteVo);
         log.info("{} 更新完毕", fieldName);

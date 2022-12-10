@@ -21,6 +21,9 @@ public class Note {
     @ApiModelProperty("标题")
     private String title;
 
+    @ApiModelProperty("城市")
+    private String city;
+
     @ApiModelProperty("行程")
     private String planId;
 
@@ -41,6 +44,9 @@ public class Note {
 
     @ApiModelProperty("点赞量")
     private Long like;
+
+    @ApiModelProperty("标签")
+    private String[] trip;
 
     @ApiModelProperty("逻辑删除")
     @TableLogic
