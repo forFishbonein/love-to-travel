@@ -16,18 +16,24 @@ import { cityStore } from "@/store/city";
 import { useRouter } from "vue-router";
 // 注册全局事件
 import emitter from "@/mitt/event";
-emitter.on("addPlan", (e) => {
+import axios from "axios";
+emitter.on("addPlan", (daysPlanInfo) => {
   alert("添加行程信息到行程");
-  // oneCityDaysDisplay.value.cityId = store.searchCityId;
+  //不管怎么样，不管有没有数据，我们要展示的就是days，所以直接赋值就完事了！
   // @ts-ignore
-  // oneCityDaysDisplay.days = e;
-  //修改数组中某一个对象的值？
-  // subPlans.value.push({
-  //       city: item.toCity,
-  //       cityId: item.id,
-  //       time: item.days,
-  //       days: [],
-  //     });
+  oneCityDaysDisplay.value = daysPlanInfo;
+  console.log("-------");
+  console.log(oneCityDaysDisplay.value);
+  console.log("-------");
+  subPlans.value.forEach((e: everyCityPlansInfoType) => {
+    if (e.cityId == store.searchCityId) {
+      e.days = oneCityDaysDisplay.value; //将days全部赋值给该城市的days，并且只需要赋值days即可，其他的本来就有了
+    }
+  });
+  console.log("+++++++");
+  console.log(subPlans.value);
+  console.log("+++++++");
+  showFlag.value = true;
 });
 emitter.on("addAScenery", (routeInfo) => {
   alert("添加景区信息到行程");
@@ -60,6 +66,7 @@ emitter.on("addAScenery", (routeInfo) => {
     console.log("+++++++");
     console.log(subPlans.value);
     console.log("+++++++");
+    showFlag.value = true;
   } else {
     alert("方法2:合并");
     //在该城市已经有行程内容的情况下
@@ -83,8 +90,24 @@ emitter.on("addAScenery", (routeInfo) => {
     console.log("+++++++");
     console.log(subPlans.value);
     console.log("+++++++");
+    // showFlag.value = true; //应该不需要
   }
 });
+const deleteOneRoute = (index: number, index2: number) => {
+  // alert("进入方法");
+  // alert(index);
+  // alert(index2);
+  subPlans.value.forEach((e: everyCityPlansInfoType) => {
+    if (e.cityId == store.searchCityId) {
+      // alert("有匹配");
+      // console.log(e.days[index].route[index2]);
+      const r = e.days[index].route.splice(index2, 1); //删除index2
+      console.log(r);
+      oneCityDaysDisplay.value = e.days;
+      // console.log(oneCityDaysDisplay.value);
+    }
+  });
+};
 const store = cityStore();
 const $router = useRouter();
 const props = defineProps<{
@@ -100,7 +123,7 @@ const props = defineProps<{
 // 这个是要展示在中间的内容！等价于subPlans的一项内容！
 //这个可能要改成ref的，页面要想自动刷新就必须用ref，如果只是获取一次值不再更改就可以用reactive
 let oneCityDaysDisplay = ref([] as everyDayRoutesType[]);
-let showFlag = ref(true);
+let showFlag = ref(false);
 
 /* 最终方案对象 */
 let finalPlansInfo: finalAllCityPlansInfoType = reactive({
@@ -120,14 +143,23 @@ const initSubPlans = () => {
   // console.log(props.wantCitys);
   if (props.wantCitys) {
     //在这里再把json字符串转回来，成为wantCityType类型数组
-    JSON.parse(props.wantCitys).forEach((item: wantCityType) => {
+    JSON.parse(props.wantCitys).forEach(async (item: wantCityType) => {
+      let weather = "";
+      await axios
+        .get(
+          `https://restapi.amap.com/v3/weather/weatherInfo?city=${item.id}&key=73a9f4e1b08fd89992856d6ae4075f9b`
+        )
+        .then((res) => {
+          weather = res.data.lives[0].weather;
+        });
+      // alert(weather);
       subPlans.value.push({
         city: item.toCity,
         cityId: item.id,
         dayLength: item.days,
         days: [],
         budget: "",
-        weather: "",
+        weather: weather,
       });
     });
     console.log(subPlans.value);
@@ -175,7 +207,15 @@ const aCityName = ref("");
 const assignACityInfo = (item: citysInfoType) => {
   aCityInfo = item;
 };
-const addACity = () => {
+const addACity = async () => {
+  let weather2 = "";
+  await axios
+    .get(
+      `https://restapi.amap.com/v3/weather/weatherInfo?city=${aCityInfo.cityId}&key=73a9f4e1b08fd89992856d6ae4075f9b`
+    )
+    .then((res) => {
+      weather2 = res.data.lives[0].weather;
+    });
   if (theFlag === 0) {
     //在最后添加
     subPlans.value.push({
@@ -184,7 +224,7 @@ const addACity = () => {
       dayLength: null,
       days: [],
       budget: "",
-      weather: "",
+      weather: weather2,
     });
   } else if (theFlag === 1) {
     //在前面插入
@@ -194,7 +234,7 @@ const addACity = () => {
       dayLength: null,
       days: [],
       budget: "",
-      weather: "",
+      weather: weather2,
     });
   } else if (theFlag === 2) {
     //在后面插入
@@ -204,7 +244,7 @@ const addACity = () => {
       dayLength: null,
       days: [],
       budget: "",
-      weather: "",
+      weather: weather2,
     });
   }
   theFlag = 0;
@@ -216,7 +256,7 @@ const deleteCity = (index: any) => {
 };
 const activeIndex = ref("/result/route/list");
 const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
+  // console.log(key, keyPath);
 };
 
 /* 实现根据城市id查询路线和景点 */
@@ -228,18 +268,29 @@ const searchRoutes = (cityId: string, cityName: string) => {
   // alert(store.searchCityId);
   searchCityName.value = cityName;
   // 有可能subPlans里面在这个城市下本来就有值，那么需要赋值给展示对象
+  let flag = false; //标志着是否被赋值了
   subPlans.value.forEach((e: everyCityPlansInfoType) => {
     if (e.cityId == cityId && e.days.length != 0) {
+      // alert(1); //调试用的
+      showFlag.value = true;
       oneCityDaysDisplay.value = e.days;
-      alert("赋值了");
+      flag = true;
+      // alert("赋值了"); //在输入城市预算input的时候也会触发，因为也相当点击了，但是没有影响！
       console.log(".........");
       console.log(oneCityDaysDisplay.value);
       console.log(".........");
-    } else {
-      oneCityDaysDisplay.value = [] as everyDayRoutesType[]; //每次要初始化一下展示内容的对象
+      console.log("+++++++++");
+      console.log(subPlans.value);
+      console.log("+++++++++");
     }
-    //如果没有，说明这个城市下还没有制定任何行程
   });
+  if (flag === false) {
+    // alert(2);
+    // 也可以不清空
+    oneCityDaysDisplay.value = [] as everyDayRoutesType[]; //每次要初始化一下展示内容的对象
+    showFlag.value = false; //只有在这里才会变为false
+  }
+  //如果没有，说明这个城市下还没有制定任何行程
   $router.push({
     //默认跳转到routelist页面
     name: "RouteList",
@@ -271,7 +322,23 @@ onMounted(() => {
               <el-icon :size="35"><LocationInformation /></el-icon>
               <div class="item-left-text">
                 <p>{{ item.city }}</p>
-                <p>旅行{{ item.dayLength }}天</p>
+                <p>
+                  旅行<input
+                    v-model="item.dayLength"
+                    type="number"
+                    placeholder="天数"
+                    class="budget-city-input"
+                  />天
+                </p>
+                <p>
+                  预算<input
+                    v-model="item.budget"
+                    type="number"
+                    placeholder="金额"
+                    class="budget-city-input"
+                  />元
+                </p>
+                <p>当前天气：{{ item.weather }}</p>
               </div>
             </div>
             <div class="item-right">
@@ -298,22 +365,24 @@ onMounted(() => {
           <div class="add-city" @click="openCityDialog(0, 0)">+ 添加城市</div>
         </el-scrollbar>
       </div>
-      <div class="left-footer">返回城市：{{ backCity }}</div>
+      <div class="left-footer">
+        返回城市：{{ backCity }}
+        <div>
+          总预算：<el-input
+            v-model="budget"
+            type="number"
+            placeholder="金额"
+            clearable
+            class="footer-input"
+          />元
+        </div>
+      </div>
     </div>
     <div class="body-middle">
       <div class="middle-header">
         <p>{{ goTheDate }}</p>
         <p>
           <span>{{ searchCityName }}</span>
-          <span>
-            <el-input
-              v-model="budget"
-              type="number"
-              placeholder="金额"
-              clearable
-              style="width: 80px; height: 25px; padding-right: 10px"
-            />元预算
-          </span>
         </p>
       </div>
       <div class="middle-body">
@@ -323,9 +392,15 @@ onMounted(() => {
             :key="index"
             class="scrollbar-middle-items"
           >
-            <h2>One Day</h2>
-            <div v-for="(i, index) in item.route" :key="index">
+            <div class="theDay">第{{ index + 1 }}天</div>
+            <div v-for="(i, index2) in item.route" :key="index2">
               <div class="item-step-content">
+                <div
+                  @click="deleteOneRoute(index, index2)"
+                  style="width: 50px; height: 50px; background-color: red"
+                >
+                  <el-icon><CloseBold /></el-icon>
+                </div>
                 <el-steps :space="50" :active="1" simple class="item-step">
                   <el-step title="出发地" :icon="MapLocation" />
                   <el-step :title="i.originName" :icon="Place" />
@@ -338,12 +413,9 @@ onMounted(() => {
                         <info-filled />
                       </el-icon>
                     </template>
-                    <div>
-                      {{ i.departTime }}
-                    </div>
-                    <div>
-                      {{ i.vehicle }}
-                    </div>
+                    <div>交通工具：{{ i.vehicle }}</div>
+                    <div>停留时间：{{ i.departTime }} 小时</div>
+                    <div>经纬度：{{ i.origin }}</div>
                   </el-collapse-item>
                 </el-collapse>
               </div>
@@ -409,6 +481,12 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.budget-city-input {
+  width: 45px;
+  height: 20px;
+  color: #606266;
+  margin: 0 5px;
+}
 .base-header {
   width: 100%;
   height: 10%;
@@ -428,7 +506,7 @@ onMounted(() => {
   background-color: #f2f3f5;
   .body-left {
     width: 250px;
-    height: 450px;
+    height: 470px;
     position: absolute;
     // border: 1px #e8604c solid;
     left: 20px;
@@ -443,25 +521,41 @@ onMounted(() => {
       display: flex;
       justify-content: center;
       align-items: center;
+      font-size: 16px;
     }
     .left-footer {
       width: auto;
-      height: 12%;
+      height: 18%;
       // border: 1px #e8604c solid;
       border-top: 2px #e8604c solid;
       display: flex;
-      justify-content: center;
+      justify-content: space-around;
       align-items: center;
+      flex-direction: column;
+      font-size: 16px;
+      div {
+        width: 200px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        line-height: 30px;
+        .footer-input {
+          width: 120px;
+          height: 30px;
+          padding-right: 10px;
+        }
+        padding-bottom: 5px;
+      }
     }
     .left-body {
       width: auto;
-      height: 76%;
+      height: 70%;
       // border: 1px #e8604c solid;
       .left-scrollbar-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 80px;
+        height: 90px;
         // border: 1px #e8604c solid;
         background: rgba(255, 255, 255);
         cursor: pointer;
@@ -475,6 +569,7 @@ onMounted(() => {
           display: flex;
           justify-content: space-around;
           align-items: center;
+          padding-left: 30px;
           i {
             color: #303133;
           }
@@ -483,6 +578,13 @@ onMounted(() => {
               font-size: 15px;
               margin: 0;
               line-height: 1.4em;
+            }
+            > p:first-child {
+              color: #303133;
+              font-weight: 700;
+            }
+            > p:nth-child(3) {
+              width: 100px;
             }
           }
         }
@@ -564,6 +666,15 @@ onMounted(() => {
         justify-content: center;
         align-items: center;
         flex-direction: column;
+        .theDay {
+          width: 450px;
+          height: 40px;
+          line-height: 40px;
+          text-align: center;
+          font-weight: 800;
+          font-size: 18px;
+          letter-spacing: 0.5em;
+        }
         .item-step-content {
           width: 450px;
           display: flex;
