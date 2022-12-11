@@ -1,4 +1,38 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+import { getOneCityInfoById } from "@/apis/travelService/city";
+import { citysInfoType } from "@/apis/interface/iPlan";
+const props = defineProps<{
+  cityId: number;
+}>();
+// alert(props.cityId);
+const cityId = props.cityId;
+const cityInfo = ref({} as citysInfoType);
+const requestOneCityInfo = async () => {
+  await getOneCityInfoById(cityId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert("得到数据了2！");
+        cityInfo.value = res.data;
+        console.log(cityInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+requestOneCityInfo();
+</script>
 
 <template>
   <section class="destinations-details">
@@ -8,7 +42,7 @@
           <div class="destinations-details__left">
             <div class="destinations-details__img">
               <img
-                src="assets/images/resources/destinations-details-img-1.jpg"
+                src="/images/resources/destinations-details-img-1.jpg"
                 alt=""
               />
             </div>
@@ -32,106 +66,6 @@
                 predefined chunks as necessary,
               </p>
             </div>
-            <div class="destinations-details__overview">
-              <h3 class="destinations-details__title">Overview</h3>
-              <ul class="list-unstyled destinations-details__overview-list">
-                <li>
-                  <div class="destinations-details__overview-left">
-                    <p>Country</p>
-                  </div>
-                  <div class="destinations-details__overview-right">
-                    <p>Americas</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="destinations-details__overview-left">
-                    <p>Visa Requirements</p>
-                  </div>
-                  <div class="destinations-details__overview-right">
-                    <p>Personal Documents Requied</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="destinations-details__overview-left">
-                    <p>Languages Spoken</p>
-                  </div>
-                  <div class="destinations-details__overview-right">
-                    <p>English</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="destinations-details__overview-left">
-                    <p>Currency Used</p>
-                  </div>
-                  <div class="destinations-details__overview-right">
-                    <p>USD</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="destinations-details__overview-left">
-                    <p>Area (km2)</p>
-                  </div>
-                  <div class="destinations-details__overview-right">
-                    <p>88.000 km2</p>
-                  </div>
-                </li>
-              </ul>
-            </div>
-            <div class="destinations-details__faq">
-              <div class="accrodion-grp" data-grp-name="faq-one-accrodion">
-                <div class="accrodion active">
-                  <div class="accrodion-title">
-                    <h4>Why are your Tours so Expensive?</h4>
-                  </div>
-                  <div class="accrodion-content">
-                    <div class="inner">
-                      <p>
-                        There are many variations of passages of available but
-                        majority have alteration in some by inject humour or
-                        random words. Lorem ipsum dolor sit amet, error insolens
-                        reprimique no quo, ea pri verterem phaedr vel ea iisque
-                        aliquam.
-                      </p>
-                    </div>
-                    <!-- /.inner -->
-                  </div>
-                </div>
-                <div class="accrodion">
-                  <div class="accrodion-title">
-                    <h4>Why are your Tours so Expensive?</h4>
-                  </div>
-                  <div class="accrodion-content">
-                    <div class="inner">
-                      <p>
-                        There are many variations of passages of available but
-                        majority have alteration in some by inject humour or
-                        random words. Lorem ipsum dolor sit amet, error insolens
-                        reprimique no quo, ea pri verterem phaedr vel ea iisque
-                        aliquam.
-                      </p>
-                    </div>
-                    <!-- /.inner -->
-                  </div>
-                </div>
-                <div class="accrodion last-chiled">
-                  <div class="accrodion-title">
-                    <h4>Why are your Tours so Expensive?</h4>
-                  </div>
-                  <div class="accrodion-content">
-                    <div class="inner">
-                      <p>
-                        There are many variations of passages of available but
-                        majority have alteration in some by inject humour or
-                        random words. Lorem ipsum dolor sit amet, error insolens
-                        reprimique no quo, ea pri verterem phaedr vel ea iisque
-                        aliquam..
-                      </p>
-                    </div>
-                    <!-- /.inner -->
-                  </div>
-                </div>
-              </div>
-            </div>
           </div>
         </div>
         <div class="col-xl-4 col-lg-5">
@@ -143,7 +77,7 @@
               <ul class="tour-details-two__last-minute-list list-unstyled">
                 <li>
                   <div class="tour-details-two__last-minute-image">
-                    <img src="assets/images/resources/td-img-1.jpg" alt="" />
+                    <img src="/images/resources/td-img-1.jpg" alt="" />
                   </div>
                   <div class="tour-details-two__last-minute-content">
                     <h6>$380</h6>
@@ -153,7 +87,7 @@
                 </li>
                 <li>
                   <div class="tour-details-two__last-minute-image">
-                    <img src="assets/images/resources/td-img-2.jpg" alt="" />
+                    <img src="/images/resources/td-img-2.jpg" alt="" />
                   </div>
                   <div class="tour-details-two__last-minute-content">
                     <h6>$380</h6>
@@ -163,7 +97,7 @@
                 </li>
                 <li>
                   <div class="tour-details-two__last-minute-image">
-                    <img src="assets/images/resources/td-img-3.jpg" alt="" />
+                    <img src="/images/resources/td-img-3.jpg" alt="" />
                   </div>
                   <div class="tour-details-two__last-minute-content">
                     <h6>$380</h6>
@@ -172,19 +106,6 @@
                   </div>
                 </li>
               </ul>
-            </div>
-            <div class="destinations-details__discount">
-              <img
-                src="assets/images/resources/destinations-details__discount-img.jpg"
-                alt=""
-              />
-              <div class="destinations-details__discount-content">
-                <h2>30%</h2>
-                <h4>
-                  Discount on Spain <br />
-                  Tours
-                </h4>
-              </div>
             </div>
           </div>
         </div>
