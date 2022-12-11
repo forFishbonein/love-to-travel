@@ -2,10 +2,13 @@ import { RouteRecordRaw } from "vue-router";
 import Index from "@/Index.vue";
 import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
+import GoTravel from "@views/goTravel/GoTravel.vue";
+import City from "@/views/goTravel/city/City.vue";
 import TravelPlan from "@/views/makePlan/TravelPlan.vue";
 import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
+
 export const routes: Array<RouteRecordRaw> = [
   {
     path: "/",
@@ -24,6 +27,93 @@ export const routes: Array<RouteRecordRaw> = [
         // component: () => import("@/views/Home.vue"), //这个不行，会加载不出来
         component: Home,
         meta: { title: "首页", keepAlive: true, showTab: true },
+      },
+      {
+        path: "/goTravel",
+        name: "GoTravel",
+        component: GoTravel,
+        meta: { title: "去旅游", keepAlive: false, showTab: true },
+        // redirect: "/goTravel/city",
+        children: [
+          {
+            path: "city",
+            name: "City",
+            // component: () => import("@/views/goTravel/city/City.vue"),
+            component: City,
+            meta: {
+              title: "城市页",
+              keepAlive: false,
+              showTab: true,
+            },
+            redirect: "/goTravel/city/list",
+            children: [
+              {
+                path: "list",
+                name: "CityList",
+                component: () => import("@/views/goTravel/city/CityList.vue"),
+                meta: {
+                  title: "城市列表",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail",
+                name: "CityDetail",
+                component: () => import("@/views/goTravel/city/CityDetail.vue"),
+                meta: {
+                  title: "城市详情",
+                  keepAlive: false,
+                  showTab: true,
+                },
+                props(route) {
+                  return {
+                    cityDetailInfoString: route.params.cityDetailInfo,
+                  };
+                },
+              },
+            ],
+          },
+          {
+            path: "scenery",
+            name: "Scenery",
+            component: () => import("@/views/goTravel/scenery/Scenery.vue"),
+            meta: {
+              title: "景区页",
+              keepAlive: false,
+              showTab: true,
+            },
+            children: [
+              {
+                path: "list",
+                name: "SceneryList",
+                component: () =>
+                  import("@/views/goTravel/scenery/SceneryList.vue"),
+                meta: {
+                  title: "景区列表",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail",
+                name: "SceneryDetail",
+                component: () =>
+                  import("@/views/goTravel/scenery/SceneryDetail.vue"),
+                meta: {
+                  title: "景区详情",
+                  keepAlive: false,
+                  showTab: true,
+                },
+                props(route) {
+                  return {
+                    sceneryDetailInfoString: route.params.sceneryDetailInfo,
+                  };
+                },
+              },
+            ],
+          },
+        ],
       },
     ],
   },
@@ -71,16 +161,6 @@ export const routes: Array<RouteRecordRaw> = [
         goDate,
       };
     },
-    // redirect: "/login/passLogin", //LoginAndRegister中包裹passLogin
-    children: [
-      // {
-      //   path: "passLogin",
-      //   name: "PassLogin",
-      //   // component: () => import("@/components/passOrCode/PassLogin.vue"),
-      //   component: PassLogin,
-      //   meta: { title: "密码登录", keepAlive: false, showTab: true },
-      // },
-    ],
   },
   {
     path: "/result",
