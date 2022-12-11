@@ -1,4 +1,4 @@
-package com.lovetotravel.user.redis.utils;
+package com.lovetotravel.travel.utils;
 
 import java.util.Random;
 
