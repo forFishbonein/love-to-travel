@@ -9,7 +9,7 @@ export const saveFinalPlansInfo = (
   return httpRequest({
     method: "post",
     data: finalPlansInfo,
-    url: "/travelservice/plan",
+    url: "http://localhost:8082/plan",
     loading: true, //显示加载圈
   });
 };

@@ -5,7 +5,7 @@ export const passLogin = (passData: passLoginInfo) => {
   return httpRequest({
     data: passData,
     method: "post",
-    url: "/login",
+    url: "http://localhost:8081/login",
     loading: true, //显示加载圈
   });
 };
@@ -15,7 +15,7 @@ export function codeLogin(codeData: codeLoginInfo) {
   return httpRequest({
     data: codeData,
     method: "post",
-    url: "/codelogin",
+    url: "http://localhost:8081/codelogin",
     loading: true,
   });
 }
@@ -23,7 +23,7 @@ export function codeLogin(codeData: codeLoginInfo) {
 export function logout(token: string) {
   return httpRequest({
     data: token,
-    url: "/logout",
+    url: "http://localhost:8081/logout",
     method: "post",
     loading: true,
   });

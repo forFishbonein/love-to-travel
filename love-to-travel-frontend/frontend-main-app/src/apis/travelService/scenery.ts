@@ -3,7 +3,7 @@ export const getSceneryList = (id: string) => {
   //   alert("哈哈" + id);
   return httpRequest({
     method: "get",
-    url: `/travelservice/scenery/city/${id}`,
+    url: `http://localhost:8082/scenery/city/${id}`,
     loading: true, //显示加载圈
   });
 };
