@@ -7,6 +7,7 @@ import lombok.Data;
 public class City {
 
     @ApiModelProperty("城市id")
+
     private String cityId;
 
     @ApiModelProperty("城市名称")
