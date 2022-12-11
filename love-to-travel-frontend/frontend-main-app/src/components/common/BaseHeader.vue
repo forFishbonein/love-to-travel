@@ -178,7 +178,11 @@ const displayText = () => {
                         >
                       </li>
                       <li>
-                        <a href="destinations-details.html">热门景点</a>
+                        <router-link
+                          to="/goTravel/scenery"
+                          active-class="active-router"
+                          >热门景点</router-link
+                        >
                       </li>
                     </ul>
                   </li>

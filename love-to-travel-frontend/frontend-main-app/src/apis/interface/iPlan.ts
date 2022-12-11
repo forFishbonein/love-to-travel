@@ -82,9 +82,11 @@ export interface finalAllCityPlansInfoType {
 // }
 
 /* 4 */
+/* 景区的类型 */
 export interface theCityScenerysInfoType {
   name: string;
   introduction: string | null;
+  score: string | null;
   ticket: string | null;
   opening: string | null;
   lng: number | null;
@@ -99,5 +101,6 @@ export interface theCityScenerysInfoType {
   deleted: string;
   createTime: string | null;
   updateTime: string | null;
+  cluster: string | null;
   id: number;
 }

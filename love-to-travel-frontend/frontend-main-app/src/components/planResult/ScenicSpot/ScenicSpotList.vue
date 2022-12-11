@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { onMounted } from "@vue/runtime-core";
-import { getSceneryList } from "@apis/travelService/scenery";
+import { getSceneryListByCityId } from "@apis/travelService/scenery";
 import { useRouter } from "vue-router";
 import { theCityScenerysInfoType, routeInfoType } from "@/apis/interface/iPlan";
 import emitter from "@/mitt/event";
@@ -13,7 +13,7 @@ console.log("scenic页面" + props);
 const cityId = props.id;
 const sceneryListInfo = ref([] as theCityScenerysInfoType[]);
 const requestSceneryListInfo = async () => {
-  await getSceneryList(cityId)
+  await getSceneryListByCityId(cityId)
     .then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
@@ -85,6 +85,10 @@ onMounted(() => {
       <div class="content">
         <el-scrollbar max-height="80px" class="content-body">
           <p>{{ item.name }}</p>
+          <p>
+            <span style="color: #303133">用户评分：</span>
+            {{ item.score }}
+          </p>
           <p>
             <span style="color: #303133">地址：</span>
             {{ item.address }}
