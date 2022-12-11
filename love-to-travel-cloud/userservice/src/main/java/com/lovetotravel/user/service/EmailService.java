@@ -4,7 +4,7 @@ import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.exception.GlobalException;
 import com.lovetotravel.user.redis.CodeKey;
 import com.lovetotravel.user.redis.RedisService;
-import com.lovetotravel.user.redis.utils.ValidateCodeUtils;
+import com.lovetotravel.user.utils.ValidateCodeUtils;
 import com.lovetotravel.user.result.CodeMsg;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

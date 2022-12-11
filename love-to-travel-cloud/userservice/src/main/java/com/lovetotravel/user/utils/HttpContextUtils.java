@@ -1,4 +1,4 @@
-package com.lovetotravel.travel.redis.utils;
+package com.lovetotravel.user.utils;
 
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;

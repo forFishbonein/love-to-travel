@@ -23,7 +23,7 @@ public interface NoteService {
 
     void incrLike(String id);
 
-    void incrView(String id);
+    void incrView(String noteId);
 
 
 }

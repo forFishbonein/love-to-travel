@@ -150,5 +150,6 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public void incrView(String id) {
         redisService.incr(NoteKey.getView, id);
+
     }
 }

@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Api(tags = "景点接口")
@@ -67,7 +68,7 @@ public class SceneryController {
 
     @ApiOperation("根据景区id查询景区")
     @GetMapping("/scenery/{id}")
-    public Result<Scenery> getById(@PathVariable("id") Long id) {
+    public Result<Scenery> getById(HttpServletRequest request, @PathVariable("id") Long id) {
         System.out.println(id);
         return Result.success(sceneryService.getById(id));
     }

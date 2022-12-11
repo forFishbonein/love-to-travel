@@ -9,6 +9,8 @@ import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Api(tags = "游记接口")
@@ -26,7 +28,7 @@ public class NoteController {
 
     @ApiOperation("根据游记id查询游记")
     @GetMapping("/{id}")
-    public Result<Note> getById(@PathVariable("id") String id) {
+    public Result<Note> getById(HttpServletRequest request, @PathVariable("id") String id) {
         System.out.println(id);
         return Result.success(noteService.getById(id));
     }

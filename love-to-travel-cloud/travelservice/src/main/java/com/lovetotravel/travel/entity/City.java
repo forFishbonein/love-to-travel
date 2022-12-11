@@ -12,6 +12,9 @@ public class City {
     @ApiModelProperty("城市名称")
     private String cityName;
 
+    @ApiModelProperty("城市英文名称")
+    private String cityEname;
+
     @ApiModelProperty("经度")
     private String lng;
 

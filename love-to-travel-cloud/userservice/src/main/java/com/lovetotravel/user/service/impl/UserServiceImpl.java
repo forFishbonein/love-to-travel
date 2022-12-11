@@ -13,7 +13,7 @@ import com.lovetotravel.user.redis.CodeKey;
 import com.lovetotravel.user.redis.FollowKey;
 import com.lovetotravel.user.redis.RedisService;
 import com.lovetotravel.user.redis.UserKey;
-import com.lovetotravel.user.redis.utils.UUIDUtil;
+import com.lovetotravel.user.utils.UUIDUtil;
 import com.lovetotravel.user.result.CodeMsg;
 import com.lovetotravel.user.service.UserService;
 import org.springframework.beans.BeanUtils;

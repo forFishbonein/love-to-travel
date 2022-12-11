@@ -1,4 +1,4 @@
-package com.lovetotravel.user.redis.utils;
+package com.lovetotravel.user.utils;
 
 import java.io.InputStream;
 import java.sql.Connection;
