@@ -3,14 +3,14 @@ import httpRequest from "@/request";
 export const getCitysInfo = () => {
   return httpRequest({
     method: "get",
-    url: "/city",
+    url: "http://localhost:8082/city",
     loading: true, //显示加载圈
   });
 };
 export const getHotCitysInfo = () => {
   return httpRequest({
     method: "get",
-    url: "/city/hot",
+    url: "http://localhost:8082/city/hot",
     loading: true, //显示加载圈
   });
 };

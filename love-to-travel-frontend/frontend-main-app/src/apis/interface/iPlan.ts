@@ -64,7 +64,6 @@ export interface everyCityPlansInfoType {
   weather: string;
 }
 export interface finalAllCityPlansInfoType {
-  id: string;
   userId: string;
   budget: string;
   depart: string;

@@ -90,8 +90,8 @@ onMounted(() => {
             {{ item.address }}
           </p>
           <p>
-            <span style="color: #303133">简介：</span>
-            北京故宫看看看看破Koop近几年来可能萨
+            <span style="color: #303133">开放时间：</span>
+            {{ item.opening }}
           </p>
         </el-scrollbar>
         <div class="add-button" @click="openSceneryToPlanDialog(index)">

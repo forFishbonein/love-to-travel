@@ -28,21 +28,42 @@ const backToList = () => {
       <div class="left-img">
         <img :src="sceneryDetailInfo.url" alt="" />
       </div>
-      <div class="right-info"></div>
-    </div>
-    <div class="detail-main-body">
-      <div class="title">
-        <el-icon><Document /></el-icon>详情信息
-      </div>
-      <div class="content">
+      <div class="right-info">
         <p>{{ sceneryDetailInfo.name }}</p>
         <p>
           <span style="color: #303133">地址：</span>
           {{ sceneryDetailInfo.address }}
         </p>
         <p>
+          <span style="color: #303133">票价：</span>
+          {{ sceneryDetailInfo.ticket }}元
+        </p>
+        <p>
+          <span style="color: #303133">开放时间：</span>
+          {{ sceneryDetailInfo.opening }}
+        </p>
+      </div>
+    </div>
+    <div class="detail-main-body">
+      <div class="title">
+        <el-icon><Document /></el-icon>详情信息
+      </div>
+      <div class="content">
+        <p>
           <span style="color: #303133">简介：</span>
           {{ sceneryDetailInfo.introduction }}
+        </p>
+        <p>
+          <span style="color: #303133">推荐理由：</span>
+          {{ sceneryDetailInfo.season }}
+        </p>
+        <p>
+          <span style="color: #303133">小贴士：</span>
+          {{ sceneryDetailInfo.tips }}
+        </p>
+        <p>
+          <span style="color: #303133">联系电话：</span>
+          {{ sceneryDetailInfo.tele }}
         </p>
       </div>
     </div>
@@ -94,7 +115,19 @@ const backToList = () => {
     .right-info {
       width: 240px;
       height: 150px;
+      padding: 10px;
       // border: 1px #e8604c solid;
+      p {
+        margin: 0;
+        line-height: 1.2em;
+        margin: 3px 0;
+        font-size: 12px;
+      }
+      p:first-child {
+        font-size: 15px;
+        color: #e8604c;
+        font-weight: 700;
+      }
     }
   }
   .detail-main-body {
@@ -118,24 +151,21 @@ const backToList = () => {
       display: flex;
       flex-direction: column;
       min-height: 150px;
-      border: 1px #e8604c solid;
+      // border: 1px #e8604c solid;
+      border: 1px #dcdfe6 solid;
+      border-top: 0;
       padding: 0 8px;
       p {
         margin: 0;
         line-height: 1.2em;
         margin: 3px 0;
-      }
-      p:first-child {
-        font-size: 15px;
-        color: #e8604c;
-        font-weight: 700;
-      }
-      p:nth-child(2) {
         font-size: 12px;
       }
-      p:nth-child(3) {
-        font-size: 12px;
-      }
+      // p:first-child {
+      //   font-size: 15px;
+      //   color: #e8604c;
+      //   font-weight: 700;
+      // }
     }
   }
 }

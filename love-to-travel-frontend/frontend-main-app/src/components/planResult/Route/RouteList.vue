@@ -12,6 +12,7 @@ const router = useRouter();
 const props = defineProps<{
   id: string;
 }>();
+// alert(props.id);
 console.log("route页面" + props);
 const cityId = props.id;
 const routeListInfo = ref([] as everyCityPlansInfoType[]);
@@ -58,13 +59,15 @@ let theRouteIndex: number;
 const openTheWarnDialog = (index: number) => {
   dialogVisible.value = true;
   theRouteIndex = index;
+  // alert(theRouteIndex);
 };
 //但是传到结果页时的应该只需要里面的days即可！！！，要重新赋值
 //要定义一个新的类型，不应该直接用routeListInfo[theRouteIndex]
 let daysPlanInfo = [] as everyDayRoutesType[];
 const addToTheCityPlan = () => {
   dialogVisible.value = false;
-  daysPlanInfo = routeListInfo[theRouteIndex].days;
+  daysPlanInfo = routeListInfo.value[theRouteIndex].days;
+  // console.log(daysPlanInfo);
   emitter.emit("addPlan", daysPlanInfo);
 };
 onMounted(() => {

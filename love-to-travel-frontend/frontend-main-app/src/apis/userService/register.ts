@@ -5,7 +5,7 @@ export const postCode = (email: string) => {
   return httpRequest({
     data: email,
     method: "post",
-    url: "/send",
+    url: "http://localhost:8081/send",
   });
 };
 
@@ -14,7 +14,7 @@ export const register = (registerData: registerInfo) => {
   return httpRequest({
     data: registerData,
     method: "post",
-    url: "/user/register",
+    url: "http://localhost:8081/user/register",
     loading: true,
   });
 };

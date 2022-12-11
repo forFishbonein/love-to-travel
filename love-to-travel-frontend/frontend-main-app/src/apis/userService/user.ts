@@ -16,7 +16,7 @@ import httpRequest from "@request/index";
 // }
 export const getUserInfo = (token: string) => {
   return httpRequest({
-    url: "/user/token",
+    url: "http://localhost:8081/user/token",
     method: "get",
     headers: { Authorization: token },
     loading: true, //这里好像必须开启，不知道为啥！！！这样有token时配合路由监测进主页的时候才不会报错！

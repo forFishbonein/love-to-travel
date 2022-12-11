@@ -116,6 +116,11 @@ export const routes: Array<RouteRecordRaw> = [
             component: () =>
               import("@/components/planResult/Route/RouteList.vue"),
             meta: { title: "路线列表", keepAlive: false, showTab: true },
+            beforeEnter: (to, from, next) => {
+              // 路由独享守卫
+              // alert(99999);
+              next();
+            },
             props(route) {
               return {
                 id: route.params.searchCityId,

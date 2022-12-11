@@ -8,7 +8,7 @@ import axios, { AxiosResponse, AxiosRequestConfig } from "axios";
 import { store } from "@/main";
 
 const service = axios.create({
-  baseURL: config.baseApi, // 所有的请求地址前缀部分
+  // baseURL: config.baseApi, // 所有的请求地址前缀部分
   timeout: 10000, // 请求超时时间毫秒
   // withCredentials: true, // 异步请求携带cookie
   headers: {

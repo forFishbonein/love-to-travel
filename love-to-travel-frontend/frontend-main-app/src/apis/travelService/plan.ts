@@ -1,2 +1,15 @@
 /* 新增计划 */
-export {};
+import httpRequest from "@/request";
+import { finalAllCityPlansInfoType } from "@/apis/interface/iPlan";
+export const saveFinalPlansInfo = (
+  finalPlansInfo: finalAllCityPlansInfoType
+) => {
+  //   alert("进来了");
+  console.log(finalPlansInfo);
+  return httpRequest({
+    method: "post",
+    data: finalPlansInfo,
+    url: "http://localhost:8082/plan",
+    loading: true, //显示加载圈
+  });
+};
