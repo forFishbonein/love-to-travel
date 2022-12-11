@@ -12,6 +12,7 @@ const router = useRouter();
 const props = defineProps<{
   id: string;
 }>();
+// alert(props.id);
 console.log("route页面" + props);
 const cityId = props.id;
 const routeListInfo = ref([] as everyCityPlansInfoType[]);

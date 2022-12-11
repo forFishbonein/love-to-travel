@@ -17,8 +17,12 @@ import { useRouter } from "vue-router";
 // 注册全局事件
 import emitter from "@/mitt/event";
 import axios from "axios";
+import { mainStore } from "@/store/user";
+import { saveFinalPlansInfo } from "@/apis/travelService/plan";
+import router from "@/router";
+const store2 = mainStore();
 emitter.on("addPlan", (daysPlanInfo) => {
-  alert("添加行程信息到行程");
+  // alert("添加行程信息到行程");
   //不管怎么样，不管有没有数据，我们要展示的就是days，所以直接赋值就完事了！
   // @ts-ignore
   oneCityDaysDisplay.value = daysPlanInfo;
@@ -36,10 +40,10 @@ emitter.on("addPlan", (daysPlanInfo) => {
   showFlag.value = true;
 });
 emitter.on("addAScenery", (routeInfo) => {
-  alert("添加景区信息到行程");
+  // alert("添加景区信息到行程");
   // if (oneCityDaysDisplay.value === ([] as everyDayRoutesType[])) {
   if (oneCityDaysDisplay.value.length == 0) {
-    alert("方法1:新增");
+    // alert("方法1:新增");
     //在该城市没有行程内容的情况下
     //给subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days的route数组新增一个信息
     // 这些应该都不需要，需要我们展示的就只是days的内容而已，所以把citysPlansInfo舍弃换成days即everyDayRoutesType[]
@@ -68,14 +72,17 @@ emitter.on("addAScenery", (routeInfo) => {
     console.log("+++++++");
     showFlag.value = true;
   } else {
-    alert("方法2:合并");
+    // alert("方法2:合并");
     //在该城市已经有行程内容的情况下
     //把subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days合并
     //给最后一天的route里面加一项
-    oneCityDaysDisplay.value[oneCityDaysDisplay.value.length - 1].route.push(
-      // @ts-ignore
-      routeInfo
-    );
+    console.log(routeInfo);
+    console.log(oneCityDaysDisplay.value);
+    // TODO:这里暂时不需要了
+    // oneCityDaysDisplay.value[oneCityDaysDisplay.value.length - 1].route.push(
+    //   // @ts-ignore
+    //   routeInfo
+    // );
     console.log("-------");
     console.log(oneCityDaysDisplay.value);
     console.log("-------");
@@ -128,7 +135,6 @@ let showFlag = ref(false);
 /* 最终方案对象 */
 let finalPlansInfo: finalAllCityPlansInfoType = reactive({
   budget: props.budget, //前面写的预算在这里当作总的预算
-  id: "",
   subPlans: [],
   userId: "",
   start: props.fromTheCity,
@@ -139,6 +145,53 @@ let finalPlansInfo: finalAllCityPlansInfoType = reactive({
 const budget = toRef(finalPlansInfo, "budget");
 // 这个是用于展示在左边的内容！
 const subPlans = toRef(finalPlansInfo, "subPlans"); //这里也不是最终的内容，也是用于展示的，后面保存行程的时候要拼接给final
+/* 保存最终的计划 */
+const saveFinalPlans = async () => {
+  if (store2.userInfo.id) {
+    // alert("保存");
+    finalPlansInfo.userId = store2.userInfo.id;
+    finalPlansInfo.budget = budget.value;
+    finalPlansInfo.subPlans = subPlans.value;
+    await saveFinalPlansInfo(finalPlansInfo)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          successDialogVisible.value = true;
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    // alert("不保存");
+    //@ts-ignore
+    ElMessage({
+      type: "warning",
+      message: "请先登录！",
+    });
+    router.push("/login");
+  }
+};
+const successDialogVisible = ref(false);
+const goSeeMyPlans = () => {
+  successDialogVisible.value = false;
+  router.push("/");
+};
+const backToIndex = () => {
+  successDialogVisible.value = false;
+  router.push("/");
+};
+
+/* 初始化行程列表 */
 const initSubPlans = () => {
   // console.log(props.wantCitys);
   if (props.wantCitys) {
@@ -254,7 +307,7 @@ const addACity = async () => {
 const deleteCity = (index: any) => {
   subPlans.value.splice(index, 1);
 };
-const activeIndex = ref("/result/route/list");
+const activeIndex = ref(`/result/route/list/${store.searchCityId}`);
 const handleSelect = (key: string, keyPath: string[]) => {
   // console.log(key, keyPath);
 };
@@ -284,13 +337,13 @@ const searchRoutes = (cityId: string, cityName: string) => {
       console.log("+++++++++");
     }
   });
+  //如果没有，说明这个城市下还没有制定任何行程
   if (flag === false) {
     // alert(2);
     // 也可以不清空
     oneCityDaysDisplay.value = [] as everyDayRoutesType[]; //每次要初始化一下展示内容的对象
     showFlag.value = false; //只有在这里才会变为false
   }
-  //如果没有，说明这个城市下还没有制定任何行程
   $router.push({
     //默认跳转到routelist页面
     name: "RouteList",
@@ -306,10 +359,18 @@ onMounted(() => {
 </script>
 
 <template>
-  <div class="base-header">Aron的行程</div>
+  <div class="base-header">
+    <div class="header-left">{{ store2.userInfo.name }}的行程</div>
+    <div class="header-right">
+      <div class="save-button" @click="saveFinalPlans">保存行程</div>
+    </div>
+  </div>
   <div class="base-container">
     <div class="body-left">
-      <div class="left-header">出发城市：{{ fromTheCity }}</div>
+      <div class="left-header">
+        <p>出发城市：{{ fromTheCity }}</p>
+        <p>出发时间：{{ goTheDate }}</p>
+      </div>
       <div class="left-body">
         <el-scrollbar max-height="400px">
           <div
@@ -395,10 +456,7 @@ onMounted(() => {
             <div class="theDay">第{{ index + 1 }}天</div>
             <div v-for="(i, index2) in item.route" :key="index2">
               <div class="item-step-content">
-                <div
-                  @click="deleteOneRoute(index, index2)"
-                  style="width: 50px; height: 50px; background-color: red"
-                >
+                <div @click="deleteOneRoute(index, index2)" class="step-button">
                   <el-icon><CloseBold /></el-icon>
                 </div>
                 <el-steps :space="50" :active="1" simple class="item-step">
@@ -478,6 +536,21 @@ onMounted(() => {
       </span>
     </template>
   </el-dialog>
+  <el-dialog
+    v-model="successDialogVisible"
+    title="成功提示"
+    width="30%"
+    draggable
+    show-close="false"
+  >
+    <span>我们已将您的自定义行程进行保存，点击下方可以进行查看。</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="goSeeMyPlans"> 查看行程 </el-button>
+        <el-button type="success" @click="backToIndex"> 返回首页 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
@@ -494,9 +567,44 @@ onMounted(() => {
   background-color: #ffffff;
   border-bottom: 2px #e8604c solid;
   // box-shadow: 0px 20px 10px rgba(0, 0, 0, 0.9);
-  display: flex;
-  align-items: center;
-  padding-left: 20px;
+  padding: 0 25px 0 20px;
+  .header-left {
+    float: left;
+    width: 530px;
+    height: 100%;
+    // border: 1px #e8604c solid;
+    display: flex;
+    align-items: center;
+    color: #303133;
+  }
+  .header-right {
+    float: right;
+    width: 530px;
+    height: 100%;
+    // border: 1px #e8604c solid;
+    display: flex;
+    align-items: center;
+    justify-content: right;
+    .save-button {
+      width: 120px;
+      height: 40px;
+      // border: 1px #e8604c solid;
+      border-radius: 5px;
+      background-color: #e8604c;
+      color: #ffffff;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s linear;
+      font-weight: 700;
+    }
+    .save-button:hover {
+      background-color: #e74128;
+      color: #e0e0e0;
+    }
+  }
 }
 .base-container {
   width: 100%;
@@ -516,12 +624,17 @@ onMounted(() => {
     box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
     .left-header {
       width: auto;
-      height: 12%;
+      height: 13%;
       border-bottom: 2px #e8604c solid;
       display: flex;
-      justify-content: center;
+      justify-content: space-around;
       align-items: center;
-      font-size: 16px;
+      flex-direction: column;
+      p {
+        font-size: 16px;
+        margin: 0;
+        line-height: 1.5em;
+      }
     }
     .left-footer {
       width: auto;
@@ -549,7 +662,7 @@ onMounted(() => {
     }
     .left-body {
       width: auto;
-      height: 70%;
+      height: 69%;
       // border: 1px #e8604c solid;
       .left-scrollbar-item {
         display: flex;
@@ -564,12 +677,12 @@ onMounted(() => {
         padding-left: 10px;
         border-bottom: 1px #dcdfe6 solid;
         .item-left {
-          width: 100px;
+          width: 160px;
           height: 80px;
           display: flex;
           justify-content: space-around;
           align-items: center;
-          padding-left: 30px;
+          padding-left: 10px;
           i {
             color: #303133;
           }
@@ -585,6 +698,9 @@ onMounted(() => {
             }
             > p:nth-child(3) {
               width: 100px;
+            }
+            > p:nth-child(4) {
+              width: 130px;
             }
           }
         }
@@ -682,6 +798,28 @@ onMounted(() => {
           justify-content: space-around;
           min-height: 70px;
           margin-bottom: 10px;
+          position: relative;
+          .step-button {
+            position: absolute;
+            top: 8px;
+            width: 20px;
+            height: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            margin-left: 5px;
+            border-radius: 20px;
+            padding-left: 1px;
+            > i {
+              color: #787780;
+            }
+          }
+          .step-button:hover {
+            background-color: #f48f80;
+            > i {
+              color: #ffffff;
+            }
+          }
           .item-step {
             width: 450px;
             height: 40px;
