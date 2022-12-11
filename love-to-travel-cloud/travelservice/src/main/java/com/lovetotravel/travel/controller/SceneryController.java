@@ -38,6 +38,14 @@ public class SceneryController {
         return Result.success(cityMapper.selectList(null));
     }
 
+    @ApiOperation("根据城市id查询城市")
+    @GetMapping("/city/{id}")
+    public Result<City> getByCityId(@PathVariable("id") Long id) {
+        QueryWrapper<City> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(City::getCityId, id);
+        return Result.success(cityMapper.selectOne(queryWrapper));
+    }
+
     //TODO 定时任务更新hotcity数据库
     @ApiOperation("获取热门城市")
     @GetMapping("/city/hot")
