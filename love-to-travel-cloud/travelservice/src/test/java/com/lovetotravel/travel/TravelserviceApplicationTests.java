@@ -21,7 +21,7 @@ class TravelserviceApplicationTests {
         Process proc;
         try {
             Runtime.getRuntime().exec("conda activate pyspark");
-            proc = Runtime.getRuntime().exec("python E:\\JavaProject\\love-to-travel\\love-to-travel-cloud\\travelservice\\src\\main\\resources\\static\\hotCity.py");// 执行py文件
+            proc = Runtime.getRuntime().exec("python .\\src\\main\\resources\\static\\hotCity.py");// 执行py文件
             //用输入输出流来截取结果
             BufferedReader in = new BufferedReader(new InputStreamReader(proc.getInputStream(),"GB2312"));
             String line = null;
