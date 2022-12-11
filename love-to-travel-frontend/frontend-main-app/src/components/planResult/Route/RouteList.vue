@@ -2,7 +2,10 @@
 import { ref } from "vue";
 import { getRouteList } from "@apis/travelService/route";
 import { onMounted } from "@vue/runtime-core";
-import { everyCityPlansInfoType } from "@/apis/interface/iPlan";
+import {
+  everyCityPlansInfoType,
+  everyDayRoutesType,
+} from "@/apis/interface/iPlan";
 import emitter from "@/mitt/event";
 import { useRouter } from "vue-router";
 const router = useRouter();
@@ -11,7 +14,7 @@ const props = defineProps<{
 }>();
 console.log("route页面" + props);
 const cityId = props.id;
-const routeListInfo = ref([]); //改类型
+const routeListInfo = ref([] as everyCityPlansInfoType[]);
 const requestRouteListInfo = async () => {
   await getRouteList(cityId)
     .then((res: any) => {
@@ -23,6 +26,7 @@ const requestRouteListInfo = async () => {
         });
       } else {
         routeListInfo.value = res.data;
+        console.log(routeListInfo.value);
       }
     })
     .catch((error) => {
@@ -40,6 +44,7 @@ let routeDetailInfo = {} as everyCityPlansInfoType;
 const seeTheDetail = (index: number) => {
   routeDetailInfo = routeListInfo.value[index]; //这里必须要.value才可以
   console.log(routeDetailInfo);
+  console.log(JSON.stringify(routeDetailInfo));
   router.push({
     name: "RouteDetail",
     params: {
@@ -56,9 +61,11 @@ const openTheWarnDialog = (index: number) => {
 };
 //但是传到结果页时的应该只需要里面的days即可！！！，要重新赋值
 //要定义一个新的类型，不应该直接用routeListInfo[theRouteIndex]
+let daysPlanInfo = [] as everyDayRoutesType[];
 const addToTheCityPlan = () => {
   dialogVisible.value = false;
-  emitter.emit("addPlan", routeListInfo[theRouteIndex]);
+  daysPlanInfo = routeListInfo[theRouteIndex].days;
+  emitter.emit("addPlan", daysPlanInfo);
 };
 onMounted(() => {
   requestRouteListInfo();
@@ -67,15 +74,22 @@ onMounted(() => {
 
 <template>
   <el-scrollbar max-height="350px">
-    <div v-for="(item, index) in 4" :key="item" class="right-scrollbar-item2">
+    <div
+      v-for="(item, index) in routeListInfo"
+      :key="index"
+      class="right-scrollbar-item2"
+    >
       <div class="route-body">
         <div class="body-left">
           <el-icon :size="30"><Collection /></el-icon>
         </div>
         <div class="body-right">
-          <p class="body-title">上海暴走三日游</p>
+          <p class="body-title">{{ item.city }}{{ item.days.length }}日游</p>
           <div class="body-content">
-            大苏打实打实大苏打撒大苏打撒大苏打撒旦大撒大撒大撒大撒大大
+            {{ item.budget }}元{{ item.days.length }}天游{{
+              item.city
+            }}，爱旅游带你Fall in Love with
+            Travel，点击下方添加到行程就可以用我作为你的行程模板啦！
           </div>
         </div>
       </div>
