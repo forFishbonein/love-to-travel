@@ -4,6 +4,7 @@ import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
 import GoTravel from "@views/goTravel/GoTravel.vue";
 import City from "@/views/goTravel/city/City.vue";
+import Scenery from "@/views/goTravel/scenery/Scenery.vue";
 import TravelPlan from "@/views/makePlan/TravelPlan.vue";
 import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
@@ -59,7 +60,7 @@ export const routes: Array<RouteRecordRaw> = [
               },
               {
                 path: "detail",
-                name: "CityDetail",
+                name: "CityDetail/:cityId",
                 component: () => import("@/views/goTravel/city/CityDetail.vue"),
                 meta: {
                   title: "城市详情",
@@ -68,7 +69,7 @@ export const routes: Array<RouteRecordRaw> = [
                 },
                 props(route) {
                   return {
-                    cityDetailInfoString: route.params.cityDetailInfo,
+                    cityId: route.params.cityId,
                   };
                 },
               },
@@ -77,12 +78,13 @@ export const routes: Array<RouteRecordRaw> = [
           {
             path: "scenery",
             name: "Scenery",
-            component: () => import("@/views/goTravel/scenery/Scenery.vue"),
+            component: Scenery,
             meta: {
               title: "景区页",
               keepAlive: false,
               showTab: true,
             },
+            redirect: "/goTravel/scenery/list",
             children: [
               {
                 path: "list",
@@ -97,7 +99,7 @@ export const routes: Array<RouteRecordRaw> = [
               },
               {
                 path: "detail",
-                name: "SceneryDetail",
+                name: "SceneryDetail/:sceneryId",
                 component: () =>
                   import("@/views/goTravel/scenery/SceneryDetail.vue"),
                 meta: {
@@ -107,7 +109,7 @@ export const routes: Array<RouteRecordRaw> = [
                 },
                 props(route) {
                   return {
-                    sceneryDetailInfoString: route.params.sceneryDetailInfo,
+                    sceneryId: route.params.sceneryId,
                   };
                 },
               },

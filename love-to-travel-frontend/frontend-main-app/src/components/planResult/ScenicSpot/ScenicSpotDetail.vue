@@ -50,6 +50,10 @@ const backToList = () => {
       </div>
       <div class="content">
         <p>
+          <span style="color: #303133">景区评分：</span>
+          {{ sceneryDetailInfo.score }}
+        </p>
+        <p>
           <span style="color: #303133">简介：</span>
           {{ sceneryDetailInfo.introduction }}
         </p>
