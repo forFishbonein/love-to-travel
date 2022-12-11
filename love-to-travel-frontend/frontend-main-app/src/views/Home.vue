@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import { ref, reactive } from "vue";
 import { useRouter } from "vue-router";
-import {
-  citysInfoType,
-  planInfoType,
-  wantCityWithLalType,
-} from "@apis/interface/iPlan";
-import { getCitysInfo } from "@apis/travelService/city";
+import { citysInfoType, planInfoType } from "@apis/interface/iPlan";
+import { getHotCitysInfo } from "@apis/travelService/city";
 import { onMounted } from "@vue/runtime-core";
+import { utilStore } from "@/store/util";
+
+const store = utilStore();
 const router = useRouter();
 let citysInfos = [
   {
@@ -99,6 +98,43 @@ let citysInfos = [
     introduction: null,
   },
 ];
+let hotCitysInfo = ref([] as citysInfoType[]);
+let hotCityOne = ref({} as citysInfoType);
+let hotCityTwo = ref({} as citysInfoType);
+let hotCityThree = ref({} as citysInfoType);
+let hotCityFour = ref({} as citysInfoType);
+let hotCityFive = ref({} as citysInfoType);
+const requestCitysInfo = async () => {
+  await getHotCitysInfo()
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert("获取成功");
+        hotCitysInfo.value = res.data.slice(0, 5);
+        // citysInfo.value = res.data;
+        console.log(hotCitysInfo);
+        hotCityOne.value = hotCitysInfo.value[0];
+        hotCityTwo.value = hotCitysInfo.value[1];
+        hotCityThree.value = hotCitysInfo.value[2];
+        hotCityFour.value = hotCitysInfo.value[3];
+        hotCityFive.value = hotCitysInfo.value[4];
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+requestCitysInfo();
+
 const planInfo: planInfoType = reactive({
   fromCity: "",
   toCity: {} as citysInfoType,
@@ -116,6 +152,30 @@ const createPlan = () => {
     },
   });
 };
+
+// 保证每次进入HOME页面都会刷新一次的工具方法：
+const refresh = () => {
+  //refreshFlag为true代表刷新过
+  if (!store.refreshFlag) {
+    // alert("刷新");
+    //还没刷新过
+    store.refreshFlag = true; //表示已经刷新了
+    // console.log(store.refreshFlag);
+    location.reload(); //那就刷新一下
+    // setTimeout(function () {
+    //   location.reload();
+    // }, 1000);
+    return;
+  } else {
+    //已经刷新过了
+    store.refreshFlag = false; //表示还没有刷新
+    // console.log(store.refreshFlag);
+
+    return; //那就不刷新了
+  }
+};
+refresh();
+
 onMounted(() => {});
 </script>
 <script lang="ts">
@@ -321,11 +381,13 @@ onMounted(() => {});
               <img src="/images/destination/destination-1-1.png" alt="" />
               <div class="destinations-one__content">
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">Spain</a>
+                  <a href="destinations-details.html">
+                    {{ hotCityOne.cityName }}</a
+                  >
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">6 tours</a>
+                <a href="#">查看详情</a>
               </div>
             </div>
           </div>
@@ -337,7 +399,9 @@ onMounted(() => {});
               <div class="destinations-one__content">
                 <p class="destinations-one__sub-title">Wildlife</p>
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">Thailand</a>
+                  <a href="destinations-details.html">{{
+                    hotCityTwo.cityName
+                  }}</a>
                 </h2>
               </div>
               <div class="destinations-one__button">
@@ -352,11 +416,13 @@ onMounted(() => {});
               <img src="/images/destination/destination-1-3.png" alt="" />
               <div class="destinations-one__content">
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">Africa</a>
+                  <a href="destinations-details.html">{{
+                    hotCityThree.cityName
+                  }}</a>
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">6 tours</a>
+                <a href="#">查看详情</a>
               </div>
             </div>
           </div>
@@ -368,11 +434,13 @@ onMounted(() => {});
               <img src="/images/destination/destination-1-4.png" alt="" />
               <div class="destinations-one__content">
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">Australia</a>
+                  <a href="destinations-details.html">{{
+                    hotCityFour.cityName
+                  }}</a>
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">6 tours</a>
+                <a href="#">查看详情</a>
               </div>
             </div>
           </div>
@@ -384,11 +452,13 @@ onMounted(() => {});
               <div class="destinations-one__content">
                 <p class="destinations-one__sub-title">Adventure</p>
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">Switzerland</a>
+                  <a href="destinations-details.html">{{
+                    hotCityFive.cityName
+                  }}</a>
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">6 tours</a>
+                <a href="#">查看详情</a>
               </div>
             </div>
           </div>

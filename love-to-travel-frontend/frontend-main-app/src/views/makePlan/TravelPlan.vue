@@ -61,7 +61,7 @@ export default {
               message: res.msg,
             });
           } else {
-            citysInfo.value = res.data.slice(0, 320);
+            citysInfo.value = res.data.slice(0, 327);
             console.log(citysInfo);
           }
         })

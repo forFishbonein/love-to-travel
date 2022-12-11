@@ -54,46 +54,53 @@
 import { useRouter } from "vue-router";
 import { mainStore } from "@/store/user";
 import { ref } from "vue";
+import { InfoFilled } from "@element-plus/icons-vue";
 const radio = ref("1");
 const router = useRouter();
 const store = mainStore();
-const toLoginOrLogout = () => {
+let loginFlag = ref(false);
+const toLoginOrOwnCenter = () => {
   if (store.token === "") {
     router.push("/login");
   } else {
-    store
-      .logout()
-      .then((res: any) => {
-        if (res.code != 0) {
-          //@ts-ignore
-          ElMessage({
-            type: "error",
-            message: res.msg,
-          });
-        } else {
-          //@ts-ignore
-          ElMessage({
-            type: "success",
-            message: "已退出登录",
-          });
-          router.replace({ path: "/" });
-          location.reload();
-        }
-      })
-      .catch((error) => {
+    router.push("/");
+  }
+};
+const confirmLogout = () => {
+  store
+    .logout()
+    .then((res: any) => {
+      if (res.code != 0) {
         //@ts-ignore
         ElMessage({
           type: "error",
-          message: error.message,
+          message: res.msg,
         });
+      } else {
+        //@ts-ignore
+        ElMessage({
+          type: "success",
+          message: "已退出登录",
+        });
+        router.replace({ path: "/" });
+        location.reload(); //必须要刷新一下，否则不能显示最新的内容
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
       });
-  }
+    });
 };
 const displayText = () => {
   if (store.token === "") {
+    loginFlag.value = false;
     return "登录 / 注册";
   }
-  return "退出登录";
+  loginFlag.value = true;
+  return "个人中心";
 };
 </script>
 <template>
@@ -116,7 +123,7 @@ const displayText = () => {
                   <span class="icon-at"></span>
                 </div>
                 <div class="text">
-                  <a href="mailto:needhelp@company.com">needhelp@company.com</a>
+                  <a href="1558637209@qq.com">lovetotravel@scmzu.com</a>
                 </div>
               </li>
             </ul>
@@ -132,7 +139,7 @@ const displayText = () => {
               <div class="main-header__top-right-btn-box">
                 <a
                   class="thm-btn main-header__top-right-btn"
-                  @click="toLoginOrLogout"
+                  @click="toLoginOrOwnCenter"
                   v-text="displayText()"
                 ></a>
               </div>
@@ -164,7 +171,11 @@ const displayText = () => {
                     <ul>
                       <li><a href="destinations.html">热门省份</a></li>
                       <li>
-                        <a href="destinations-details.html">热门城市</a>
+                        <router-link
+                          to="/goTravel/city"
+                          active-class="active-router"
+                          >热门城市</router-link
+                        >
                       </li>
                       <li>
                         <a href="destinations-details.html">热门景点</a>
@@ -202,7 +213,20 @@ const displayText = () => {
                 class="main-menu__search search-toggler icon-magnifying-glass"
                 id="search-up-down"
               ></a>
-              <a href="#" class="main-menu__user icon-avatar"></a>
+              <el-popconfirm
+                confirm-button-text="确定"
+                cancel-button-text="取消"
+                :icon="InfoFilled"
+                icon-color="#e8604c"
+                title="您确定要退出登录吗？"
+                @confirm="confirmLogout"
+              >
+                <template #reference>
+                  <a href="#" class="main-menu__user" v-if="loginFlag">
+                    <el-icon :size="25"><SwitchButton /></el-icon>
+                  </a>
+                </template>
+              </el-popconfirm>
             </div>
           </div>
         </div>
@@ -294,6 +318,9 @@ const displayText = () => {
 
 <style lang="scss" scoped>
 // @import url(@/assets/css/tevily.css);
+.active-router {
+  background: #e8604c;
+}
 .main-header__top-right-btn-box {
   cursor: pointer;
 }
