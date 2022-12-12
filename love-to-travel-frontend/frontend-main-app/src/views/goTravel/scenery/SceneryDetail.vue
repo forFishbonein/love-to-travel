@@ -18,6 +18,7 @@ const requestOneSceneryInfo = async () => {
           message: res.msg,
         });
       } else {
+        alert("得到数据了！");
         sceneryInfo.value = res.data;
         console.log(sceneryInfo.value);
       }

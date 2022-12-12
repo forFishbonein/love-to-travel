@@ -1,19 +1,8 @@
-print('0')
-
 import numpy as np
 a = np.arange(12).reshape(3,4)
-print(a)
 
-print('1')
-
-
-print('0.1')
 from pymongo import MongoClient
 import pymysql
-
-1
-print('1')
-
 def connectionDB():
     client = MongoClient('mongodb://admin:12345678@121.41.107.144:27017/travelservice?authMechanism=DEFAULT&authSource=admin&authMechanism=SCRAM-SHA-1')
     db = client.travelservice
@@ -21,7 +10,7 @@ def connectionDB():
     City = mycol.distinct( "city")
     Date = mycol.distinct("createTime")
     return City,Date
-print('2')
+
 def GetHotCity ():
     list_city,list_date = connectionDB()
     list_city_new =[]
@@ -37,7 +26,7 @@ def GetHotCity ():
         word,count = counts[i]
         list_res.append(word)
     return list_res
-print('3')
+
 def get_conn():
     return pymysql.connect(
         host='47.98.138.0',
@@ -47,7 +36,7 @@ def get_conn():
         database='travelservice',
         charset='utf8'
     )
-print('4')
+
 def HotCityData():
     conn = get_conn()
     sql = "select * from city"
@@ -73,6 +62,5 @@ def HotCityData():
                 finally:
                     conn.close
 
-print('123123')
+
 HotCityData()
-print('1231233333')

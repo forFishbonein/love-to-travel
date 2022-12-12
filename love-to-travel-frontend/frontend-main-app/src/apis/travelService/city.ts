@@ -14,3 +14,10 @@ export const getHotCitysInfo = () => {
     loading: true, //显示加载圈
   });
 };
+export const getOneCityInfoById = (cityId: number) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/city/${cityId}`,
+    loading: true, //显示加载圈
+  });
+};
