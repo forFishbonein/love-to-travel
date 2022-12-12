@@ -50,9 +50,6 @@ public class MyAspect {
                 }
             }
         }
-
-        User user = redisService.get(UserKey.token, token, User.class);
-
     }
 
     @Pointcut("execution(public * com.lovetotravel.travel.controller.SceneryController.getById(..))")
