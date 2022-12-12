@@ -38,7 +38,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getById(String id) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(id));
+        query.addCriteria(Criteria.where("noteId").is(id));
         return mongoTemplate.find(query, Comment.class);
     }
 
