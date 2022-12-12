@@ -26,7 +26,6 @@ public class FootpointServiceImpl implements FootpointService {
     public List<Footpoint> getByUserId(String userId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
-        query.addCriteria(Criteria.where("deleted").is("0"));
         return mongoTemplate.find(query, Footpoint.class);
     }
 
