@@ -1,7 +1,7 @@
 package com.lovetotravel.travel.handler;
 
 import com.lovetotravel.travel.entity.Note;
-import com.lovetotravel.travel.entity.vo.NoteVo;
+import com.lovetotravel.travel.entity.vo.note.NoteVo;
 import com.lovetotravel.travel.redis.NoteKey;
 import com.lovetotravel.travel.redis.RedisService;
 import com.lovetotravel.travel.service.NoteService;
