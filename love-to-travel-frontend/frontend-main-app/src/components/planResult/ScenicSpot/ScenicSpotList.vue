@@ -250,6 +250,9 @@ onMounted(() => {
     p:nth-child(3) {
       font-size: 12px;
     }
+    p:nth-child(4) {
+      font-size: 12px;
+    }
   }
 }
 
