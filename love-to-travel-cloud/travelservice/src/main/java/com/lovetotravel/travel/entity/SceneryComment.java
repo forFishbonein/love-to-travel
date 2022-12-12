@@ -6,14 +6,13 @@ import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 @Data
-@Document(collection = "comment")
-public class Comment {
+public class SceneryComment {
 
     @ApiModelProperty("评论id")
     @Id
     private String id;
 
-    @ApiModelProperty("游记id")
+    @ApiModelProperty("景区id")
     private String noteId;
 
     @ApiModelProperty("评论内容")
@@ -25,14 +24,8 @@ public class Comment {
     @ApiModelProperty("用户名")
     private String userName;
 
-    @ApiModelProperty("评论点赞数")
-    private Integer like;
-
-    @ApiModelProperty("评论回复数")
-    private Integer reply;
-
-    @ApiModelProperty("上级评论id")
-    private String parentId;
+    @ApiModelProperty("评分")
+    private Integer score;
 
     @ApiModelProperty("评论时间")
     private String createTime;

@@ -19,6 +19,8 @@ public class CodeMsg {
 
     //行程模块 5005XX
 
+    public static CodeMsg PLAN_NOT_EXIST = new CodeMsg(500501, "行程不存在");
+
     //组队模块 5006XX
     public static CodeMsg TEAM_NOT_EXIST = new CodeMsg(500601, "队伍不存在");
 

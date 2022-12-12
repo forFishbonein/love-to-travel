@@ -8,6 +8,8 @@ import java.util.List;
 
 public interface PlanService {
 
+    Plan getById(String id);
+
     void insert(Plan plan);
 
     void update(Plan plan);
@@ -19,5 +21,10 @@ public interface PlanService {
     PageVo<Plan> getPage(PageVo pageVo);
 
     List<SubPlan> getByCityId(String cityId);
+
+
+    void removeById(String id);
+
+    void removeList(String[] ids);
 
 }

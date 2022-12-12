@@ -126,7 +126,7 @@ public class TeamServiceImpl implements TeamService {
         if (user == null) {
             throw new GlobalException(CodeMsg.EMAIL_EMPTY);
         }
-        emailService.sendEmail(teamInviteVo,inviter, user);
+        emailService.sendEmail(teamInviteVo, inviter, user);
     }
 
     @Override
@@ -186,8 +186,8 @@ public class TeamServiceImpl implements TeamService {
         query.addCriteria(Criteria.where("deleted").is("0"));
         Update update = new Update();
         Document doc = new Document();
-        doc.put("userId",teamLeaveVo.getUserId());
-        update.pull("members",doc);
+        doc.put("userId", teamLeaveVo.getUserId());
+        update.pull("members", doc);
         mongoTemplate.updateMulti(query, update, Team.class);
 
     }

@@ -1,8 +1,7 @@
-package com.lovetotravel.travel.entity.vo;
+package com.lovetotravel.travel.entity.vo.note;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
-import org.bson.types.ObjectId;
 
 @Data
 public class NoteVo {
