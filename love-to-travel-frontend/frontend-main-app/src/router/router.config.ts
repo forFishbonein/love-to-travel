@@ -59,8 +59,8 @@ export const routes: Array<RouteRecordRaw> = [
                 },
               },
               {
-                path: "detail",
-                name: "CityDetail/:cityId",
+                path: "detail/:cityId",
+                name: "CityDetail",
                 component: () => import("@/views/goTravel/city/CityDetail.vue"),
                 meta: {
                   title: "城市详情",
@@ -98,8 +98,8 @@ export const routes: Array<RouteRecordRaw> = [
                 },
               },
               {
-                path: "detail",
-                name: "SceneryDetail/:sceneryId",
+                path: "detail/:sceneryId",
+                name: "SceneryDetail",
                 component: () =>
                   import("@/views/goTravel/scenery/SceneryDetail.vue"),
                 meta: {

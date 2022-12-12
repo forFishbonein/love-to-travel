@@ -40,11 +40,15 @@ requestCitysInfo();
               <img src="/images/destination/destination-1-1.png" alt="" />
               <div class="destinations-one__content">
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">{{ item.cityName }}</a>
+                  <router-link :to="`detail/${item.cityId}`">{{
+                    item.cityName
+                  }}</router-link>
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <router-link to="/">查看详情</router-link>
+                <router-link :to="`detail/${item.cityId}`"
+                  >查看详情</router-link
+                >
               </div>
             </div>
           </div>

@@ -20,7 +20,7 @@ export const getAllSceneryList = () => {
 export const getOneSceneryInfoById = (sceneryId: number) => {
   return httpRequest({
     method: "get",
-    url: `http://localhost:8082//scenery/${sceneryId}`,
+    url: `http://localhost:8082/scenery/${sceneryId}`,
     loading: true, //显示加载圈
   });
 };
