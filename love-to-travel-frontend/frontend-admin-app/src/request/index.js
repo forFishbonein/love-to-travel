@@ -7,7 +7,7 @@ import axios from "axios";
 import { ElLoading, Message } from "element-plus";
 
 const service = axios.create({
-  baseURL: "http://localhost:8080", // 所有的请求地址前缀部分
+  // baseURL: "http://localhost:8080", // 所有的请求地址前缀部分
   timeout: 10000, // 请求超时时间毫秒
   // withCredentials: true, // 异步请求携带cookie
   headers: {
