@@ -73,8 +73,15 @@ public class SceneryController {
 
     @ApiOperation("根据id删除景区")
     @DeleteMapping("/{id}")
-    public Result<String> delete(@PathVariable("id") Long id) {
+    public Result<String> remove(@PathVariable("id") Long id) {
         sceneryService.removeById(id);
+        return Result.success("删除成功");
+    }
+
+    @ApiOperation("根据id删除景区")
+    @DeleteMapping("/list")
+    public Result<String> removeList(@RequestBody Long[] ids) {
+        sceneryService.removeById(ids);
         return Result.success("删除成功");
     }
 
