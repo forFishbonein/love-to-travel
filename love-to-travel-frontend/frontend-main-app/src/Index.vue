@@ -12,9 +12,10 @@ onMounted(() => {});
 </script>
 
 <template>
-  <div class="preloader">
+  <!-- 加载圈 -->
+  <!-- <div class="preloader">
     <img class="preloader__image" width="60" src="/images/loader.png" alt="" />
-  </div>
+  </div> -->
   <div class="page-wrapper">
     <BaseHeader></BaseHeader>
     <router-view v-slot="{ Component }">

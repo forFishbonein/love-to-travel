@@ -24,7 +24,6 @@ public class CommentServiceImpl implements CommentService {
         this.mongoTemplate = mongoTemplate;
     }
 
-
     @Override
     public List<Comment> getById(String id) {
         Query query = new Query();
@@ -42,6 +41,8 @@ public class CommentServiceImpl implements CommentService {
         comment.setCreateTime(currentTimeStamp);
         comment.setLike(0);
         mongoTemplate.insert(comment);
+
+
     }
 
     @Override

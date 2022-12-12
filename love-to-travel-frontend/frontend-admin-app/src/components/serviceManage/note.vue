@@ -20,10 +20,15 @@
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column prop="city_id" label="城市id" width="100" />
-      <el-table-column prop="pcity_name" label="城市名称" width="100" />
-      <el-table-column prop="url" label="城市lng" width="200" />
-      <el-table-column prop="introduction" label="城市lat" width="150" />
+      <el-table-column prop="note.data.id" label="游记id" width="100" />
+      <el-table-column prop="note.data.title" label="游记标题" width="100" />
+      <el-table-column prop="note.data.userId" label="用户ID" width="100" />
+      <el-table-column prop="note.data.city" label="所属城市" width="150" />
+      <el-table-column prop="note.data.userId" label="用户ID" width="100" />
+      <el-table-column prop="note.data.url" label="图片地址" width="100" />
+      <el-table-column prop="note.data.url" label="图片地址" width="100" />
+      <el-table-column prop="note.data.url" label="图片地址" width="100" />
+      <el-table-column prop="note.data.url" label="图片地址" width="100" />
       <el-table-column fixed="right" label="Operations" width="120">
         <template #default>
           <el-button link type="primary" size="small" @click="singleDelete">删除</el-button
