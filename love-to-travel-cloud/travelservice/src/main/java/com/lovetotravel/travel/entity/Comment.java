@@ -30,7 +30,7 @@ public class Comment {
     private Integer like;
 
     @ApiModelProperty("评论回复数")
-    private String reply;
+    private Integer reply;
 
     @ApiModelProperty("上级评论id")
     private String parentId;

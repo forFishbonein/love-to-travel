@@ -1,12 +1,14 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.lovetotravel.travel.entity.Comment;
+import com.lovetotravel.travel.entity.Footpoint;
 import com.lovetotravel.travel.entity.vo.CommentVo;
 import com.lovetotravel.travel.service.CommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
+import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
@@ -47,6 +49,26 @@ public class CommentServiceImpl implements CommentService {
         Query query = new Query();
         query.addCriteria(Criteria.where("commentId").is(id));
         mongoTemplate.remove(query, Comment.class);
+    }
+
+    @Override
+    public void like(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("commentId").is(id));
+        Comment comment = mongoTemplate.findOne(query, Comment.class);
+        Update update = new Update();
+        update.set("like", comment.getLike()+1);
+        mongoTemplate.upsert(query, update, Comment.class);
+    }
+
+    @Override
+    public void reply(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("commentId").is(id));
+        Comment comment = mongoTemplate.findOne(query, Comment.class);
+        Update update = new Update();
+        update.set("reply", comment.getReply()+1);
+        mongoTemplate.upsert(query, update, Comment.class);
     }
 
 

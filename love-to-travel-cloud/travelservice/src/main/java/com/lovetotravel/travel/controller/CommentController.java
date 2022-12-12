@@ -44,6 +44,23 @@ public class CommentController {
         return Result.success("删除成功");
     }
 
-    
+    @ApiOperation("根据评论id点赞评论")
+    @PostMapping("like/{id}")
+    public Result<String> like(@PathVariable("id") String id) {
+        System.out.println(id);
+        commentService.like(id);
+        return Result.success("点赞");
+    }
+
+    @ApiOperation("根据评论id回复评论")
+    @PostMapping("reply/{id}")
+    public Result<String> reply(@PathVariable("id") String id) {
+        System.out.println(id);
+        commentService.reply(id);
+        return Result.success("回复成功");
+    }
+
+
+
 
 }

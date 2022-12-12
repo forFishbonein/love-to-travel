@@ -13,5 +13,9 @@ public interface CommentService {
 
     void removeById(String id);
 
+    void like(String id);
+
+    void reply(String id);
+
 
 }
