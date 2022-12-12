@@ -3,6 +3,7 @@ package com.lovetotravel.travel.controller;
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.dto.SubPlan;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.NoteVo;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.NoteService;
@@ -36,6 +37,19 @@ public class PlanController {
     public Result<List<Plan>> getByUserId(@PathVariable("id") String id) {
         return Result.success(planService.getByUserId(id));
     }
+
+    @ApiOperation("获取全部行程")
+    @GetMapping
+    public Result<List<Plan>> getAll() {
+        return Result.success(planService.getAll());
+    }
+
+    @ApiOperation("行程分页")
+    @PostMapping("/page")
+    public Result<PageVo<Plan>> getPage(@RequestBody PageVo pageVo) {
+        return Result.success(planService.getPage(pageVo));
+    }
+
 
     @ApiOperation("新增行程")
     @PostMapping

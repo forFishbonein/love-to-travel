@@ -88,7 +88,7 @@ public class SceneryController {
         return Result.success(sceneryService.getAll());
     }
 
-    @ApiOperation("获取所有省份")
+    @ApiOperation("省份分页")
     @PostMapping("/province/page")
     public Result<List<Province>> getPageProvince(@RequestBody PageVo pageVo) {
         Page<Province> page = Page.of(pageVo.getCurrent(), pageVo.getSize());
@@ -96,7 +96,7 @@ public class SceneryController {
         return Result.success(page.getRecords());
     }
 
-    @ApiOperation("获取所有城市")
+    @ApiOperation("城市分页")
     @PostMapping("/city/page")
     public Result<List<City>> getPageCity(@RequestBody PageVo pageVo) {
         Page<City> page = Page.of(pageVo.getCurrent(), pageVo.getSize());
@@ -104,7 +104,7 @@ public class SceneryController {
         return Result.success(page.getRecords());
     }
 
-    @ApiOperation("获取所有景区")
+    @ApiOperation("景区分页")
     @PostMapping("/scenery/page")
     public Result<List<Scenery>> getPageScenery(@RequestBody PageVo pageVo) {
         return Result.success(sceneryService.getPage(pageVo));

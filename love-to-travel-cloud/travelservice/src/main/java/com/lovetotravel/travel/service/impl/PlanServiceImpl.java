@@ -1,9 +1,11 @@
 package com.lovetotravel.travel.service.impl;
 
+import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.dto.Days;
 import com.lovetotravel.travel.entity.dto.Route;
 import com.lovetotravel.travel.entity.dto.SubPlan;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.service.PlanService;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -87,6 +89,35 @@ public class PlanServiceImpl implements PlanService {
         query.addCriteria(Criteria.where("userId").is(userId));
         query.addCriteria(Criteria.where("deleted").is("0"));
         return mongoTemplate.find(query, Plan.class);
+    }
+
+    @Override
+    public List<Plan> getAll() {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        return mongoTemplate.find(query, Plan.class);
+    }
+
+    @Override
+    public PageVo<Plan> getPage(PageVo pageVo) {
+        Integer pageSize = pageVo.getPageSize();
+        Integer pageNum = pageVo.getPageNum();
+        List<Plan> list;
+        try {
+            Query query = new Query(new Criteria());
+            long total = mongoTemplate.count(query, Plan.class);
+            //默认值为5，
+            pageSize = pageSize < 0 ? 5 : pageSize;
+            query.limit(pageSize);
+            query.skip((pageNum - 1) * pageSize);
+            list = mongoTemplate.find(query, Plan.class);
+            pageVo.setList(list);
+            pageVo.setTotal(total);
+            return pageVo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override

@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Note;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.NoteVo;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.NoteService;
@@ -10,7 +11,6 @@ import org.springframework.web.bind.annotation.*;
 
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.util.List;
 
 @Api(tags = "游记接口")
@@ -40,10 +40,16 @@ public class NoteController {
         return Result.success(noteService.getByUserId(id));
     }
 
-    @ApiOperation("查询所有游记（未删除）")
+    @ApiOperation("查询所有游记")
     @GetMapping
     public Result<List<Note>> getAll() {
         return Result.success(noteService.getAll());
+    }
+
+    @ApiOperation("游记分页")
+    @PostMapping("/page")
+    public Result<PageVo<Note>> getPage(@RequestBody PageVo pageVo) {
+        return Result.success(noteService.getPage(pageVo));
     }
 
     @ApiOperation("新增游记")
