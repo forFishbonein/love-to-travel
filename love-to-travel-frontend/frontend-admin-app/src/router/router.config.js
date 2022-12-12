@@ -5,10 +5,7 @@ export const routes = [
   {
     path: "/",
     name: "Index", //App中包裹Index
-    meta: {
-      title: "首页",
-      keepAlive: false,
-    },
+    meta: { title: "首页" },
     component: Index,
     redirect: "/home", //Index中包裹Home等组件
     children: [
@@ -31,7 +28,7 @@ export const routes = [
         meta: { title: "城市管理" },
       },
       {
-        path: "/city",
+        path: "/note",
         name: "Note",
         component: () => import("@/components/serviceManage/note.vue"),
         meta: { title: "游记管理" },

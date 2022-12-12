@@ -55,11 +55,13 @@
 
           <el-sub-menu index="3">
             <template #title>
-              <el-icon><User /></el-icon>
+              <el-icon><UserFilled /></el-icon>
               <span>用户管理板块</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="3-1"><router-link to="/user">用户</router-link></el-menu-item>
+              <el-menu-item index="3-1"
+                ><router-link to="/user">用户</router-link></el-menu-item
+              >
               <el-menu-item index="3-2">管理员</el-menu-item>
               <el-menu-item index="3-3">登录日志</el-menu-item>
             </el-menu-item-group>

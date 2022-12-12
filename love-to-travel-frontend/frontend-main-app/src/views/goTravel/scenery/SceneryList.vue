@@ -42,10 +42,7 @@ requestScenerysInfo();
           <!--Popular Tours Two Single-->
           <div class="popular-tours__single">
             <div class="popular-tours__img">
-              <img
-                src="/images/resources/popular-tours-two__img-1.jpg"
-                alt=""
-              />
+              <img :src="item.url" alt="" />
               <div class="popular-tours__icon">
                 <router-link :to="`detail/${item.id}`">
                   <el-icon><View /></el-icon>

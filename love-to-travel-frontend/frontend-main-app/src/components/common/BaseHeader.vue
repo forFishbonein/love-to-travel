@@ -63,7 +63,7 @@ const toLoginOrOwnCenter = () => {
   if (store.token === "") {
     router.push("/login");
   } else {
-    router.push("/");
+    router.push("/personal");
   }
 };
 const confirmLogout = () => {
@@ -154,9 +154,9 @@ const displayText = () => {
           <div class="main-menu-wrapper-inner clearfix">
             <div class="main-menu-wrapper__left clearfix">
               <div class="main-menu-wrapper__logo">
-                <a href="#"
+                <router-link to="/"
                   ><img src="/images/resources/logo-1.png" alt=""
-                /></a>
+                /></router-link>
               </div>
               <div class="main-menu-wrapper__main-menu">
                 <a href="#" class="mobile-nav__toggler"
