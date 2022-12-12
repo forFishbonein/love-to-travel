@@ -182,7 +182,6 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void leave(TeamLeaveVo teamLeaveVo) {
-
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(teamLeaveVo.getTeamId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
@@ -191,7 +190,6 @@ public class TeamServiceImpl implements TeamService {
         doc.put("userId", teamLeaveVo.getUserId());
         update.pull("members", doc);
         mongoTemplate.updateMulti(query, update, Team.class);
-
     }
 
 

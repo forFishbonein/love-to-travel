@@ -3,6 +3,8 @@ package com.lovetotravel.travel.service.impl;
 import com.lovetotravel.travel.entity.Footpoint;
 import com.lovetotravel.travel.entity.dto.Been;
 import com.lovetotravel.travel.entity.dto.Want;
+import com.lovetotravel.travel.entity.vo.foot.BeenVo;
+import com.lovetotravel.travel.entity.vo.foot.WantVo;
 import com.lovetotravel.travel.service.FootpointService;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -30,15 +32,19 @@ public class FootpointServiceImpl implements FootpointService {
         return mongoTemplate.findOne(query, Footpoint.class);
     }
 
-    public void insertWants(Want want) {
+    public void insertWants(WantVo wantVo) {
         Query query = new Query();
+        query.addCriteria(Criteria.where("userId").is(wantVo.getUserId()));
+        Footpoint footpointInMongo = mongoTemplate.findOne(query, Footpoint.class);
+        if (footpointInMongo == null) {
+            Footpoint footpoint = new Footpoint();
 
-
+        }
 
 
     }
 
-    public void insertBeens(Been been) {
+    public void insertBeens(BeenVo beenVo) {
 
     }
 
