@@ -6,6 +6,8 @@ import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.PageVo;
 import com.lovetotravel.travel.entity.Province;
 import com.lovetotravel.travel.entity.Scenery;
+import com.lovetotravel.travel.entity.vo.scenery.SceneryInsertVo;
+import com.lovetotravel.travel.entity.vo.scenery.SceneryUpdateVo;
 import com.lovetotravel.travel.mapper.CityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
 import com.lovetotravel.travel.result.Result;
@@ -53,6 +55,27 @@ public class SceneryController {
     public Result<List<Scenery>> getByCityId(@PathVariable("id") String id) {
         System.out.println(id);
         return Result.success(sceneryService.getByCityId(id));
+    }
+
+    @ApiOperation("新增景区")
+    @PostMapping
+    public Result<String> insert(@RequestBody SceneryInsertVo sceneryInsertVo) {
+        sceneryService.insert(sceneryInsertVo);
+        return Result.success("新增成功");
+    }
+
+    @ApiOperation("修改景区")
+    @PutMapping
+    public Result<String> update(@RequestBody SceneryUpdateVo sceneryUpdateVo) {
+        sceneryService.update(sceneryUpdateVo);
+        return Result.success("修改成功");
+    }
+
+    @ApiOperation("根据id删除景区")
+    @DeleteMapping("/{id}")
+    public Result<String> delete(@PathVariable("id") Integer id) {
+        sceneryService.removeById(id);
+        return Result.success("删除成功");
     }
 
     @ApiOperation("获取热门城市")

@@ -23,6 +23,8 @@ public class CodeMsg {
     public static CodeMsg TEAM_NOT_EXIST = new CodeMsg(500601, "队伍不存在");
 
 
+    //景区模块 5007XX
+    public static CodeMsg SCENERY_NOT_EXIST = new CodeMsg(500701, "景区不存在");
 
 
     private int code;
