@@ -95,8 +95,8 @@
 
 
 <script  lang="ts">
-import {getNote} from "../../apis/userManage/note.js";
-import {delNote} from "../../apis/userManage/delnote.js";
+import {getNote} from "../../apis/serviceManageManage/note.js";
+import {delNote} from "../../apis/serviceManageManage/delnote.js";
 // import {ElMessage} from 'element-plus';
 export default {
   data(){
