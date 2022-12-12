@@ -26,30 +26,30 @@ export default {
   methods:{
     openAddDialog(){
       this.btnName = "添加"
-      this.title = "添加商品信息"
+      this.title = "添加景区信息"
       this.dialogFormVisible = true
       console.log("openAddDialog")
     },
     openUpdateDialog(){
       this.btnName = "修改"
-      this.title = "修改商品信息"
+      this.title = "修改景区信息"
       this.dialogFormVisible = true
       console.log("openUpdateDialog")
     },
     addShop(){
       var _this = this;
       //this.form.stu_interest = this.form.stu_interest.join(',')
-      postSceneryInfo().then((response) => {
+      postSceneryInfo(_this.form).then((response) => {
         var _this = this;
-        console.log(response.data);
-        if(response.data==1){
+        console.log(response.data===1);
+        if(response.data!==1){
           ElMessage({
-            message: '商品信息添加成功',
+            message: '景区信息添加成功',
             type: 'success',
           })
         }else {
           ElMessage({
-            message: '商品信息添加失败',
+            message: '景区信息添加失败',
             type: 'warning',
           })
         }
@@ -58,10 +58,10 @@ export default {
 
     //.......
     btnAddUpdate(){
-      if(this.btnName=="修改"){
+      if(this.btnName==="修改"){
         console.log("修改。。。")
       }
-      if(this.btnName=="添加"){
+      if(this.btnName==="添加"){
         this.addShop()
 
         console.log("添加。。。")
@@ -124,8 +124,8 @@ export default {
       <el-table-column prop="tele" label="电话" width="100" />
 
       <el-table-column fixed="right" label="修改" width="120">
-        <template #default>
-          <el-button link type="primary" size="small" @click="singleDelete"
+        <template #default="scope">
+          <el-button link type="primary" size="small" @click="singleDelete(scope.row)"
           >删除</el-button
           >
           <el-button link type="primary" size="small" @click="openUpdateDialog">操作</el-button>
@@ -137,9 +137,6 @@ export default {
   <!-- 对话框：添加修改功能 -->
   <el-dialog v-model="dialogFormVisible" :title="title">
     <el-form :model="form">
-      <el-form-item label="景区id" :label-width="formLabelWidth">
-        <el-input v-model="form.id" autocomplete="off" />
-      </el-form-item>
       <el-form-item label="景区名称" :label-width="formLabelWidth">
         <el-input v-model="form.name" autocomplete="off" />
       </el-form-item>

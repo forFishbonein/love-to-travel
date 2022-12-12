@@ -28,11 +28,10 @@
       <el-table-column prop="view" label="浏览量" width="100" />
       <el-table-column prop="trip" label="标签" width="100" />
       <el-table-column prop="planId" label="行程" width="100" />
-      <el-table-column fixed="right" property="id" label="Operations" width="120">
-        <template #default>
-          <el-button link type="primary" size="small" @click="singleDelete(id)">删除</el-button
-          >
-          <el-button link type="primary" size="small" @click="openUpdateDialog">编辑</el-button>
+      <el-table-column fixed="right" prop="oppo" label="Operations" width="120">
+        <template #default="scope">
+          <el-button link type="primary" size="small" @click="singleDelete(scope.row)">删除</el-button>
+          <el-button link type="primary" size="small" @click="openUpdateDialog(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -76,13 +75,16 @@
       <el-form-item label="行程" :label-width="formLabelWidth">
         <el-input v-model="form.planId" autocomplete="off" />
       </el-form-item>
+      <el-form-item label="caozuo" :label-width="formLabelWidth">
+        <el-input v-model="form.oppo" autocomplete="off" />
+      </el-form-item>
 
     </el-form>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
         <el-button type="primary" @click="btnAddUpdate">
-<!--          {{btnName}}-->
+          {{btnName}}
         </el-button>
       </span>
     </template>
@@ -93,14 +95,15 @@
 
 
 <script  lang="ts">
-import {getNote} from "../../apis/userManage/note.js";
+import {getNote} from "../../apis/serviceManageManage/note.js";
+import {delNote} from "../../apis/serviceManageManage/delnote.js";
 // import {ElMessage} from 'element-plus';
 export default {
   data(){
     return{
       dialogFormVisible:false, //对话框是否显示
       queryStr:"",  //查询条件
-      multipleSelection:[], //多选删除
+      // multipleSelection:[], //多选删除
       tableData: [], //游记信息数据
       form:{},   //对话框表单数据
       formLabelWidth:"140px",  //对话框label宽度
@@ -118,19 +121,20 @@ export default {
   },
 
 
+
   methods:{
-    openAddDialog(){
-      this.btnName = "添加"
-      this.title = "添加商品信息"
-      this.dialogFormVisible = true
-      console.log("openAddDialog")
-    },
-    openUpdateDialog(){
-      this.btnName = "修改"
-      this.title = "修改商品信息"
-      this.dialogFormVisible = true
-      console.log("openUpdateDialog")
-    },
+    // openAddDialog(){
+    //   this.btnName = "添加"
+    //   this.title = "添加商品信息"
+    //   this.dialogFormVisible = true
+    //   console.log("openAddDialog")
+    // },
+    // openUpdateDialog(){
+    //   this.btnName = "修改"
+    //   this.title = "修改商品信息"
+    //   this.dialogFormVisible = true
+    //   console.log("openUpdateDialog")
+    // },
     //   addShop(){
     //     var _this = this;
     //     //this.form.stu_interest = this.form.stu_interest.join(',')
@@ -151,34 +155,40 @@ export default {
     //   },
     //
     //   //.......
-    btnAddUpdate(){
-      if(this.btnName=="修改"){
+    //   btnAddUpdate(){
+    //     if(this.btnName=="修改"){
+    //
+    //       console.log("修改。。。")
+    //
+    //     }
+    //     if(this.btnName=="添加"){
+    //       //this.addShop()
+    //
+    //       console.log("添加。。。")
+    //       console.log(this.form)
+    //     }
+    //     this.dialogFormVisible = false
+    //   },
+    singleDelete(row){
+      console.log(row.id)
+      delNote(row.id).then((response) => {
+        var _this = this;
+        console.log(response.data);
 
-        console.log("修改。。。")
-
-      }
-      if(this.btnName=="添加"){
-        //this.addShop()
-
-        console.log("添加。。。")
-        console.log(this.form)
-      }
-      this.dialogFormVisible = false
+      })
     },
-    singleDelete(id){
-      console.log(id)
-    },
-    multiDelete(){
-      console.log("multiDelete()")
-    },
-    queryInfo(){
-      console.log("queryInfo...");
-    },
-    handleSelectionChange(val){
-      this.multipleSelection = val
-      console.log(this.multipleSelection)
-    }
   },
+  // multiDelete(){
+  //   console.log("multiDelete()")
+  // },
+  // queryInfo(){
+  //   console.log("queryInfo...");
+  // },
+  // handleSelectionChange(val){
+  //   this.multipleSelection = val
+  //   console.log(this.multipleSelection)
+  // }
+
   // mounted(){
   //   var _this = this;
   //   this.$http.get("/shop/shops").then(function(response){
