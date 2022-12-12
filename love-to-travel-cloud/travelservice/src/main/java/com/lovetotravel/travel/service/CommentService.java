@@ -1,7 +1,8 @@
 package com.lovetotravel.travel.service;
 
 import com.lovetotravel.travel.entity.Comment;
-import com.lovetotravel.travel.entity.vo.CommentVo;
+import com.lovetotravel.travel.entity.vo.comment.CommentLike;
+import com.lovetotravel.travel.entity.vo.comment.CommentVo;
 
 import java.util.List;
 
@@ -13,7 +14,7 @@ public interface CommentService {
 
     void removeById(String id);
 
-    void like(String id);
+    void like(CommentLike commentLike);
 
     void reply(String id);
 

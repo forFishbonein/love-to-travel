@@ -1,8 +1,10 @@
 package com.lovetotravel.travel.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lovetotravel.travel.entity.Comment;
-import com.lovetotravel.travel.entity.Footpoint;
-import com.lovetotravel.travel.entity.vo.CommentVo;
+import com.lovetotravel.travel.entity.vo.comment.CommentLike;
+import com.lovetotravel.travel.entity.vo.comment.CommentVo;
+import com.lovetotravel.travel.mapper.CommentLikeMapper;
 import com.lovetotravel.travel.service.CommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -19,9 +21,11 @@ import java.util.List;
 public class CommentServiceImpl implements CommentService {
 
     final MongoTemplate mongoTemplate;
+    final CommentLikeMapper commentLikeMapper;
 
-    public CommentServiceImpl(MongoTemplate mongoTemplate) {
+    public CommentServiceImpl(MongoTemplate mongoTemplate, CommentLikeMapper commentLikeMapper) {
         this.mongoTemplate = mongoTemplate;
+        this.commentLikeMapper = commentLikeMapper;
     }
 
     @Override
@@ -53,13 +57,28 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public void like(String id) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("commentId").is(id));
-        Comment comment = mongoTemplate.findOne(query, Comment.class);
-        Update update = new Update();
-        update.set("like", comment.getLike()+1);
-        mongoTemplate.upsert(query, update, Comment.class);
+    public void like(CommentLike commentLike) {
+        //查询用户是否点赞
+        QueryWrapper<CommentLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CommentLike::getUserId, commentLike.getUserId()).eq(CommentLike::getCommentId, commentLike.getCommentId());
+        CommentLike commentLikeInMysql = commentLikeMapper.selectOne(queryWrapper);
+        if (commentLikeInMysql == null) {
+            //增加点赞数
+            Query query = new Query();
+            query.addCriteria(Criteria.where("commentId").is(commentLike.getCommentId()));
+            Comment comment = mongoTemplate.findOne(query, Comment.class);
+            Update update = new Update();
+            update.set("like", comment.getLike()+1);
+            mongoTemplate.upsert(query, update, Comment.class);
+
+            //保存用户点赞信息
+            commentLikeMapper.insert(commentLike);
+        }
+
+
+
+
+
     }
 
     @Override

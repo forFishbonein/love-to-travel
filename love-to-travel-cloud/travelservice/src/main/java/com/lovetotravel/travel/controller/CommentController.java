@@ -1,7 +1,8 @@
 package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Comment;
-import com.lovetotravel.travel.entity.vo.CommentVo;
+import com.lovetotravel.travel.entity.vo.comment.CommentLike;
+import com.lovetotravel.travel.entity.vo.comment.CommentVo;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.CommentService;
 import io.swagger.annotations.Api;
@@ -46,10 +47,9 @@ public class CommentController {
 
     @ApiOperation("根据评论id点赞评论")
     @PostMapping("like/{id}")
-    public Result<String> like(@PathVariable("id") String id) {
-        System.out.println(id);
-        commentService.like(id);
-        return Result.success("点赞");
+    public Result<String> like(@RequestBody CommentLike commentLike) {
+        commentService.like(commentLike);
+        return Result.success("点赞成功");
     }
 
     @ApiOperation("根据评论id回复评论")
