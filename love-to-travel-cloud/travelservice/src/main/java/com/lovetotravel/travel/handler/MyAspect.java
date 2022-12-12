@@ -56,12 +56,15 @@ public class MyAspect {
         Object[] objs = joinPoint.getArgs();
         HttpServletRequest request = (HttpServletRequest) objs[0];
         String token = request.getHeader("Authorization");
-        User user = redisService.get(UserKey.token, token, User.class);
-        String sceneryId = (String) objs[1];
-        Result r = (Result) result;
-        if (r.getCode() == 0) {
-            redisService.sadd(NoteKey.getNoteRecord, user.getId().toString(), sceneryId);
+        if (token != null) {
+            User user = redisService.get(UserKey.token, token, User.class);
+            if (user != null) {
+                Long sceneryId = (Long) objs[1];
+                Result r = (Result) result;
+                if (r.getCode() == 0) {
+                    redisService.sadd(NoteKey.getNoteRecord, user.getId().toString(), sceneryId.toString());
+                }
+            }
         }
     }
-
 }
