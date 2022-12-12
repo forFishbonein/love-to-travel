@@ -36,7 +36,7 @@
             </template>
             <el-menu-item-group>
               <template #title><span>旅游业务</span></template>
-              <el-menu-item index="2-1">省份</el-menu-item>
+              <el-menu-item index="2-1"><router-link to="/province">省份</router-link></el-menu-item>
               <el-menu-item index="2-2"
                 ><router-link to="/city">城市</router-link></el-menu-item
               >
