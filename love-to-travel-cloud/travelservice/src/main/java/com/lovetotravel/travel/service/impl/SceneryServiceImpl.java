@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.travel.entity.PageVo;
 import com.lovetotravel.travel.entity.Scenery;
+import com.lovetotravel.travel.entity.vo.scenery.SceneryCommentVo;
 import com.lovetotravel.travel.entity.vo.scenery.SceneryInsertVo;
 import com.lovetotravel.travel.entity.vo.scenery.SceneryUpdateVo;
 import com.lovetotravel.travel.exception.GlobalException;
@@ -109,6 +110,13 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
         if (ids.length != 0) {
             sceneryMapper.deleteBatchIds(Arrays.asList(ids));
         }
+    }
+
+    @Override
+    public void comment(SceneryCommentVo sceneryCommentVo) {
+
+
+
     }
 
 }
