@@ -2,8 +2,8 @@ package com.lovetotravel.travel.mapper;
 
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lovetotravel.travel.entity.SceneryComment;
-import lombok.Data;
+import org.apache.ibatis.annotations.Mapper;
 
-//@Data
+@Mapper
 public interface SceneryCommentMapper extends BaseMapper<SceneryComment> {
 }

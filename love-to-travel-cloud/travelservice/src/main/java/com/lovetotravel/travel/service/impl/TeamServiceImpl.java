@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.lovetotravel.feign.clients.UserClient;
+import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Team;
 import com.lovetotravel.travel.entity.dto.Member;
@@ -118,7 +119,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void invite(TeamInviteVo teamInviteVo) {
-        User inviter = userClient.getById(Long.valueOf(teamInviteVo.getInviterId()));
+        Result<User> result = userClient.getById(Long.valueOf(teamInviteVo.getInviterId()));
+        User inviter = result.getData();
         if (inviter == null) {
             throw new GlobalException(CodeMsg.USER_NOT_EXIST);
         }
