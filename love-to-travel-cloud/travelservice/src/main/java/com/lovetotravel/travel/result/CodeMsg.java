@@ -26,6 +26,9 @@ public class CodeMsg {
     //景区模块 5007XX
     public static CodeMsg SCENERY_NOT_EXIST = new CodeMsg(500701, "景区不存在");
 
+    //评论模块 5008XX
+    public static CodeMsg COMMENT_NOT_EXIST = new CodeMsg(500801, "评论不存在");
+
 
     private int code;
     private String msg;
