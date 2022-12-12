@@ -1,18 +1,18 @@
 package com.lovetotravel.travel.controller;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
-import com.lovetotravel.travel.entity.*;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lovetotravel.travel.entity.City;
+import com.lovetotravel.travel.entity.PageVo;
+import com.lovetotravel.travel.entity.Province;
+import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.mapper.CityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.SceneryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
@@ -32,11 +32,6 @@ public class SceneryController {
         this.sceneryService = sceneryService;
     }
 
-    @ApiOperation("获取所有城市")
-    @GetMapping("/city")
-    public Result<List<City>> getAllCity() {
-        return Result.success(cityMapper.selectList(null));
-    }
 
     @ApiOperation("根据城市id查询城市")
     @GetMapping("/city/{id}")
@@ -44,34 +39,6 @@ public class SceneryController {
         QueryWrapper<City> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(City::getCityId, id);
         return Result.success(cityMapper.selectOne(queryWrapper));
-    }
-
-    //TODO 定时任务更新hotcity数据库
-    @ApiOperation("获取热门城市")
-    @GetMapping("/city/hot")
-    public Result<List<City>> getHotCity() {
-        return Result.success(cityMapper.getHotCity());
-    }
-
-    @ApiOperation("获取所有省份")
-    @GetMapping("/province")
-    public Result<List<Province>> getAllProvince() {
-        return Result.success(provinceMapper.selectList(null));
-    }
-
-    @ApiOperation("获取所有景区")
-    @GetMapping("/scenery")
-    public Result<List<Scenery>> getAllScenery() {
-        return Result.success(sceneryService.getAll());
-    }
-
-    @ApiOperation("获取热门景区")
-    @GetMapping("/scenery/hot")
-    public Result<List<Scenery>> getHotScenery() {
-        // TODO*******************
-        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Scenery::getCityId,"310000");
-        return Result.success(sceneryService.getAll());
     }
 
     @ApiOperation("根据景区id查询景区")
@@ -88,9 +55,60 @@ public class SceneryController {
         return Result.success(sceneryService.getByCityId(id));
     }
 
+    @ApiOperation("获取热门城市")
+    @GetMapping("/city/hot")
+    public Result<List<City>> getHotCity() {
+        return Result.success(cityMapper.getHotCity());
+    }
 
+    @ApiOperation("获取热门景区")
+    @GetMapping("/scenery/hot")
+    public Result<List<Scenery>> getHotScenery() {
+        // TODO*******************
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Scenery::getCityId, "310000");
+        return Result.success(sceneryService.getAll());
+    }
 
+    @ApiOperation("获取所有省份")
+    @GetMapping("/province")
+    public Result<List<Province>> getAllProvince() {
+        return Result.success(provinceMapper.selectList(null));
+    }
 
+    @ApiOperation("获取所有城市")
+    @GetMapping("/city")
+    public Result<List<City>> getAllCity() {
+        return Result.success(cityMapper.selectList(null));
+    }
+
+    @ApiOperation("获取所有景区")
+    @GetMapping("/scenery")
+    public Result<List<Scenery>> getAllScenery() {
+        return Result.success(sceneryService.getAll());
+    }
+
+    @ApiOperation("获取所有省份")
+    @PostMapping("/province/page")
+    public Result<List<Province>> getPageProvince(@RequestBody PageVo pageVo) {
+        Page<Province> page = Page.of(pageVo.getCurrent(), pageVo.getSize());
+        provinceMapper.selectPage(page, null);
+        return Result.success(page.getRecords());
+    }
+
+    @ApiOperation("获取所有城市")
+    @PostMapping("/city/page")
+    public Result<List<City>> getPageCity(@RequestBody PageVo pageVo) {
+        Page<City> page = Page.of(pageVo.getCurrent(), pageVo.getSize());
+        cityMapper.selectPage(page, null);
+        return Result.success(page.getRecords());
+    }
+
+    @ApiOperation("获取所有景区")
+    @PostMapping("/scenery/page")
+    public Result<List<Scenery>> getPageScenery(@RequestBody PageVo pageVo) {
+        return Result.success(sceneryService.getPage(pageVo));
+    }
 
 
 }
