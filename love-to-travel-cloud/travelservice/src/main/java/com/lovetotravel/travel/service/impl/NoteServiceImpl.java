@@ -143,7 +143,6 @@ public class NoteServiceImpl implements NoteService {
                 .set("like", noteVo.getLike())
                 .set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Note.class);
-        System.out.println(update);
     }
 
     /**

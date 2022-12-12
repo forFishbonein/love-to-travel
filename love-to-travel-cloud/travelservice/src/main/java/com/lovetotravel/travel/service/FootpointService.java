@@ -7,7 +7,7 @@ import java.util.List;
 public interface FootpointService {
 
 
-    List<Footpoint> getByUserId(String userId);
+    Footpoint getByUserId(String userId);
 
     void update(Footpoint footpoint);
 

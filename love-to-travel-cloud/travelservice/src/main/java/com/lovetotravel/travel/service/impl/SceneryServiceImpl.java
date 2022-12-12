@@ -117,6 +117,10 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
 
 
+
+
+
+
     }
 
 }

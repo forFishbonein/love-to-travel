@@ -1,18 +1,17 @@
-package com.lovetotravel.travel.entity.dto;
+package com.lovetotravel.travel.entity.vo.foot;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class Been {
+public class BeenVo {
+
+    @ApiModelProperty("用户id")
+    private String userId;
 
     @ApiModelProperty("城市代码")
     private String cityId;
 
-    @ApiModelProperty("添加时间")
-    private String createTime;
-
     @ApiModelProperty("评分")
     private String score;
-
 }

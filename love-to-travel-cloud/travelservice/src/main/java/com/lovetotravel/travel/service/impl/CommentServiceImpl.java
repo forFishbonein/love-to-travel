@@ -1,6 +1,9 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lovetotravel.feign.clients.UserClient;
+import com.lovetotravel.feign.entity.Result;
+import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Comment;
 import com.lovetotravel.travel.entity.vo.comment.CommentLike;
 import com.lovetotravel.travel.entity.vo.comment.CommentVo;
@@ -24,10 +27,12 @@ public class CommentServiceImpl implements CommentService {
 
     final MongoTemplate mongoTemplate;
     final CommentLikeMapper commentLikeMapper;
+    final UserClient userClient;
 
-    public CommentServiceImpl(MongoTemplate mongoTemplate, CommentLikeMapper commentLikeMapper) {
+    public CommentServiceImpl(MongoTemplate mongoTemplate, CommentLikeMapper commentLikeMapper, UserClient userClient) {
         this.mongoTemplate = mongoTemplate;
         this.commentLikeMapper = commentLikeMapper;
+        this.userClient = userClient;
     }
 
     @Override
@@ -37,8 +42,11 @@ public class CommentServiceImpl implements CommentService {
         return mongoTemplate.find(query, Comment.class);
     }
 
+
+
     @Override
     public void insert(CommentVo commentVo) {
+        System.out.println(commentVo);
         Comment comment = new Comment();
         BeanUtils.copyProperties(commentVo, comment);
         Date date = new Date();
@@ -47,6 +55,15 @@ public class CommentServiceImpl implements CommentService {
         comment.setCreateTime(currentTimeStamp);
         comment.setLike(0);
         comment.setReply(0);
+
+        //查询用户名
+        commentVo.getUserId();
+        Result<User> result = userClient.getById(Long.valueOf(commentVo.getUserId()));
+        System.out.println("result = " + result);
+        User user = result.getData();
+        System.out.println("user = " + user);
+        comment.setUserName(user.getName());
+
         mongoTemplate.insert(comment);
 
         if (commentVo.getParentId() != "0") {
@@ -88,6 +105,9 @@ public class CommentServiceImpl implements CommentService {
             query.addCriteria(Criteria.where("id").is(commentLike.getCommentId()));
             Comment comment = mongoTemplate.findOne(query, Comment.class);
             System.out.println("comment = " + comment);
+            if (comment.getLike() == null) {
+                comment.setLike(0);
+            }
             Update update = new Update();
             update.set("like", comment.getLike() + 1);
             mongoTemplate.upsert(query, update, Comment.class);

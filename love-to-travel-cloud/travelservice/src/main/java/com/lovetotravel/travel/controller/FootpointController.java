@@ -22,7 +22,7 @@ public class FootpointController {
 
     @ApiOperation("根据用户id查询足迹")
     @GetMapping("/user/{id}")
-    public Result<List<Footpoint>> getByUserId(@PathVariable("id") String id) {
+    public Result<Footpoint> getByUserId(@PathVariable("id") String id) {
         System.out.println(id);
         return Result.success(footpointService.getByUserId(id));
     }

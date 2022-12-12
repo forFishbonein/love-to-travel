@@ -23,11 +23,25 @@ public class FootpointServiceImpl implements FootpointService {
     }
 
     @Override
-    public List<Footpoint> getByUserId(String userId) {
+    public Footpoint getByUserId(String userId) {
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(userId));
-        return mongoTemplate.find(query, Footpoint.class);
+        System.out.println(mongoTemplate.findOne(query, Footpoint.class));
+        return mongoTemplate.findOne(query, Footpoint.class);
     }
+
+    public void insertWants(Want want) {
+        Query query = new Query();
+
+
+
+
+    }
+
+    public void insertBeens(Been been) {
+
+    }
+
 
     @Override
     public void update(Footpoint footpoint) {
@@ -39,14 +53,14 @@ public class FootpointServiceImpl implements FootpointService {
         if (footpoint.getWants() != null) {
             int wantsLength = footpoint.getWants().length;
             for (int i = 0; i < wantsLength; i++) {
-                update.set("wants." + i + ".cityCode", wants[i].getCityCode());
+                update.set("wants." + i + ".cityId", wants[i].getCityId());
                 update.set("wants." + i + ".createTime", wants[i].getCreateTime());
             }
         }
         if (footpoint.getBeens() != null) {
             int beensLength = footpoint.getBeens().length;
             for (int i = 0; i < beensLength; i++) {
-                update.set("beens." + i + ".cityCode", beens[i].getCityCode());
+                update.set("beens." + i + ".cityId", beens[i].getCityId());
                 update.set("wants." + i + ".createTime", beens[i].getCreateTime());
                 update.set("wants." + i + ".score", beens[i].getScore());
             }
@@ -70,14 +84,14 @@ public class FootpointServiceImpl implements FootpointService {
         if (footpoint.getWants() != null) {
             int wantsLength = footpoint.getWants().length;
             for (int i = 0; i < wantsLength; i++) {
-                update.set("wants." + i + ".cityCode", wants[i].getCityCode());
+                update.set("wants." + i + ".cityCode", wants[i].getCityId());
                 update.set("wants." + i + ".createTime", wants[i].getCreateTime());
             }
         }
         if (footpoint.getBeens() != null) {
             int beensLength = footpoint.getBeens().length;
             for (int i = 0; i < beensLength; i++) {
-                update.set("beens." + i + ".cityCode", beens[i].getCityCode());
+                update.set("beens." + i + ".cityCode", beens[i].getCityId());
                 update.set("wants." + i + ".createTime", beens[i].getCreateTime());
                 update.set("wants." + i + ".score", beens[i].getScore());
             }
