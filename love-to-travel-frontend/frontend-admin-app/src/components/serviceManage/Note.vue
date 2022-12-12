@@ -94,7 +94,7 @@
 <script lang="ts">
 import {getNote} from "../../apis/serviceManage/note.js";
 import {delNote} from "../../apis/serviceManage/delnote.js";
-import {ElMessage,ElMessageBox} from 'element-plus'
+// import {ElMessage,ElMessageBox} from 'element-plus';
 export default {
   data(){
     return{
@@ -118,18 +118,18 @@ export default {
   },
 
   methods:{
-    // openAddDialog(){
-    //   this.btnName = "添加"
-    //   this.title = "添加商品信息"
-    //   this.dialogFormVisible = true
-    //   console.log("openAddDialog")
-    // },
-    // openUpdateDialog(){
-    //   this.btnName = "修改"
-    //   this.title = "修改商品信息"
-    //   this.dialogFormVisible = true
-    //   console.log("openUpdateDialog")
-    // },
+    openAddDialog(){
+      this.btnName = "添加"
+      this.title = "添加游记信息"
+      this.dialogFormVisible = true
+      console.log("openAddDialog")
+    },
+    openUpdateDialog(){
+      this.btnName = "修改"
+      this.title = "修改游记信息"
+      this.dialogFormVisible = true
+      console.log("openUpdateDialog")
+    },
     //   addShop(){
     //     var _this = this;
     //     //this.form.stu_interest = this.form.stu_interest.join(',')
@@ -207,13 +207,39 @@ export default {
   },
   multiDelete(){
     console.log("multiDelete()")
-    this.multipleSelection.forEach(item=>{
-      var id = item.id
-      delNote(id).then((response) => {
-        var _this = this;
-        console.log(response.data);
-      })
-    })
+
+    ElMessageBox.confirm(
+        '您确定要删除目前选中的多条数目吗?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+    )
+        .then(() => {
+          var _this = this;
+          var num=0
+          this.multipleSelection.forEach(item=>{
+            var id = item.id
+            delNote(id).then((response) => {
+              console.log(response.data);
+              if(response.data=="删除成功"){
+                num+=1
+              }
+            })
+          })
+          ElMessage({
+              type: 'success',
+              message: '成功删除'+num+'条记录',
+            })
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
   },
   // queryInfo(){
   //   console.log("queryInfo...");
