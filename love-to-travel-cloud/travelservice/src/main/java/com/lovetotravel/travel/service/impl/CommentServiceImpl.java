@@ -64,7 +64,11 @@ public class CommentServiceImpl implements CommentService {
         System.out.println("user = " + user);
         comment.setUserName(user.getName());
 
+        if (commentVo.getParentId() == null) {
+            comment.setParentId("0");
+        }
         mongoTemplate.insert(comment);
+
 
         if (commentVo.getParentId() != "0") {
             //父评论增加评论数
