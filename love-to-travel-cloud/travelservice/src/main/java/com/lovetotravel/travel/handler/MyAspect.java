@@ -38,14 +38,21 @@ public class MyAspect {
         Object[] objs = joinPoint.getArgs();
         HttpServletRequest request = (HttpServletRequest) objs[0];
         String token = request.getHeader("Authorization");
-        User user = redisService.get(UserKey.token, token, User.class);
-        String noteId = (String) objs[1];
-        Result r = (Result) result;
-        if (r.getCode() == 0) {
-            //根据id更新浏览量
-            noteService.incrView(noteId);
-            redisService.sadd(NoteKey.getNoteRecord, user.getId().toString(), noteId);
+        if (token != null) {
+            User user = redisService.get(UserKey.token, token, User.class);
+            if (user != null) {
+                String noteId = (String) objs[1];
+                Result r = (Result) result;
+                if (r.getCode() == 0) {
+                    //根据id更新浏览量
+                    noteService.incrView(noteId);
+                    redisService.sadd(NoteKey.getNoteRecord, user.getId().toString(), noteId);
+                }
+            }
         }
+
+        User user = redisService.get(UserKey.token, token, User.class);
+
     }
 
     @Pointcut("execution(public * com.lovetotravel.travel.controller.SceneryController.getById(..))")
