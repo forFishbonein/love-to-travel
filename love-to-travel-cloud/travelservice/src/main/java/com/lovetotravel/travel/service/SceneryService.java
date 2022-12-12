@@ -25,4 +25,6 @@ public interface SceneryService  extends IService<Scenery> {
 
     void removeById(Long id);
 
+    void removeList(Long[] ids);
+
 }

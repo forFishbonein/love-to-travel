@@ -15,6 +15,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -101,6 +102,13 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
         String currentTimeStamp = dateFormat.format(date);
         scenery.setUpdateTime(currentTimeStamp);
         sceneryMapper.update(scenery, queryWrapper);
+    }
+
+    @Override
+    public void removeList(Long[] ids) {
+        if (ids.length != 0) {
+            sceneryMapper.deleteBatchIds(Arrays.asList(ids));
+        }
     }
 
 }
