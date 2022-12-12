@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lovetotravel.travel.entity.Comment;
 import com.lovetotravel.travel.entity.vo.comment.CommentLike;
 import com.lovetotravel.travel.entity.vo.comment.CommentVo;
+import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.mapper.CommentLikeMapper;
+import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.CommentService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -44,6 +46,7 @@ public class CommentServiceImpl implements CommentService {
         String currentTimeStamp = dateFormat.format(date);
         comment.setCreateTime(currentTimeStamp);
         comment.setLike(0);
+        comment.setReply(0);
         mongoTemplate.insert(comment);
 
         if (commentVo.getParentId() != "0") {
@@ -51,7 +54,14 @@ public class CommentServiceImpl implements CommentService {
             Query query = new Query();
             query.addCriteria(Criteria.where("parentId").is(commentVo.getParentId()));
             Comment parentComment = mongoTemplate.findOne(query, Comment.class);
+            System.out.println("parentComment = " + parentComment);
+            if (parentComment == null) {
+                throw new GlobalException(CodeMsg.COMMENT_NOT_EXIST);
+            }
             Update update = new Update();
+            if (parentComment.getReply() == null) {
+                parentComment.setReply(0);
+            }
             update.set("reply", parentComment.getReply()+1);
             mongoTemplate.upsert(query, update, Comment.class);
         }

@@ -38,7 +38,7 @@ public class MedalController {
     @ApiOperation("修改勋章")
     @PutMapping
     public Result<String> update(@RequestBody Medal medal) {
-        medalService.insert(medal);
+        medalService.update(medal);
         return Result.success("新增成功");
     }
 

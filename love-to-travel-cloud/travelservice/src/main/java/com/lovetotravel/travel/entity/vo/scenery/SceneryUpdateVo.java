@@ -1,13 +1,13 @@
-package com.lovetotravel.travel.entity.vo;
+package com.lovetotravel.travel.entity.vo.scenery;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class SceneryVo {
-//    @ApiModelProperty("景区id")
-//    @TableId(type = IdType.ASSIGN_ID)
-//    private Long Id;
+public class SceneryUpdateVo {
+
+    @ApiModelProperty("景区id")
+    private Long Id;
 
     @ApiModelProperty("景区名称")
     private String name;
@@ -15,8 +15,11 @@ public class SceneryVo {
     @ApiModelProperty("简介")
     private String introduction;
 
+    @ApiModelProperty("评分")
+    private String score;
+
     @ApiModelProperty("票价")
-    private String ticker;
+    private String ticket;
 
     @ApiModelProperty("开放时间")
     private String opening;
@@ -33,11 +36,14 @@ public class SceneryVo {
     @ApiModelProperty("地址")
     private String address;
 
-    @ApiModelProperty("对应城市名称")
-    private String cityName;
+    @ApiModelProperty("适宜时节")
+    private String season;
 
-    @ApiModelProperty("对应省份名称")
-    private String provinceName;
+    @ApiModelProperty("小贴士")
+    private String tips;
+
+    @ApiModelProperty("对应城市id")
+    private String cityId;
 
     @ApiModelProperty("图片地址")
     private String url;
@@ -45,14 +51,7 @@ public class SceneryVo {
     @ApiModelProperty("联系方式")
     private String tele;
 
-//    @ApiModelProperty("逻辑删除")
-//    @TableLogic
-//    private String deleted;
-//
-//    @ApiModelProperty("创建时间")
-//    private String createTime;
-//
-//    @ApiModelProperty("更新时间")
-//    private String updateTime;
+    @ApiModelProperty("聚类类别")
+    private String cluster;
 
 }
