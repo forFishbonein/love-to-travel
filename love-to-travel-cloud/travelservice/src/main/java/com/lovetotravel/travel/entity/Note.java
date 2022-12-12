@@ -44,6 +44,9 @@ public class Note {
     @ApiModelProperty("点赞量")
     private Long like;
 
+    @ApiModelProperty("收藏量")
+    private Long star;
+
     @ApiModelProperty("标签")
     private String[] trip;
 

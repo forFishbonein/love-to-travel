@@ -2,10 +2,8 @@ package com.lovetotravel.travel.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.lovetotravel.travel.entity.City;
-import com.lovetotravel.travel.entity.PageVo;
-import com.lovetotravel.travel.entity.Province;
-import com.lovetotravel.travel.entity.Scenery;
+import com.lovetotravel.travel.entity.*;
+import com.lovetotravel.travel.entity.vo.scenery.SceneryCommentVo;
 import com.lovetotravel.travel.entity.vo.scenery.SceneryInsertVo;
 import com.lovetotravel.travel.entity.vo.scenery.SceneryUpdateVo;
 import com.lovetotravel.travel.mapper.CityMapper;
@@ -138,6 +136,13 @@ public class SceneryController {
     @PostMapping("/scenery/page")
     public Result<Page<Scenery>> getPageScenery(@RequestBody PageVo pageVo) {
         return Result.success(sceneryService.getPage(pageVo));
+    }
+
+    @ApiOperation("景区评论")
+    @PostMapping("/scenery/comment")
+    public Result<String> comment(@RequestBody SceneryCommentVo sceneryCommentVo) {
+        sceneryService.comment(sceneryCommentVo);
+        return Result.success("评论成功");
     }
 
 

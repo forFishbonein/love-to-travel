@@ -4,6 +4,8 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lovetotravel.travel.entity.PageVo;
 import com.lovetotravel.travel.entity.Scenery;
+import com.lovetotravel.travel.entity.SceneryComment;
+import com.lovetotravel.travel.entity.vo.scenery.SceneryCommentVo;
 import com.lovetotravel.travel.entity.vo.scenery.SceneryInsertVo;
 import com.lovetotravel.travel.entity.vo.scenery.SceneryUpdateVo;
 
@@ -26,5 +28,7 @@ public interface SceneryService extends IService<Scenery> {
     void removeById(Long id);
 
     void removeList(Long[] ids);
+
+    void comment(SceneryCommentVo sceneryCommentVo);
 
 }
