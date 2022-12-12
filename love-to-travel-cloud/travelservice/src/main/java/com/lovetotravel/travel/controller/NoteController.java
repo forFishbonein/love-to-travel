@@ -67,4 +67,11 @@ public class NoteController {
         return Result.success("删除成功");
     }
 
+//    @ApiOperation("点赞游记")
+//    @PostMapping("/like")
+//    public Result<String> like(@PathVariable("id") String id) {
+//        noteService.removeById(id);
+//        return Result.success("删除成功");
+//    }
+
 }
