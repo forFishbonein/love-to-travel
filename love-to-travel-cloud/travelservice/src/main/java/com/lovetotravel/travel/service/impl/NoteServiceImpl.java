@@ -193,11 +193,6 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void incrLike(String id) {
-        redisService.incr(NoteKey.getLike, id);
-    }
-
-    @Override
     public void incrView(String id) {
         redisService.incr(NoteKey.getView, id);
     }
@@ -224,7 +219,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void unLike(NoteLike noteLike) {
-//查询用户是否点赞
+        //查询用户是否点赞
         QueryWrapper<NoteLike> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(NoteLike::getUserId, noteLike.getUserId()).eq(NoteLike::getNoteId, noteLike.getNoteId());
         NoteLike noteLikeInMysql = noteLikeMapper.selectOne(queryWrapper);
@@ -237,7 +232,7 @@ public class NoteServiceImpl implements NoteService {
             Update update = new Update();
 
             update.set("like", note.getLike() - 1);
-            if (note.getLike() <0) {
+            if (note.getLike() < 0) {
                 update.set("like", 0);
             }
             mongoTemplate.upsert(query, update, Note.class);
@@ -248,7 +243,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void star(NoteStar noteStar) {
-        //查询用户是否点赞
+        //查询用户是否收藏
         QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(NoteStar::getUserId, noteStar.getUserId()).eq(NoteStar::getNoteId, noteStar.getNoteId());
         NoteStar noteStarInMysql = noteStarMapper.selectOne(queryWrapper);
@@ -268,7 +263,7 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public void unStar(NoteStar noteStar) {
-        //查询用户是否点赞
+        //查询用户是否收藏
         QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(NoteStar::getUserId, noteStar.getUserId()).eq(NoteStar::getNoteId, noteStar.getNoteId());
         NoteStar noteStarInMysql = noteStarMapper.selectOne(queryWrapper);
@@ -280,7 +275,7 @@ public class NoteServiceImpl implements NoteService {
             System.out.println("note = " + note);
             Update update = new Update();
             update.set("star", note.getStar() - 1);
-            if (note.getStar() <0) {
+            if (note.getStar() < 0) {
                 update.set("star", 0);
             }
             mongoTemplate.upsert(query, update, Note.class);

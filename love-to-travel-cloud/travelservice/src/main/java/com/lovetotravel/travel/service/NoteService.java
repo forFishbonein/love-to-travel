@@ -28,8 +28,6 @@ public interface NoteService {
 
     void incrComment(String id);
 
-    void incrLike(String id);
-
     void incrView(String noteId);
 
     void like(NoteLike noteLike);
