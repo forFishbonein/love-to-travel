@@ -15,7 +15,6 @@
     </template>
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
-
       <el-table-column prop="id" label="游记id" width="100" />
       <el-table-column prop="title" label="游记标题" width="100" />
       <el-table-column prop="userId" label="用户ID" width="100" />
@@ -92,7 +91,7 @@
 </template>
 
 
-<script lang="ts" setup>
+<script lang="ts">
 import {getNote} from "../../apis/serviceManage/note.js";
 import {delNote} from "../../apis/serviceManage/delnote.js";
 import {ElMessage,ElMessageBox} from 'element-plus'
@@ -101,7 +100,7 @@ export default {
     return{
       dialogFormVisible:false, //对话框是否显示
       queryStr:"",  //查询条件
-      // multipleSelection:[], //多选删除
+      multipleSelection:[], //多选删除
       tableData: [], //游记信息数据
       form:{},   //对话框表单数据
       formLabelWidth:"140px",  //对话框label宽度
@@ -117,8 +116,6 @@ export default {
 
     })
   },
-
-
 
   methods:{
     // openAddDialog(){
@@ -169,7 +166,6 @@ export default {
     //   },
     singleDelete(row){
       console.log(row.id)
-
       ElMessageBox.confirm(
           '您确定要删除这条数目吗?',
           'Warning',
@@ -204,17 +200,25 @@ export default {
             })
           })
     },
+
+  handleSelectionChange(val){  //多行选择
+    this.multipleSelection = val
+    console.log(this.multipleSelection);
   },
-  // multiDelete(){
-  //   console.log("multiDelete()")
-  // },
+  multiDelete(){
+    console.log("multiDelete()")
+    this.multipleSelection.forEach(item=>{
+      var id = item.id
+      delNote(id).then((response) => {
+        var _this = this;
+        console.log(response.data);
+      })
+    })
+  },
   // queryInfo(){
   //   console.log("queryInfo...");
   // },
-  // handleSelectionChange(val){
-  //   this.multipleSelection = val
-  //   console.log(this.multipleSelection)
-  // }
+  },
 
   // mounted(){
   //   var _this = this;
