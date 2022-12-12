@@ -8,7 +8,7 @@ import org.bson.types.ObjectId;
 public class NoteVo {
 
     @ApiModelProperty("游记id")
-    private ObjectId id;
+    private String id;
 
     @ApiModelProperty("用户id")
     private String userId;

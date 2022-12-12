@@ -1,7 +1,8 @@
 <script setup lang="ts"></script>
 
 <script>
-import {getSceneryInfo, postSceneryInfo} from '@/apis/serviceManage/scenery.js'
+import {deleteSceneryInfo, getSceneryInfo, postSceneryInfo, updateSceneryInfo} from '@/apis/serviceManage/scenery.js'
+import {delNote} from "@apis/userManage/delnote.js";
 
 export default {
   data() {
@@ -10,6 +11,7 @@ export default {
       queryStr:"",  //查询条件
       multipleSelection:[], //多选删除
       tableData: [], //省份信息数据
+      queryData: [],//保存查询数据
       form:{},   //对话框表单数据
       formLabelWidth:"140px",  //对话框label宽度
       title:"",  //对话框标题
@@ -21,6 +23,7 @@ export default {
       var _this = this;
       console.log(response.data);
       _this.tableData = response.data;
+      _this.queryData = response.data;
     });
   },
   methods:{
@@ -30,18 +33,41 @@ export default {
       this.dialogFormVisible = true
       console.log("openAddDialog")
     },
-    openUpdateDialog(){
+    openUpdateDialog(row){
       this.btnName = "修改"
       this.title = "修改景区信息"
       this.dialogFormVisible = true
-      console.log("openUpdateDialog")
+      console.log(row);
+      this.form=row  //得到要修改的数据，并回显到对话框
+
     },
-    addShop(){
+    updateScenery(){
+      console.log(this.form)
+      var _this = this;
+      //this.form.stu_interest = this.form.stu_interest.join(',')
+      updateSceneryInfo(_this.form).then((response) => {
+        var _this = this;
+        console.log(response.data===1);
+        if(response.data!==1){
+          ElMessage({
+            message: '景区信息修改成功',
+            type: 'success',
+          })
+        }else {
+          ElMessage({
+            message: '景区信息修改失败',
+            type: 'warning',
+          })
+        }
+      })
+    },
+
+    addScenery(){
       var _this = this;
       //this.form.stu_interest = this.form.stu_interest.join(',')
       postSceneryInfo(_this.form).then((response) => {
         var _this = this;
-        console.log(response.data===1);
+        console.log(response===1);
         if(response.data!==1){
           ElMessage({
             message: '景区信息添加成功',
@@ -60,22 +86,37 @@ export default {
     btnAddUpdate(){
       if(this.btnName==="修改"){
         console.log("修改。。。")
+        this.updateScenery()
       }
       if(this.btnName==="添加"){
-        this.addShop()
+        this.addScenery()
 
         console.log("添加。。。")
         console.log(this.form)
       }
       this.dialogFormVisible = false
     },
-    singleDelete(){
-      console.log("singleDelete()")
+    singleDelete(id){
+      var _this = this;
+      console.log(row.id)
+      deleteSceneryInfo(row.id).then((response) => {
+        _this.tableData = response.data;
+        _this.queryData = response.data;
+        console.log(response.data);
+
+      })
     },
     multiDelete(){
       console.log("multiDelete()")
     },
     queryInfo(){
+      if(this.queryStr.trim().length>0){
+        this.tableData=this.tableData.filter(item =>(item.name).match(this.queryStr.trim()))
+      }else {
+        this.tableData=this.queryData
+      }
+
+
       console.log("queryInfo...");
     },
     handleSelectionChange(val){
@@ -125,10 +166,10 @@ export default {
 
       <el-table-column fixed="right" label="修改" width="120">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="singleDelete(scope.row)"
+          <el-button link type="primary" size="small" @click="singleDelete(scope.row.id)"
           >删除</el-button
           >
-          <el-button link type="primary" size="small" @click="openUpdateDialog">操作</el-button>
+          <el-button link type="primary" size="small" @click="openUpdateDialog(scope.row)">操作</el-button>
         </template>
       </el-table-column>
     </el-table>
