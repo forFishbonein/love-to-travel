@@ -73,6 +73,13 @@ public class NoteController {
         return Result.success("删除成功");
     }
 
+    @ApiOperation("删除游记")
+    @DeleteMapping("/list")
+    public Result<String> removeList(@RequestBody String[] ids) {
+        noteService.removeList(ids);
+        return Result.success("删除成功");
+    }
+
 //    @ApiOperation("点赞游记")
 //    @PostMapping("/like")
 //    public Result<String> like(@PathVariable("id") String id) {

@@ -22,6 +22,8 @@ public interface NoteService {
 
     void removeById(String id);
 
+    void removeList(String[] id);
+
     void incrComment(String id);
 
     void incrLike(String id);

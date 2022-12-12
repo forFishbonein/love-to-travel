@@ -33,7 +33,7 @@ public class GlobalQueryController {
     @PostMapping
     public Result<List<Comment>> doQuery(String queryStr) {
 
-        
+
 
 
 
