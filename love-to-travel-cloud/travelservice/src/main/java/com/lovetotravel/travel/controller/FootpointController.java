@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Footpoint;
+import com.lovetotravel.travel.entity.vo.foot.WantVo;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.FootpointService;
 import io.swagger.annotations.Api;
@@ -27,19 +28,27 @@ public class FootpointController {
         return Result.success(footpointService.getByUserId(id));
     }
 
-    @ApiOperation("想去/去过 新增修改")
-    @PostMapping
-    public Result<String> update(@RequestBody Footpoint footpoint) {
-        footpointService.update(footpoint);
-        return Result.success("修改成功");
+    @ApiOperation("根据用户id查询足迹")
+    @PostMapping("/want")
+    public Result<String> insertWant(@RequestBody WantVo wantVo) {
+        System.out.println(wantVo);
+        footpointService.insertWants(wantVo);
+        return Result.success("添加成功");
     }
 
-    @ApiOperation("想去/去过 删除")
-    @DeleteMapping
-    public Result<String> remove(@RequestBody Footpoint footpoint) {
-        footpointService.remove(footpoint);
-        return Result.success("修改成功");
-    }
+//    @ApiOperation("想去/去过 新增修改")
+//    @PostMapping
+//    public Result<String> update(@RequestBody Footpoint footpoint) {
+//        footpointService.update(footpoint);
+//        return Result.success("修改成功");
+//    }
+//
+//    @ApiOperation("想去/去过 删除")
+//    @DeleteMapping
+//    public Result<String> remove(@RequestBody Footpoint footpoint) {
+//        footpointService.remove(footpoint);
+//        return Result.success("修改成功");
+//    }
 
 
 }

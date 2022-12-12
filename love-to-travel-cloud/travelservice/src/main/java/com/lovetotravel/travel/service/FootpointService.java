@@ -15,8 +15,8 @@ public interface FootpointService {
 
     void insertBeens(BeenVo beens);
 
-    void update(Footpoint footpoint);
-
-    void remove(Footpoint footpoint);
+//    void update(Footpoint footpoint);
+//
+//    void remove(Footpoint footpoint);
 
 }

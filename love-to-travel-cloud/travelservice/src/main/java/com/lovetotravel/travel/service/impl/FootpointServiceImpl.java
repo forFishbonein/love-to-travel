@@ -12,6 +12,9 @@ import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -36,76 +39,112 @@ public class FootpointServiceImpl implements FootpointService {
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(wantVo.getUserId()));
         Footpoint footpointInMongo = mongoTemplate.findOne(query, Footpoint.class);
+        Footpoint footpoint;
+        List<Want> wants;
         if (footpointInMongo == null) {
-            Footpoint footpoint = new Footpoint();
+            footpoint = new Footpoint();
+            wants = new ArrayList<>();
 
+        } else {
+            footpoint = footpointInMongo;
+            wants = footpoint.getWants();
         }
-
+        Want want = new Want();
+        want.setCityId(wantVo.getCityId());
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTimeStamp = dateFormat.format(date);
+        want.setCreateTime(currentTimeStamp);
+        wants.add(want);
+        footpoint.setWants(wants);
+        mongoTemplate.insert(footpoint);
 
     }
 
     public void insertBeens(BeenVo beenVo) {
-
-    }
-
-
-    @Override
-    public void update(Footpoint footpoint) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(footpoint.getUserId()));
-        Update update = new Update();
-        Want[] wants = footpoint.getWants();
-        Been[] beens = footpoint.getBeens();
-        if (footpoint.getWants() != null) {
-            int wantsLength = footpoint.getWants().length;
-            for (int i = 0; i < wantsLength; i++) {
-                update.set("wants." + i + ".cityId", wants[i].getCityId());
-                update.set("wants." + i + ".createTime", wants[i].getCreateTime());
-            }
-        }
-        if (footpoint.getBeens() != null) {
-            int beensLength = footpoint.getBeens().length;
-            for (int i = 0; i < beensLength; i++) {
-                update.set("beens." + i + ".cityId", beens[i].getCityId());
-                update.set("wants." + i + ".createTime", beens[i].getCreateTime());
-                update.set("wants." + i + ".score", beens[i].getScore());
-            }
-        }
-        mongoTemplate.upsert(query, update, Footpoint.class);
-        System.out.println(update);
+        query.addCriteria(Criteria.where("userId").is(beenVo.getUserId()));
+        Footpoint footpointInMongo = mongoTemplate.findOne(query, Footpoint.class);
+        Footpoint footpoint;
+        List<Been> beens;
+        if (footpointInMongo == null) {
+            footpoint = new Footpoint();
+            beens = new ArrayList<>();
 
+        } else {
+            footpoint = footpointInMongo;
+            beens = footpoint.getBeens();
+        }
+        Been been = new Been();
+        been.setCityId(beenVo.getCityId());
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTimeStamp = dateFormat.format(date);
+        been.setCreateTime(currentTimeStamp);
+        been.setScore(beenVo.getScore());
+        beens.add(been);
+        footpoint.setBeens(beens);
+        mongoTemplate.insert(footpoint);
     }
 
-    @Override
-    public void remove(Footpoint footpoint) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("userId").is(footpoint.getUserId()));
-        Update update = new Update();
-        Want[] wants = footpoint.getWants();
-        Been[] beens = footpoint.getBeens();
-        if (wants == null && beens == null) {
-            mongoTemplate.remove(query, Footpoint.class);
-            return;
-        }
-        if (footpoint.getWants() != null) {
-            int wantsLength = footpoint.getWants().length;
-            for (int i = 0; i < wantsLength; i++) {
-                update.set("wants." + i + ".cityCode", wants[i].getCityId());
-                update.set("wants." + i + ".createTime", wants[i].getCreateTime());
-            }
-        }
-        if (footpoint.getBeens() != null) {
-            int beensLength = footpoint.getBeens().length;
-            for (int i = 0; i < beensLength; i++) {
-                update.set("beens." + i + ".cityCode", beens[i].getCityId());
-                update.set("wants." + i + ".createTime", beens[i].getCreateTime());
-                update.set("wants." + i + ".score", beens[i].getScore());
-            }
-        }
-        mongoTemplate.upsert(query, update, Footpoint.class);
-        System.out.println(update);
 
-
-    }
+//    @Override
+//    public void update(Footpoint footpoint) {
+//        Query query = new Query();
+//        query.addCriteria(Criteria.where("userId").is(footpoint.getUserId()));
+//        Update update = new Update();
+//        Want[] wants = footpoint.getWants();
+//        Been[] beens = footpoint.getBeens();
+//        if (footpoint.getWants() != null) {
+//            int wantsLength = footpoint.getWants().length;
+//            for (int i = 0; i < wantsLength; i++) {
+//                update.set("wants." + i + ".cityId", wants[i].getCityId());
+//                update.set("wants." + i + ".createTime", wants[i].getCreateTime());
+//            }
+//        }
+//        if (footpoint.getBeens() != null) {
+//            int beensLength = footpoint.getBeens().length;
+//            for (int i = 0; i < beensLength; i++) {
+//                update.set("beens." + i + ".cityId", beens[i].getCityId());
+//                update.set("wants." + i + ".createTime", beens[i].getCreateTime());
+//                update.set("wants." + i + ".score", beens[i].getScore());
+//            }
+//        }
+//        mongoTemplate.upsert(query, update, Footpoint.class);
+//        System.out.println(update);
+//
+//    }
+//
+//    @Override
+//    public void remove(Footpoint footpoint) {
+//        Query query = new Query();
+//        query.addCriteria(Criteria.where("userId").is(footpoint.getUserId()));
+//        Update update = new Update();
+//        Want[] wants = footpoint.getWants();
+//        Been[] beens = footpoint.getBeens();
+//        if (wants == null && beens == null) {
+//            mongoTemplate.remove(query, Footpoint.class);
+//            return;
+//        }
+//        if (footpoint.getWants() != null) {
+//            int wantsLength = footpoint.getWants().length;
+//            for (int i = 0; i < wantsLength; i++) {
+//                update.set("wants." + i + ".cityCode", wants[i].getCityId());
+//                update.set("wants." + i + ".createTime", wants[i].getCreateTime());
+//            }
+//        }
+//        if (footpoint.getBeens() != null) {
+//            int beensLength = footpoint.getBeens().length;
+//            for (int i = 0; i < beensLength; i++) {
+//                update.set("beens." + i + ".cityCode", beens[i].getCityId());
+//                update.set("wants." + i + ".createTime", beens[i].getCreateTime());
+//                update.set("wants." + i + ".score", beens[i].getScore());
+//            }
+//        }
+//        mongoTemplate.upsert(query, update, Footpoint.class);
+//        System.out.println(update);
+//
+//
+//    }
 
 }
