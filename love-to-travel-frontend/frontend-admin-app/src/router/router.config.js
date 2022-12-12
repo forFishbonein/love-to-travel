@@ -30,12 +30,7 @@ export const routes = [
         component: () => import("@/components/serviceManage/City.vue"),
         meta: { title: "城市管理" },
       },
-      // {
-      //   path: "/city",
-      //   name: "City",
-      //   component: () => import("@/components/serviceManage/city.vue"),
-      //   meta: { title: "城市管理" },
-      // },
+
     ],
   },
 ];
