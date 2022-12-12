@@ -8,10 +8,10 @@
           <el-input v-model="queryStr" placeholder="Please input" /> &nbsp;&nbsp;
           <el-button class="button" type="primary" round @click="queryInfo">查询</el-button>
         </div>
-        <div>
-          <el-button class="button" type="success" round @click="openAddDialog">添加</el-button>
-          <el-button class="button" type="warning" round @click="multiDelete">删除</el-button>
-        </div>
+<!--        <div>-->
+<!--          <el-button class="button" type="success" round @click="openAddDialog">添加</el-button>-->
+<!--          <el-button class="button" type="warning" round @click="multiDelete">删除</el-button>-->
+<!--        </div>-->
 
 
 

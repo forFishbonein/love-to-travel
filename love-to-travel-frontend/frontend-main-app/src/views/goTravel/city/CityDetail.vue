@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { getOneCityInfoById } from "@/apis/travelService/city";
-import { citysInfoType } from "@/apis/interface/iPlan";
+import { getSceneryListByCityId } from "@apis/travelService/scenery";
+import { citysInfoType, theCityScenerysInfoType } from "@/apis/interface/iPlan";
 const props = defineProps<{
-  cityId: number;
+  cityId: string;
 }>();
 // alert(props.cityId);
 const cityId = props.cityId;
@@ -32,6 +33,32 @@ const requestOneCityInfo = async () => {
     });
 };
 requestOneCityInfo();
+
+const sceneryListInfo = ref([] as theCityScenerysInfoType[]);
+const requestSceneryListInfo = async () => {
+  await getSceneryListByCityId(cityId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert("得到数据了3！");
+        sceneryListInfo.value = res.data.slice(0, 6);
+        console.log(sceneryListInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+requestSceneryListInfo();
 </script>
 
 <template>
@@ -51,12 +78,7 @@ requestOneCityInfo();
                 {{ cityInfo.cityName }}
               </h3>
               <p class="destinations-details__discover-text-1">
-                Lorem ipsum available isn but the majority have suffered
-                alteratin in some or form injected. Lorem Ipsum. Proin gravida
-                nibh vel velit auctor aliqueenean sollicitudin, lorem quis
-                bibendum auctor, nisi elit consequat ipsum, nec sagittis sem
-                nibh id elit. vulputate cursus a sit amet mauris. Morbi accumsan
-                ipsum veliam nec tellus a odio tincidunt auctor.
+                {{ cityInfo.introduction }}
               </p>
               <p class="destinations-details__discover-text-2">
                 There are many variations of passages of Lorem Ipsum available,
@@ -75,36 +97,21 @@ requestOneCityInfo();
             <div
               class="tour-details-two__last-minute tour-details-two__last-minute-2"
             >
-              <h3 class="tour-details-two__sidebar-title">Last Minute</h3>
+              <h3 class="tour-details-two__sidebar-title">热门景区</h3>
               <ul class="tour-details-two__last-minute-list list-unstyled">
-                <li>
+                <li v-for="(item, index) in sceneryListInfo" :key="index">
                   <div class="tour-details-two__last-minute-image">
-                    <img src="/images/resources/td-img-1.jpg" alt="" />
+                    <img :src="item.url" alt="" />
                   </div>
                   <div class="tour-details-two__last-minute-content">
-                    <h6>$380</h6>
-                    <h5>Africa 2 Days Tour</h5>
-                    <p>Los Angeles</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="tour-details-two__last-minute-image">
-                    <img src="/images/resources/td-img-2.jpg" alt="" />
-                  </div>
-                  <div class="tour-details-two__last-minute-content">
-                    <h6>$380</h6>
-                    <h5>Africa 2 Days Tour</h5>
-                    <p>Los Angeles</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="tour-details-two__last-minute-image">
-                    <img src="/images/resources/td-img-3.jpg" alt="" />
-                  </div>
-                  <div class="tour-details-two__last-minute-content">
-                    <h6>$380</h6>
-                    <h5>Africa 2 Days Tour</h5>
-                    <p>Los Angeles</p>
+                    <h6>¥{{ item.ticket }}</h6>
+                    <h5>
+                      <router-link
+                        :to="`/goTravel/scenery/detail/${item.id}`"
+                        >{{ item.name }}</router-link
+                      >
+                    </h5>
+                    <p>评分：{{ item.score }}</p>
                   </div>
                 </li>
               </ul>
@@ -116,4 +123,9 @@ requestOneCityInfo();
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.tour-details-two__last-minute-content {
+  margin-left: 20px;
+  padding-top: 10px;
+}
+</style>
