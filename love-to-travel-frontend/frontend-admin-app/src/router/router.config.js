@@ -36,7 +36,12 @@ export const routes = [
         component: () => import("@/components/serviceManage/note.vue"),
         meta: { title: "游记管理" },
       },
-      
+      {
+        path: "/user",
+        name: "User",
+        component: () => import("@/components/userService/User.vue"),
+        meta: { title: "用户管理" },
+      },
     ],
   },
 ];

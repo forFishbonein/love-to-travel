@@ -46,21 +46,10 @@ public class CommentController {
     }
 
     @ApiOperation("根据评论id点赞评论")
-    @PostMapping("like/{id}")
+    @PostMapping("like")
     public Result<String> like(@RequestBody CommentLike commentLike) {
         commentService.like(commentLike);
         return Result.success("点赞成功");
     }
-
-    @ApiOperation("根据评论id回复评论")
-    @PostMapping("reply/{id}")
-    public Result<String> reply(@PathVariable("id") String id) {
-        System.out.println(id);
-        commentService.reply(id);
-        return Result.success("回复成功");
-    }
-
-
-
 
 }

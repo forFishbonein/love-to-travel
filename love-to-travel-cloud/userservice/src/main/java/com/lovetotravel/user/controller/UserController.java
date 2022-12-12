@@ -1,5 +1,6 @@
 package com.lovetotravel.user.controller;
 
+import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.RegisterVo;
 import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
@@ -47,6 +48,13 @@ public class UserController {
     @GetMapping
     public Result<List<User>> getAll() {
         return Result.success(userService.getAll());
+    }
+
+    @ApiOperation("分页查询")
+    @PostMapping("/page")
+    public Result<List<User>> getPage(@RequestBody PageVo pageVo) {
+        System.out.println(pageVo);
+        return Result.success(userService.getPage(pageVo));
     }
 
     @ApiOperation("根据token获取用户信息")

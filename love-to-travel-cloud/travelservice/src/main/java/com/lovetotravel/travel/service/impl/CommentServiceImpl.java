@@ -31,7 +31,7 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public List<Comment> getById(String id) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("noteId").is(id));
+        query.addCriteria(Criteria.where("id").is(id));
         return mongoTemplate.find(query, Comment.class);
     }
 
@@ -46,13 +46,24 @@ public class CommentServiceImpl implements CommentService {
         comment.setLike(0);
         mongoTemplate.insert(comment);
 
+        if (commentVo.getParentId() != "0") {
+            //父评论增加评论数
+            Query query = new Query();
+            query.addCriteria(Criteria.where("parentId").is(commentVo.getParentId()));
+            Comment parentComment = mongoTemplate.findOne(query, Comment.class);
+            Update update = new Update();
+            update.set("reply", parentComment.getReply()+1);
+            mongoTemplate.upsert(query, update, Comment.class);
+        }
+
+
 
     }
 
     @Override
     public void removeById(String id) {
         Query query = new Query();
-        query.addCriteria(Criteria.where("commentId").is(id));
+        query.addCriteria(Criteria.where("id").is(id));
         mongoTemplate.remove(query, Comment.class);
     }
 
@@ -65,31 +76,15 @@ public class CommentServiceImpl implements CommentService {
         if (commentLikeInMysql == null) {
             //增加点赞数
             Query query = new Query();
-            query.addCriteria(Criteria.where("commentId").is(commentLike.getCommentId()));
+            query.addCriteria(Criteria.where("id").is(commentLike.getCommentId()));
             Comment comment = mongoTemplate.findOne(query, Comment.class);
+            System.out.println("comment = " + comment);
             Update update = new Update();
             update.set("like", comment.getLike()+1);
             mongoTemplate.upsert(query, update, Comment.class);
-
             //保存用户点赞信息
             commentLikeMapper.insert(commentLike);
         }
-
-
-
-
-
     }
-
-    @Override
-    public void reply(String id) {
-        Query query = new Query();
-        query.addCriteria(Criteria.where("commentId").is(id));
-        Comment comment = mongoTemplate.findOne(query, Comment.class);
-        Update update = new Update();
-        update.set("reply", comment.getReply()+1);
-        mongoTemplate.upsert(query, update, Comment.class);
-    }
-
 
 }

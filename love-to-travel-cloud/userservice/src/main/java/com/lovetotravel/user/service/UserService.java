@@ -1,6 +1,7 @@
 package com.lovetotravel.user.service;
 
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.FollowerVo;
 import com.lovetotravel.user.entity.vo.LoginVo;
@@ -30,6 +31,8 @@ public interface UserService extends IService<User> {
     void logout(String token);
 
     List<User> getAll();
+
+    List<User> getPage(PageVo pageVo);
 
     void updatePassword(UpdatePasswordVo updatePasswordVo);
 

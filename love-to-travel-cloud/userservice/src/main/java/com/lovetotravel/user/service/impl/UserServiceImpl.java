@@ -1,7 +1,10 @@
 package com.lovetotravel.user.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.FollowerVo;
 import com.lovetotravel.user.entity.vo.LoginVo;
@@ -246,6 +249,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public List<User> getAll() {
         return userMapper.selectList(null);
+    }
+
+    @Override
+    public List<User> getPage(PageVo pageVo) {
+        Page<User> page = Page.of(pageVo.getCurrent(),pageVo.getSize());
+        userMapper.selectPage(page,null);
+        return page.getRecords();
     }
 
     /**

@@ -16,7 +16,6 @@ public interface CommentService {
 
     void like(CommentLike commentLike);
 
-    void reply(String id);
 
 
 }
