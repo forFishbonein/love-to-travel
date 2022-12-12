@@ -18,6 +18,6 @@ public class PageVo<T>{
 
     private long total;//总记录数
 
-    private List<T> list;//分页结果
+    private List<T> records;//分页结果
 
 }

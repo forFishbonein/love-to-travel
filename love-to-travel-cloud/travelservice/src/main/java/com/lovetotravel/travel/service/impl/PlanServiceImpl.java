@@ -111,7 +111,7 @@ public class PlanServiceImpl implements PlanService {
             query.limit(pageSize);
             query.skip((pageNum - 1) * pageSize);
             list = mongoTemplate.find(query, Plan.class);
-            pageVo.setList(list);
+            pageVo.setRecords(list);
             pageVo.setTotal(total);
             return pageVo;
         } catch (Exception e) {

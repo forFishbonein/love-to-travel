@@ -1,5 +1,6 @@
 package com.lovetotravel.travel.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.lovetotravel.travel.entity.PageVo;
 import com.lovetotravel.travel.entity.Scenery;
@@ -10,7 +11,7 @@ public interface SceneryService  extends IService<Scenery> {
 
     List<Scenery> getAll();
 
-    List<Scenery> getPage(PageVo pageVo);
+    Page<Scenery> getPage(PageVo pageVo);
 
     Scenery getById(Long id);
 

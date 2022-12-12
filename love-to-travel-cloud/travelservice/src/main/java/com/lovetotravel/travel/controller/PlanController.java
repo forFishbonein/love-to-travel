@@ -50,7 +50,6 @@ public class PlanController {
         return Result.success(planService.getPage(pageVo));
     }
 
-
     @ApiOperation("新增行程")
     @PostMapping
     public Result<String> insert(@RequestBody Plan plan) {

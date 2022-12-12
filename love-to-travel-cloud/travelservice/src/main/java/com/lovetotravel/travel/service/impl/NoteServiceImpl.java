@@ -30,7 +30,6 @@ public class NoteServiceImpl implements NoteService {
         this.redisService = redisService;
     }
 
-
     /**
      * 根据游记id获取游记
      *
@@ -79,7 +78,7 @@ public class NoteServiceImpl implements NoteService {
             query.limit(pageSize);
             query.skip((pageNum - 1) * pageSize);
             list = mongoTemplate.find(query, Note.class);
-            pageVo.setList(list);
+            pageVo.setRecords(list);
             pageVo.setTotal(total);
             return pageVo;
         } catch (Exception e) {
@@ -87,7 +86,6 @@ public class NoteServiceImpl implements NoteService {
             return null;
         }
     }
-
 
     /**
      * 新增
@@ -109,7 +107,6 @@ public class NoteServiceImpl implements NoteService {
         note.setView(0L);
         mongoTemplate.insert(note);
     }
-
 
     /**
      * 更新

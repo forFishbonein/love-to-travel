@@ -29,10 +29,10 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
     }
 
     @Override
-    public List<Scenery> getPage(PageVo pageVo) {
+    public Page<Scenery> getPage(PageVo pageVo) {
         Page<Scenery> page = Page.of(pageVo.getCurrent(), pageVo.getSize());
         sceneryMapper.selectPage(page, null);
-        return page.getRecords();
+        return page;
     }
 
     public Scenery getById(Long id) {
