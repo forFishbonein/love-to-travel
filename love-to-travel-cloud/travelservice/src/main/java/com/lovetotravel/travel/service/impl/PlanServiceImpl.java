@@ -5,6 +5,8 @@ import com.lovetotravel.travel.entity.dto.Days;
 import com.lovetotravel.travel.entity.dto.Route;
 import com.lovetotravel.travel.entity.dto.SubPlan;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.exception.GlobalException;
+import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.PlanService;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -25,6 +27,14 @@ public class PlanServiceImpl implements PlanService {
 
     public PlanServiceImpl(MongoTemplate mongoTemplate) {
         this.mongoTemplate = mongoTemplate;
+    }
+
+    @Override
+    public Plan getById(String id) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(id));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        return mongoTemplate.findOne(query, Plan.class);
     }
 
     @Override
@@ -137,6 +147,41 @@ public class PlanServiceImpl implements PlanService {
 
         });
         return result;
+    }
+
+    @Override
+    public void removeById(String id) {
+        if (id == null) {
+            throw new GlobalException(CodeMsg.PLAN_NOT_EXIST);
+        }
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(id));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        Update update = new Update();
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTimeStamp = dateFormat.format(date);
+        update.set("deleted", "1")
+                .set("updateTime", currentTimeStamp);
+        mongoTemplate.updateFirst(query, update, Plan.class);
+    }
+
+    @Override
+    public void removeList(String[] ids) {
+        if (ids.length != 0) {
+            for (String id : ids) {
+                Query query = new Query();
+                query.addCriteria(Criteria.where("id").is(id));
+                query.addCriteria(Criteria.where("deleted").is("0"));
+                Update update = new Update();
+                Date date = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String currentTimeStamp = dateFormat.format(date);
+                update.set("deleted", "1")
+                        .set("updateTime", currentTimeStamp);
+                mongoTemplate.updateFirst(query, update, Plan.class);
+            }
+        }
     }
 
 }
