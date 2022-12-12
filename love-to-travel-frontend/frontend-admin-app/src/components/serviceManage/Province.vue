@@ -8,10 +8,10 @@
           <el-input v-model="queryStr" placeholder="Please input" /> &nbsp;&nbsp;
           <el-button class="button" type="primary" round @click="queryInfo">查询</el-button>
         </div>
-        <div>
-          <el-button class="button" type="success" round @click="openAddDialog">添加</el-button>
-          <el-button class="button" type="warning" round @click="multiDelete">删除</el-button>
-        </div>
+<!--        <div>-->
+<!--          <el-button class="button" type="success" round @click="openAddDialog">添加</el-button>-->
+<!--          <el-button class="button" type="warning" round @click="multiDelete">删除</el-button>-->
+<!--        </div>-->
 
 
 
@@ -41,6 +41,9 @@
 
 <script>
 import {ElMessage} from 'element-plus'
+import {getProvinceInfo} from '@/apis/serviceManage/travel'
+
+
 export default {
   data(){
     return{
@@ -53,75 +56,75 @@ export default {
       title:"",  //对话框标题
       btnName:""  //对话框按钮文字
     }
+  },
+  methods:{
+    openAddDialog(){
+      this.btnName = "添加"
+      this.title = "添加商品信息"
+      this.dialogFormVisible = true
+      console.log("openAddDialog")
+    },
+    openUpdateDialog(){
+      this.btnName = "修改"
+      this.title = "修改商品信息"
+      this.dialogFormVisible = true
+      console.log("openUpdateDialog")
+    },
+    addShop(){
+      var _this = this;
+      //this.form.stu_interest = this.form.stu_interest.join(',')
+      this.$http.post("/shop/shops",this.form).then(function(response){
+        console.log(response.data);
+        if(response.data==1){
+          ElMessage({
+            message: '商品信息添加成功',
+            type: 'success',
+          })
+        }else {
+          ElMessage({
+            message: '商品信息添加失败',
+            type: 'warning',
+          })
+        }
+      })
+    },
+
+    //.......
+    btnAddUpdate(){
+      if(this.btnName=="修改"){
+
+        console.log("修改。。。")
+
+      }
+      if(this.btnName=="添加"){
+        this.addShop()
+
+        console.log("添加。。。")
+        console.log(this.form)
+      }
+      this.dialogFormVisible = false
+    },
+    singleDelete(){
+      console.log("singleDelete()")
+    },
+    multiDelete(){
+      console.log("multiDelete()")
+    },
+    queryInfo(){
+      console.log("queryInfo...");
+    },
+    handleSelectionChange(val){
+      this.multipleSelection = val
+      console.log(this.multipleSelection)
+    }
+  },
+  mounted(){
+    var _this = this;
+    getProvinceInfo.then(function(response){
+      console.log(response.data);
+      _this.tableData = response.data;
+    })
   }
-  // methods:{
-  //   openAddDialog(){
-  //     this.btnName = "添加"
-  //     this.title = "添加商品信息"
-  //     this.dialogFormVisible = true
-  //     console.log("openAddDialog")
-  //   },
-  //   openUpdateDialog(){
-  //     this.btnName = "修改"
-  //     this.title = "修改商品信息"
-  //     this.dialogFormVisible = true
-  //     console.log("openUpdateDialog")
-  //   },
-  //   addShop(){
-  //     var _this = this;
-  //     //this.form.stu_interest = this.form.stu_interest.join(',')
-  //     this.$http.post("/shop/shops",this.form).then(function(response){
-  //       console.log(response.data);
-  //       if(response.data==1){
-  //         ElMessage({
-  //           message: '商品信息添加成功',
-  //           type: 'success',
-  //         })
-  //       }else {
-  //         ElMessage({
-  //           message: '商品信息添加失败',
-  //           type: 'warning',
-  //         })
-  //       }
-  //     })
-  //   },
-  //
-  //   //.......
-  //   btnAddUpdate(){
-  //     if(this.btnName=="修改"){
-  //
-  //       console.log("修改。。。")
-  //
-  //     }
-  //     if(this.btnName=="添加"){
-  //       this.addShop()
-  //
-  //       console.log("添加。。。")
-  //       console.log(this.form)
-  //     }
-  //     this.dialogFormVisible = false
-  //   },
-  //   singleDelete(){
-  //     console.log("singleDelete()")
-  //   },
-  //   multiDelete(){
-  //     console.log("multiDelete()")
-  //   },
-  //   queryInfo(){
-  //     console.log("queryInfo...");
-  //   },
-  //   handleSelectionChange(val){
-  //     this.multipleSelection = val
-  //     console.log(this.multipleSelection)
-  //   }
-  // },
-  // mounted(){
-  //   var _this = this;
-  //   this.$http.get("/shop/shops").then(function(response){
-  //     console.log(response.data);
-  //     _this.tableData = response.data;
-  //   })
-  // }
 
 }
 </script>
