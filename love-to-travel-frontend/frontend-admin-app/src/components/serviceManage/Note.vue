@@ -28,6 +28,8 @@
       <el-table-column prop="view" label="浏览量" width="100" />
       <el-table-column prop="trip" label="标签" width="100" />
       <el-table-column prop="planId" label="行程" width="100" />
+      <el-table-column prop="deleted" label="逻辑删除" width="100" />
+
       <el-table-column fixed="right" prop="oppo" label="Operations" width="120">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="singleDelete(scope.row)">删除</el-button>
@@ -75,8 +77,8 @@
       <el-form-item label="行程" :label-width="formLabelWidth">
         <el-input v-model="form.planId" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="caozuo" :label-width="formLabelWidth">
-        <el-input v-model="form.oppo" autocomplete="off" />
+      <el-form-item label="逻辑删除" :label-width="formLabelWidth">
+        <el-input v-model="form.deleted" autocomplete="off" />
       </el-form-item>
 
     </el-form>
@@ -95,8 +97,8 @@
 
 
 <script  lang="ts">
-import {getNote} from "../../apis/serviceManageManage/note.js";
-import {delNote} from "../../apis/serviceManageManage/delnote.js";
+import {getNote} from "../../apis/serviceManage/note.js";
+import {delNote} from "../../apis/serviceManage/delnote.js";
 // import {ElMessage} from 'element-plus';
 export default {
   data(){
@@ -170,8 +172,9 @@ export default {
     //     this.dialogFormVisible = false
     //   },
     singleDelete(row){
-      console.log(row.id)
-      delNote(row.id).then((response) => {
+      console.log(row.id.date)
+      var id=Math.floor(row.id.date/1000).toString(16)+"0000000000000000"
+      delNote(id).then((response) => {
         var _this = this;
         console.log(response.data);
 
