@@ -20,15 +20,17 @@
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column prop="note.data.id" label="游记id" width="100" />
-      <el-table-column prop="note.data.title" label="游记标题" width="100" />
-      <el-table-column prop="note.data.userId" label="用户ID" width="100" />
-      <el-table-column prop="note.data.city" label="所属城市" width="150" />
-      <el-table-column prop="note.data.userId" label="用户ID" width="100" />
-      <el-table-column prop="note.data.url" label="图片地址" width="100" />
-      <el-table-column prop="note.data.url" label="图片地址" width="100" />
-      <el-table-column prop="note.data.url" label="图片地址" width="100" />
-      <el-table-column prop="note.data.url" label="图片地址" width="100" />
+      <el-table-column prop="data.id" label="游记id" width="100" />
+      <el-table-column prop="data.title" label="游记标题" width="100" />
+      <el-table-column prop="data.userId" label="用户ID" width="100" />
+      <el-table-column prop="data.city" label="所属城市" width="150" />
+      <el-table-column prop="data.content" label="游记内容" width="100" />
+      <el-table-column prop="data.url" label="图片地址" width="100" />
+      <el-table-column prop="data.comment" label="评论量" width="100" />
+      <el-table-column prop="data.like" label="点赞量" width="100" />
+      <el-table-column prop="data.view" label="浏览量" width="100" />
+      <el-table-column prop="data.trip" label="标签" width="100" />
+      <el-table-column prop="data.planId" label="行程" width="100" />
       <el-table-column fixed="right" label="Operations" width="120">
         <template #default>
           <el-button link type="primary" size="small" @click="singleDelete">删除</el-button
@@ -55,6 +57,7 @@ export default {
       btnName:""  //对话框按钮文字
     }
   }
+  //
   // methods:{
   //   openAddDialog(){
   //     this.btnName = "添加"
