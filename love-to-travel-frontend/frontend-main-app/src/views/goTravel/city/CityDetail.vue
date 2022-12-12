@@ -47,7 +47,9 @@ requestOneCityInfo();
               />
             </div>
             <div class="destinations-details__discover">
-              <h3 class="destinations-details__title">Discover Spain</h3>
+              <h3 class="destinations-details__title">
+                {{ cityInfo.cityName }}
+              </h3>
               <p class="destinations-details__discover-text-1">
                 Lorem ipsum available isn but the majority have suffered
                 alteratin in some or form injected. Lorem Ipsum. Proin gravida

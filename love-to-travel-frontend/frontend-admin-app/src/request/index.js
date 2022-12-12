@@ -2,12 +2,11 @@
  * @description [ axios 请求封装]
  */
 // 根据环境不同引入不同api地址
-import { Message } from "@/utils/resetMessage";
 import axios from "axios";
-import { ElLoading, Message } from "element-plus";
+import { ElLoading, ElMessage } from "element-plus";
 
 const service = axios.create({
-  baseURL: "http://localhost:8080", // 所有的请求地址前缀部分
+  // baseURL: "http://localhost:8080", // 所有的请求地址前缀部分
   timeout: 10000, // 请求超时时间毫秒
   // withCredentials: true, // 异步请求携带cookie
   headers: {
@@ -60,14 +59,14 @@ service.interceptors.response.use(
       // token 过期
       if (res.code === 401) {
         // 警告提示窗
-        Message({
+        ElMessage({
           type: "warning",
           message: res.msg,
         });
         return;
       }
       if (res.code == 403) {
-        Message({
+        ElMessage({
           type: "warning",
           message: res.msg,
         });
@@ -128,7 +127,7 @@ service.interceptors.response.use(
       }
       error.message = "连接到服务器失败，请联系管理员qq：1558637209";
     }
-    Message({
+    ElMessage({
       type: "warning",
       message: error.message,
     });

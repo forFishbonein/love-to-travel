@@ -4,7 +4,10 @@ import {
   createWebHistory,
 } from "vue-router";
 import { routes } from "./router.config";
+import Province from '../components/serviceManage/Province.vue'
 
+
+    
 // 3. 创建路由实例
 const router = createRouter({
   history: createWebHistory(),
