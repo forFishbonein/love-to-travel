@@ -4,9 +4,7 @@ import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.dto.SubPlan;
 import com.lovetotravel.travel.entity.page.PageVo;
-import com.lovetotravel.travel.entity.vo.NoteVo;
 import com.lovetotravel.travel.result.Result;
-import com.lovetotravel.travel.service.NoteService;
 import com.lovetotravel.travel.service.PlanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -69,7 +67,6 @@ public class PlanController {
     public Result<List<SubPlan>> getByCityId(@PathVariable("id") String id) {
         return Result.success(planService.getByCityId(id));
     }
-
 
 
 }

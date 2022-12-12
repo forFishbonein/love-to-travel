@@ -9,7 +9,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-
 import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
@@ -73,7 +72,7 @@ public class NoteController {
         return Result.success("删除成功");
     }
 
-    @ApiOperation("删除游记")
+    @ApiOperation("批量删除游记")
     @DeleteMapping("/list")
     public Result<String> removeList(@RequestBody String[] ids) {
         noteService.removeList(ids);

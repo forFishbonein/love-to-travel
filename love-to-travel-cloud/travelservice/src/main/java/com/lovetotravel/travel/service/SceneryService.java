@@ -9,7 +9,7 @@ import com.lovetotravel.travel.entity.vo.scenery.SceneryUpdateVo;
 
 import java.util.List;
 
-public interface SceneryService  extends IService<Scenery> {
+public interface SceneryService extends IService<Scenery> {
 
     List<Scenery> getAll();
 

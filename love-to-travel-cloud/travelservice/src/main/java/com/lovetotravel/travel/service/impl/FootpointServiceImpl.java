@@ -41,8 +41,8 @@ public class FootpointServiceImpl implements FootpointService {
             for (int i = 0; i < wantsLength; i++) {
                 update.set("wants." + i + ".cityCode", wants[i].getCityCode());
                 update.set("wants." + i + ".createTime", wants[i].getCreateTime());
-                }
             }
+        }
         if (footpoint.getBeens() != null) {
             int beensLength = footpoint.getBeens().length;
             for (int i = 0; i < beensLength; i++) {
@@ -84,7 +84,6 @@ public class FootpointServiceImpl implements FootpointService {
         }
         mongoTemplate.upsert(query, update, Footpoint.class);
         System.out.println(update);
-
 
 
     }

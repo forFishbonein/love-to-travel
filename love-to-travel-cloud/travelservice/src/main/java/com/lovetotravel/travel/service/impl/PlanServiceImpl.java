@@ -1,6 +1,5 @@
 package com.lovetotravel.travel.service.impl;
 
-import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.dto.Days;
 import com.lovetotravel.travel.entity.dto.Route;

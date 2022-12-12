@@ -61,7 +61,7 @@ public class EmailService {
     public void sendEmail(TeamInviteVo teamInviteVo, User inviter, User user) {
         String email = teamInviteVo.getUserEmail();
 
-        String subject = "来自团队"+ teamInviteVo.getTeamName() +"的邀请函";
+        String subject = "来自团队" + teamInviteVo.getTeamName() + "的邀请函";
 
         String content = "亲爱的";
 

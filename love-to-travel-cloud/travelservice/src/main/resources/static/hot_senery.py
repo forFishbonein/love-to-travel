@@ -1,6 +1,5 @@
 import pandas as pd
-import numpy as np
-import csv
+
 
 def read_data(path):
     df = pd.read_excel(path)
@@ -13,6 +12,7 @@ def read_data(path):
     sorted_senery_df = senery_df.sort_values(by="评分", ascending=False)
     result_senery_df = sorted_senery_df[:10]
     return result_senery_df
+
 
 def main():
     PATH = 'D:\python_jupyter\推荐算法\datasets\ml-latest-small\SceneryDetail.xlsx'

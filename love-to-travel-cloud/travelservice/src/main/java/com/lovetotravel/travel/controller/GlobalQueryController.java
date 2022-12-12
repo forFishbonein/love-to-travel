@@ -8,7 +8,9 @@ import com.lovetotravel.travel.service.NoteService;
 import com.lovetotravel.travel.service.SceneryService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -34,13 +36,8 @@ public class GlobalQueryController {
     public Result<List<Comment>> doQuery(String queryStr) {
 
 
-
-
-
-
         return null;
     }
-
 
 
 }
