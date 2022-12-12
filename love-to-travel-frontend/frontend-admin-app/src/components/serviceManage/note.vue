@@ -57,6 +57,7 @@ export default {
       btnName:""  //对话框按钮文字
     }
   }
+  //
   // methods:{
   //   openAddDialog(){
   //     this.btnName = "添加"
