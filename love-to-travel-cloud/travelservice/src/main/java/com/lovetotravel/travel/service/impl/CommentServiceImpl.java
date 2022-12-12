@@ -62,10 +62,9 @@ public class CommentServiceImpl implements CommentService {
             if (parentComment.getReply() == null) {
                 parentComment.setReply(0);
             }
-            update.set("reply", parentComment.getReply()+1);
+            update.set("reply", parentComment.getReply() + 1);
             mongoTemplate.upsert(query, update, Comment.class);
         }
-
 
 
     }
@@ -90,7 +89,7 @@ public class CommentServiceImpl implements CommentService {
             Comment comment = mongoTemplate.findOne(query, Comment.class);
             System.out.println("comment = " + comment);
             Update update = new Update();
-            update.set("like", comment.getLike()+1);
+            update.set("like", comment.getLike() + 1);
             mongoTemplate.upsert(query, update, Comment.class);
             //保存用户点赞信息
             commentLikeMapper.insert(commentLike);

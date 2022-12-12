@@ -30,8 +30,7 @@ public class MyAspect {
 
 
     @Pointcut("execution(public * com.lovetotravel.travel.controller.NoteController.getById(..))")
-    public void noteRecord() {
-    }
+    public void noteRecord(){}
 
     @AfterReturning(value = "noteRecord()", returning = "result")
     public void doNoteRecord(JoinPoint joinPoint, Object result) throws Throwable {

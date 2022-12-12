@@ -60,7 +60,7 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
             throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
         }
         Scenery scenery = new Scenery();
-        BeanUtils.copyProperties(sceneryInsertVo,scenery);
+        BeanUtils.copyProperties(sceneryInsertVo, scenery);
         sceneryMapper.insert(scenery);
     }
 
@@ -76,7 +76,7 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
             throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
         }
         Scenery scenery = new Scenery();
-        BeanUtils.copyProperties(sceneryUpdateVo,scenery);
+        BeanUtils.copyProperties(sceneryUpdateVo, scenery);
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);

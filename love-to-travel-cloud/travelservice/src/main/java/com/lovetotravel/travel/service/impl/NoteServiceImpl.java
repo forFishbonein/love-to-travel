@@ -162,16 +162,19 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public void removeList(String[] ids) {
         if (ids.length != 0) {
-            Query query = new Query();
-            query.addCriteria(Criteria.where("id").in(ids));
-            query.addCriteria(Criteria.where("deleted").is("0"));
-            Update update = new Update();
-            Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String currentTimeStamp = dateFormat.format(date);
-            update.set("deleted", "1")
-                    .set("updateTime", currentTimeStamp);
-            mongoTemplate.updateFirst(query, update, Note.class);
+
+            for (String id : ids) {
+                Query query = new Query();
+                query.addCriteria(Criteria.where("id").is(id));
+                query.addCriteria(Criteria.where("deleted").is("0"));
+                Update update = new Update();
+                Date date = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String currentTimeStamp = dateFormat.format(date);
+                update.set("deleted", "1")
+                        .set("updateTime", currentTimeStamp);
+                mongoTemplate.updateFirst(query, update, Note.class);
+            }
         }
     }
 
