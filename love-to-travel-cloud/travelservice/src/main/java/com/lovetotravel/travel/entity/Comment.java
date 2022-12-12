@@ -27,13 +27,16 @@ public class Comment {
     private String userName;
 
     @ApiModelProperty("评论点赞数")
-    private String like;
+    private Integer like;
 
     @ApiModelProperty("评论回复数")
     private String reply;
 
     @ApiModelProperty("上级评论id")
     private String parentId;
+
+    @ApiModelProperty("评论时间")
+    private String createTime;
 
 
 }
