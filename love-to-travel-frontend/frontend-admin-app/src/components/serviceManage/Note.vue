@@ -16,8 +16,7 @@
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column prop="id.date" label="游记时间" width="100" />
-      <el-table-column prop="id.timestamp" label="游记时间戳" width="100" />
+      <el-table-column prop="id" label="游记id" width="100" />
       <el-table-column prop="title" label="游记标题" width="100" />
       <el-table-column prop="userId" label="用户ID" width="100" />
       <el-table-column prop="city" label="所属城市" width="150" />
@@ -41,11 +40,8 @@
   <!-- 对话框：添加修改功能 -->
   <el-dialog v-model="dialogFormVisible" :title="title">
     <el-form :model="form">
-      <el-form-item label="游记时间" :label-width="formLabelWidth">
-        <el-input v-model="form.id.date" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="游记时间戳" :label-width="formLabelWidth">
-        <el-input v-model="form.id.timestamp" autocomplete="off" />
+      <el-form-item label="游记id" :label-width="formLabelWidth">
+        <el-input v-model="form.id" autocomplete="off" />
       </el-form-item>
       <el-form-item label="游记标题" :label-width="formLabelWidth">
         <el-input v-model="form.title" autocomplete="off" />
@@ -96,10 +92,10 @@
 </template>
 
 
-<script  lang="ts">
+<script lang="ts" setup>
 import {getNote} from "../../apis/serviceManage/note.js";
 import {delNote} from "../../apis/serviceManage/delnote.js";
-// import {ElMessage} from 'element-plus';
+import {ElMessage,ElMessageBox} from 'element-plus'
 export default {
   data(){
     return{
@@ -172,13 +168,41 @@ export default {
     //     this.dialogFormVisible = false
     //   },
     singleDelete(row){
-      console.log(row.id.date)
-      var id=Math.floor(row.id.date/1000).toString(16)+"0000000000000000"
-      delNote(id).then((response) => {
-        var _this = this;
-        console.log(response.data);
+      console.log(row.id)
 
-      })
+      ElMessageBox.confirm(
+          '您确定要删除这条数目吗?',
+          'Warning',
+          {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+          }
+      )
+          .then(() => {
+            delNote(row.id).then((response) => {
+              var _this = this;
+              console.log(response.data);
+              if(response.data=="删除成功"){
+                ElMessage({
+                  type: 'success',
+                  message: '删除成功',
+                })
+              }else {
+                ElMessage({
+                  type: 'warning',
+                  message: '删除失败',
+                })
+              }
+            })
+
+          })
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: 'Delete canceled',
+            })
+          })
     },
   },
   // multiDelete(){
