@@ -1,11 +1,8 @@
 import httpRequest from "@/request";
-export const getCitysInfo = () => {
-
+export const getProvinceInfo = () => {
+    return httpRequest({
+        method: "get",
+        url: "http://localhost:8082/province",
+        loading: true, //显示加载圈
+    });
 }
-// mounted(){
-//   var _this = this;
-//   this.$http.get("/shop/shops").then(function(response){
-//     console.log(response.data);
-//     _this.tableData = response.data;
-//   })
-// }

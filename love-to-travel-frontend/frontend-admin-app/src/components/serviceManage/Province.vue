@@ -20,17 +20,17 @@
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column prop="province_id" label="省份id" width="100" />
-      <el-table-column prop="province_name" label="省份名称" width="100" />
+      <el-table-column prop="provinceId" label="省份id" width="100" />
+      <el-table-column prop="provinceName" label="省份名称" width="100" />
       <el-table-column prop="url" label="省份图片url" width="200" />
       <el-table-column prop="introduction" label="省份简介" width="150" />
-      <el-table-column fixed="right" label="Operations" width="120">
-        <template #default>
-          <el-button link type="primary" size="small" @click="singleDelete"
-          >删除</el-button
-          >
-          <el-button link type="primary" size="small" @click="openUpdateDialog">编辑</el-button>
-        </template>
+      <el-table-column fixed="right" label="修改" width="120">
+<!--        <template #default>-->
+<!--          <el-button link type="primary" size="small" @click="singleDelete"-->
+<!--          >删除</el-button-->
+<!--          >-->
+<!--          <el-button link type="primary" size="small" @click="openUpdateDialog">编辑</el-button>-->
+<!--        </template>-->
       </el-table-column>
     </el-table>
   </el-card>
@@ -41,90 +41,86 @@
 
 <script>
 import {ElMessage} from 'element-plus'
-import {getProvinceInfo} from '@/apis/serviceManage/travel'
+import {getProvinceInfo} from '@/apis/serviceManage/province.js'
 
 
 export default {
-  data(){
-    return{
-      dialogFormVisible:false, //对话框是否显示
-      queryStr:"",  //查询条件
-      multipleSelection:[], //多选删除
+
+  data() {
+    return {
+      queryStr: "",  //查询条件
       tableData: [], //学生信息数据
-      form:{},   //对话框表单数据
-      formLabelWidth:"140px",  //对话框label宽度
-      title:"",  //对话框标题
-      btnName:""  //对话框按钮文字
+      form: {},   //对话框表单数据
     }
   },
-  methods:{
-    openAddDialog(){
-      this.btnName = "添加"
-      this.title = "添加商品信息"
-      this.dialogFormVisible = true
-      console.log("openAddDialog")
-    },
-    openUpdateDialog(){
-      this.btnName = "修改"
-      this.title = "修改商品信息"
-      this.dialogFormVisible = true
-      console.log("openUpdateDialog")
-    },
-    addShop(){
+  mounted() {
+    getProvinceInfo().then((response) => {
       var _this = this;
-      //this.form.stu_interest = this.form.stu_interest.join(',')
-      this.$http.post("/shop/shops",this.form).then(function(response){
-        console.log(response.data);
-        if(response.data==1){
-          ElMessage({
-            message: '商品信息添加成功',
-            type: 'success',
-          })
-        }else {
-          ElMessage({
-            message: '商品信息添加失败',
-            type: 'warning',
-          })
-        }
-      })
-    },
-
-    //.......
-    btnAddUpdate(){
-      if(this.btnName=="修改"){
-
-        console.log("修改。。。")
-
-      }
-      if(this.btnName=="添加"){
-        this.addShop()
-
-        console.log("添加。。。")
-        console.log(this.form)
-      }
-      this.dialogFormVisible = false
-    },
-    singleDelete(){
-      console.log("singleDelete()")
-    },
-    multiDelete(){
-      console.log("multiDelete()")
-    },
-    queryInfo(){
-      console.log("queryInfo...");
-    },
-    handleSelectionChange(val){
-      this.multipleSelection = val
-      console.log(this.multipleSelection)
-    }
-  },
-  mounted(){
-    var _this = this;
-    getProvinceInfo.then(function(response){
       console.log(response.data);
       _this.tableData = response.data;
-    })
+    });
+  },
+  // methods:{
+  //   openAddDialog(){
+  //     this.btnName = "添加"
+  //     this.title = "添加商品信息"
+  //     this.dialogFormVisible = true
+  //     console.log("openAddDialog")
+  //   },
+  //   openUpdateDialog(){
+  //     this.btnName = "修改"
+  //     this.title = "修改商品信息"
+  //     this.dialogFormVisible = true
+  //     console.log("openUpdateDialog")
+  //   },
+  //   addShop(){
+  //     var _this = this;
+  //     //this.form.stu_interest = this.form.stu_interest.join(',')
+  //     this.$http.post("/shop/shops",this.form).then(function(response){
+  //       console.log(response.data);
+  //       if(response.data==1){
+  //         ElMessage({
+  //           message: '商品信息添加成功',
+  //           type: 'success',
+  //         })
+  //       }else {
+  //         ElMessage({
+  //           message: '商品信息添加失败',
+  //           type: 'warning',
+  //         })
+  //       }
+  //     })
+  //   },
+
+  //.......
+  // btnAddUpdate(){
+  //   if(this.btnName=="修改"){
+  //
+  //     console.log("修改。。。")
+  //
+  //   }
+  //   if(this.btnName=="添加"){
+  //     this.addShop()
+  //
+  //     console.log("添加。。。")
+  //     console.log(this.form)
+  //   }
+  //   this.dialogFormVisible = false
+  // },
+  // singleDelete(){
+  //   console.log("singleDelete()")
+  // },
+  // multiDelete(){
+  //   console.log("multiDelete()")
+  // },
+  // queryInfo(){
+  //   console.log("queryInfo...");
+  // },
+  handleSelectionChange(val){
+    this.multipleSelection = val
+    console.log(this.multipleSelection)
   }
+// }
 
 }
 </script>
