@@ -54,6 +54,7 @@ service.interceptors.response.use(
 
     const res = response.data; //返回数据就是Promise的data，即整个后端返回的对象
     if (res.code !== 0) {
+      console.log(res.code);
       console.log(response);
       console.log(res);
       // token 过期

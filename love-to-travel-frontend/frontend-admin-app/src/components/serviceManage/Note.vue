@@ -4,8 +4,14 @@
       <div class="card-header">
         <div class="query">
           <el-input v-model="queryStr" placeholder="Please input" /> &nbsp;&nbsp;
-          <el-button class="button" type="primary" round @click="queryInfo">查询</el-button>
+          <el-button class="button" type="primary" round @click="queryInfo_u">用户ID查询</el-button>
         </div>
+
+        <div class="query">
+          <el-input v-model="input" placeholder="Please input" /> &nbsp;&nbsp;
+          <el-button class="button" type="primary" round @click="queryInfo_n">游记ID查询</el-button>
+        </div>
+
         <div>
           <el-button class="button" type="success" round @click="openAddDialog">添加</el-button>
           <el-button class="button" type="warning" round @click="multiDelete">删除</el-button>
@@ -19,7 +25,7 @@
       <el-table-column prop="title" label="游记标题" width="100" />
       <el-table-column prop="userId" label="用户ID" width="100" />
       <el-table-column prop="city" label="所属城市" width="150" />
-      <el-table-column prop="content" label="游记内容" width="100" />
+      <el-table-column prop="content" label="游记内容" width="100" :show-overflow-tooltip="true" />
       <el-table-column prop="url" label="图片地址" width="100" />
       <el-table-column prop="comment" label="评论量" width="100" />
       <el-table-column prop="like" label="点赞量" width="100" />
@@ -51,8 +57,8 @@
       <el-form-item label="所属城市" :label-width="formLabelWidth">
         <el-input v-model="form.city" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="游记内容" :label-width="formLabelWidth">
-        <el-input v-model="form.content" autocomplete="off" />
+      <el-form-item label="游记内容" :label-width="formLabelWidth" >
+        <el-input class="product-buyer-name" v-model="form.content" autocomplete="off" />
       </el-form-item>
       <el-form-item label="图片地址" :label-width="formLabelWidth">
         <el-input v-model="form.url" autocomplete="off" />
@@ -94,12 +100,14 @@
 <script lang="ts">
 import {getNote} from "../../apis/serviceManage/note.js";
 import {delNote} from "../../apis/serviceManage/delnote.js";
+import {addNote} from "../../apis/serviceManage/addnote.js";
 // import {ElMessage,ElMessageBox} from 'element-plus';
 export default {
   data(){
     return{
       dialogFormVisible:false, //对话框是否显示
       queryStr:"",  //查询条件
+      input:"",
       multipleSelection:[], //多选删除
       tableData: [], //游记信息数据
       form:{},   //对话框表单数据
@@ -130,40 +138,38 @@ export default {
       this.dialogFormVisible = true
       console.log("openUpdateDialog")
     },
-    //   addShop(){
-    //     var _this = this;
-    //     //this.form.stu_interest = this.form.stu_interest.join(',')
-    //     this.$http.post("/shop/shops",this.form).then(function(response){
-    //       console.log(response.data);
-    //       if(response.data==1){
-    //         ElMessage({
-    //           message: '商品信息添加成功',
-    //           type: 'success',
-    //         })
-    //       }else {
-    //         ElMessage({
-    //           message: '商品信息添加失败',
-    //           type: 'warning',
-    //         })
-    //       }
-    //     })
-    //   },
+      addShop(){
+        var _this = this;
+        //this.form.stu_interest = this.form.stu_interest.join(',')
+        addNote(this.form).then((response) => {
+          console.log(response.data);
+          if(response.data=="新增成功"){
+            ElMessage({
+              message: '商品信息添加成功',
+              type: 'success',
+            })
+          }else {
+            ElMessage({
+              message: '商品信息添加失败',
+              type: 'warning',
+            })
+          }
+        })
+      },
     //
     //   //.......
-    //   btnAddUpdate(){
-    //     if(this.btnName=="修改"){
-    //
-    //       console.log("修改。。。")
-    //
-    //     }
-    //     if(this.btnName=="添加"){
-    //       //this.addShop()
-    //
-    //       console.log("添加。。。")
-    //       console.log(this.form)
-    //     }
-    //     this.dialogFormVisible = false
-    //   },
+
+      btnAddUpdate(){
+        if(this.btnName=="修改"){
+          console.log("修改。。。")
+        }
+        if(this.btnName=="添加"){
+          this.addShop()
+          console.log("添加。。。")
+          console.log(this.form)
+        }
+        this.dialogFormVisible = false
+      },
     singleDelete(row){
       console.log(row.id)
       ElMessageBox.confirm(
@@ -207,7 +213,6 @@ export default {
   },
   multiDelete(){
     console.log("multiDelete()")
-
     ElMessageBox.confirm(
         '您确定要删除目前选中的多条数目吗?',
         'Warning',
@@ -222,6 +227,7 @@ export default {
           var num=0
           this.multipleSelection.forEach(item=>{
             var id = item.id
+            console.log(id)
             delNote(id).then((response) => {
               console.log(response.data);
               if(response.data=="删除成功"){
@@ -230,10 +236,11 @@ export default {
             })
           })
           ElMessage({
-              type: 'success',
-              message: '成功删除'+num+'条记录',
-            })
+            type: 'success',
+            message: '成功删除'+num+'条记录',
+          })
         })
+
         .catch(() => {
           ElMessage({
             type: 'info',
@@ -241,9 +248,18 @@ export default {
           })
         })
   },
-  // queryInfo(){
-  //   console.log("queryInfo...");
-  // },
+  queryInfo_u(){
+      if(this.queryStr.trim().length>0){
+        this.tableData = this.tableData.filter(item=>(item.userId).match(this.queryStr.trim()))
+      }
+    console.log("queryInfo...");
+  },
+    queryInfo_n(){
+      if(this.input.trim().length>0){
+        this.tableData = this.tableData.filter(item=>(item.id).match(this.input.trim()))
+      }
+      console.log("queryInfo...");
+    }
   },
 
   // mounted(){
@@ -265,6 +281,13 @@ export default {
 .query{
   display: flex;
   justify-content: space-between;
+}
+.product-buyer-name{
+  max-width: 100px;
+  max-height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
 
