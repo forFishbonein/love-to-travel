@@ -1,9 +1,17 @@
 package com.lovetotravel.travel.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lovetotravel.feign.clients.UserClient;
+import com.lovetotravel.feign.entity.Result;
+import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.page.PageVo;
-import com.lovetotravel.travel.entity.vo.NoteVo;
+import com.lovetotravel.travel.entity.vo.note.NoteLike;
+import com.lovetotravel.travel.entity.vo.note.NoteStar;
+import com.lovetotravel.travel.entity.vo.note.NoteVo;
 import com.lovetotravel.travel.exception.GlobalException;
+import com.lovetotravel.travel.mapper.NoteLikeMapper;
+import com.lovetotravel.travel.mapper.NoteStarMapper;
 import com.lovetotravel.travel.redis.NoteKey;
 import com.lovetotravel.travel.redis.RedisService;
 import com.lovetotravel.travel.result.CodeMsg;
@@ -24,10 +32,16 @@ public class NoteServiceImpl implements NoteService {
 
     final MongoTemplate mongoTemplate;
     final RedisService redisService;
+    final NoteLikeMapper noteLikeMapper;
+    final NoteStarMapper noteStarMapper;
+    final UserClient userClient;
 
-    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService) {
+    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService, NoteLikeMapper noteLikeMapper, NoteStarMapper noteStarMapper, UserClient userClient) {
         this.mongoTemplate = mongoTemplate;
         this.redisService = redisService;
+        this.noteLikeMapper = noteLikeMapper;
+        this.noteStarMapper = noteStarMapper;
+        this.userClient = userClient;
     }
 
     /**
@@ -87,6 +101,28 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
+    @Override
+    public PageVo<Note> fuzzyQuery(PageVo pageVo) {
+        Integer pageSize = pageVo.getPageSize();
+        Integer pageNum = pageVo.getPageNum();
+        List<Note> list;
+        try {
+            Query query = new Query(new Criteria());
+            long total = mongoTemplate.count(query, Note.class);
+            //默认值为5，
+            pageSize = pageSize < 0 ? 5 : pageSize;
+            query.limit(pageSize);
+            query.skip((pageNum - 1) * pageSize);
+            list = mongoTemplate.find(query, Note.class);
+            pageVo.setRecords(list);
+            pageVo.setTotal(total);
+            return pageVo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 新增
      *
@@ -105,6 +141,13 @@ public class NoteServiceImpl implements NoteService {
         note.setLike(0L);
         note.setComment(0L);
         note.setView(0L);
+
+        Result<User> result = userClient.getById(Long.valueOf(noteVo.getUserId()));
+        User user = result.getData();
+        note.setUserName("来自远方的驴友");
+        if (user != null) {
+            note.setUserName(user.getName());
+        }
         mongoTemplate.insert(note);
     }
 
@@ -129,12 +172,8 @@ public class NoteServiceImpl implements NoteService {
                 .set("url", noteVo.getUrl())
                 .set("plan", noteVo.getPlanId())
                 .set("content", noteVo.getContent())
-                .set("comment", noteVo.getComment())
-                .set("view", noteVo.getView())
-                .set("like", noteVo.getLike())
                 .set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Note.class);
-        System.out.println(update);
     }
 
     /**
@@ -162,16 +201,19 @@ public class NoteServiceImpl implements NoteService {
     @Override
     public void removeList(String[] ids) {
         if (ids.length != 0) {
-            Query query = new Query();
-            query.addCriteria(Criteria.where("id").in(ids));
-            query.addCriteria(Criteria.where("deleted").is("0"));
-            Update update = new Update();
-            Date date = new Date();
-            SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-            String currentTimeStamp = dateFormat.format(date);
-            update.set("deleted", "1")
-                    .set("updateTime", currentTimeStamp);
-            mongoTemplate.updateFirst(query, update, Note.class);
+
+            for (String id : ids) {
+                Query query = new Query();
+                query.addCriteria(Criteria.where("id").is(id));
+                query.addCriteria(Criteria.where("deleted").is("0"));
+                Update update = new Update();
+                Date date = new Date();
+                SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+                String currentTimeStamp = dateFormat.format(date);
+                update.set("deleted", "1")
+                        .set("updateTime", currentTimeStamp);
+                mongoTemplate.updateFirst(query, update, Note.class);
+            }
         }
     }
 
@@ -181,13 +223,115 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
-    public void incrLike(String id) {
-        redisService.incr(NoteKey.getLike, id);
+    public void incrView(String id) {
+        redisService.incr(NoteKey.getView, id);
     }
 
     @Override
-    public void incrView(String id) {
-        redisService.incr(NoteKey.getView, id);
+    public void like(NoteLike noteLike) {
+        //查询用户是否点赞
+        QueryWrapper<NoteLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteLike::getUserId, noteLike.getUserId()).eq(NoteLike::getNoteId, noteLike.getNoteId());
+        NoteLike noteLikeInMysql = noteLikeMapper.selectOne(queryWrapper);
+        if (noteLikeInMysql == null) {
+            //增加点赞数
+            Query query = new Query();
+            query.addCriteria(Criteria.where("id").is(noteLike.getNoteId()));
+            Note note = mongoTemplate.findOne(query, Note.class);
+            System.out.println("note = " + note);
+            if (note.getLike() == null) {
+                note.setLike(0L);
+            }
+            Update update = new Update();
+            update.set("like", note.getLike() + 1);
+            mongoTemplate.upsert(query, update, Note.class);
+            //保存用户点赞信息
+            noteLikeMapper.insert(noteLike);
+        }
+    }
+
+    @Override
+    public void unLike(NoteLike noteLike) {
+        //查询用户是否点赞
+        QueryWrapper<NoteLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteLike::getUserId, noteLike.getUserId()).eq(NoteLike::getNoteId, noteLike.getNoteId());
+        NoteLike noteLikeInMysql = noteLikeMapper.selectOne(queryWrapper);
+        if (noteLikeInMysql != null) {
+            //减少点赞数
+            Query query = new Query();
+            query.addCriteria(Criteria.where("id").is(noteLike.getNoteId()));
+            Note note = mongoTemplate.findOne(query, Note.class);
+            System.out.println("note = " + note);
+            Update update = new Update();
+
+            update.set("like", note.getLike() - 1);
+            if (note.getLike() < 0) {
+                update.set("like", 0);
+            }
+            mongoTemplate.upsert(query, update, Note.class);
+            //保存用户点赞信息
+            noteLikeMapper.delete(queryWrapper);
+        }
+    }
+
+    @Override
+    public void star(NoteStar noteStar) {
+        //查询用户是否收藏
+        QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteStar::getUserId, noteStar.getUserId()).eq(NoteStar::getNoteId, noteStar.getNoteId());
+        NoteStar noteStarInMysql = noteStarMapper.selectOne(queryWrapper);
+        if (noteStarInMysql == null) {
+            //增加点赞数
+            Query query = new Query();
+            query.addCriteria(Criteria.where("id").is(noteStar.getNoteId()));
+            Note note = mongoTemplate.findOne(query, Note.class);
+            System.out.println("note = " + note);
+            if (note.getStar() == null) {
+                note.setStar(0L);
+            }
+            Update update = new Update();
+            update.set("like", note.getStar() + 1);
+            mongoTemplate.upsert(query, update, Note.class);
+            //保存用户收藏信息
+            noteStarMapper.insert(noteStar);
+        }
+    }
+
+    @Override
+    public void unStar(NoteStar noteStar) {
+        //查询用户是否收藏
+        QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteStar::getUserId, noteStar.getUserId()).eq(NoteStar::getNoteId, noteStar.getNoteId());
+        NoteStar noteStarInMysql = noteStarMapper.selectOne(queryWrapper);
+        if (noteStarInMysql != null) {
+            //增加点赞数
+            Query query = new Query();
+            query.addCriteria(Criteria.where("id").is(noteStar.getNoteId()));
+            Note note = mongoTemplate.findOne(query, Note.class);
+            System.out.println("note = " + note);
+            Update update = new Update();
+            update.set("star", note.getStar() - 1);
+            if (note.getStar() < 0) {
+                update.set("star", 0);
+            }
+            mongoTemplate.upsert(query, update, Note.class);
+            //删除用户收藏信息
+            noteStarMapper.delete(queryWrapper);
+        }
+    }
+
+    @Override
+    public List<Note> getStarByUserId(Long id) {
+        QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteStar::getUserId, id);
+        List<NoteStar> noteStars = noteStarMapper.selectList(queryWrapper);
+        List<Note> notes = null;
+        for (NoteStar n : noteStars) {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("noteId").is(n.getNoteId()));
+            notes.add(mongoTemplate.findOne(query, Note.class));
+        }
+        return notes;
     }
 
 

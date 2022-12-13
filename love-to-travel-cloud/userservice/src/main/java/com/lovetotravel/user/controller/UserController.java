@@ -1,5 +1,6 @@
 package com.lovetotravel.user.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.RegisterVo;
@@ -34,14 +35,14 @@ public class UserController {
 
     @ApiOperation("根据id查询用户")
     @GetMapping("/{id}")
-    public User getById(@PathVariable("id") Long id) {
-        return userService.getById(id);
+    public Result<User> getById(@PathVariable("id") Long id) {
+        return Result.success(userService.getById(id));
     }
 
     @ApiOperation("根据邮箱查询用户")
     @GetMapping("/email/{email}")
-    public User getByEmail(@PathVariable("email") String email) {
-        return userService.getByEmail(email);
+    public Result<User> getByEmail(@PathVariable("email") String email) {
+        return Result.success(userService.getByEmail(email));
     }
 
     @ApiOperation("查询所有用户")
@@ -52,7 +53,7 @@ public class UserController {
 
     @ApiOperation("分页查询")
     @PostMapping("/page")
-    public Result<List<User>> getPage(@RequestBody PageVo pageVo) {
+    public Result<Page<User>> getPage(@RequestBody PageVo pageVo) {
         System.out.println(pageVo);
         return Result.success(userService.getPage(pageVo));
     }

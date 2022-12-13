@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.lovetotravel.feign.clients.UserClient;
+import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Team;
 import com.lovetotravel.travel.entity.dto.Member;
@@ -118,7 +119,8 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void invite(TeamInviteVo teamInviteVo) {
-        User inviter = userClient.getById(Long.valueOf(teamInviteVo.getInviterId()));
+        Result<User> result = userClient.getById(Long.valueOf(teamInviteVo.getInviterId()));
+        User inviter = result.getData();
         if (inviter == null) {
             throw new GlobalException(CodeMsg.USER_NOT_EXIST);
         }
@@ -126,7 +128,7 @@ public class TeamServiceImpl implements TeamService {
         if (user == null) {
             throw new GlobalException(CodeMsg.EMAIL_EMPTY);
         }
-        emailService.sendEmail(teamInviteVo,inviter, user);
+        emailService.sendEmail(teamInviteVo, inviter, user);
     }
 
     @Override
@@ -180,16 +182,14 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void leave(TeamLeaveVo teamLeaveVo) {
-
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(teamLeaveVo.getTeamId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
         Update update = new Update();
         Document doc = new Document();
-        doc.put("userId",teamLeaveVo.getUserId());
-        update.pull("members",doc);
+        doc.put("userId", teamLeaveVo.getUserId());
+        update.pull("members", doc);
         mongoTemplate.updateMulti(query, update, Team.class);
-
     }
 
 

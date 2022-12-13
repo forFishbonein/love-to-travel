@@ -4,8 +4,14 @@
       <div class="card-header">
         <div class="query">
           <el-input v-model="queryStr" placeholder="Please input" /> &nbsp;&nbsp;
-          <el-button class="button" type="primary" round @click="queryInfo">查询</el-button>
+          <el-button class="button" type="primary" round @click="queryInfo_u">用户ID查询</el-button>
         </div>
+
+        <div class="query">
+          <el-input v-model="input" placeholder="Please input" /> &nbsp;&nbsp;
+          <el-button class="button" type="primary" round @click="queryInfo_n">游记ID查询</el-button>
+        </div>
+
         <div>
           <el-button class="button" type="success" round @click="openAddDialog">添加</el-button>
           <el-button class="button" type="warning" round @click="multiDelete">删除</el-button>
@@ -19,7 +25,7 @@
       <el-table-column prop="title" label="游记标题" width="100" />
       <el-table-column prop="userId" label="用户ID" width="100" />
       <el-table-column prop="city" label="所属城市" width="150" />
-      <el-table-column prop="content" label="游记内容" width="100" />
+      <el-table-column prop="content" label="游记内容" width="100" :show-overflow-tooltip="true" />
       <el-table-column prop="url" label="图片地址" width="100" />
       <el-table-column prop="comment" label="评论量" width="100" />
       <el-table-column prop="like" label="点赞量" width="100" />
@@ -35,6 +41,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[3, 4, 5, 10]"
+        :background="true"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="pageInfo.total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
+
   </el-card>
   <!-- 对话框：添加修改功能 -->
   <el-dialog v-model="dialogFormVisible" :title="title">
@@ -51,8 +68,8 @@
       <el-form-item label="所属城市" :label-width="formLabelWidth">
         <el-input v-model="form.city" autocomplete="off" />
       </el-form-item>
-      <el-form-item label="游记内容" :label-width="formLabelWidth">
-        <el-input v-model="form.content" autocomplete="off" />
+      <el-form-item label="游记内容" :label-width="formLabelWidth" >
+        <el-input class="product-buyer-name" v-model="form.content" autocomplete="off" />
       </el-form-item>
       <el-form-item label="图片地址" :label-width="formLabelWidth">
         <el-input v-model="form.url" autocomplete="off" />
@@ -94,14 +111,21 @@
 <script lang="ts">
 import {getNote} from "../../apis/serviceManage/note.js";
 import {delNote} from "../../apis/serviceManage/delnote.js";
-import {ElMessage,ElMessageBox} from 'element-plus'
+import {addNote} from "../../apis/serviceManage/addnote.js";
+import {updateNote} from "../../apis/serviceManage/updatenote.js";
+import {pageNote} from "../../apis/serviceManage/pagenote.js";
+// import {ElMessage,ElMessageBox} from 'element-plus';
 export default {
   data(){
     return{
       dialogFormVisible:false, //对话框是否显示
       queryStr:"",  //查询条件
+      input:"",
       multipleSelection:[], //多选删除
       tableData: [], //游记信息数据
+      pageInfo:{},  //分页信息对象
+      pageSize:10,  //当前页条数
+      currentPage:1, //当前页号
       form:{},   //对话框表单数据
       formLabelWidth:"140px",  //对话框label宽度
       title:"",  //对话框标题
@@ -109,61 +133,102 @@ export default {
     }
   },
   mounted(){
-    getNote().then((response) => {
-      var _this = this;
-      console.log(response.data);
-      _this.tableData = response.data;
-
-    })
+    // getNote().then((response) => {
+    //   var _this = this;
+    //   console.log(response.data);
+    //   _this.tableData = response.data;
+    //
+    // })
+    this.getPageData(1,10)
   },
 
   methods:{
-    // openAddDialog(){
-    //   this.btnName = "添加"
-    //   this.title = "添加商品信息"
-    //   this.dialogFormVisible = true
-    //   console.log("openAddDialog")
-    // },
-    // openUpdateDialog(){
-    //   this.btnName = "修改"
-    //   this.title = "修改商品信息"
-    //   this.dialogFormVisible = true
-    //   console.log("openUpdateDialog")
-    // },
-    //   addShop(){
-    //     var _this = this;
-    //     //this.form.stu_interest = this.form.stu_interest.join(',')
-    //     this.$http.post("/shop/shops",this.form).then(function(response){
-    //       console.log(response.data);
-    //       if(response.data==1){
-    //         ElMessage({
-    //           message: '商品信息添加成功',
-    //           type: 'success',
-    //         })
-    //       }else {
-    //         ElMessage({
-    //           message: '商品信息添加失败',
-    //           type: 'warning',
-    //         })
-    //       }
-    //     })
-    //   },
+    handleSizeChange(pageSize){  //选择每一页的记录数
+      this.pageSize=pageSize
+      this.getPageData(this.currentPage,this.pageSize)
+      console.log(pageSize)
+    },
+    handleCurrentChange(pageNum){ //切换页号时得到当时页号
+      this.currentPage=pageNum
+      this.getPageData(this.currentPage,this.pageSize)
+      console.log(pageNum)
+    },
+    getPageData(num,size){
+      console.log("dddd")
+      num=parseInt(num)
+      size=parseInt(size)
+      pageNote({pageNum:num, pageSize:size}).then((response) => {
+        this.pageInfo=response.data
+        console.log(response.data)
+        console.log(this.pageInfo.records)
+        this.tableData=response.data.records
+      })
+    },
+    openAddDialog(){
+      this.btnName = "添加"
+      this.title = "添加游记信息"
+      this.dialogFormVisible = true
+      console.log("openAddDialog")
+    },
+    openUpdateDialog(row){
+      this.btnName = "修改"
+      this.title = "修改游记信息"
+      this.dialogFormVisible = true
+      console.log(row)
+      this.form=row
+    },
+    updateNote(){
+      console.log(this.form)
+      var _this = this;
+      //this.form.stu_interest = this.form.stu_interest.join(',')
+      updateNote(this.form).then((response) => {
+        console.log(response.data);
+        if(response.data=="修改成功"){
+          ElMessage({
+            message: '商品信息修改成功',
+            type: 'success',
+          })
+        }else {
+          ElMessage({
+            message: '商品信息修改失败',
+            type: 'warning',
+          })
+        }
+      })
+    },
+      addShop(){
+        var _this = this;
+        //this.form.stu_interest = this.form.stu_interest.join(',')
+        addNote(this.form).then((response) => {
+          console.log(response.data);
+          if(response.data=="新增成功"){
+            ElMessage({
+              message: '商品信息添加成功',
+              type: 'success',
+            })
+          }else {
+            ElMessage({
+              message: '商品信息添加失败',
+              type: 'warning',
+            })
+          }
+        })
+      },
     //
     //   //.......
-    //   btnAddUpdate(){
-    //     if(this.btnName=="修改"){
-    //
-    //       console.log("修改。。。")
-    //
-    //     }
-    //     if(this.btnName=="添加"){
-    //       //this.addShop()
-    //
-    //       console.log("添加。。。")
-    //       console.log(this.form)
-    //     }
-    //     this.dialogFormVisible = false
-    //   },
+
+      btnAddUpdate(){
+        if(this.btnName=="修改"){
+          this.updateNote()
+          // console.log("修改。。。")
+        }
+        if(this.btnName=="添加"){
+          this.addShop()
+          console.log("添加。。。")
+          console.log(this.form)
+        }
+        this.dialogFormVisible = false
+      },
     singleDelete(row){
       console.log(row.id)
       ElMessageBox.confirm(
@@ -207,17 +272,53 @@ export default {
   },
   multiDelete(){
     console.log("multiDelete()")
-    this.multipleSelection.forEach(item=>{
-      var id = item.id
-      delNote(id).then((response) => {
-        var _this = this;
-        console.log(response.data);
-      })
-    })
+    ElMessageBox.confirm(
+        '您确定要删除目前选中的多条数目吗?',
+        'Warning',
+        {
+          confirmButtonText: 'OK',
+          cancelButtonText: 'Cancel',
+          type: 'warning',
+        }
+    )
+        .then(() => {
+          var _this = this;
+          var num=0
+          this.multipleSelection.forEach(item=>{
+            var id = item.id
+            console.log(id)
+            delNote(id).then((response) => {
+              console.log(response.data);
+              if(response.data=="删除成功"){
+                num+=1
+              }
+            })
+          })
+          ElMessage({
+            type: 'success',
+            message: '成功删除'+num+'条记录',
+          })
+        })
+
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
   },
-  // queryInfo(){
-  //   console.log("queryInfo...");
-  // },
+  queryInfo_u(){
+      if(this.queryStr.trim().length>0){
+        this.tableData = this.tableData.filter(item=>(item.userId).match(this.queryStr.trim()))
+      }
+    console.log("queryInfo...");
+  },
+    queryInfo_n(){
+      if(this.input.trim().length>0){
+        this.tableData = this.tableData.filter(item=>(item.id).match(this.input.trim()))
+      }
+      console.log("queryInfo...");
+    }
   },
 
   // mounted(){
@@ -239,6 +340,13 @@ export default {
 .query{
   display: flex;
   justify-content: space-between;
+}
+.product-buyer-name{
+  max-width: 100px;
+  max-height: 30px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 </style>
 

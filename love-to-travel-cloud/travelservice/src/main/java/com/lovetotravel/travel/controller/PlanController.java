@@ -4,9 +4,7 @@ import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.dto.SubPlan;
 import com.lovetotravel.travel.entity.page.PageVo;
-import com.lovetotravel.travel.entity.vo.NoteVo;
 import com.lovetotravel.travel.result.Result;
-import com.lovetotravel.travel.service.NoteService;
 import com.lovetotravel.travel.service.PlanService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -28,14 +26,20 @@ public class PlanController {
 
     @ApiOperation("根据行程id查询行程")
     @GetMapping("/{id}")
-    public Result<Note> getById(@PathVariable("id") String id) {
-        return null;
+    public Result<Plan> getById(@PathVariable("id") String id) {
+        return Result.success(planService.getById(id));
     }
 
     @ApiOperation("根据用户id查询行程")
     @GetMapping("/user/{id}")
     public Result<List<Plan>> getByUserId(@PathVariable("id") String id) {
         return Result.success(planService.getByUserId(id));
+    }
+
+    @ApiOperation("根据城市id查询行程")
+    @GetMapping("/city/{id}")
+    public Result<List<SubPlan>> getByCityId(@PathVariable("id") String id) {
+        return Result.success(planService.getByCityId(id));
     }
 
     @ApiOperation("获取全部行程")
@@ -64,11 +68,20 @@ public class PlanController {
         return Result.success("更新成功");
     }
 
-    @ApiOperation("根据城市id查询行程")
-    @GetMapping("/city/{id}")
-    public Result<List<SubPlan>> getByCityId(@PathVariable("id") String id) {
-        return Result.success(planService.getByCityId(id));
+    @ApiOperation("删除行程")
+    @DeleteMapping
+    public Result<String> removeById(@PathVariable("id") String id) {
+        planService.removeById(id);
+        return Result.success("删除成功");
     }
+
+    @ApiOperation("批量删除行程")
+    @DeleteMapping("/list")
+    public Result<String> removeList(@RequestBody String[] ids) {
+        planService.removeList(ids);
+        return Result.success("更新成功");
+    }
+
 
 
 

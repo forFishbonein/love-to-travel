@@ -1,7 +1,7 @@
 package com.lovetotravel.travel.handler;
 
 import com.lovetotravel.travel.entity.Note;
-import com.lovetotravel.travel.entity.vo.NoteVo;
+import com.lovetotravel.travel.entity.vo.note.NoteVo;
 import com.lovetotravel.travel.redis.NoteKey;
 import com.lovetotravel.travel.redis.RedisService;
 import com.lovetotravel.travel.service.NoteService;
@@ -66,11 +66,9 @@ public class ListenHandler {
         noteList.forEach(note -> {
             //将浏览量、点赞数和评论数写入redis
             Long commentNum = redisService.get(NoteKey.getComment, note.getId().toString(), Long.class);
-            Long likeNum = redisService.get(NoteKey.getLike, note.getId().toString(), Long.class);
             Long viewNum = redisService.get(NoteKey.getView, note.getId().toString(), Long.class);
 
             writeNum(commentNum, NoteKey.getComment.getPrefix(), note.getId().toString());
-            writeNum(likeNum, NoteKey.getLike.getPrefix(), note.getId().toString());
             writeNum(viewNum, NoteKey.getView.getPrefix(), note.getId().toString());
         });
 
@@ -85,19 +83,14 @@ public class ListenHandler {
             if (note.getComment() == null) {
                 note.setComment(0L);
             }
-            if (note.getLike() == null) {
-                note.setLike(0L);
-            }
             if (note.getView() == null) {
                 note.setView(0L);
             }
             //从redis获取将浏览量、点赞数和评论数
             Long commentNum = redisService.get(NoteKey.getComment, note.getId().toString(), Long.class);
-            Long likeNum = redisService.get(NoteKey.getLike, note.getId().toString(), Long.class);
             Long viewNum = redisService.get(NoteKey.getView, note.getId().toString(), Long.class);
             //写入数据库
             writeNum(commentNum, NoteKey.getComment.getPrefix(), note.getId().toString());
-            writeNum(likeNum, NoteKey.getLike.getPrefix(), note.getId().toString());
             writeNum(viewNum, NoteKey.getView.getPrefix(), note.getId().toString());
         });
         log.info("周期任务执行完毕,redis写入数据库完毕");
@@ -108,9 +101,6 @@ public class ListenHandler {
         switch (fieldName) {
             case "NoteKey:comment":
                 note.setComment(num);
-                break;
-            case "NoteKey:like":
-                note.setLike(num);
                 break;
             case "NoteKey:view":
                 note.setView(num);

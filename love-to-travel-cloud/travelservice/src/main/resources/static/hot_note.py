@@ -1,6 +1,5 @@
 import pandas as pd
-import numpy as np
-import csv
+
 
 def read_data(path):
     df1 = pd.read_excel(path)
@@ -15,6 +14,7 @@ def read_data(path):
     sorted_note_df = sorted_note_df[:10]
     # print(sorted_note_df)
     return sorted_note_df
+
 
 def main():
     PATH = 'D:\python_jupyter\推荐算法\datasets\output\游记最终版.xlsx'
