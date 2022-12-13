@@ -13,5 +13,8 @@ export const utilStore = defineStore("util", {
     //   this.refreshNum = 0;
     // },
   },
-  persist: true,
+  persist: {
+    key: "util",
+    storage: window.localStorage,
+  },
 });

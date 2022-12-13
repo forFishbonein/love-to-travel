@@ -2,6 +2,8 @@
 import { ref, inject, onMounted } from "vue";
 // import * as echarts from "echarts";
 import chinaJson from "@/assets/json/map/china.json";
+import { mainStore } from "@/store/user";
+const store2 = mainStore();
 const activeIndex = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
@@ -229,6 +231,8 @@ const initEcharts = () => {
 };
 onMounted(() => {
   initEcharts();
+  alert(store2.getUserFlag);
+  alert(JSON.stringify(store2.userInfo));
 });
 </script>
 

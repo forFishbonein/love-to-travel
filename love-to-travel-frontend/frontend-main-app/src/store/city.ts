@@ -5,5 +5,8 @@ export const cityStore = defineStore("city", {
   }),
   getters: {},
   actions: {},
-  persist: true,
+  persist: {
+    key: "city",
+    storage: window.localStorage,
+  },
 });
