@@ -1,6 +1,8 @@
 package com.lovetotravel.user.service;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lovetotravel.user.entity.Log;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.FollowerVo;
@@ -32,7 +34,7 @@ public interface UserService extends IService<User> {
 
     List<User> getAll();
 
-    List<User> getPage(PageVo pageVo);
+    Page<User> getPage(PageVo pageVo);
 
     void updatePassword(UpdatePasswordVo updatePasswordVo);
 
@@ -49,5 +51,7 @@ public interface UserService extends IService<User> {
     Long sumFollowee(Long id);
 
     List<User> getAllFollowee(Long id);
+
+    Page<Log> getAllLog(PageVo pageVo);
 
 }

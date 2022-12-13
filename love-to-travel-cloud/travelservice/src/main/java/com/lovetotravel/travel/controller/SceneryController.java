@@ -3,6 +3,7 @@ package com.lovetotravel.travel.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lovetotravel.travel.entity.*;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.scenery.*;
 import com.lovetotravel.travel.mapper.CityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
@@ -117,17 +118,17 @@ public class SceneryController {
     @ApiOperation("省份分页")
     @PostMapping("/province/page")
     public Result<Page<Province>> getPageProvince(@RequestBody PageVo pageVo) {
-        Page<Province> page = Page.of(pageVo.getCurrent(), pageVo.getSize());
-        provinceMapper.selectPage(page, null);
-        return Result.success(page);
+        Page<Province> page = Page.of(pageVo.getPageNum(), pageVo.getPageSize());
+        Page<Province> provincePage = provinceMapper.selectPage(page, null);
+        return Result.success(provincePage);
     }
 
     @ApiOperation("城市分页")
     @PostMapping("/city/page")
     public Result<Page<City>> getPageCity(@RequestBody PageVo pageVo) {
-        Page<City> page = Page.of(pageVo.getCurrent(), pageVo.getSize());
-        cityMapper.selectPage(page, null);
-        return Result.success(page);
+        Page<City> page = Page.of(pageVo.getPageNum(), pageVo.getPageSize());
+        Page<City> cityPage = cityMapper.selectPage(page, null);
+        return Result.success(cityPage);
     }
 
     @ApiOperation("景区分页")
