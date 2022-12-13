@@ -6,6 +6,8 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 import org.springframework.data.mongodb.core.mapping.Document;
 
+import java.util.List;
+
 @Data
 @Document(collection = "footpoint")
 public class Footpoint {
@@ -14,9 +16,9 @@ public class Footpoint {
     private String userId;
 
     @ApiModelProperty("想去")
-    private Want[] wants;
+    private List<Want> wants;
 
     @ApiModelProperty("去过")
-    private Been[] beens;
+    private List<Been> beens;
 
 }

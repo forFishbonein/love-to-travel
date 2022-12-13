@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class WantVo {
+public class BeenRemoveVo {
 
     @ApiModelProperty("用户id")
     private String userId;
@@ -12,5 +12,9 @@ public class WantVo {
     @ApiModelProperty("城市代码")
     private String cityId;
 
+    @ApiModelProperty("评分")
+    private String score;
 
+    @ApiModelProperty("添加时间")
+    private String createTime;
 }
