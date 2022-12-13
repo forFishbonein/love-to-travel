@@ -291,16 +291,16 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<Note> getStarByUserId(Long id) {
-
-
-
-
-
-
-
-
-
-        return null;
+        QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteStar::getUserId, id);
+        List<NoteStar> noteStars = noteStarMapper.selectList(queryWrapper);
+        List<Note> notes = null;
+        for (NoteStar n : noteStars) {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("noteId").is(n.getNoteId()));
+            notes.add(mongoTemplate.findOne(query, Note.class));
+        }
+        return notes;
     }
 
 
