@@ -11,8 +11,8 @@ export const getPageCitysInfo = (page: number, limit: number) => {
   return httpRequest({
     method: "post",
     data: {
-      current: page,
-      size: limit,
+      pageNum: page,
+      pageSize: limit,
     },
     url: "http://localhost:8082/city/page",
     loading: true, //显示加载圈
