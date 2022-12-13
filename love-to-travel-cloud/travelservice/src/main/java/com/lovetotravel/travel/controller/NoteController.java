@@ -109,6 +109,12 @@ public class NoteController {
         return Result.success("取消收藏成功");
     }
 
+    @ApiOperation("根据用户id查看收藏")
+    @GetMapping("/star")
+    public Result<List<Note>> getStarByUserId(@PathVariable("id") Long id) {
+        return Result.success(noteService.getStarByUserId(id));
+    }
+
 
 
 }

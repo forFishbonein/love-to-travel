@@ -208,6 +208,9 @@ public class NoteServiceImpl implements NoteService {
             query.addCriteria(Criteria.where("id").is(noteLike.getNoteId()));
             Note note = mongoTemplate.findOne(query, Note.class);
             System.out.println("note = " + note);
+            if (note.getLike() == null) {
+                note.setLike(0L);
+            }
             Update update = new Update();
             update.set("like", note.getLike() + 1);
             mongoTemplate.upsert(query, update, Note.class);
@@ -252,6 +255,9 @@ public class NoteServiceImpl implements NoteService {
             query.addCriteria(Criteria.where("id").is(noteStar.getNoteId()));
             Note note = mongoTemplate.findOne(query, Note.class);
             System.out.println("note = " + note);
+            if (note.getStar() == null) {
+                note.setStar(0L);
+            }
             Update update = new Update();
             update.set("like", note.getStar() + 1);
             mongoTemplate.upsert(query, update, Note.class);
@@ -281,6 +287,20 @@ public class NoteServiceImpl implements NoteService {
             //删除用户收藏信息
             noteStarMapper.delete(queryWrapper);
         }
+    }
+
+    @Override
+    public List<Note> getStarByUserId(Long id) {
+
+
+
+
+
+
+
+
+
+        return null;
     }
 
 
