@@ -12,6 +12,8 @@ import com.lovetotravel.user.service.MedalService;
 import com.lovetotravel.user.service.UserService;
 import org.springframework.stereotype.Service;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -54,6 +56,10 @@ public class MedalServiceImpl extends ServiceImpl<MedalMapper, Medal> implements
         if (MedalInMysql == null) {
             throw new GlobalException(CodeMsg.MEDAL_NOT_EXIST);
         }
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        String currentTimeStamp = dateFormat.format(date);
+        medal.setUpdateTime(currentTimeStamp);
         medalMapper.update(medal, queryWrapper);
     }
 

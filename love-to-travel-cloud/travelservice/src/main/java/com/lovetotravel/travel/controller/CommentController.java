@@ -46,7 +46,7 @@ public class CommentController {
     }
 
     @ApiOperation("根据评论id点赞评论")
-    @PostMapping("like")
+    @PostMapping("/like")
     public Result<String> like(@RequestBody CommentLike commentLike) {
         commentService.like(commentLike);
         return Result.success("点赞成功");

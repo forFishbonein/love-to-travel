@@ -123,88 +123,59 @@ export const routes: Array<RouteRecordRaw> = [
         name: "Personal",
         component: PersonalIndex,
         meta: { title: "个人中心", keepAlive: false, showTab: true },
-        // redirect: "/goTravel/city",
-        // children: [
-        //   {
-        //     path: "center",
-        //     name: "Center",
-        //     // component: () => import("@/views/goTravel/city/City.vue"),
-        //     component: City,
-        //     meta: {
-        //       title: "首页",
-        //       keepAlive: false,
-        //       showTab: true,
-        //     },
-        //     redirect: "/goTravel/city/list",
-        //     children: [
-        //       {
-        //         path: "list",
-        //         name: "CityList",
-        //         component: () => import("@/views/goTravel/city/CityList.vue"),
-        //         meta: {
-        //           title: "城市列表",
-        //           keepAlive: false,
-        //           showTab: true,
-        //         },
-        //       },
-        //       {
-        //         path: "detail/:cityId",
-        //         name: "CityDetail",
-        //         component: () => import("@/views/goTravel/city/CityDetail.vue"),
-        //         meta: {
-        //           title: "城市详情",
-        //           keepAlive: false,
-        //           showTab: true,
-        //         },
-        //         props(route) {
-        //           return {
-        //             cityId: route.params.cityId,
-        //           };
-        //         },
-        //       },
-        //     ],
-        //   },
-        //   {
-        //     path: "scenery",
-        //     name: "Scenery",
-        //     component: Scenery,
-        //     meta: {
-        //       title: "景区页",
-        //       keepAlive: false,
-        //       showTab: true,
-        //     },
-        //     redirect: "/goTravel/scenery/list",
-        //     children: [
-        //       {
-        //         path: "list",
-        //         name: "SceneryList",
-        //         component: () =>
-        //           import("@/views/goTravel/scenery/SceneryList.vue"),
-        //         meta: {
-        //           title: "景区列表",
-        //           keepAlive: false,
-        //           showTab: true,
-        //         },
-        //       },
-        //       {
-        //         path: "detail/:sceneryId",
-        //         name: "SceneryDetail",
-        //         component: () =>
-        //           import("@/views/goTravel/scenery/SceneryDetail.vue"),
-        //         meta: {
-        //           title: "景区详情",
-        //           keepAlive: false,
-        //           showTab: true,
-        //         },
-        //         props(route) {
-        //           return {
-        //             sceneryId: route.params.sceneryId,
-        //           };
-        //         },
-        //       },
-        //     ],
-        //   },
-        // ],
+        redirect: "/personal/center",
+        children: [
+          {
+            path: "center",
+            name: "Center",
+            component: () => import("@/views/personal/Center.vue"),
+            meta: {
+              title: "首页",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          // {
+          //   path: "scenery",
+          //   name: "Scenery",
+          //   component: Scenery,
+          //   meta: {
+          //     title: "景区页",
+          //     keepAlive: false,
+          //     showTab: true,
+          //   },
+          //   redirect: "/goTravel/scenery/list",
+          //   children: [
+          //     {
+          //       path: "list",
+          //       name: "SceneryList",
+          //       component: () =>
+          //         import("@/views/goTravel/scenery/SceneryList.vue"),
+          //       meta: {
+          //         title: "景区列表",
+          //         keepAlive: false,
+          //         showTab: true,
+          //       },
+          //     },
+          //     {
+          //       path: "detail/:sceneryId",
+          //       name: "SceneryDetail",
+          //       component: () =>
+          //         import("@/views/goTravel/scenery/SceneryDetail.vue"),
+          //       meta: {
+          //         title: "景区详情",
+          //         keepAlive: false,
+          //         showTab: true,
+          //       },
+          //       props(route) {
+          //         return {
+          //           sceneryId: route.params.sceneryId,
+          //         };
+          //       },
+          //     },
+          //   ],
+          // },
+        ],
       },
     ],
   },

@@ -1,16 +1,22 @@
 package com.lovetotravel.travel.service;
 
 import com.lovetotravel.travel.entity.Footpoint;
+import com.lovetotravel.travel.entity.vo.foot.BeenVo;
+import com.lovetotravel.travel.entity.vo.foot.WantVo;
 
 import java.util.List;
 
 public interface FootpointService {
 
 
-    List<Footpoint> getByUserId(String userId);
+    Footpoint getByUserId(String userId);
 
-    void update(Footpoint footpoint);
+    void insertWants(WantVo wantVo);
 
-    void remove(Footpoint footpoint);
+    void insertBeens(BeenVo beens);
+
+//    void update(Footpoint footpoint);
+//
+//    void remove(Footpoint footpoint);
 
 }

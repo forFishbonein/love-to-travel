@@ -7,7 +7,7 @@ import lombok.Data;
 public class Been {
 
     @ApiModelProperty("城市代码")
-    private String cityCode;
+    private String cityId;
 
     @ApiModelProperty("添加时间")
     private String createTime;

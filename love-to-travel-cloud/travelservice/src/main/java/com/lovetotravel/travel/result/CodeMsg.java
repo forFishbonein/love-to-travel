@@ -19,10 +19,17 @@ public class CodeMsg {
 
     //行程模块 5005XX
 
+    public static CodeMsg PLAN_NOT_EXIST = new CodeMsg(500501, "行程不存在");
+
     //组队模块 5006XX
     public static CodeMsg TEAM_NOT_EXIST = new CodeMsg(500601, "队伍不存在");
 
 
+    //景区模块 5007XX
+    public static CodeMsg SCENERY_NOT_EXIST = new CodeMsg(500701, "景区不存在");
+
+    //评论模块 5008XX
+    public static CodeMsg COMMENT_NOT_EXIST = new CodeMsg(500801, "评论不存在");
 
 
     private int code;

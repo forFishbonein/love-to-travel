@@ -2,10 +2,13 @@ package com.lovetotravel.travel.service;
 
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.dto.SubPlan;
+import com.lovetotravel.travel.entity.page.PageVo;
 
 import java.util.List;
 
 public interface PlanService {
+
+    Plan getById(String id);
 
     void insert(Plan plan);
 
@@ -13,6 +16,15 @@ public interface PlanService {
 
     List<Plan> getByUserId(String userId);
 
+    List<Plan> getAll();
+
+    PageVo<Plan> getPage(PageVo pageVo);
+
     List<SubPlan> getByCityId(String cityId);
+
+
+    void removeById(String id);
+
+    void removeList(String[] ids);
 
 }

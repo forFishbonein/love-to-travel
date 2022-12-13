@@ -15,17 +15,9 @@ public class ScheduledTask {
 
     @Scheduled(cron = "* * 1 * * ?")
     public void updateHotCity() {
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("================================");
-
         String filename = "hotCity.py";
-
         PythonUtil pythonUtil = new PythonUtil();
         String result = pythonUtil.execPythonFile(filename);
-        System.out.println("result = " + result);
-        System.out.println("================================");
-        System.out.println("================================");
-        System.out.println("================================");
+
     }
 }

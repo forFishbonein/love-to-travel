@@ -39,6 +39,12 @@ export const routes = [
         component: () => import("@/components/userService/User.vue"),
         meta: { title: "用户管理" },
       },
+      {
+        path: "/scenery",
+        name: "Scenery",
+        component: () => import("@/components/serviceManage/Scenery.vue"),
+        meta: { title: "景区管理" },
+      },
     ],
   },
 ];
