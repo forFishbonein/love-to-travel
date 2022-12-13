@@ -6,3 +6,12 @@ export const getProvinceInfo = () => {
         loading: true, //显示加载圈
     });
 }
+
+export const updateProvinceInfo = (data) => {
+    return httpRequest({
+        method: "put",
+        url: "http://localhost:8082/",
+        data,
+        loading: true, //显示加载圈
+    });
+}
