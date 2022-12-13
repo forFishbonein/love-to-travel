@@ -1,5 +1,6 @@
 package com.lovetotravel.user.controller;
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.RegisterVo;
@@ -52,7 +53,7 @@ public class UserController {
 
     @ApiOperation("分页查询")
     @PostMapping("/page")
-    public Result<List<User>> getPage(@RequestBody PageVo pageVo) {
+    public Result<Page<User>> getPage(@RequestBody PageVo pageVo) {
         System.out.println(pageVo);
         return Result.success(userService.getPage(pageVo));
     }

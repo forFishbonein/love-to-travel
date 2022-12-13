@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lovetotravel.user.entity.Log;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.FollowerVo;
@@ -11,6 +12,7 @@ import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.entity.vo.RegisterVo;
 import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
 import com.lovetotravel.user.exception.GlobalException;
+import com.lovetotravel.user.mapper.LogMapper;
 import com.lovetotravel.user.mapper.UserMapper;
 import com.lovetotravel.user.redis.CodeKey;
 import com.lovetotravel.user.redis.FollowKey;
@@ -38,10 +40,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
 
     final UserMapper userMapper;
     final RedisService redisService;
+    final LogMapper logMapper;
 
-    public UserServiceImpl(UserMapper userMapper, RedisService redisService) {
+    public UserServiceImpl(UserMapper userMapper, RedisService redisService, LogMapper logMapper) {
         this.userMapper = userMapper;
         this.redisService = redisService;
+        this.logMapper = logMapper;
     }
 
 
@@ -252,10 +256,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     }
 
     @Override
-    public List<User> getPage(PageVo pageVo) {
+    public Page<User> getPage(PageVo pageVo) {
         Page<User> page = Page.of(pageVo.getCurrent(),pageVo.getSize());
-        userMapper.selectPage(page,null);
-        return page.getRecords();
+        Page<User> userPage = userMapper.selectPage(page, null);
+        return userPage;
     }
 
     /**
@@ -387,5 +391,12 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<User> users = listByIds(set);
         System.out.println(users);
         return users;
+    }
+
+    @Override
+    public Page<Log> getAllLog(PageVo pageVo) {
+        Page<Log> page = Page.of(pageVo.getCurrent(),pageVo.getSize());
+        Page<Log> logPage = logMapper.selectPage(page, null);
+        return logPage;
     }
 }
