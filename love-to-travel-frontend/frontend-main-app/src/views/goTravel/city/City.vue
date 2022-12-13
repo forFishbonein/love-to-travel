@@ -9,7 +9,7 @@
           <li><span>.</span></li>
           <li><a href="#">去旅游</a></li>
           <li><span>.</span></li>
-          <li class="active">热门城市</li>
+          <li class="active">城市</li>
         </ul>
       </div>
     </div>
