@@ -61,7 +61,7 @@ public class LoginController {
 
     @ApiOperation("日志查询")
     @PostMapping("/log")
-    public Result<Page<Log>> getAllLog(PageVo pageVo) {
+    public Result<Page<Log>> getAllLog(@RequestBody PageVo pageVo) {
         return Result.success(userService.getAllLog(pageVo));
     }
 

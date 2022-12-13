@@ -259,6 +259,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Page<User> getPage(PageVo pageVo) {
         Page<User> page = Page.of(pageVo.getCurrent(),pageVo.getSize());
+        page.addOrder(OrderItem.desc("create_time"));
         Page<User> userPage = userMapper.selectPage(page, null);
         return userPage;
     }
