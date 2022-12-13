@@ -2,14 +2,17 @@ package com.lovetotravel.travel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
+import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.entity.SceneryComment;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.scenery.*;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.mapper.SceneryCommentMapper;
@@ -94,6 +97,16 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
         scenery.setUpdateTime(currentTimeStamp);
         sceneryMapper.update(scenery, queryWrapper);
     }
+
+    @Override
+    public Page<Scenery> getSceneryByStr(QueryPageVo pageVo) {
+        Page<Scenery> page = new Page<>(pageVo.getPageNum(), pageVo.getPageSize());
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(Scenery::getIntroduction, pageVo.getQueryStr());
+        Page<Scenery> cityPage = sceneryMapper.selectPage(page, queryWrapper);
+        return cityPage;
+    }
+
 
     @Override
     public void removeById(Long id) {

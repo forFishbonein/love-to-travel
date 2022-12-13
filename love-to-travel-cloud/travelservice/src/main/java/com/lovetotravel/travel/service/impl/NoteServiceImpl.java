@@ -6,6 +6,7 @@ import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.regex.Pattern;
 
 @Service
 public class NoteServiceImpl implements NoteService {
@@ -85,12 +87,43 @@ public class NoteServiceImpl implements NoteService {
         Integer pageNum = pageVo.getPageNum();
         List<Note> list;
         try {
-            Query query = new Query(new Criteria());
+            Query query = new Query();
+            query.addCriteria(Criteria.where("deleted").is("0"));
             long total = mongoTemplate.count(query, Note.class);
             //默认值为5，
             pageSize = pageSize < 0 ? 5 : pageSize;
             query.limit(pageSize);
             query.skip((pageNum - 1) * pageSize);
+            list = mongoTemplate.find(query, Note.class);
+            pageVo.setRecords(list);
+            pageVo.setTotal(total);
+            return pageVo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    @Override
+    public QueryPageVo<Note> fuzzyQuery(QueryPageVo pageVo) {
+        if (pageVo.getQueryStr() == null || pageVo.getQueryStr().equals("")) {
+            throw new GlobalException(CodeMsg.QUERY_EMPTY);
+        }
+        Integer pageSize = pageVo.getPageSize();
+        Integer pageNum = pageVo.getPageNum();
+        List<Note> list;
+        try {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("deleted").is("0"));
+            long total = mongoTemplate.count(query, Note.class);
+            //默认值为5，
+            pageSize = pageSize < 0 ? 5 : pageSize;
+            query.limit(pageSize);
+            query.skip((pageNum - 1) * pageSize);
+
+            Pattern pattern= Pattern.compile("^.*"+pageVo.getQueryStr()+".*$", Pattern.CASE_INSENSITIVE);
+            query.addCriteria(Criteria.where("content").regex(pattern));
+
             list = mongoTemplate.find(query, Note.class);
             pageVo.setRecords(list);
             pageVo.setTotal(total);

@@ -2,6 +2,7 @@ package com.lovetotravel.travel.service;
 
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
@@ -17,6 +18,8 @@ public interface NoteService {
     List<Note> getAll();
 
     PageVo<Note> getPage(PageVo pageVo);
+
+    QueryPageVo<Note> fuzzyQuery(QueryPageVo pageVo);
 
     void insert(NoteVo noteVo);
 

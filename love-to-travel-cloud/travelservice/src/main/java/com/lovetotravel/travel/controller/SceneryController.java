@@ -1,9 +1,12 @@
 package com.lovetotravel.travel.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.*;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.scenery.*;
 import com.lovetotravel.travel.mapper.CityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
@@ -75,10 +78,10 @@ public class SceneryController {
         return Result.success("删除成功");
     }
 
-    @ApiOperation("根据id删除景区")
+    @ApiOperation("批量删除")
     @DeleteMapping("/list")
     public Result<String> removeList(@RequestBody Long[] ids) {
-        sceneryService.removeById(ids);
+        sceneryService.removeList(ids);
         return Result.success("删除成功");
     }
 
@@ -135,6 +138,22 @@ public class SceneryController {
     @PostMapping("/scenery/page")
     public Result<Page<Scenery>> getPageScenery(@RequestBody PageVo pageVo) {
         return Result.success(sceneryService.getPage(pageVo));
+    }
+
+    @ApiOperation("城市分页+模糊查询")
+    @PostMapping("/city/query")
+    public Result<Page<City>> getCityByStr(@RequestBody QueryPageVo pageVo) {
+        Page<City> page = new Page<>(pageVo.getPageNum(), pageVo.getPageSize());
+        QueryWrapper<City> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(City::getIntroduction, pageVo.getQueryStr());
+        Page<City> cityPage = cityMapper.selectPage(page, queryWrapper);
+        return Result.success(cityPage);
+    }
+
+    @ApiOperation("景区模糊查询")
+    @PostMapping("/scenery/query")
+    public Result<Page<Scenery>> getSceneryByStr(@RequestBody QueryPageVo pageVo) {
+        return Result.success(sceneryService.getSceneryByStr(pageVo));
     }
 
     @ApiOperation("景区评论")

@@ -41,6 +41,17 @@
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :page-sizes="[3, 4, 5, 10]"
+        :background="true"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="pageInfo.total"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
+
   </el-card>
   <!-- 对话框：添加修改功能 -->
   <el-dialog v-model="dialogFormVisible" :title="title">
@@ -101,6 +112,8 @@
 import {getNote} from "../../apis/serviceManage/note.js";
 import {delNote} from "../../apis/serviceManage/delnote.js";
 import {addNote} from "../../apis/serviceManage/addnote.js";
+import {updateNote} from "../../apis/serviceManage/updatenote.js";
+import {pageNote} from "../../apis/serviceManage/pagenote.js";
 // import {ElMessage,ElMessageBox} from 'element-plus';
 export default {
   data(){
@@ -110,6 +123,9 @@ export default {
       input:"",
       multipleSelection:[], //多选删除
       tableData: [], //游记信息数据
+      pageInfo:{},  //分页信息对象
+      pageSize:10,  //当前页条数
+      currentPage:1, //当前页号
       form:{},   //对话框表单数据
       formLabelWidth:"140px",  //对话框label宽度
       title:"",  //对话框标题
@@ -117,26 +133,68 @@ export default {
     }
   },
   mounted(){
-    getNote().then((response) => {
-      var _this = this;
-      console.log(response.data);
-      _this.tableData = response.data;
-
-    })
+    // getNote().then((response) => {
+    //   var _this = this;
+    //   console.log(response.data);
+    //   _this.tableData = response.data;
+    //
+    // })
+    this.getPageData(1,10)
   },
 
   methods:{
+    handleSizeChange(pageSize){  //选择每一页的记录数
+      this.pageSize=pageSize
+      this.getPageData(this.currentPage,this.pageSize)
+      console.log(pageSize)
+    },
+    handleCurrentChange(pageNum){ //切换页号时得到当时页号
+      this.currentPage=pageNum
+      this.getPageData(this.currentPage,this.pageSize)
+      console.log(pageNum)
+    },
+    getPageData(num,size){
+      console.log("dddd")
+      num=parseInt(num)
+      size=parseInt(size)
+      pageNote({pageNum:num, pageSize:size}).then((response) => {
+        this.pageInfo=response.data
+        console.log(response.data)
+        console.log(this.pageInfo.records)
+        this.tableData=response.data.records
+      })
+    },
     openAddDialog(){
       this.btnName = "添加"
       this.title = "添加游记信息"
       this.dialogFormVisible = true
       console.log("openAddDialog")
     },
-    openUpdateDialog(){
+    openUpdateDialog(row){
       this.btnName = "修改"
       this.title = "修改游记信息"
       this.dialogFormVisible = true
-      console.log("openUpdateDialog")
+      console.log(row)
+      this.form=row
+    },
+    updateNote(){
+      console.log(this.form)
+      var _this = this;
+      //this.form.stu_interest = this.form.stu_interest.join(',')
+      updateNote(this.form).then((response) => {
+        console.log(response.data);
+        if(response.data=="修改成功"){
+          ElMessage({
+            message: '商品信息修改成功',
+            type: 'success',
+          })
+        }else {
+          ElMessage({
+            message: '商品信息修改失败',
+            type: 'warning',
+          })
+        }
+      })
     },
       addShop(){
         var _this = this;
@@ -161,7 +219,8 @@ export default {
 
       btnAddUpdate(){
         if(this.btnName=="修改"){
-          console.log("修改。。。")
+          this.updateNote()
+          // console.log("修改。。。")
         }
         if(this.btnName=="添加"){
           this.addShop()

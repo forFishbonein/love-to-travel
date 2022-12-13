@@ -10,7 +10,10 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class PageVo<T> {
+public class QueryPageVo<T> {
+
+    @ApiModelProperty("查询字段")
+    private String queryStr;
 
     @ApiModelProperty("当前页")
     private Integer pageNum;
@@ -23,5 +26,4 @@ public class PageVo<T> {
 
     @ApiModelProperty("分页结果")
     private List<T> records;
-
 }

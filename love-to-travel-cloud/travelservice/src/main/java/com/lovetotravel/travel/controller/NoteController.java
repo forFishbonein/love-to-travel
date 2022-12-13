@@ -2,6 +2,7 @@ package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
@@ -51,6 +52,12 @@ public class NoteController {
     @PostMapping("/page")
     public Result<PageVo<Note>> getPage(@RequestBody PageVo pageVo) {
         return Result.success(noteService.getPage(pageVo));
+    }
+
+    @ApiOperation("游记模糊查询")
+    @PostMapping("/query")
+    public Result<QueryPageVo<Note>> getByStr(@RequestBody QueryPageVo pageVo) {
+        return Result.success(noteService.fuzzyQuery(pageVo));
     }
 
     @ApiOperation("新增游记")

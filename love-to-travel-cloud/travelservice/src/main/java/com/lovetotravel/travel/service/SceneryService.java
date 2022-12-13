@@ -2,8 +2,10 @@ package com.lovetotravel.travel.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
+import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.scenery.*;
 
 import java.util.List;
@@ -21,6 +23,8 @@ public interface SceneryService extends IService<Scenery> {
     void insert(SceneryInsertVo sceneryInsertVo);
 
     void update(SceneryUpdateVo sceneryUpdateVo);
+
+    Page<Scenery> getSceneryByStr(QueryPageVo pageVo);
 
     void removeById(Long id);
 
