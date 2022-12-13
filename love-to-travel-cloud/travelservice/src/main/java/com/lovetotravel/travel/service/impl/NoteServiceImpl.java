@@ -87,7 +87,8 @@ public class NoteServiceImpl implements NoteService {
         Integer pageNum = pageVo.getPageNum();
         List<Note> list;
         try {
-            Query query = new Query(new Criteria());
+            Query query = new Query();
+            query.addCriteria(Criteria.where("deleted").is("0"));
             long total = mongoTemplate.count(query, Note.class);
             //默认值为5，
             pageSize = pageSize < 0 ? 5 : pageSize;
@@ -112,7 +113,8 @@ public class NoteServiceImpl implements NoteService {
         Integer pageNum = pageVo.getPageNum();
         List<Note> list;
         try {
-            Query query = new Query(new Criteria());
+            Query query = new Query();
+            query.addCriteria(Criteria.where("deleted").is("0"));
             long total = mongoTemplate.count(query, Note.class);
             //默认值为5，
             pageSize = pageSize < 0 ? 5 : pageSize;
