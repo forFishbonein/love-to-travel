@@ -4,7 +4,7 @@
       <div class="card-header">
         <div class="query">
           <el-input v-model="queryStr" placeholder="Please input email" />&nbsp;&nbsp;
-          <el-button class="button" type="primary" round @click="queryInfo">查询</el-button>
+          <el-button class="button" type="primary" round @click="queryInfo">邮箱查询</el-button>
         </div>
         <div>
   
@@ -18,17 +18,22 @@
       <el-table-column prop="id" label="用户id" width="100" />
       <el-table-column prop="name" label="用户名称" width="100" />
       <el-table-column prop="gender" label="性别" width="100" />
+      <el-table-column prop="status" label="状态" width="80">
+        <template #default="scope">
+      {{scope.row.status==1?'在线':'离线'}}
+      </template>
+      </el-table-column>
       <el-table-column prop="birthday" label="出生日期" width="100" />
-      <el-table-column prop="grade" label="等级" width="100" />
-      <el-table-column prop="experience" label="经验" width="100" />
-      <el-table-column prop="address" label="地址" width="100" />
+      <el-table-column prop="email" label="邮箱" width="180" />
       <el-table-column prop="tele" label="电话" width="100" />
-      <el-table-column prop="email" label="邮箱" width="120" />
+      <el-table-column prop="grade" label="等级" width="80" />
+      <el-table-column prop="experience" label="经验" width="80" />
+      <el-table-column prop="address" label="地址" width="100" />
       <el-table-column prop="post" label="岗位" width="100" />
       <el-table-column prop="profession" label="职业" width="100" />
-      <el-table-column prop="signature" label="个性签名" width="100" />
+      <el-table-column prop="signature" label="个性签名" width="150" />
       <el-table-column prop="createTime" label="创建时间" width="100" />
-      <el-table-column prop="status" label="状态" width="80" />
+      
       <el-table-column fixed="right" label="Operations" width="150">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="openDetailDialog(scope.row.id)">详情</el-button>
@@ -125,20 +130,21 @@
       <el-form-item label="职业" :label-width="formLabelWidth">
         <el-form-item :label="form.profession"></el-form-item>
       </el-form-item>
+      <el-form-item label="状态" :label-width="formLabelWidth">
+        <el-form-item :label="form.status==1?'在线':'离线'"></el-form-item>
+      </el-form-item>
       <el-form-item label="个性签名" :label-width="formLabelWidth">
         <el-form-item :label="form.signature"></el-form-item>
       </el-form-item>
       <el-form-item label="创建时间" :label-width="formLabelWidth">
         <el-form-item :label="form.createTime"></el-form-item>
       </el-form-item>
-      <el-form-item label="状态" :label-width="formLabelWidth">
-        <el-form-item :label="form.status"></el-form-item>
-      </el-form-item>
+     
      
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogDetailVisible = false">取消</el-button>
+        <el-button @click="dialogDetailVisible = false">关闭</el-button>
       </span>
     </template>
   </el-dialog>
@@ -158,8 +164,6 @@ export default {
           multipleSelection:[],//多选删除
           tableData:[],//学生信息数据
           queryData:[],
-          pageInfo:{},//分页信息对象
-          currentPage:1,//当前页号
           form:{
 
           },//对话框表单数据
@@ -170,13 +174,12 @@ export default {
   },
   methods: {
 
-    // 查看详情
+    // 查看用户信息详情
     openDetailDialog(id){
           this.dialogDetailVisible=true;
           var _this=this;
           getUserByID(id).then((response) => {
               console.log(response.data);
-              console.log(res.code);
               _this.form=response.data;
           })
       },
@@ -199,10 +202,10 @@ export default {
     //  修改功能
     updateUser(){
     console.log(this.form);
-    var _this=this;
+    // var _this=this;
     updateUserInfo(this.form).then(function(response){
         console.log(response.data);
-        if(response.data=='删除成功'){
+        if(response.data=='新增成功'){
             ElMessage({
                 message: '用户信息修改成功！',
                 type: 'success'
