@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 public class PageVo<T> {
 
-
     @ApiModelProperty("当前页")
     private Integer pageNum;
 

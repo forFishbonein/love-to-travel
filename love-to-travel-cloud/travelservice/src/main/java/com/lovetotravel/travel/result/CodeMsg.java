@@ -15,6 +15,7 @@ public class CodeMsg {
 
     //游记模块 5004XX
     public static CodeMsg NOTE_NOT_EXIST = new CodeMsg(500401, "游记不存在");
+    public static CodeMsg QUERY_EMPTY = new CodeMsg(500402, "内容为空");
 
 
     //行程模块 5005XX

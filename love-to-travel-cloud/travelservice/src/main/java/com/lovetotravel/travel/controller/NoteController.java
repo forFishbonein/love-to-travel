@@ -2,6 +2,7 @@ package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
@@ -55,7 +56,7 @@ public class NoteController {
 
     @ApiOperation("游记模糊查询")
     @PostMapping("/query")
-    public Result<PageVo<Note>> getByStr(@RequestBody PageVo pageVo) {
+    public Result<QueryPageVo<Note>> getByStr(@RequestBody QueryPageVo pageVo) {
         return Result.success(noteService.fuzzyQuery(pageVo));
     }
 
