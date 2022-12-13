@@ -1,17 +1,11 @@
-import {
-  createRouter,
-  createWebHashHistory,
-  createWebHistory,
-} from "vue-router";
-import { routes } from "./router.config";
-import Province from '../components/serviceManage/Province.vue'
+import {createRouter, createWebHistory,} from "vue-router";
+import {routes} from "./router.config";
 
 
-    
 // 3. 创建路由实例
 const router = createRouter({
-  history: createWebHistory(),
-  routes,
+    history: createWebHistory(),
+    routes,
 });
 
 // // 4. 配置路由守卫

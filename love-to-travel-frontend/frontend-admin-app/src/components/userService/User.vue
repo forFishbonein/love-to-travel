@@ -3,155 +3,155 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="Please input email" />&nbsp;&nbsp;
-          <el-button class="button" type="primary" round @click="queryInfo">邮箱查询</el-button>
+          <el-input v-model="queryStr" placeholder="Please input email"/>&nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo">邮箱查询</el-button>
         </div>
         <div>
-  
-  <el-button type="warning" round @click="multiDelete">多选删除</el-button>
-</div>
+
+          <el-button round type="warning" @click="multiDelete">多选删除</el-button>
+        </div>
       </div>
     </template>
 
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" />
-      <el-table-column prop="id" label="用户id" width="100" />
-      <el-table-column prop="name" label="用户名称" width="100" />
-      <el-table-column prop="gender" label="性别" width="100" />
-      <el-table-column prop="status" label="状态" width="80">
+      <el-table-column type="selection" width="55"/>
+      <el-table-column label="用户id" prop="id" width="100"/>
+      <el-table-column label="用户名称" prop="name" width="100"/>
+      <el-table-column label="性别" prop="gender" width="100"/>
+      <el-table-column label="状态" prop="status" width="80">
         <template #default="scope">
-      {{scope.row.status==1?'在线':'离线'}}
-      </template>
+          {{ scope.row.status == 1 ? '在线' : '离线' }}
+        </template>
       </el-table-column>
-      <el-table-column prop="birthday" label="出生日期" width="100" />
-      <el-table-column prop="email" label="邮箱" width="180" />
-      <el-table-column prop="tele" label="电话" width="100" />
-      <el-table-column prop="grade" label="等级" width="80" />
-      <el-table-column prop="experience" label="经验" width="80" />
-      <el-table-column prop="address" label="地址" width="100" />
-      <el-table-column prop="post" label="岗位" width="100" />
-      <el-table-column prop="profession" label="职业" width="100" />
-      <el-table-column prop="signature" label="个性签名" width="150" />
-      <el-table-column prop="createTime" label="创建时间" width="100" />
+      <el-table-column label="出生日期" prop="birthday" width="100"/>
+      <el-table-column label="邮箱" prop="email" width="180"/>
+      <el-table-column label="电话" prop="tele" width="100"/>
+      <el-table-column label="等级" prop="grade" width="80"/>
+      <el-table-column label="经验" prop="experience" width="80"/>
+      <el-table-column label="地址" prop="address" width="100"/>
+      <el-table-column label="岗位" prop="post" width="100"/>
+      <el-table-column label="职业" prop="profession" width="100"/>
+      <el-table-column label="个性签名" prop="signature" width="150"/>
+      <el-table-column label="创建时间" prop="createTime" width="100"/>
       <el-table-column fixed="right" label="Operations" width="150">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="openDetailDialog(scope.row.id)">详情</el-button>
-          <el-button link type="primary" size="small" @click="singleDelete(scope.row.id)">删除</el-button>
-          <el-button link type="primary" size="small" @click="openUpdateDialog(scope.row)">修改</el-button>
+          <el-button link size="small" type="primary" @click="openDetailDialog(scope.row.id)">详情</el-button>
+          <el-button link size="small" type="primary" @click="singleDelete(scope.row.id)">删除</el-button>
+          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
     <br>
-    
+
     <el-pagination
-    v-model:current-page="currentPage"
-    v-model:page-size="pageSize"
-    :page-sizes="[10, 20, 30, 40]" 
-    :background="true"
-    layout="total, sizes, prev, pager, next, jumper"
-    :total="pageInfo.total"
-    @size-change="handleSizeChange"
-    @current-change="handleCurrentChange"
-  />
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :background="true"
+        :page-sizes="[10, 20, 30, 40]"
+        :total="pageInfo.total"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
   </el-card>
 
-<!-- 对话框:修改功能 -->
-<el-dialog v-model="dialogFormVisible" title="修改用户信息">
-  <el-form :model="form">
-    <el-form-item label="用户名称" :label-width="formLabelWidth">
-      <el-input v-model="form.name" autocomplete="off" />
-    </el-form-item>
-    <el-form-item label="用户性别" :label-width="formLabelWidth">
-          <el-radio-group v-model="form.gender">
-          <el-radio label="男" name="type" />
-          <el-radio label="女" name="type" />
+  <!-- 对话框:修改功能 -->
+  <el-dialog v-model="dialogFormVisible" title="修改用户信息">
+    <el-form :model="form">
+      <el-form-item :label-width="formLabelWidth" label="用户名称">
+        <el-input v-model="form.name" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="用户性别">
+        <el-radio-group v-model="form.gender">
+          <el-radio label="男" name="type"/>
+          <el-radio label="女" name="type"/>
         </el-radio-group>
-    </el-form-item>
-    <el-form-item label="出生日期" :label-width="formLabelWidth">
-          <el-date-picker
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="出生日期">
+        <el-date-picker
             v-model="form.birthday"
-            type="date"
             placeholder="Pick a date"
             style="width: 100%"
-          />
+            type="date"
+        />
       </el-form-item>
-    <el-form-item label="地址" :label-width="formLabelWidth">
-      <el-input v-model="form.address" autocomplete="off" />
-    </el-form-item>
-    <el-form-item label="电话" :label-width="formLabelWidth">
-      <el-input v-model="form.tele" autocomplete="off" />
-    </el-form-item>
-    <el-form-item label="邮箱" :label-width="formLabelWidth">
-      <el-input v-model="form.email" autocomplete="off" />
-    </el-form-item>  
-    <el-form-item label="岗位" :label-width="formLabelWidth">
-      <el-input v-model="form.post" autocomplete="off" />
-    </el-form-item>
-    <el-form-item label="职业" :label-width="formLabelWidth">
-      <el-input v-model="form.profession" autocomplete="off" />
-    </el-form-item>
-    <el-form-item label="个性签名" :label-width="formLabelWidth">
-      <el-input v-model="form.signatur" type="textarea"/>
-    </el-form-item>
-  </el-form>
-  <template #footer>
+      <el-form-item :label-width="formLabelWidth" label="地址">
+        <el-input v-model="form.address" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="电话">
+        <el-input v-model="form.tele" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="邮箱">
+        <el-input v-model="form.email" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="岗位">
+        <el-input v-model="form.post" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="职业">
+        <el-input v-model="form.profession" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="个性签名">
+        <el-input v-model="form.signatur" type="textarea"/>
+      </el-form-item>
+    </el-form>
+    <template #footer>
     <span class="dialog-footer">
       <el-button @click="dialogFormVisible = false">取消</el-button>
       <el-button type="primary" @click="btnUpdate">
-        {{btnName}}
+        {{ btnName }}
       </el-button>
     </span>
-  </template>
-</el-dialog>
+    </template>
+  </el-dialog>
 
 
   <!-- 详情对话框 -->
   <el-dialog v-model="dialogDetailVisible" title="用户信息详情">
     <el-form :model="form">
-      <el-form-item label="姓名" :label-width="formLabelWidth">
-          <el-form-item :label="form.name" ></el-form-item>
-        </el-form-item>
-      <el-form-item label="性别" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="姓名">
+        <el-form-item :label="form.name"></el-form-item>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="性别">
         <el-form-item :label="form.gender"></el-form-item>
       </el-form-item>
-      <el-form-item label="头像" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="头像">
         <el-form-item :label="form.url"></el-form-item>
       </el-form-item>
-      <el-form-item label="出生日期" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="出生日期">
         <el-form-item :label="form.birthday"></el-form-item>
       </el-form-item>
-      <el-form-item label="等级" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="等级">
         <el-form-item :label="form.grade"></el-form-item>
       </el-form-item>
-      <el-form-item label="经验" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="经验">
         <el-form-item :label="form.experience"></el-form-item>
       </el-form-item>
-      <el-form-item label="地址" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="地址">
         <el-form-item :label="form.address"></el-form-item>
       </el-form-item>
-      <el-form-item label="电话" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="电话">
         <el-form-item :label="form.tele"></el-form-item>
       </el-form-item>
-      <el-form-item label="邮箱" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="邮箱">
         <el-form-item :label="form.email"></el-form-item>
       </el-form-item>
-      <el-form-item label="岗位" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="岗位">
         <el-form-item :label="form.post"></el-form-item>
       </el-form-item>
-      <el-form-item label="职业" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="职业">
         <el-form-item :label="form.profession"></el-form-item>
       </el-form-item>
-      <el-form-item label="状态" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="状态">
         <el-form-item :label="form.status==1?'在线':'离线'"></el-form-item>
       </el-form-item>
-      <el-form-item label="个性签名" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="个性签名">
         <el-form-item :label="form.signature"></el-form-item>
       </el-form-item>
-      <el-form-item label="创建时间" :label-width="formLabelWidth">
+      <el-form-item :label-width="formLabelWidth" label="创建时间">
         <el-form-item :label="form.createTime"></el-form-item>
       </el-form-item>
-     
-     
+
+
     </el-form>
     <template #footer>
       <span class="dialog-footer">
@@ -159,188 +159,189 @@
       </span>
     </template>
   </el-dialog>
-  
+
 </template>
 
 <script>
 // import {ElMessage,ElMessageBox} from 'element-plus';
-import { getUser,updateUserInfo,deleteUserInfo,getUserByID,getPageUserInfo } from "../../apis/userManage/user";
+import {deleteUserInfo, getPageUserInfo, getUserByID, updateUserInfo} from "../../apis/userManage/user";
+
 export default {
   data() {
     return {
-          dialogDetailVisible:false,
-          dialogFormVisible:false,
-          queryStr:"",
-          multipleSelection:[],
-          tableData:[],
-          form:{},
-          input:"",
-          formLabelWidth:"140px",
-          title:"",
-          btnName:"",
-          pageInfo:{},
-          pageSize:10,
-          currentPage:1,
+      dialogDetailVisible: false,
+      dialogFormVisible: false,
+      queryStr: "",
+      multipleSelection: [],
+      tableData: [],
+      form: {},
+      input: "",
+      formLabelWidth: "140px",
+      title: "",
+      btnName: "",
+      pageInfo: {},
+      pageSize: 10,
+      currentPage: 1,
     };
   },
   methods: {
     // 选择每一页记录数     size
-    handleSizeChange(pageSize){
-        this.pageSize = pageSize;
-        this.getPageData(this.currentPage,this.pageSize);
-        console.log("size:",pageSize);
-      },
-      //切换页号得到当前页码   current
-    handleCurrentChange(pageNum){
-        this.currentPage = pageNum;
-        this.getPageData(this.currentPage,this.pageSize);
-        console.log("num:",pageNum);
-      },
-    getPageData(num,size){
-        num = parseInt(num)
-        size = parseInt(size)
-        getPageUserInfo({current:num,size:size}).then((response) => {
-          this.pageInfo = response.data;
-          this.tableData = this.pageInfo.records;
-          console.log(response.data)
-          console.log(this.pageInfo.records)
-        })
-      },
+    handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.getPageData(this.currentPage, this.pageSize);
+      console.log("size:", pageSize);
+    },
+    //切换页号得到当前页码   current
+    handleCurrentChange(pageNum) {
+      this.currentPage = pageNum;
+      this.getPageData(this.currentPage, this.pageSize);
+      console.log("num:", pageNum);
+    },
+    getPageData(num, size) {
+      num = parseInt(num)
+      size = parseInt(size)
+      getPageUserInfo({current: num, size: size}).then((response) => {
+        this.pageInfo = response.data;
+        this.tableData = this.pageInfo.records;
+        console.log(response.data)
+        console.log(this.pageInfo.records)
+      })
+    },
     //-----------------------------------------
     // 查看用户信息详情
-    openDetailDialog(id){
-          this.dialogDetailVisible=true;
-          var _this=this;
-          getUserByID(id).then((response) => {
-              console.log(response.data);
-              _this.form=response.data;
-          })
-      },
+    openDetailDialog(id) {
+      this.dialogDetailVisible = true;
+      var _this = this;
+      getUserByID(id).then((response) => {
+        console.log(response.data);
+        _this.form = response.data;
+      })
+    },
     //-----------------------------------------
-    btnUpdate(){
+    btnUpdate() {
       this.updateUser();
       console.log("修改操作....");
-      this.dialogFormVisible=false;
+      this.dialogFormVisible = false;
     },
-    openUpdateDialog(row){
-        this.btnName = "修改"
-        this.title = "修改用户信息"
-        this.dialogFormVisible = true;
-        this.form=row;
-        console.log("openUpdateDialog....");
+    openUpdateDialog(row) {
+      this.btnName = "修改"
+      this.title = "修改用户信息"
+      this.dialogFormVisible = true;
+      this.form = row;
+      console.log("openUpdateDialog....");
     },
-    updateUser(){
-    console.log(this.form);
-    var _this=this;
-    updateUserInfo(_this.form).then((response) => {
+    updateUser() {
+      console.log(this.form);
+      var _this = this;
+      updateUserInfo(_this.form).then((response) => {
         console.log(response.data);
-        if(response.data=='修改成功'){
-            ElMessage({
-                message: '用户信息修改成功！',
-                type: 'success'
-            })
-        }else{
-            ElMessage({
-                message: '用户信息修改失败！',
-                type: 'warnings'
-            })
+        if (response.data == '修改成功') {
+          ElMessage({
+            message: '用户信息修改成功！',
+            type: 'success'
+          })
+        } else {
+          ElMessage({
+            message: '用户信息修改失败！',
+            type: 'warnings'
+          })
         }
-    })
-    this.form=[];
-   },
-    queryInfo(){
-      if(this.queryStr.trim().length>0){
+      })
+      this.form = [];
+    },
+    queryInfo() {
+      if (this.queryStr.trim().length > 0) {
         this.tableData = this.tableData.filter(item => (item.email).match(this.queryStr.trim()))
       }
-        // else{
-        //     this.tableData=this.queryData;
-        // }
-          console.log("queryinfo...");
+      // else{
+      //     this.tableData=this.queryData;
+      // }
+      console.log("queryinfo...");
     },
     //-----------------------------------------
     //删除单条数据
-      singleDelete(id){
-          console.log(id);
-          ElMessageBox.confirm(
-              '您确定要删除本条数据吗?',
-              'Warning',
-              {
-              confirmButtonText: '确认',
-              cancelButtonText: '取消',
-              type: 'warning',
-              }
-          )
-              .then(() => {
-                  var _this=this;
-                  deleteUserInfo(id).then(function(response){
-                      console.log(response.data);
-                      if(response.data=='删除成功'){
-                      ElMessage({
-                      message: '删除成功！',
-                      type: 'success'
-                      })
-                  }else{
-                      ElMessage({
-                          message: '删除失败！',
-                          type: 'warnings'
-                      })
-                  }
-                  })
-              })
-              .catch(() => {
-              ElMessage({
-                  type: 'info',
-                  message: 'Delete canceled',
-              })
-              })
-              console.log("singleDelete...");
-      },
-      multiDelete(){
-        console.log("multiDelete().....");
-        ElMessageBox.confirm(
-        '您确定要删除目前选中的多条数目吗?',
-        'Warning',
-        {
-          confirmButtonText: '确认',
-          cancelButtonText: '取消',
-          type: 'warning',
-        }
-    )
-        .then(() => {
-          var _this = this;
-          var num=0
-          this.multipleSelection.forEach(item=>{
-            var id = item.id
-            console.log(id)
-            deleteUserInfo(id).then((response) => {
+    singleDelete(id) {
+      console.log(id);
+      ElMessageBox.confirm(
+          '您确定要删除本条数据吗?',
+          'Warning',
+          {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+      )
+          .then(() => {
+            var _this = this;
+            deleteUserInfo(id).then(function (response) {
               console.log(response.data);
-              if(response.data=="删除成功"){
-                num=num+1;
+              if (response.data == '删除成功') {
+                ElMessage({
+                  message: '删除成功！',
+                  type: 'success'
+                })
+              } else {
+                ElMessage({
+                  message: '删除失败！',
+                  type: 'warnings'
+                })
               }
             })
           })
-          ElMessage({
-            type: 'success',
-            message: '您已成功删除！',
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: 'Delete canceled',
+            })
           })
-        })
-        .catch(() => {
-          ElMessage({
-            type: 'info',
-            message: 'Delete canceled',
+      console.log("singleDelete...");
+    },
+    multiDelete() {
+      console.log("multiDelete().....");
+      ElMessageBox.confirm(
+          '您确定要删除目前选中的多条数目吗?',
+          'Warning',
+          {
+            confirmButtonText: '确认',
+            cancelButtonText: '取消',
+            type: 'warning',
+          }
+      )
+          .then(() => {
+            var _this = this;
+            var num = 0
+            this.multipleSelection.forEach(item => {
+              var id = item.id
+              console.log(id)
+              deleteUserInfo(id).then((response) => {
+                console.log(response.data);
+                if (response.data == "删除成功") {
+                  num = num + 1;
+                }
+              })
+            })
+            ElMessage({
+              type: 'success',
+              message: '您已成功删除！',
+            })
           })
-        })
-      },
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: 'Delete canceled',
+            })
+          })
+    },
     //-----------------------------------------
     //多行选择
-    handleSelectionChange(val){            
+    handleSelectionChange(val) {
       this.multipleSelection = val;
       console.log(this.multipleSelection);
-     },
     },
-      
+  },
+
   mounted() {
-    this.getPageData(1,10);
+    this.getPageData(1, 10);
     // getUser().then((response) => {
     //   var _this = this;
     //   _this.tableData = response.data;

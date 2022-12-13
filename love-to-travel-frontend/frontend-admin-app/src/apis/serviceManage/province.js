@@ -1,4 +1,5 @@
 import httpRequest from "@/request";
+
 export const getProvinceInfo = () => {
     return httpRequest({
         method: "get",
