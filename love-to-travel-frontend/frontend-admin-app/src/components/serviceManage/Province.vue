@@ -22,11 +22,13 @@
           <span></span>
           <div class="bottom">
             <time class="time">{{ item.provinceName }}</time>
-            <el-button text class="button" @click="">查看</el-button>
+            <el-button text class="button">查看</el-button>
           </div>
         </div>
       </el-card>
 
+  </el-card>
+</template>
 
 <script>
 // import {ElMessage} from 'element-plus'
