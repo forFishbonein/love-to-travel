@@ -62,7 +62,8 @@ const currentDate = ref(new Date());
           <div class="content-right">
             <div>
               <el-icon size="16px"><View /></el-icon>观看:1000 &nbsp;&nbsp;
-              <el-icon size="16px"><Star /></el-icon>点赞:100&nbsp;&nbsp;
+              <el-icon size="16px"><Pointer /></el-icon>点赞:100&nbsp;&nbsp;
+              <el-icon size="16px"><Star /></el-icon>收藏:5&nbsp;&nbsp;
               <el-icon size="16px"><Document /></el-icon>评论:10
             </div>
           </div>

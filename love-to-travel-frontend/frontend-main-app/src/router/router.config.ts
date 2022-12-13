@@ -3,6 +3,7 @@ import Index from "@/Index.vue";
 import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
 import GoTravel from "@views/goTravel/GoTravel.vue";
+import ReadTravel from "@/views/readTravel/ReadTravel.vue";
 import City from "@/views/goTravel/city/City.vue";
 import Scenery from "@/views/goTravel/scenery/Scenery.vue";
 import TravelPlan from "@/views/makePlan/TravelPlan.vue";
@@ -111,6 +112,49 @@ export const routes: Array<RouteRecordRaw> = [
                 props(route) {
                   return {
                     sceneryId: route.params.sceneryId,
+                  };
+                },
+              },
+            ],
+          },
+        ],
+      },
+      {
+        path: "/readTravel",
+        name: "ReadTravel",
+        component: ReadTravel,
+        meta: { title: "阅旅游", keepAlive: false, showTab: true },
+        children: [
+          {
+            path: "note",
+            name: "Note",
+            component: () => import("@/views/readTravel/note/Note.vue"),
+            meta: { title: " 读游记", keepAlive: false, showTab: true },
+            redirect: "/readTravel/note/list",
+            children: [
+              {
+                path: "list",
+                name: "NoteList",
+                component: () => import("@/views/readTravel/note/NoteList.vue"),
+                meta: {
+                  title: "游记列表",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail/:noteId",
+                name: "NoteDetail",
+                component: () =>
+                  import("@/views/readTravel/note/NoteDetail.vue"),
+                meta: {
+                  title: "游记详情",
+                  keepAlive: false,
+                  showTab: true,
+                },
+                props(route) {
+                  return {
+                    noteId: route.params.noteId,
                   };
                 },
               },

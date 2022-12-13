@@ -104,3 +104,24 @@ export interface theCityScenerysInfoType {
   cluster: string | null;
   id: number;
 }
+
+/* 5 游记类型*/
+/* 需要改Username */
+export interface theNotesInfoType {
+  city: string;
+  comment: number;
+  content: string;
+  createTime: string;
+  deleted: string;
+  id: string;
+  like: number;
+  planId: string;
+  star: number;
+  title: string;
+  trip: Array<string>;
+  updateTime: string;
+  url: string;
+  userId: string;
+  userName: string;
+  view: number;
+}
