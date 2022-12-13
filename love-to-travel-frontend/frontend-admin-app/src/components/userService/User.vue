@@ -33,7 +33,6 @@
       <el-table-column prop="profession" label="职业" width="100" />
       <el-table-column prop="signature" label="个性签名" width="150" />
       <el-table-column prop="createTime" label="创建时间" width="100" />
-      
       <el-table-column fixed="right" label="Operations" width="150">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="openDetailDialog(scope.row.id)">详情</el-button>
@@ -42,6 +41,18 @@
         </template>
       </el-table-column>
     </el-table>
+    <br>
+    
+    <el-pagination
+    v-model:current-page="currentPage"
+    v-model:page-size="pageSize"
+    :page-sizes="[10, 20, 30, 40]" 
+    :background="true"
+    layout="total, sizes, prev, pager, next, jumper"
+    :total="pageInfo.total"
+    @size-change="handleSizeChange"
+    @current-change="handleCurrentChange"
+  />
   </el-card>
 
 <!-- 对话框:修改功能 -->
@@ -153,8 +164,7 @@
 
 <script>
 // import {ElMessage,ElMessageBox} from 'element-plus';
-import { getUser } from "../../apis/userManage/user";
-import { updateUserInfo,deleteUserInfo,getUserByID } from "../../apis/userManage/user";
+import { getUser,updateUserInfo,deleteUserInfo,getUserByID,getPageUserInfo } from "../../apis/userManage/user";
 export default {
   data() {
     return {
@@ -163,17 +173,40 @@ export default {
           queryStr:"",
           multipleSelection:[],
           tableData:[],
-          queryData:[],
-          form:{
-
-          },
+          form:{},
+          input:"",
           formLabelWidth:"140px",
           title:"",
           btnName:"",
+          pageInfo:{},
+          pageSize:10,
+          currentPage:1,
     };
   },
   methods: {
-
+    // 选择每一页记录数     size
+    handleSizeChange(pageSize){
+        this.pageSize = pageSize;
+        this.getPageData(this.currentPage,this.pageSize);
+        console.log("size:",pageSize);
+      },
+      //切换页号得到当前页码   current
+    handleCurrentChange(pageNum){
+        this.currentPage = pageNum;
+        this.getPageData(this.currentPage,this.pageSize);
+        console.log("num:",pageNum);
+      },
+    getPageData(num,size){
+        num = parseInt(num)
+        size = parseInt(size)
+        getPageUserInfo({current:num,size:size}).then((response) => {
+          this.pageInfo = response.data;
+          this.tableData = this.pageInfo.records;
+          console.log(response.data)
+          console.log(this.pageInfo.records)
+        })
+      },
+    //-----------------------------------------
     // 查看用户信息详情
     openDetailDialog(id){
           this.dialogDetailVisible=true;
@@ -184,7 +217,6 @@ export default {
           })
       },
     //-----------------------------------------
-    // 修改用户信息
     btnUpdate(){
       this.updateUser();
       console.log("修改操作....");
@@ -202,7 +234,7 @@ export default {
     var _this=this;
     updateUserInfo(_this.form).then((response) => {
         console.log(response.data);
-        if(response.data=='新增成功'){
+        if(response.data=='修改成功'){
             ElMessage({
                 message: '用户信息修改成功！',
                 type: 'success'
@@ -216,17 +248,15 @@ export default {
     })
     this.form=[];
    },
-  
-      // 查询用户信息
-      queryInfo(){
-          if(this.queryStr.trim().length>0){
-              this.tableData=this.tableData.filter(item=>(item.email).match(this.queryStr.trim()))
-          }else{
-              this.tableData=this.queryData;
-          }
+    queryInfo(){
+      if(this.queryStr.trim().length>0){
+        this.tableData = this.tableData.filter(item => (item.email).match(this.queryStr.trim()))
+      }
+        // else{
+        //     this.tableData=this.queryData;
+        // }
           console.log("queryinfo...");
-      },
-
+    },
     //-----------------------------------------
     //删除单条数据
       singleDelete(id){
@@ -310,12 +340,13 @@ export default {
     },
       
   mounted() {
-    getUser().then((response) => {
-      var _this = this;
-      _this.tableData = response.data;
-      _this.queryData = response.data;
-      console.log(this.tableData);
-    })
+    this.getPageData(1,10);
+    // getUser().then((response) => {
+    //   var _this = this;
+    //   _this.tableData = response.data;
+    //   _this.queryData = response.data;
+    //   console.log(this.tableData);
+    // })
   }
 }
 </script>
