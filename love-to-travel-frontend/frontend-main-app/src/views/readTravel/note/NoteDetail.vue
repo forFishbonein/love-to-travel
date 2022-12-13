@@ -4,13 +4,22 @@ import {
   getOneNoteInfoById,
   getNotesInfoByUserId,
 } from "@/apis/travelService/note";
+import { getUserInfoById } from "@/apis/userService/user";
 import { getOneUserPlansInfoById } from "@/apis/travelService/plan";
+import { getCommentsByNoteId } from "@/apis/travelService/comment";
 import { getFootsByUserId } from "@/apis/travelService/foot";
-import { theNotesInfoType } from "@apis/interface/iPlan";
+import {
+  theNotesInfoType,
+  theNoteComment,
+  tranformComments,
+  secondComment,
+} from "@apis/interface/iPlan";
+import { UserInfo } from "@/apis/userService/uinterface";
 import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
 import { strFormat } from "@/utils/filters/string";
+import { Avatar } from "@element-plus/icons-vue";
 const props = defineProps<{
   noteId: string;
 }>();
@@ -21,6 +30,49 @@ let planId = "";
 let userId = "";
 const userBeensInfo = ref([]);
 const otherNotesInfo = ref([] as theNotesInfoType[]);
+const authorInfo = ref({} as UserInfo);
+const noteCommentsInfo = ref([] as theNoteComment[]);
+const finalCommentsArray = ref([] as tranformComments[]);
+
+const commentsFormat = (data: theNoteComment[]) => {
+  let oneArray = [] as theNoteComment[];
+  data.forEach((e) => {
+    if (e.parentId === "0" || e.parentId === "" || e.parentId === null) {
+      // @ts-ignore
+      finalCommentsArray.value.push({
+        id: e.id,
+        userId: e.userId,
+        userName: e.userName,
+        content: e.content,
+        like: e.like,
+        createTime: e.createTime,
+        reply: e.reply,
+        son: [],
+      });
+    } else {
+      // @ts-ignore
+      oneArray.push(e);
+    }
+  });
+  oneArray.forEach((e) => {
+    // @ts-ignore
+    finalCommentsArray.value.forEach((e2: tranformComments) => {
+      // @ts-ignore
+      if (e.parentId === e2.id) {
+        e2.son.push({
+          id: e.id,
+          userId: e.userId,
+          userName: e.userName,
+          content: e.content,
+          like: e.like,
+          createTime: e.createTime,
+          reply: e.reply,
+        });
+      }
+    });
+  });
+};
+
 const requestOneNoteInfoAndOthers = async () => {
   await getOneNoteInfoById(noteId)
     .then((res: any) => {
@@ -96,8 +148,52 @@ const requestOneNoteInfoAndOthers = async () => {
           message: res.msg,
         });
       } else {
-        otherNotesInfo.value = res.data.slice(0, 3);
+        otherNotesInfo.value = res.data.slice(0, 3); //长度不够不会报错
         console.log(otherNotesInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+  await getUserInfoById(userId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        authorInfo.value = res.data;
+        console.log(otherNotesInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+  await getCommentsByNoteId(noteId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        noteCommentsInfo.value = res.data;
+        console.log(noteCommentsInfo.value);
+        commentsFormat(noteCommentsInfo.value);
+        console.log("-----------");
+        console.log(finalCommentsArray.value);
+        console.log("-----------");
       }
     })
     .catch((error) => {
@@ -109,6 +205,11 @@ const requestOneNoteInfoAndOthers = async () => {
     });
 };
 requestOneNoteInfoAndOthers();
+const cLikeFlag = ref(false);
+const commentLike = () => {
+  alert(1111);
+  cLikeFlag.value = true;
+};
 </script>
 <template>
   <section class="news-details">
@@ -166,9 +267,13 @@ requestOneNoteInfoAndOthers();
               <h3 class="news-details__title">
                 {{ noteInfo.title }}
               </h3>
-              <p class="news-details__text-1">
-                {{ noteInfo.content }}
-              </p>
+              <el-scrollbar max-height="500px">
+                <p class="news-details__text-1">
+                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
+                    noteInfo.content
+                  }}
+                </p>
+              </el-scrollbar>
             </div>
             <div class="news-details__bottom">
               <p class="news-details__tags">
@@ -186,50 +291,30 @@ requestOneNoteInfoAndOthers();
             </div>
             <div class="author-one">
               <div class="author-one__image">
+                <!-- <img :src="authorInfo.url" alt="" /> -->
                 <img src="/images/blog/author-1-1.jpg" alt="" />
               </div>
               <div class="author-one__content">
-                <h3>Christine Eve</h3>
-                <p>
-                  It has survived not only five centuries, but also the leap
-                  into electronic typesetting, remaining unchanged. It was
-                  popularised in the sheets containing.
-                </p>
+                <h3>
+                  <router-link to="/">{{ authorInfo.name }}</router-link>
+                </h3>
+                <p>个性签名:{{ authorInfo.signature }}</p>
               </div>
             </div>
-            <div class="comment-one">
-              <h3 class="comment-one__title">2 Comments</h3>
-            </div>
             <div class="comment-form">
-              <h3 class="comment-form__title">Leave a Comment</h3>
+              <h3 class="comment-form__title">发表评论</h3>
               <form action="inc/sendemail.php" class="comment-one__form">
-                <div class="row">
-                  <div class="col-xl-6">
-                    <div class="comment-form__input-box">
-                      <input type="text" placeholder="Your name" name="name" />
-                    </div>
-                  </div>
-                  <div class="col-xl-6">
-                    <div class="comment-form__input-box">
-                      <input
-                        type="email"
-                        placeholder="Email address"
-                        name="email"
-                      />
-                    </div>
-                  </div>
-                </div>
                 <div class="row">
                   <div class="col-xl-12">
                     <div class="comment-form__input-box">
                       <textarea
                         name="message"
-                        placeholder="Write Comment"
+                        placeholder="写下评论内容"
                       ></textarea>
+                      <button type="submit" class="thm-btn comment-form__btn">
+                        Submit Comment
+                      </button>
                     </div>
-                    <button type="submit" class="thm-btn comment-form__btn">
-                      Submit Comment
-                    </button>
                   </div>
                 </div>
               </form>
@@ -249,21 +334,22 @@ requestOneNoteInfoAndOthers();
             <div class="sidebar__single sidebar__category">
               <h3 class="sidebar__title">Ta去过的地方</h3>
               <ul class="sidebar__category-list list-unstyled">
-                <li>
-                  <!-- <a
-                    href="javascript:;"
-                    v-for="item in userBeensInfo"
-                    >{{item.cityName}}</a
-                  > -->
+                <li v-for="item in userBeensInfo">
+                  <router-link
+                    :to="`/goTravel/city/detail/${
+                      // @ts-ignore
+                      item.cityId
+                    }`"
+                    >{{
+                      // @ts-ignore
+                      item.cityName
+                    }}</router-link
+                  >
                 </li>
-                <li><a href="javascript:;">Traveling</a></li>
-                <li><a href="javascript:;">Adventures</a></li>
-                <li><a href="javascript:;">National Parks</a></li>
-                <li><a href="javascript:;">Beaches and Sea</a></li>
               </ul>
             </div>
             <div class="sidebar__single sidebar__post">
-              <h3 class="sidebar__title">Ta的全部游记</h3>
+              <h3 class="sidebar__title">Ta的部分游记</h3>
               <ul
                 class="sidebar__post-list list-unstyled"
                 v-for="item in otherNotesInfo"
@@ -284,6 +370,128 @@ requestOneNoteInfoAndOthers();
                       }}</router-link>
                     </h3>
                   </div>
+                </li>
+              </ul>
+            </div>
+            <div class="sidebar__single sidebar__category">
+              <h3 class="sidebar__title">对应行程表</h3>
+              <ul class="sidebar__category-list list-unstyled">
+                <li style="font-size: 16px">
+                  总预算:{{ oneUserPlansInfo.budget }}元
+                </li>
+                <li>
+                  <span class="span-style text-amber">行程信息</span>
+                  <el-scrollbar max-height="300px">
+                    <el-collapse accordion>
+                      <el-collapse-item
+                        :name="index"
+                        v-for="(item, index) in oneUserPlansInfo.subPlans"
+                        :key="index"
+                      >
+                        <template #title>
+                          <div class="plan-note-header">
+                            {{ item.city
+                            }}<el-icon class="header-icon" size="16px">
+                              <Place />
+                            </el-icon>
+                            <span style="margin-left: 10px">预算:</span
+                            >{{ item.budget }}元
+                          </div>
+                        </template>
+                        <ul>
+                          <li v-for="(i, index2) in item.days" :key="index2">
+                            第{{ index2 + 1 }}天
+                            <span v-for="(k, index3) in i.route" :key="index3">
+                              {{ k.originName }}({{ k.departTime }}小时)
+                              <el-icon><Right /></el-icon>
+                            </span>
+                            结束
+                          </li>
+                        </ul>
+                      </el-collapse-item>
+                    </el-collapse>
+                  </el-scrollbar>
+                </li>
+              </ul>
+            </div>
+            <div class="make-plan-button">
+              <router-link to="/plan" class="about-one__btn thm-btn"
+                >制定专属行程</router-link
+              >
+            </div>
+            <div class="sidebar__single sidebar__category">
+              <h3 class="sidebar__title">游记评论</h3>
+              <ul class="sidebar__category-list list-unstyled">
+                <li>
+                  <el-scrollbar max-height="500px">
+                    <el-collapse accordion>
+                      <el-collapse-item
+                        :name="index"
+                        v-for="(item, index) in finalCommentsArray"
+                        :key="index"
+                      >
+                        <template #title>
+                          <div class="comment-container">
+                            <div class="comment-header">
+                              <p>
+                                <router-link to="">{{
+                                  item.userName
+                                }}</router-link>
+                              </p>
+                              <p>
+                                {{ item.createTime }}
+                              </p>
+                            </div>
+                            <div class="comment-body">
+                              <el-scrollbar max-height="60px">
+                                <div class="content-main">
+                                  {{ item.content }}
+                                  你的骄傲的哈飒飒大大哇定位的大无大多所大无多无大大无多无多哇大武当哇大无大无多哇大无大大无大无大无大无多
+                                </div>
+                              </el-scrollbar>
+                            </div>
+                            <div class="function-button-container">
+                              <div>
+                                <svg
+                                  class="icon"
+                                  aria-hidden="true"
+                                  v-if="cLikeFlag"
+                                >
+                                  <use xlink:href="#icon-dianzan1"></use>
+                                </svg>
+                                <svg
+                                  class="icon"
+                                  aria-hidden="true"
+                                  @click="commentLike"
+                                  v-else
+                                >
+                                  <use xlink:href="#icon-dianzan"></use>
+                                </svg>
+                                {{ item.like }}
+                              </div>
+                              <div>
+                                <el-icon
+                                  size="22px"
+                                  :color="`#e8604c`"
+                                  style="padding-right: 5px"
+                                  ><ChatSquare
+                                /></el-icon>
+                                {{ item.reply }}
+                              </div>
+                            </div>
+                          </div>
+                        </template>
+                        <el-scrollbar max-height="100px">
+                          <ul>
+                            <li v-for="(i, index2) in item.son" :key="index2">
+                              {{ i.userName }}：{{ i.content }}
+                              {{ i.createTime }}
+                            </li>
+                          </ul>
+                        </el-scrollbar>
+                      </el-collapse-item>
+                    </el-collapse>
+                  </el-scrollbar>
                 </li>
               </ul>
             </div>
@@ -322,5 +530,103 @@ requestOneNoteInfoAndOthers();
   padding: 0 5px;
   line-height: 2em;
   margin-right: 5px;
+}
+/* 指定行程按钮样式 */
+.make-plan-button {
+  width: 100%;
+  height: auto;
+  display: flex;
+  margin: 20px 0;
+  justify-content: center;
+}
+.text-amber {
+  font-size: 16px;
+}
+.comment-form__title {
+  margin-bottom: 20px;
+}
+.comment-one {
+  margin-top: 40px;
+}
+//样式穿透
+::v-deep .el-collapse-item__header {
+  display: flex;
+  // flex-direction: column;
+  justify-content: space-around;
+  // flex-wrap: wrap;
+  // height: 200px;
+  // line-height: 200px;
+  height: auto;
+  padding: 10px 0;
+}
+.comment-container {
+  .comment-header {
+    height: 50px;
+    width: 230px;
+    // width: 100%;
+    // border: 1px #e8604c solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border-bottom: 1px #dcdfe6 solid;
+    margin-bottom: 10px;
+    > p {
+      margin: 0;
+      line-height: 1.5em;
+    }
+    > p:first-child {
+      a {
+        color: #e8604c;
+        font-weight: 700;
+      }
+    }
+    > p:nth-child(2) {
+      font-size: 12px;
+      color: #909399;
+    }
+  }
+  .comment-body {
+    // border: 1px #e8604c solid;
+    height: 60px;
+    width: 230px;
+    // display: flex;
+    // justify-content: start;
+    // align-items: center;
+    .content-main {
+      line-height: 1.5em;
+      color: #606266;
+    }
+  }
+  .function-button-container {
+    margin-top: 10px;
+    height: 30px;
+    width: 230px;
+    // border: 1px #e8604c solid;
+    display: flex;
+    align-items: center;
+    > div {
+      width: 80px;
+      height: 30px;
+      // border: 1px #e8604c solid;
+      display: flex;
+      align-items: center;
+      // justify-content: center;
+      color: #606266;
+      font-size: 16px;
+    }
+    > div:first-child {
+      // width: auto;
+      // height: 1.2em;
+      // border: 1px #e8604c solid;
+    }
+  }
+}
+.plan-note-header {
+  width: 100%;
+  height: auto;
+  // border: 1px #e8604c solid;
+  display: flex;
+  align-items: center;
 }
 </style>

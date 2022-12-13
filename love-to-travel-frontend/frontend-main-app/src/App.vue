@@ -9,4 +9,12 @@ console.log("---环境变量----", import.meta.env);
   <router-view />
 </template>
 
-<style scoped></style>
+<style>
+.icon {
+  width: 1.2em;
+  height: 1.2em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+}
+</style>

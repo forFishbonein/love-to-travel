@@ -125,3 +125,37 @@ export interface theNotesInfoType {
   userName: string;
   view: number;
 }
+
+/* 6 评论类型 */
+export interface theNoteComment {
+  content: string;
+  createTime: string;
+  id: string;
+  like: number;
+  noteId: string;
+  parentId: string;
+  reply: number;
+  userId: string;
+  userName: string;
+}
+
+export interface secondComment {
+  id: string;
+  userId: string;
+  userName: string;
+  content: string;
+  like: number;
+  createTime: string;
+  reply: number;
+}
+
+export interface tranformComments {
+  id: string;
+  userId: string;
+  userName: string;
+  content: string;
+  like: number;
+  createTime: string;
+  reply: number;
+  son: secondComment[];
+}
