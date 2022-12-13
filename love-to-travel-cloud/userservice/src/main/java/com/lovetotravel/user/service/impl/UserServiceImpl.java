@@ -2,6 +2,7 @@ package com.lovetotravel.user.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.user.entity.Log;
@@ -396,6 +397,7 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     @Override
     public Page<Log> getAllLog(PageVo pageVo) {
         Page<Log> page = Page.of(pageVo.getCurrent(),pageVo.getSize());
+        page.addOrder(OrderItem.desc("create_time"));
         Page<Log> logPage = logMapper.selectPage(page, null);
         return logPage;
     }
