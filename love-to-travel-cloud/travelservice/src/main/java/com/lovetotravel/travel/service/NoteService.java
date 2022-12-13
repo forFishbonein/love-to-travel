@@ -38,5 +38,7 @@ public interface NoteService {
 
     void unStar(NoteStar noteStar);
 
+    List<Note> getStarByUserId(Long id);
+
 
 }
