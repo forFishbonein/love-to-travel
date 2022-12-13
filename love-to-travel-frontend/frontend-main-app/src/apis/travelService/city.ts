@@ -7,6 +7,17 @@ export const getCitysInfo = () => {
     loading: true, //显示加载圈
   });
 };
+export const getPageCitysInfo = (page: number, limit: number) => {
+  return httpRequest({
+    method: "post",
+    data: {
+      current: page,
+      size: limit,
+    },
+    url: "http://localhost:8082/city/page",
+    loading: true, //显示加载圈
+  });
+};
 export const getHotCitysInfo = () => {
   return httpRequest({
     method: "get",
