@@ -5,11 +5,11 @@ import {
 } from "vue-router";
 
 //router中使用pinia：
-import pinia from "@/store"; // 实际上这个pinia是createPinia()，这里必须传入，因为router获取不到全局的pinia
+// import pinia from "@/store"; // 实际上这个pinia是createPinia()，这里必须传入，因为router获取不到全局的pinia
 import { mainStore } from "@/store/user";
-import { getToken } from "@/store/util/token";
-import { getFlag, setFlag } from "@/store/util/flag";
-const store = mainStore(pinia);
+// import { getToken } from "@/store/util/token";
+// import { getFlag, setFlag } from "@/store/util/flag";
+// const store = mainStore(pinia); //不需要
 
 // 1. 定义路由组件， 注意，这里一定要使用 文件的全名（包含文件后缀名）
 // import countIndex from "../pages/count/countIndex.vue";
@@ -28,8 +28,9 @@ const router = createRouter({
 
 // 4. 配置路由守卫
 router.beforeEach((to, from, next) => {
+  const store = mainStore(); //移动到了路由守卫里面，否则persist不生效
   // 如果本地存在token
-  if (getToken() && getToken() !== "") {
+  if (store.token !== "") {
     if (
       to.path === "/login" ||
       to.path === "/login/passLogin" ||
@@ -47,7 +48,7 @@ router.beforeEach((to, from, next) => {
       // )
       if (
         //@ts-ignore
-        store.flag == false
+        store.getUserFlag === false
       ) {
         //这里用flag标志变量有奇效，注意还需要进行本地存储才可以生效，保证了在路由跳转包括页面刷新时可以识别到用户信息已被获取，防止多次获取用户信息
         // 如果还没有获取到用户信息
@@ -55,14 +56,15 @@ router.beforeEach((to, from, next) => {
         store
           .getUserInfo() // 获取用户信息
           .then((res) => {
-            // alert("获取用户信息成功");
+            alert("获取用户信息成功");
             console.log("用户信息：");
             console.log(store.userInfo);
             console.log(store.userInfo.email);
+            // alert(store.userInfo.id);
             // console.log(store.userInfo.email.length);
             // alert("跳转");
-            store.flag = true;
-            setFlag(true);
+            store.getUserFlag = true;
+            // setFlag(true);
             next();
           })
           .catch(() => {
@@ -71,6 +73,8 @@ router.beforeEach((to, from, next) => {
               type: "warning",
               message: "登录已过期",
             });
+            store.getUserFlag = false;
+            // setFlag(false);
             next();
           });
       } else {
@@ -82,6 +86,8 @@ router.beforeEach((to, from, next) => {
   } else {
     //如果本地不存在token //但如果是要去到需要登录的页面
     if (to.matched.some((r) => r.meta.requireLogin)) {
+      store.getUserFlag = false;
+      // setFlag(false);
       //@ts-ignore
       ElMessage({
         type: "warning",

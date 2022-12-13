@@ -114,7 +114,12 @@ onMounted(() => {
         />
       </el-form-item>
       <el-form-item label="出发时间" label-width="70px">
-        <el-input v-model="routeInfo.departTime" autocomplete="off" clearable />
+        <el-input
+          type="number"
+          v-model="routeInfo.departTime"
+          autocomplete="off"
+          clearable
+        /><!-- 这里必须为数字类型 -->
       </el-form-item>
 
       <el-form-item label="交通工具" label-width="70px">

@@ -169,19 +169,18 @@ const displayText = () => {
                   <li class="dropdown">
                     <a href="#">去旅游</a>
                     <ul>
-                      <li><a href="destinations.html">热门省份</a></li>
                       <li>
                         <router-link
                           to="/goTravel/city"
                           active-class="active-router"
-                          >热门城市</router-link
+                          >城市</router-link
                         >
                       </li>
                       <li>
                         <router-link
                           to="/goTravel/scenery"
                           active-class="active-router"
-                          >热门景点</router-link
+                          >景点</router-link
                         >
                       </li>
                     </ul>
