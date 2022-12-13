@@ -7,7 +7,6 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
-import com.lovetotravel.travel.entity.PageVoWrong;
 import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.entity.SceneryComment;
 import com.lovetotravel.travel.entity.page.PageVo;

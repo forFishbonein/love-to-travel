@@ -101,6 +101,28 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
+    @Override
+    public PageVo<Note> fuzzyQuery(PageVo pageVo) {
+        Integer pageSize = pageVo.getPageSize();
+        Integer pageNum = pageVo.getPageNum();
+        List<Note> list;
+        try {
+            Query query = new Query(new Criteria());
+            long total = mongoTemplate.count(query, Note.class);
+            //默认值为5，
+            pageSize = pageSize < 0 ? 5 : pageSize;
+            query.limit(pageSize);
+            query.skip((pageNum - 1) * pageSize);
+            list = mongoTemplate.find(query, Note.class);
+            pageVo.setRecords(list);
+            pageVo.setTotal(total);
+            return pageVo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 新增
      *

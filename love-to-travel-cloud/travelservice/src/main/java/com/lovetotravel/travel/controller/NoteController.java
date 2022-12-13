@@ -53,6 +53,12 @@ public class NoteController {
         return Result.success(noteService.getPage(pageVo));
     }
 
+    @ApiOperation("游记模糊查询")
+    @PostMapping("/query")
+    public Result<PageVo<Note>> getByStr(@RequestBody PageVo pageVo) {
+        return Result.success(noteService.fuzzyQuery(pageVo));
+    }
+
     @ApiOperation("新增游记")
     @PostMapping
     public Result<String> insert(@RequestBody NoteVo noteVo) {

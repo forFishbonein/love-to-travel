@@ -18,6 +18,8 @@ public interface NoteService {
 
     PageVo<Note> getPage(PageVo pageVo);
 
+    PageVo<Note> fuzzyQuery(PageVo pageVo);
+
     void insert(NoteVo noteVo);
 
     void update(NoteVo noteVo);
