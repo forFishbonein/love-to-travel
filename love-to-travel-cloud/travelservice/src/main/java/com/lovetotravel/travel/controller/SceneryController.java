@@ -3,9 +3,7 @@ package com.lovetotravel.travel.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lovetotravel.travel.entity.*;
-import com.lovetotravel.travel.entity.vo.scenery.SceneryCommentVo;
-import com.lovetotravel.travel.entity.vo.scenery.SceneryInsertVo;
-import com.lovetotravel.travel.entity.vo.scenery.SceneryUpdateVo;
+import com.lovetotravel.travel.entity.vo.scenery.*;
 import com.lovetotravel.travel.mapper.CityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
 import com.lovetotravel.travel.result.Result;
@@ -144,6 +142,19 @@ public class SceneryController {
         sceneryService.comment(sceneryCommentVo);
         return Result.success("评论成功");
     }
+
+    @ApiOperation("根据景区id查询所有评论")
+    @GetMapping("/scenery/comment/{id}")
+    public Result<GetSceneryComment> getSceneryComment(@PathVariable("id") Long id) {
+        return Result.success(sceneryService.getSceneryComment(id));
+    }
+
+    @ApiOperation("根据用户id查询所有评论")
+    @GetMapping("/scenery/comment/user/{id}")
+    public Result<GetUserComment> getUserComment(@PathVariable("id") Long id) {
+        return Result.success(sceneryService.getUserComment(id));
+    }
+
 
 
 }

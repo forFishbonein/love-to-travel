@@ -17,9 +17,9 @@ import { useRouter } from "vue-router";
 // 注册全局事件
 import emitter from "@/mitt/event";
 import axios from "axios";
-import { mainStore } from "@/store/user";
 import { saveFinalPlansInfo } from "@/apis/travelService/plan";
 import router from "@/router";
+import { mainStore } from "@/store/user";
 const store2 = mainStore();
 emitter.on("addPlan", (daysPlanInfo) => {
   // alert("添加行程信息到行程");
@@ -148,7 +148,7 @@ const subPlans = toRef(finalPlansInfo, "subPlans"); //这里也不是最终的�
 /* 保存最终的计划 */
 const saveFinalPlans = async () => {
   if (store2.userInfo.id) {
-    // alert("保存");
+    alert("保存");
     finalPlansInfo.userId = store2.userInfo.id;
     finalPlansInfo.budget = budget.value;
     finalPlansInfo.subPlans = subPlans.value;
@@ -355,6 +355,8 @@ const searchRoutes = (cityId: string, cityName: string) => {
 
 onMounted(() => {
   initSubPlans();
+  alert(store2.userInfo.id);
+  console.log(store2.userInfo);
 });
 </script>
 

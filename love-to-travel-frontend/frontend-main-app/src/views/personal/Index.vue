@@ -2,6 +2,8 @@
 import { ref, inject, onMounted } from "vue";
 // import * as echarts from "echarts";
 import chinaJson from "@/assets/json/map/china.json";
+// import { mainStore } from "@/store/user";
+// const store2 = mainStore();
 const activeIndex = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
@@ -229,6 +231,8 @@ const initEcharts = () => {
 };
 onMounted(() => {
   initEcharts();
+  // alert(store2.getUserFlag);
+  // alert(JSON.stringify(store2.userInfo));
 });
 </script>
 
@@ -251,7 +255,7 @@ onMounted(() => {
       <el-menu-item index="1">我的中心</el-menu-item>
       <el-menu-item index="2">足迹与点评</el-menu-item>
       <el-menu-item index="3">游记</el-menu-item>
-      <el-menu-item index="4">点赞</el-menu-item>
+      <el-menu-item index="4">收藏</el-menu-item>
       <el-menu-item index="5">问答</el-menu-item>
       <el-menu-item index="6">行程</el-menu-item>
       <el-menu-item index="7">队伍</el-menu-item>

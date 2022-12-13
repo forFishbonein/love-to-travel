@@ -7,7 +7,7 @@ import lombok.Data;
 public class SceneryCommentVo {
 
     @ApiModelProperty("景区id")
-    private String noteId;
+    private String sceneryId;
 
     @ApiModelProperty("评论内容")
     private String content;

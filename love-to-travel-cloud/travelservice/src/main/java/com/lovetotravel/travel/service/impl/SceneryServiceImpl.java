@@ -3,18 +3,22 @@ package com.lovetotravel.travel.service.impl;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
+import com.lovetotravel.feign.clients.UserClient;
+import com.lovetotravel.feign.entity.Result;
+import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.PageVo;
 import com.lovetotravel.travel.entity.Scenery;
-import com.lovetotravel.travel.entity.vo.scenery.SceneryCommentVo;
-import com.lovetotravel.travel.entity.vo.scenery.SceneryInsertVo;
-import com.lovetotravel.travel.entity.vo.scenery.SceneryUpdateVo;
+import com.lovetotravel.travel.entity.SceneryComment;
+import com.lovetotravel.travel.entity.vo.scenery.*;
 import com.lovetotravel.travel.exception.GlobalException;
+import com.lovetotravel.travel.mapper.SceneryCommentMapper;
 import com.lovetotravel.travel.mapper.SceneryMapper;
 import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.SceneryService;
 import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Arrays;
 import java.util.Date;
@@ -25,9 +29,13 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
 
     final SceneryMapper sceneryMapper;
+    final SceneryCommentMapper sceneryCommentMapper;
+    final UserClient userClient;
 
-    public SceneryServiceImpl(SceneryMapper sceneryMapper) {
+    public SceneryServiceImpl(SceneryMapper sceneryMapper, SceneryCommentMapper sceneryCommentMapper, UserClient userClient) {
         this.sceneryMapper = sceneryMapper;
+        this.sceneryCommentMapper = sceneryCommentMapper;
+        this.userClient = userClient;
     }
 
     @Override
@@ -72,8 +80,8 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
         }
         QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(Scenery::getId, sceneryUpdateVo.getId());
-        Scenery SceneryInMysql = sceneryMapper.selectOne(queryWrapper);
-        if (SceneryInMysql == null) {
+        Scenery sceneryInMysql = sceneryMapper.selectOne(queryWrapper);
+        if (sceneryInMysql == null) {
             throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
         }
         Scenery scenery = new Scenery();
@@ -114,13 +122,68 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
     @Override
     public void comment(SceneryCommentVo sceneryCommentVo) {
+        Result<User> result = userClient.getById(Long.valueOf(sceneryCommentVo.getUserId()));
+        User user = result.getData();
+        if (user == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
 
+        SceneryComment sceneryComment = new SceneryComment();
+        BeanUtils.copyProperties(sceneryCommentVo, sceneryComment);
+        if (user.getName() == null || user.getName().equals("")) {
+            user.setName("来自远方的驴友");
+        }
+        sceneryComment.setUserName(user.getName());
+        sceneryCommentMapper.insert(sceneryComment);
 
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Scenery::getId, sceneryCommentVo.getSceneryId());
+        Scenery scenery = sceneryMapper.selectOne(queryWrapper);
+        if (scenery == null) {
+            throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
+        }
+        QueryWrapper<SceneryComment> listQueryWrapper = new QueryWrapper<>();
+        listQueryWrapper.lambda().eq(SceneryComment::getSceneryId, sceneryCommentVo.getSceneryId());
+        List<SceneryComment> commentInMysql = sceneryCommentMapper.selectList(listQueryWrapper);
+        if (commentInMysql.size() == 0) {
+            scenery.setScore(sceneryCommentVo.getScore().toString());
+            sceneryMapper.update(scenery, queryWrapper);
+            return;
+        }
+        Double score = 0.00;
+        for (SceneryComment s : commentInMysql) {
+            score = s.getScore() + score;
+        }
+        DecimalFormat df = new DecimalFormat("0.00");
+        scenery.setScore(df.format(score / commentInMysql.size()));
+        sceneryMapper.update(scenery, queryWrapper);
+    }
 
+    @Override
+    public GetSceneryComment getSceneryComment(Long id) {
 
+        QueryWrapper<SceneryComment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SceneryComment::getSceneryId, id);
+        List<SceneryComment> commentInMysql = sceneryCommentMapper.selectList(queryWrapper);
+        Integer total = sceneryCommentMapper.selectCount(queryWrapper);
+        GetSceneryComment getSceneryComment = new GetSceneryComment();
+        getSceneryComment.setSceneryCommentList(commentInMysql);
+        getSceneryComment.setTotal(total);
+        Scenery scenery = sceneryMapper.getById(id);
+        getSceneryComment.setAvgScore(Double.valueOf(scenery.getScore()));
+        return getSceneryComment;
+    }
 
-
-
+    @Override
+    public GetUserComment getUserComment(Long id) {
+        QueryWrapper<SceneryComment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SceneryComment::getUserId, id);
+        List<SceneryComment> commentInMysql = sceneryCommentMapper.selectList(queryWrapper);
+        Integer total = sceneryCommentMapper.selectCount(queryWrapper);
+        GetUserComment getUserComment = new GetUserComment();
+        getUserComment.setSceneryCommentList(commentInMysql);
+        getUserComment.setTotal(total);
+        return getUserComment;
     }
 
 }
