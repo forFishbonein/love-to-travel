@@ -11,7 +11,6 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @Api(tags = "足迹接口")
 @RestController
@@ -63,25 +62,5 @@ public class FootpointController {
         footpointService.removeBeens(beenRemoveVo);
         return Result.success("删除成功");
     }
-
-
-
-
-
-
-//    @ApiOperation("想去/去过 新增修改")
-//    @PostMapping
-//    public Result<String> update(@RequestBody Footpoint footpoint) {
-//        footpointService.update(footpoint);
-//        return Result.success("修改成功");
-//    }
-//
-//    @ApiOperation("想去/去过 删除")
-//    @DeleteMapping
-//    public Result<String> remove(@RequestBody Footpoint footpoint) {
-//        footpointService.remove(footpoint);
-//        return Result.success("修改成功");
-//    }
-
 
 }

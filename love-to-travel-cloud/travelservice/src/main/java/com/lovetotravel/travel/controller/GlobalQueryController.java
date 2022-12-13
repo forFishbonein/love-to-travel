@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Comment;
+import com.lovetotravel.travel.entity.vo.GlobalQuery;
 import com.lovetotravel.travel.mapper.CityMapper;
 import com.lovetotravel.travel.mapper.ProvinceMapper;
 import com.lovetotravel.travel.result.Result;
@@ -33,7 +34,24 @@ public class GlobalQueryController {
 
     @ApiOperation("全局查询")
     @PostMapping
-    public Result<List<Comment>> doQuery(String queryStr) {
+    public Result<GlobalQuery> doQuery(String queryStr) {
+
+        //游记
+
+
+
+
+
+        //城市
+
+
+
+        //景区
+
+
+
+
+
 
 
         return null;

@@ -53,6 +53,12 @@ public class NoteController {
         return Result.success(noteService.getPage(pageVo));
     }
 
+    @ApiOperation("游记模糊查询")
+    @PostMapping("/query")
+    public Result<PageVo<Note>> getByStr(@RequestBody PageVo pageVo) {
+        return Result.success(noteService.fuzzyQuery(pageVo));
+    }
+
     @ApiOperation("新增游记")
     @PostMapping
     public Result<String> insert(@RequestBody NoteVo noteVo) {
@@ -107,6 +113,12 @@ public class NoteController {
     public Result<String> unStar(@RequestBody NoteStar noteStar) {
         noteService.unStar(noteStar);
         return Result.success("取消收藏成功");
+    }
+
+    @ApiOperation("根据用户id查看收藏")
+    @GetMapping("/star")
+    public Result<List<Note>> getStarByUserId(@PathVariable("id") Long id) {
+        return Result.success(noteService.getStarByUserId(id));
     }
 
 

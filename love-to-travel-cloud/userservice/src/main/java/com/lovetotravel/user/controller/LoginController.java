@@ -1,6 +1,9 @@
 package com.lovetotravel.user.controller;
 
 
+import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lovetotravel.user.entity.Log;
+import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.vo.LoginVo;
 import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.service.EmailService;
@@ -54,6 +57,12 @@ public class LoginController {
         String token = request.getHeader("Authorization");
         userService.logout(token);
         return Result.success("退出登录成功");
+    }
+
+    @ApiOperation("日志查询")
+    @PostMapping("/log")
+    public Result<Page<Log>> getAllLog(@RequestBody PageVo pageVo) {
+        return Result.success(userService.getAllLog(pageVo));
     }
 
 

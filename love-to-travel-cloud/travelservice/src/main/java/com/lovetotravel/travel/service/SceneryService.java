@@ -2,9 +2,8 @@ package com.lovetotravel.travel.service;
 
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.IService;
-import com.lovetotravel.travel.entity.PageVo;
 import com.lovetotravel.travel.entity.Scenery;
-import com.lovetotravel.travel.entity.SceneryComment;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.scenery.*;
 
 import java.util.List;

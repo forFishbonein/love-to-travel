@@ -1,6 +1,9 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lovetotravel.feign.clients.UserClient;
+import com.lovetotravel.feign.entity.Result;
+import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
@@ -31,12 +34,14 @@ public class NoteServiceImpl implements NoteService {
     final RedisService redisService;
     final NoteLikeMapper noteLikeMapper;
     final NoteStarMapper noteStarMapper;
+    final UserClient userClient;
 
-    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService, NoteLikeMapper noteLikeMapper, NoteStarMapper noteStarMapper) {
+    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService, NoteLikeMapper noteLikeMapper, NoteStarMapper noteStarMapper, UserClient userClient) {
         this.mongoTemplate = mongoTemplate;
         this.redisService = redisService;
         this.noteLikeMapper = noteLikeMapper;
         this.noteStarMapper = noteStarMapper;
+        this.userClient = userClient;
     }
 
     /**
@@ -96,6 +101,28 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
+    @Override
+    public PageVo<Note> fuzzyQuery(PageVo pageVo) {
+        Integer pageSize = pageVo.getPageSize();
+        Integer pageNum = pageVo.getPageNum();
+        List<Note> list;
+        try {
+            Query query = new Query(new Criteria());
+            long total = mongoTemplate.count(query, Note.class);
+            //默认值为5，
+            pageSize = pageSize < 0 ? 5 : pageSize;
+            query.limit(pageSize);
+            query.skip((pageNum - 1) * pageSize);
+            list = mongoTemplate.find(query, Note.class);
+            pageVo.setRecords(list);
+            pageVo.setTotal(total);
+            return pageVo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     /**
      * 新增
      *
@@ -114,6 +141,13 @@ public class NoteServiceImpl implements NoteService {
         note.setLike(0L);
         note.setComment(0L);
         note.setView(0L);
+
+        Result<User> result = userClient.getById(Long.valueOf(noteVo.getUserId()));
+        User user = result.getData();
+        note.setUserName("来自远方的驴友");
+        if (user != null) {
+            note.setUserName(user.getName());
+        }
         mongoTemplate.insert(note);
     }
 
@@ -138,9 +172,6 @@ public class NoteServiceImpl implements NoteService {
                 .set("url", noteVo.getUrl())
                 .set("plan", noteVo.getPlanId())
                 .set("content", noteVo.getContent())
-                .set("comment", noteVo.getComment())
-                .set("view", noteVo.getView())
-                .set("like", noteVo.getLike())
                 .set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Note.class);
     }
@@ -208,6 +239,9 @@ public class NoteServiceImpl implements NoteService {
             query.addCriteria(Criteria.where("id").is(noteLike.getNoteId()));
             Note note = mongoTemplate.findOne(query, Note.class);
             System.out.println("note = " + note);
+            if (note.getLike() == null) {
+                note.setLike(0L);
+            }
             Update update = new Update();
             update.set("like", note.getLike() + 1);
             mongoTemplate.upsert(query, update, Note.class);
@@ -252,6 +286,9 @@ public class NoteServiceImpl implements NoteService {
             query.addCriteria(Criteria.where("id").is(noteStar.getNoteId()));
             Note note = mongoTemplate.findOne(query, Note.class);
             System.out.println("note = " + note);
+            if (note.getStar() == null) {
+                note.setStar(0L);
+            }
             Update update = new Update();
             update.set("like", note.getStar() + 1);
             mongoTemplate.upsert(query, update, Note.class);
@@ -281,6 +318,20 @@ public class NoteServiceImpl implements NoteService {
             //删除用户收藏信息
             noteStarMapper.delete(queryWrapper);
         }
+    }
+
+    @Override
+    public List<Note> getStarByUserId(Long id) {
+        QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteStar::getUserId, id);
+        List<NoteStar> noteStars = noteStarMapper.selectList(queryWrapper);
+        List<Note> notes = null;
+        for (NoteStar n : noteStars) {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("noteId").is(n.getNoteId()));
+            notes.add(mongoTemplate.findOne(query, Note.class));
+        }
+        return notes;
     }
 
 

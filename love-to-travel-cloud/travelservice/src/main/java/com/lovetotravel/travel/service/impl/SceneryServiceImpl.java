@@ -1,14 +1,15 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
-import com.lovetotravel.travel.entity.PageVo;
 import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.entity.SceneryComment;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.scenery.*;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.mapper.SceneryCommentMapper;
@@ -47,9 +48,10 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
     @Override
     public Page<Scenery> getPage(PageVo pageVo) {
-        Page<Scenery> page = Page.of(pageVo.getCurrent(), pageVo.getSize());
-        sceneryMapper.selectPage(page, null);
-        return page;
+        Page<Scenery> page = Page.of(pageVo.getPageNum(), pageVo.getPageSize());
+        page.addOrder(OrderItem.desc("score"));
+        Page<Scenery> sceneryPage = sceneryMapper.selectPage(page, null);
+        return sceneryPage;
     }
 
     public Scenery getById(Long id) {

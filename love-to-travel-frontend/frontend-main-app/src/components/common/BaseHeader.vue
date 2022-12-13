@@ -188,8 +188,20 @@ const displayText = () => {
                   <li class="dropdown">
                     <a href="#">阅旅游</a>
                     <ul>
-                      <li><a href="tours.html">旅行游记</a></li>
-                      <!-- <li><a href="tours-list.html">旅行攻略</a></li> -->
+                      <li>
+                        <router-link
+                          to="/readTravel/note"
+                          active-class="active-router"
+                          >旅行游记</router-link
+                        >
+                      </li>
+                      <li>
+                        <router-link
+                          to="/readTravel/write"
+                          active-class="active-router"
+                          >发游记</router-link
+                        >
+                      </li>
                     </ul>
                   </li>
                   <li class="dropdown">
