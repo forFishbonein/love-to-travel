@@ -5,13 +5,13 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="Please input" /> &nbsp;&nbsp;
+          <el-input v-model="queryStr" placeholder="请输入查询城市" /> &nbsp;&nbsp;
           <el-button class="button" type="primary" round @click="queryInfo">查询</el-button>
         </div>
-        <div>
-          <el-button class="button" type="success" round @click="openAddDialog">添加</el-button>
-          <el-button class="button" type="warning" round @click="multiDelete">删除</el-button>
-        </div>
+<!--        <div>-->
+<!--          <el-button class="button" type="success" round @click="openAddDialog">添加</el-button>-->
+<!--          <el-button class="button" type="warning" round @click="multiDelete">删除</el-button>-->
+<!--        </div>-->
 
 
 
@@ -20,11 +20,13 @@
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
 
-      <el-table-column prop="city_id" label="城市id" width="100" />
-      <el-table-column prop="pcity_name" label="城市名称" width="100" />
-      <el-table-column prop="url" label="城市lng" width="200" />
-      <el-table-column prop="introduction" label="城市lat" width="150" />
-      <el-table-column fixed="right" label="Operations" width="120">
+      <el-table-column prop="cityId" label="城市id" width="100" />
+      <el-table-column prop="cityName" label="城市名称" width="100" />
+      <el-table-column prop="cityEname" label="城市" width="200" />
+      <el-table-column prop="lng" label="经度" width="150" />
+      <el-table-column prop="lat" label="纬度" width="150" />
+      <el-table-column prop="url" label="图片url" width="150" />
+      <el-table-column fixed="right" label="操作" width="120">
         <template #default>
           <el-button link type="primary" size="small" @click="singleDelete">删除</el-button
           >
@@ -37,6 +39,7 @@
 
 <script>
 import {ElMessage} from 'element-plus'
+import {getCityInfo} from "@apis/serviceManage/city.js";
 export default {
   data(){
     return{
@@ -49,8 +52,24 @@ export default {
       title:"",  //对话框标题
       btnName:""  //对话框按钮文字
     }
+  },
+  mounted() {
+    getCityInfo().then((response) => {
+      var _this = this;
+      console.log(response.data);
+      _this.tableData = response.data;
+      _this.queryData = response.data;
+    });
+  },
+  methods:{
+    queryInfo(){
+      if(this.queryStr.trim().length>0){
+        this.tableData=this.tableData.filter(item =>(item.cityName).match(this.queryStr.trim()))
+      }else {
+        this.tableData=this.queryData
+      }
+    },
   }
-  // methods:{
   //   openAddDialog(){
   //     this.btnName = "添加"
   //     this.title = "添加商品信息"
@@ -111,13 +130,7 @@ export default {
   //     console.log(this.multipleSelection)
   //   }
   // },
-  // mounted(){
-  //   var _this = this;
-  //   this.$http.get("/shop/shops").then(function(response){
-  //     console.log(response.data);
-  //     _this.tableData = response.data;
-  //   })
-  // }
+
 
 }
 </script>

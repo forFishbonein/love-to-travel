@@ -2,7 +2,8 @@
 
 <script>
 import {deleteSceneryInfo, getSceneryInfo, postSceneryInfo, updateSceneryInfo} from '@/apis/serviceManage/scenery.js'
-import {delNote} from "@apis/userManage/delnote.js";
+// import {ElMessage, ElMessageBox} from "element-plus";
+
 
 export default {
   data() {
@@ -27,6 +28,15 @@ export default {
     });
   },
   methods:{
+    handleSizeChange(pageSize){
+      console.log("size:",pageSize);
+    },
+    handleCurrentChange(pageNum){
+      console.log("num:",pageNum);
+    },
+    getPageData(num,size){
+
+    },
     openAddDialog(){
       this.btnName = "添加"
       this.title = "添加景区信息"
@@ -96,15 +106,41 @@ export default {
       }
       this.dialogFormVisible = false
     },
-    singleDelete(id){
-      var _this = this;
+    singleDelete(row){
       console.log(row.id)
-      deleteSceneryInfo(row.id).then((response) => {
-        _this.tableData = response.data;
-        _this.queryData = response.data;
-        console.log(response.data);
+      ElMessageBox.confirm(
+          '您确定要删除这条数目吗?',
+          'Warning',
+          {
+            confirmButtonText: 'OK',
+            cancelButtonText: 'Cancel',
+            type: 'warning',
+          }
+      )
+          .then(() => {
+            deleteSceneryInfo(row.id).then((response) => {
+              var _this = this;
+              console.log(response.data);
+              if(response.data==="删除成功"){
+                ElMessage({
+                  type: 'success',
+                  message: '删除成功',
+                })
+              }else {
+                ElMessage({
+                  type: 'warning',
+                  message: '删除失败',
+                })
+              }
+            })
 
-      })
+          })
+          .catch(() => {
+            ElMessage({
+              type: 'info',
+              message: 'Delete canceled',
+            })
+          })
     },
     multiDelete(){
       console.log("multiDelete()")
@@ -135,7 +171,7 @@ export default {
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="Please input" /> &nbsp;&nbsp;
+          <el-input v-model="queryStr" placeholder="请输入查询景点" /> &nbsp;&nbsp;
           <el-button class="button" type="primary" round @click="queryInfo">查询</el-button>
         </div>
         <div>
@@ -164,15 +200,25 @@ export default {
       <el-table-column prop="url" label="图片url" width="150" />
       <el-table-column prop="tele" label="电话" width="100" />
 
-      <el-table-column fixed="right" label="修改" width="120">
+      <el-table-column fixed="right" label="操作" width="120">
         <template #default="scope">
-          <el-button link type="primary" size="small" @click="singleDelete(scope.row.id)"
+          <el-button link type="primary" size="small" @click="singleDelete(scope.row)"
           >删除</el-button
           >
-          <el-button link type="primary" size="small" @click="openUpdateDialog(scope.row)">操作</el-button>
+          <el-button link type="primary" size="small" @click="openUpdateDialog(scope.row)">修改</el-button>
         </template>
       </el-table-column>
     </el-table>
+    <el-pagination
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage2"
+        :page-sizes="[3, 4, 5, 10]"
+        :background="true"
+        :page-size="100"
+        layout="total, sizes, prev, pager, next, jumper"
+        :total="1000">
+    </el-pagination>
   </el-card>
 
   <!-- 对话框：添加修改功能 -->
