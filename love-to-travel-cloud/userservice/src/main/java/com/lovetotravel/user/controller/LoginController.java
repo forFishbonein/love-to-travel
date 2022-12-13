@@ -59,7 +59,7 @@ public class LoginController {
         return Result.success("退出登录成功");
     }
 
-    @ApiOperation("登出")
+    @ApiOperation("日志查询")
     @PostMapping("/log")
     public Result<Page<Log>> getAllLog(PageVo pageVo) {
         return Result.success(userService.getAllLog(pageVo));
