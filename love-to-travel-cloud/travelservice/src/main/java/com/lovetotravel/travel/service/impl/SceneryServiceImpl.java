@@ -176,7 +176,14 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
     @Override
     public GetUserComment getUserComment(Long id) {
-        return null;
+        QueryWrapper<SceneryComment> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SceneryComment::getUserId, id);
+        List<SceneryComment> commentInMysql = sceneryCommentMapper.selectList(queryWrapper);
+        Integer total = sceneryCommentMapper.selectCount(queryWrapper);
+        GetUserComment getUserComment = new GetUserComment();
+        getUserComment.setSceneryCommentList(commentInMysql);
+        getUserComment.setTotal(total);
+        return getUserComment;
     }
 
 }
