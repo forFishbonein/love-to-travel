@@ -1,6 +1,9 @@
 package com.lovetotravel.travel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lovetotravel.feign.clients.UserClient;
+import com.lovetotravel.feign.entity.Result;
+import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
@@ -31,12 +34,14 @@ public class NoteServiceImpl implements NoteService {
     final RedisService redisService;
     final NoteLikeMapper noteLikeMapper;
     final NoteStarMapper noteStarMapper;
+    final UserClient userClient;
 
-    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService, NoteLikeMapper noteLikeMapper, NoteStarMapper noteStarMapper) {
+    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService, NoteLikeMapper noteLikeMapper, NoteStarMapper noteStarMapper, UserClient userClient) {
         this.mongoTemplate = mongoTemplate;
         this.redisService = redisService;
         this.noteLikeMapper = noteLikeMapper;
         this.noteStarMapper = noteStarMapper;
+        this.userClient = userClient;
     }
 
     /**
@@ -114,6 +119,13 @@ public class NoteServiceImpl implements NoteService {
         note.setLike(0L);
         note.setComment(0L);
         note.setView(0L);
+
+        Result<User> result = userClient.getById(Long.valueOf(noteVo.getUserId()));
+        User user = result.getData();
+        note.setUserName("来自远方的驴友");
+        if (user != null) {
+            note.setUserName(user.getName());
+        }
         mongoTemplate.insert(note);
     }
 
@@ -138,9 +150,6 @@ public class NoteServiceImpl implements NoteService {
                 .set("url", noteVo.getUrl())
                 .set("plan", noteVo.getPlanId())
                 .set("content", noteVo.getContent())
-                .set("comment", noteVo.getComment())
-                .set("view", noteVo.getView())
-                .set("like", noteVo.getLike())
                 .set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Note.class);
     }
