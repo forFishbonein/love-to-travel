@@ -12,45 +12,21 @@
 
       </div>
     </template>
-    <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55"/>
 
-      <el-table-column label="省份id" prop="provinceId" width="100"/>
-      <el-table-column label="省份名称" prop="provinceName" width="100"/>
-      <el-table-column label="省份图片url" prop="url" width="200"/>
-      <el-table-column label="省份简介" prop="introduction" width="150"/>
-      <el-table-column fixed="right" label="操作" width="120">
-        <template #default="scope">
-          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">修改</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-  </el-card>
-  <el-dialog v-model="dialogFormVisible" :title="title">
-    <el-form :model="form">
-      <el-form-item :label-width="formLabelWidth" label="省份id">
-        <el-input v-model="form.name" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="省份名称">
-        <el-input v-model="form.introduction" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="省份图片url">
-        <el-input v-model="form.score" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="省份简介">
-        <el-input v-model="form.ticket" autocomplete="off"/>
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="btnAddUpdate">
-          {{ btnName }}
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
-</template>
+
+      <el-card class="province-card" v-for="item in tableData" :body-style="{ padding: '0px' }">
+        <img
+            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+            class="image"/>
+        <div style="padding: 14px">
+          <span></span>
+          <div class="bottom">
+            <time class="time">{{ item.provinceName }}</time>
+            <el-button text class="button" @click="">查看</el-button>
+          </div>
+        </div>
+      </el-card>
+
 
 <script>
 // import {ElMessage} from 'element-plus'
@@ -140,6 +116,36 @@ export default {
 .query {
   display: flex;
   justify-content: space-between;
+}
+
+.time {
+  font-size: 22px;
+  color: #6c6c6c;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  padding: 0;
+  min-height: auto;
+}
+
+.image {
+  width: 100%;
+  display: block;
+}
+
+.province-card {
+  width: 300px;
+  padding: 10px;
+  margin: 10px 40px;
+  display: inline-block;
 }
 </style>
 

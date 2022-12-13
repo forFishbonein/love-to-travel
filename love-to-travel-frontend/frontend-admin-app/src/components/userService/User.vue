@@ -3,37 +3,33 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="Please input email"/>&nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo">邮箱查询</el-button>
-        </div>
-        <div>
-
-          <el-button round type="warning" @click="multiDelete">多选删除</el-button>
+          <el-button class="delete" round type="warning" @click="multiDelete">多选删除</el-button>
+          <el-input v-model="queryStr" placeholder="请输入邮箱"/>&nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo">查询</el-button>
         </div>
       </div>
     </template>
 
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column label="用户id" prop="id" width="100"/>
-      <el-table-column label="用户名称" prop="name" width="100"/>
+      <el-table-column label="用户名" prop="name" width="150"/>
       <el-table-column label="性别" prop="gender" width="100"/>
-      <el-table-column label="状态" prop="status" width="80">
-        <template #default="scope">
-          {{ scope.row.status == 1 ? '在线' : '离线' }}
-        </template>
-      </el-table-column>
+      <!--      <el-table-column label="状态" prop="status" width="80">-->
+      <!--        <template #default="scope">-->
+      <!--          {{ scope.row.status == 1 ? '在线' : '离线' }}-->
+      <!--        </template>-->
+      <!--      </el-table-column>-->
       <el-table-column label="出生日期" prop="birthday" width="100"/>
       <el-table-column label="邮箱" prop="email" width="180"/>
-      <el-table-column label="电话" prop="tele" width="100"/>
+      <el-table-column label="电话" prop="tele" width="130"/>
       <el-table-column label="等级" prop="grade" width="80"/>
       <el-table-column label="经验" prop="experience" width="80"/>
       <el-table-column label="地址" prop="address" width="100"/>
-      <el-table-column label="岗位" prop="post" width="100"/>
-      <el-table-column label="职业" prop="profession" width="100"/>
+      <el-table-column label="岗位" prop="post" width="130"/>
+      <el-table-column label="职业" prop="profession" width="130"/>
       <el-table-column label="个性签名" prop="signature" width="150"/>
-      <el-table-column label="创建时间" prop="createTime" width="100"/>
-      <el-table-column fixed="right" label="Operations" width="150">
+      <el-table-column label="创建时间" prop="createTime" width="160"/>
+      <el-table-column fixed="right" label="操作" width="150">
         <template #default="scope">
           <el-button link size="small" type="primary" @click="openDetailDialog(scope.row.id)">详情</el-button>
           <el-button link size="small" type="primary" @click="singleDelete(scope.row.id)">删除</el-button>
@@ -91,7 +87,7 @@
         <el-input v-model="form.profession" autocomplete="off"/>
       </el-form-item>
       <el-form-item :label-width="formLabelWidth" label="个性签名">
-        <el-input v-model="form.signatur" type="textarea"/>
+        <el-input v-model="form.signature" type="textarea"/>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -105,60 +101,115 @@
   </el-dialog>
 
 
-  <!-- 详情对话框 -->
-  <el-dialog v-model="dialogDetailVisible" title="用户信息详情">
-    <el-form :model="form">
-      <el-form-item :label-width="formLabelWidth" label="姓名">
-        <el-form-item :label="form.name"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="性别">
-        <el-form-item :label="form.gender"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="头像">
-        <el-form-item :label="form.url"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="出生日期">
-        <el-form-item :label="form.birthday"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="等级">
-        <el-form-item :label="form.grade"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="经验">
-        <el-form-item :label="form.experience"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="地址">
-        <el-form-item :label="form.address"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="电话">
-        <el-form-item :label="form.tele"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="邮箱">
-        <el-form-item :label="form.email"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="岗位">
-        <el-form-item :label="form.post"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="职业">
-        <el-form-item :label="form.profession"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="状态">
-        <el-form-item :label="form.status==1?'在线':'离线'"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="个性签名">
-        <el-form-item :label="form.signature"></el-form-item>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="创建时间">
-        <el-form-item :label="form.createTime"></el-form-item>
-      </el-form-item>
+  <el-form :model="form">
+    <!-- 详情对话框 -->
+<!--    <el-image style="width: 100px; height: 100px" :src="form.url" :fit="fill"/>-->
+    <el-dialog v-model="dialogDetailVisible" title="用户信息详情">
+      <el-descriptions
+          class="margin-top"
+          :column="2"
+          :size="size"
+          border
+      >
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              用户名
+            </div>
+          </template>
+          {{ form.name }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              性别
+            </div>
+          </template>
+          {{ form.gender }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              出生日期
+            </div>
+          </template>
+          {{ form.birthday }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              地址
+            </div>
+          </template>
+          {{ form.address }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              电话
+            </div>
+          </template>
+          {{ form.tele }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              创建时间
+            </div>
+          </template>
+          {{ form.createTime }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              岗位
+            </div>
+          </template>
+          {{ form.post }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              职业
+            </div>
+          </template>
+          {{ form.profession }}
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              等级
+            </div>
+          </template>
+          <el-tag size="small">{{ form.grade }}</el-tag>
+        </el-descriptions-item>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              经验
+            </div>
+          </template>
+          {{ form.experience }}
+        </el-descriptions-item>
 
-
-    </el-form>
-    <template #footer>
+        <el-descriptions-item>
+          <template #label>
+            <div class="cell-item">
+              个性签名
+            </div>
+          </template>
+          {{ form.signature }}
+        </el-descriptions-item>
+      </el-descriptions>
+      <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogDetailVisible = false">关闭</el-button>
       </span>
-    </template>
-  </el-dialog>
+      </template>
+    </el-dialog>
+
+  </el-form>
+
 
 </template>
 
@@ -369,5 +420,27 @@ export default {
 
 .box-card {
   width: auto; //重点，设置成auto
+}
+
+.query {
+  display: flex;
+  justify-content: space-between;
+}
+
+.delete {
+  margin-right: 20px;
+}
+
+.el-descriptions {
+  margin-top: 20px;
+}
+
+.cell-item {
+  display: flex;
+  align-items: center;
+}
+
+.margin-top {
+  margin-top: 20px;
 }
 </style>
