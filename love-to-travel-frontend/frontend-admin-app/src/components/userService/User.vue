@@ -158,18 +158,18 @@ import { updateUserInfo,deleteUserInfo,getUserByID } from "../../apis/userManage
 export default {
   data() {
     return {
-          dialogDetailVisible:false,//详细对话框
-          dialogFormVisible:false,//对话框是否显示
-          queryStr:"",//查询条件
-          multipleSelection:[],//多选删除
-          tableData:[],//学生信息数据
+          dialogDetailVisible:false,
+          dialogFormVisible:false,
+          queryStr:"",
+          multipleSelection:[],
+          tableData:[],
           queryData:[],
           form:{
 
-          },//对话框表单数据
-          formLabelWidth:"140px",//对话框宽度
-          title:"",//对话框标题
-          btnName:"",//对话框按钮文字
+          },
+          formLabelWidth:"140px",
+          title:"",
+          btnName:"",
     };
   },
   methods: {
@@ -189,21 +189,18 @@ export default {
       this.updateUser();
       console.log("修改操作....");
       this.dialogFormVisible=false;
-      },
-    //  打开修改对话框
+    },
     openUpdateDialog(row){
         this.btnName = "修改"
         this.title = "修改用户信息"
         this.dialogFormVisible = true;
-        // console.log(row);
-        this.form=row;  //得到需要修改的数据并回显
+        this.form=row;
         console.log("openUpdateDialog....");
-          },
-    //  修改功能
+    },
     updateUser(){
     console.log(this.form);
-    // var _this=this;
-    updateUserInfo(this.form).then(function(response){
+    var _this=this;
+    updateUserInfo(_this.form).then((response) => {
         console.log(response.data);
         if(response.data=='新增成功'){
             ElMessage({
@@ -270,16 +267,40 @@ export default {
       },
       multiDelete(){
         console.log("multiDelete().....");
-
-        this.multipleSelection.forEach(item => {
-          var _this=this;
-          var id = item.id
-            deleteUserInfo(id).then(function(response){
-                console.log(response.data);
+        ElMessageBox.confirm(
+        '您确定要删除目前选中的多条数目吗?',
+        'Warning',
+        {
+          confirmButtonText: '确认',
+          cancelButtonText: '取消',
+          type: 'warning',
+        }
+    )
+        .then(() => {
+          var _this = this;
+          var num=0
+          this.multipleSelection.forEach(item=>{
+            var id = item.id
+            console.log(id)
+            deleteUserInfo(id).then((response) => {
+              console.log(response.data);
+              if(response.data=="删除成功"){
+                num=num+1;
+              }
             })
           })
+          ElMessage({
+            type: 'success',
+            message: '您已成功删除！',
+          })
+        })
+        .catch(() => {
+          ElMessage({
+            type: 'info',
+            message: 'Delete canceled',
+          })
+        })
       },
-
     //-----------------------------------------
     //多行选择
     handleSelectionChange(val){            
