@@ -3,7 +3,6 @@ export const getUser = () => {
   return httpRequest({
     method: "get",
     url: "http://localhost:8081/user",
-    // data: p,
     loading: true,
   });
 };
@@ -18,7 +17,6 @@ export const updateUserInfo = () => {
   return httpRequest({
     method: "put",
     url: "http://localhost:8081/user/updateprofile",
-    // data:id,
     loading: true,
   });
 };
