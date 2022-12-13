@@ -1,5 +1,7 @@
 package com.lovetotravel.travel.service.impl;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
+import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.Footpoint;
 import com.lovetotravel.travel.entity.dto.Been;
 import com.lovetotravel.travel.entity.dto.Want;
@@ -7,6 +9,9 @@ import com.lovetotravel.travel.entity.vo.foot.BeenRemoveVo;
 import com.lovetotravel.travel.entity.vo.foot.BeenVo;
 import com.lovetotravel.travel.entity.vo.foot.WantRemoveVo;
 import com.lovetotravel.travel.entity.vo.foot.WantVo;
+import com.lovetotravel.travel.exception.GlobalException;
+import com.lovetotravel.travel.mapper.CityMapper;
+import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.FootpointService;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -23,9 +28,11 @@ public class FootpointServiceImpl implements FootpointService {
 
 
     final MongoTemplate mongoTemplate;
+    final CityMapper cityMapper;
 
-    public FootpointServiceImpl(MongoTemplate mongoTemplate) {
+    public FootpointServiceImpl(MongoTemplate mongoTemplate, CityMapper cityMapper) {
         this.mongoTemplate = mongoTemplate;
+        this.cityMapper = cityMapper;
     }
 
     @Override
@@ -37,8 +44,15 @@ public class FootpointServiceImpl implements FootpointService {
     }
 
     public void insertWants(WantVo wantVo) {
+        QueryWrapper<City> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(City::getCityId, wantVo.getCityId());
+        City city = cityMapper.selectOne(queryWrapper);
+        if (city == null) {
+            throw new GlobalException(CodeMsg.CITY_NOT_EXIST);
+        }
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(wantVo.getUserId()));
+
         Footpoint footpointInMongo = mongoTemplate.findOne(query, Footpoint.class);
         Footpoint footpoint;
         List<Want> wants;
@@ -47,6 +61,7 @@ public class FootpointServiceImpl implements FootpointService {
             wants = new ArrayList<>();
             Want want = new Want();
             want.setCityId(wantVo.getCityId());
+            want.setCityName(city.getCityName());
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
@@ -61,6 +76,7 @@ public class FootpointServiceImpl implements FootpointService {
             wants = footpoint.getWants();
             Want want = new Want();
             want.setCityId(wantVo.getCityId());
+            want.setCityName(city.getCityName());
             //判断是否添加过
             if (wants != null) {
                 for (Want b : wants) {
@@ -84,6 +100,14 @@ public class FootpointServiceImpl implements FootpointService {
     }
 
     public void insertBeens(BeenVo beenVo) {
+        QueryWrapper<City> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(City::getCityId, beenVo.getCityId());
+        City city = cityMapper.selectOne(queryWrapper);
+        System.out.println(beenVo);
+        System.out.println(city);
+        if (city == null) {
+            throw new GlobalException(CodeMsg.CITY_NOT_EXIST);
+        }
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(beenVo.getUserId()));
         Footpoint footpointInMongo = mongoTemplate.findOne(query, Footpoint.class);
@@ -94,6 +118,7 @@ public class FootpointServiceImpl implements FootpointService {
             beens = new ArrayList<>();
             Been been = new Been();
             been.setCityId(beenVo.getCityId());
+            been.setCityName(city.getCityName());
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
@@ -109,6 +134,7 @@ public class FootpointServiceImpl implements FootpointService {
             beens = footpoint.getBeens();
             Been been = new Been();
             been.setCityId(beenVo.getCityId());
+            been.setCityName(city.getCityName());
             //判断是否添加过
             if (beens != null) {
                 for (Been b : beens) {
@@ -133,6 +159,12 @@ public class FootpointServiceImpl implements FootpointService {
 
     @Override
     public void removeWants(WantRemoveVo wantRemoveVo) {
+        QueryWrapper<City> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(City::getCityId, wantRemoveVo.getCityId());
+        City city = cityMapper.selectOne(queryWrapper);
+        if (city == null) {
+            throw new GlobalException(CodeMsg.CITY_NOT_EXIST);
+        }
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(wantRemoveVo.getUserId()));
         Footpoint footpointInMongo = mongoTemplate.findOne(query, Footpoint.class);
@@ -145,6 +177,7 @@ public class FootpointServiceImpl implements FootpointService {
             if (wants != null) {
                 Want want = new Want();
                 want.setCityId(wantRemoveVo.getCityId());
+                want.setCityName(city.getCityName());
                 want.setCreateTime(wantRemoveVo.getCreateTime());
                 wants.remove(want);
                 footpoint.setWants(wants);
@@ -156,6 +189,12 @@ public class FootpointServiceImpl implements FootpointService {
 
     @Override
     public void removeBeens(BeenRemoveVo beenRemoveVo) {
+        QueryWrapper<City> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(City::getCityId, beenRemoveVo.getCityId());
+        City city = cityMapper.selectOne(queryWrapper);
+        if (city == null) {
+            throw new GlobalException(CodeMsg.CITY_NOT_EXIST);
+        }
         Query query = new Query();
         query.addCriteria(Criteria.where("userId").is(beenRemoveVo.getUserId()));
         Footpoint footpointInMongo = mongoTemplate.findOne(query, Footpoint.class);
@@ -168,6 +207,7 @@ public class FootpointServiceImpl implements FootpointService {
             if (beens != null) {
                 Been been = new Been();
                 been.setCityId(beenRemoveVo.getCityId());
+                been.setCityName(city.getCityName());
                 been.setCreateTime(beenRemoveVo.getCreateTime());
                 beens.remove(been);
                 footpoint.setBeens(beens);
