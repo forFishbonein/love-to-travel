@@ -97,6 +97,12 @@ public class FootpointServiceImpl implements FootpointService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
             want.setCreateTime(currentTimeStamp);
+
+            Double[] pos = new Double[2];
+            pos[0] = Double.valueOf(city.getLng());
+            pos[1] = Double.valueOf(city.getLat());
+            want.setPos(pos);
+
             wants.add(want);
             footpoint.setWants(wants);
             mongoTemplate.remove(query, Footpoint.class);
@@ -161,6 +167,12 @@ public class FootpointServiceImpl implements FootpointService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
             been.setCreateTime(currentTimeStamp);
+
+            Double[] pos = new Double[2];
+            pos[0] = Double.valueOf(city.getLng());
+            pos[1] = Double.valueOf(city.getLat());
+            been.setPos(pos);
+
             been.setScore(beenVo.getScore());
             beens.add(been);
             footpoint.setBeens(beens);
