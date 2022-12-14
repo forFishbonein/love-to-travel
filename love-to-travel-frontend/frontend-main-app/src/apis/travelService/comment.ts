@@ -6,3 +6,15 @@ export const getCommentsByNoteId = (noteId: string) => {
     loading: true, //显示加载圈
   });
 };
+
+export const likeTheComment = (commentId: string, userId: string) => {
+  return httpRequest({
+    method: "post",
+    data: {
+      commentId: commentId,
+      userId: userId,
+    },
+    url: "http://localhost:8082/comment/like",
+    loading: true, //显示加载圈
+  });
+};
