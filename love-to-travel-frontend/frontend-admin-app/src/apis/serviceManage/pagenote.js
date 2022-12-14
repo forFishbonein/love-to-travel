@@ -1,4 +1,5 @@
 import httpRequest from "@/request";
+
 export const pageNote = (page) => {
     return httpRequest({
         method: "post",

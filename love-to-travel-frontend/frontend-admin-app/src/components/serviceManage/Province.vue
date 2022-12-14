@@ -1,55 +1,33 @@
-<script setup lang="ts"></script>
+<script lang="ts" setup></script>
 
 <template>
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="请输入查询省份" /> &nbsp;&nbsp;
-          <el-button class="button" type="primary" round @click="queryInfo">查询</el-button>
+          <el-input v-model="queryStr" placeholder="请输入查询省份"/> &nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo">查询</el-button>
         </div>
 
 
       </div>
     </template>
-    <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55" />
 
-      <el-table-column prop="provinceId" label="省份id" width="100" />
-      <el-table-column prop="provinceName" label="省份名称" width="100" />
-      <el-table-column prop="url" label="省份图片url" width="200" />
-      <el-table-column prop="introduction" label="省份简介" width="150" />
-      <el-table-column fixed="right" label="操作" width="120">
-        <template #default="scope">
-          <el-button link type="primary" size="small" @click="openUpdateDialog(scope.row)">修改</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
+
+      <el-card class="province-card" v-for="item in tableData" :body-style="{ padding: '0px' }">
+        <img
+            src="https://shadow.elemecdn.com/app/element/hamburger.9cf7b091-55e9-11e9-a976-7f4d0b07eef6.png"
+            class="image"/>
+        <div style="padding: 14px">
+          <span></span>
+          <div class="bottom">
+            <time class="time">{{ item.provinceName }}</time>
+            <el-button text class="button">查看</el-button>
+          </div>
+        </div>
+      </el-card>
+
   </el-card>
-  <el-dialog v-model="dialogFormVisible" :title="title">
-    <el-form :model="form">
-      <el-form-item label="省份id" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="省份名称" :label-width="formLabelWidth">
-        <el-input v-model="form.introduction" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="省份图片url" :label-width="formLabelWidth">
-        <el-input v-model="form.score" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="省份简介" :label-width="formLabelWidth">
-        <el-input v-model="form.ticket" autocomplete="off" />
-      </el-form-item>
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="btnAddUpdate">
-          {{btnName}}
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
 </template>
 
 <script>
@@ -62,13 +40,13 @@ export default {
 
   data() {
     return {
-      dialogFormVisible:false, //对话框是否显示
+      dialogFormVisible: false, //对话框是否显示
       queryStr: "",  //查询条件
       tableData: [], //学生信息数据
-      form:{},   //对话框表单数据
-      formLabelWidth:"140px",  //对话框label宽度
-      title:"",  //对话框标题
-      btnName:""  //对话框按钮文字
+      form: {},   //对话框表单数据
+      formLabelWidth: "140px",  //对话框label宽度
+      title: "",  //对话框标题
+      btnName: ""  //对话框按钮文字
     }
   },
   mounted() {
@@ -79,29 +57,29 @@ export default {
       _this.queryData = response.data;
     });
   },
-  methods:{
-    openUpdateDialog(row){
+  methods: {
+    openUpdateDialog(row) {
       this.btnName = "修改"
       this.title = "修改省份信息"
       this.dialogFormVisible = true
       console.log(row);
-      this.form=row  //得到要修改的数据，并回显到对话框
+      this.form = row  //得到要修改的数据，并回显到对话框
 
     },
 
-    updateScenery(){
+    updateScenery() {
       console.log(this.form)
       var _this = this;
       //this.form.stu_interest = this.form.stu_interest.join(',')
       updateSceneryInfo(_this.form).then((response) => {
         var _this = this;
-        console.log(response.data===1);
-        if(response.data!==1){
+        console.log(response.data === 1);
+        if (response.data !== 1) {
           ElMessage({
             message: '景区信息修改成功',
             type: 'success',
           })
-        }else {
+        } else {
           ElMessage({
             message: '景区信息修改失败',
             type: 'warning',
@@ -110,35 +88,66 @@ export default {
       })
     },
 
-  //.......
-  btnAddUpdate(){
-    console.log(this.form)
-    this.dialogFormVisible = false
-  },
-  queryInfo(){
-    // console.log("queryInfo...");
-    if(this.queryStr.trim().length>0){
-      this.tableData=this.tableData.filter(item =>(item.provinceName).match(this.queryStr.trim()))
-    }else {
-      this.tableData=this.queryData
+    //.......
+    btnAddUpdate() {
+      console.log(this.form)
+      this.dialogFormVisible = false
+    },
+    queryInfo() {
+      // console.log("queryInfo...");
+      if (this.queryStr.trim().length > 0) {
+        this.tableData = this.tableData.filter(item => (item.provinceName).match(this.queryStr.trim()))
+      } else {
+        this.tableData = this.queryData
+      }
+    },
+    handleSelectionChange(val) {
+      this.multipleSelection = val
+      console.log(this.multipleSelection)
     }
-  },
-  handleSelectionChange(val){
-    this.multipleSelection = val
-    console.log(this.multipleSelection)
   }
-}
 }
 </script>
 
 <style>
-.card-header{
+.card-header {
   display: flex;
   justify-content: space-between;
 }
-.query{
+
+.query {
   display: flex;
   justify-content: space-between;
+}
+
+.time {
+  font-size: 22px;
+  color: #6c6c6c;
+}
+
+.bottom {
+  margin-top: 13px;
+  line-height: 12px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.button {
+  padding: 0;
+  min-height: auto;
+}
+
+.image {
+  width: 100%;
+  display: block;
+}
+
+.province-card {
+  width: 300px;
+  padding: 10px;
+  margin: 10px 40px;
+  display: inline-block;
 }
 </style>
 

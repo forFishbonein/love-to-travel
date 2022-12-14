@@ -13,3 +13,11 @@ export const saveFinalPlansInfo = (
     loading: true, //显示加载圈
   });
 };
+
+export const getOneUserPlansInfoById = (planId: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/plan/${planId}`,
+    loading: true, //显示加载圈
+  });
+};

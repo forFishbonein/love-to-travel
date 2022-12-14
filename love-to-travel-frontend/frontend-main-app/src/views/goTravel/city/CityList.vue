@@ -127,26 +127,13 @@ const changeCurrentPage = (p: number) => {
 </template>
 
 <style lang="scss" scoped>
-.btn-prev {
-  margin-left: 0;
-  margin-right: 5px;
-  .el-icon-arrow-left:before {
-    content: "\e6ea";
-  }
-}
-.btn-next {
-  margin-left: 5px;
-  margin-right: 0;
-  .el-icon-arrow-right:before {
-    content: "\e6e9";
-  }
-}
 // .pagination-button {
 //   width: 100%;
 //   height: auto;
 //   display: flex;
 //   justify-content: center;
 // }
+/* 分页按钮居中 */
 .el-pagination {
   display: flex;
   justify-content: center;

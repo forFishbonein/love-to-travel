@@ -1,4 +1,5 @@
 import httpRequest from "@/request";
+
 export const getNote = () => {
     return httpRequest({
         method: "get",

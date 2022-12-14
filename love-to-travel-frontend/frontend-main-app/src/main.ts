@@ -9,6 +9,8 @@ import "./styles/index.scss";
 import { mainStore } from "@/store/user";
 // 引入全局基本样式
 import "@/style.css";
+// 引入图标库
+import "@/assets/font/iconfont";
 // 引入全局element-icon
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 
