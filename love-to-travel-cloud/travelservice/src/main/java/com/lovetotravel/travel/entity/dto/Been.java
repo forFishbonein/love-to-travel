@@ -15,6 +15,12 @@ public class Been {
     @ApiModelProperty("经纬度")
     private Double[] pos;
 
+    @ApiModelProperty("简介")
+    private String introduction;
+
+    @ApiModelProperty("图片")
+    private String url;
+
     @ApiModelProperty("添加时间")
     private String createTime;
 

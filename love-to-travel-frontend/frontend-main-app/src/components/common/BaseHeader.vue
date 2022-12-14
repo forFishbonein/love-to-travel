@@ -155,7 +155,7 @@ const displayText = () => {
             <div class="main-menu-wrapper__left clearfix">
               <div class="main-menu-wrapper__logo">
                 <router-link to="/"
-                  ><img src="/images/resources/logo-1.png" alt=""
+                  ><img src="/images/resources/love-to-travel-logo1.png" alt=""
                 /></router-link>
               </div>
               <div class="main-menu-wrapper__main-menu">
@@ -163,7 +163,7 @@ const displayText = () => {
                   ><i class="fa fa-bars"></i
                 ></a>
                 <ul class="main-menu__list">
-                  <li class="dropdown current">
+                  <li class="dropdown current aly-index">
                     <a href="#">爱旅游</a>
                   </li>
                   <li class="dropdown">
@@ -360,4 +360,9 @@ const displayText = () => {
 .el-radio {
   --el-radio-input-border-color-hover: #e8604c !important;
 }
+
+.aly-index {
+
+}
+
 </style>

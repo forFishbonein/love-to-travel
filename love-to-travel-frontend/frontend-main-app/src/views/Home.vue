@@ -232,7 +232,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>Where Would You Like To Go?</p>
+                  <p>每个人心中,都会有一个古镇情怀，流水江南，烟笼人家。</p>
                 </div>
               </div>
             </div>
@@ -251,7 +251,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>Where Would You Like To Go?</p>
+                  <p>南风未起，念你成疾。</p>
                 </div>
               </div>
             </div>
@@ -270,7 +270,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>Where Would You Like To Go?</p>
+                  <p>因为有梦，所以勇敢出发，选择出发，便只顾风雨兼程。</p>
                 </div>
               </div>
             </div>
