@@ -189,6 +189,26 @@ export const routes: Array<RouteRecordRaw> = [
               showTab: true,
             },
           },
+          {
+            path: "note",
+            name: "Note",
+            component: () => import("@/views/personal/Note.vue"),
+            meta: {
+              title: "游记",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
+            path: "star",
+            name: "Star",
+            component: () => import("@/views/personal/Star.vue"),
+            meta: {
+              title: "我收藏的游记",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
         ],
       },
     ],

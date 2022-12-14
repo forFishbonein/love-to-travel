@@ -139,7 +139,7 @@ public class NoteController {
     }
 
     @ApiOperation("根据用户id查看收藏")
-    @GetMapping("/star")
+    @GetMapping("/star/{id}")
     public Result<List<Note>> getStarByUserId(@PathVariable("id") Long id) {
         return Result.success(noteService.getStarByUserId(id));
     }

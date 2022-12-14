@@ -289,8 +289,6 @@ const initEcharts = (scatterDataWant, scatterDataBeen) => {
         <p style="  margin: 0;
             line-height: 1.7em;"><span style="color:#e8604c;font-weight: 600;">类型：</span>想去</p>
             <p style="  margin: 0;
-            line-height: 1.7em;"><span style="color:#e8604c;font-weight: 600;">我的评分：</span>${score}</p>
-            <p style="  margin: 0;
                 line-height: 1.7em;"><span style="color:#e8604c;font-weight: 600;">简介：</span>${introduction}
             </p>
         </div>
