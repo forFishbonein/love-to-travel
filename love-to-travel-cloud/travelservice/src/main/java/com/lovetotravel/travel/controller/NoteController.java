@@ -5,6 +5,7 @@ import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
+import com.lovetotravel.travel.entity.vo.note.NoteStatistic;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.NoteService;
@@ -60,6 +61,7 @@ public class NoteController {
         return Result.success(noteService.fuzzyQuery(pageVo));
     }
 
+
     @ApiOperation("新增游记")
     @PostMapping
     public Result<String> insert(@RequestBody NoteVo noteVo) {
@@ -102,6 +104,12 @@ public class NoteController {
         return Result.success("取消点赞成功");
     }
 
+    @ApiOperation("是否点赞")
+    @PostMapping("/islike")
+    public Result<Boolean> isLike(@RequestBody NoteLike noteLike) {
+        return Result.success(noteService.isLike(noteLike));
+    }
+
     @ApiOperation("收藏游记")
     @PostMapping("/star")
     public Result<String> star(@RequestBody NoteStar noteStar) {
@@ -116,6 +124,12 @@ public class NoteController {
         return Result.success("取消收藏成功");
     }
 
+    @ApiOperation("是否收藏")
+    @PostMapping("/isstar")
+    public Result<Boolean> isStar(@RequestBody NoteStar noteStar) {
+        return Result.success(noteService.isStar(noteStar));
+    }
+
     @ApiOperation("根据用户id查看收藏")
     @GetMapping("/star")
     public Result<List<Note>> getStarByUserId(@PathVariable("id") Long id) {
@@ -123,5 +137,10 @@ public class NoteController {
     }
 
 
+    @ApiOperation("游记统计")
+    @PostMapping("/statistic")
+    public Result<NoteStatistic> getStatistic() {
+        return Result.success(noteService.getStatistic());
+    }
 
 }
