@@ -61,9 +61,8 @@ public class CommentController {
 
     @ApiOperation("查看是否点赞评论")
     @PostMapping("/islike")
-    public Boolean isLike(@RequestBody CommentLike commentLike) {
-
-        return commentService.islike(commentLike);
+    public Result<Boolean> isLike(@RequestBody CommentLike commentLike) {
+        return Result.success(commentService.islike(commentLike));
     }
 
 }

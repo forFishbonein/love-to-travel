@@ -104,8 +104,8 @@ public class NoteController {
 
     @ApiOperation("是否点赞")
     @PostMapping("/islike")
-    public Boolean isLike(@RequestBody NoteLike noteLike) {
-        return noteService.isLike(noteLike);
+    public Result<Boolean> isLike(@RequestBody NoteLike noteLike) {
+        return Result.success(noteService.isLike(noteLike));
     }
 
     @ApiOperation("收藏游记")
