@@ -70,7 +70,7 @@ public class CommentServiceImpl implements CommentService {
         mongoTemplate.insert(comment);
 
 
-        if (commentVo.getParentId() != "0") {
+        if (commentVo.getParentId() != "") {
             //父评论增加评论数
             Query query = new Query();
             query.addCriteria(Criteria.where("parentId").is(commentVo.getParentId()));
