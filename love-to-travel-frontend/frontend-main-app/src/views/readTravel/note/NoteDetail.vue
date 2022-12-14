@@ -6,7 +6,10 @@ import {
 } from "@/apis/travelService/note";
 import { getUserInfoById } from "@/apis/userService/user";
 import { getOneUserPlansInfoById } from "@/apis/travelService/plan";
-import { getCommentsByNoteId } from "@/apis/travelService/comment";
+import {
+  getCommentsByNoteId,
+  likeTheComment,
+} from "@/apis/travelService/comment";
 import { getFootsByUserId } from "@/apis/travelService/foot";
 import {
   theNotesInfoType,
@@ -19,7 +22,10 @@ import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
 import { strFormat } from "@/utils/filters/string";
-import { Avatar } from "@element-plus/icons-vue";
+import { useRouter } from "vue-router";
+import { mainStore } from "@/store/user";
+const router = useRouter();
+const store = mainStore();
 const props = defineProps<{
   noteId: string;
 }>();
@@ -206,8 +212,70 @@ const requestOneNoteInfoAndOthers = async () => {
 };
 requestOneNoteInfoAndOthers();
 const cLikeFlag = ref(false);
-const commentLike = () => {
-  alert(1111);
+const commentLike = async (commentId: string) => {
+  if (store.userInfo.id) {
+    // alert("点赞");
+    await likeTheComment(commentId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "点赞成功",
+          });
+          setTimeout(
+            () =>
+              //更新评论
+              getCommentsByNoteId(noteId)
+                .then((res: any) => {
+                  if (res.code != 0) {
+                    //@ts-ignore
+                    ElMessage({
+                      type: "error",
+                      message: res.msg,
+                    });
+                  } else {
+                    noteCommentsInfo.value = res.data;
+                    console.log(noteCommentsInfo.value);
+                    commentsFormat(noteCommentsInfo.value);
+                    console.log("-----------");
+                    console.log(finalCommentsArray.value);
+                    console.log("-----------");
+                  }
+                })
+                .catch((error) => {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: error.message,
+                  });
+                }),
+            2 * 1000
+          );
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    // alert("不保存");
+    // router.push("/login");
+    //@ts-ignore
+    ElMessage({
+      type: "warning",
+      message: "请先登录！",
+    });
+  }
   cLikeFlag.value = true;
 };
 </script>
@@ -423,7 +491,7 @@ const commentLike = () => {
               <h3 class="sidebar__title">游记评论</h3>
               <ul class="sidebar__category-list list-unstyled">
                 <li>
-                  <el-scrollbar max-height="500px">
+                  <el-scrollbar max-height="800px">
                     <el-collapse accordion>
                       <el-collapse-item
                         :name="index"
@@ -462,7 +530,7 @@ const commentLike = () => {
                                 <svg
                                   class="icon"
                                   aria-hidden="true"
-                                  @click="commentLike"
+                                  @click="commentLike(item.id)"
                                   v-else
                                 >
                                   <use xlink:href="#icon-dianzan"></use>
