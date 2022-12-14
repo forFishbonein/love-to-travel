@@ -5,6 +5,7 @@ import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
+import com.lovetotravel.travel.entity.vo.note.NoteStatistic;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.NoteService;
@@ -59,6 +60,7 @@ public class NoteController {
     public Result<QueryPageVo<Note>> getByStr(@RequestBody QueryPageVo pageVo) {
         return Result.success(noteService.fuzzyQuery(pageVo));
     }
+
 
     @ApiOperation("新增游记")
     @PostMapping
@@ -122,6 +124,12 @@ public class NoteController {
         return Result.success("取消收藏成功");
     }
 
+    @ApiOperation("是否收藏")
+    @PostMapping("/isstar")
+    public Result<Boolean> isStar(@RequestBody NoteStar noteStar) {
+        return Result.success(noteService.isStar(noteStar));
+    }
+
     @ApiOperation("根据用户id查看收藏")
     @GetMapping("/star")
     public Result<List<Note>> getStarByUserId(@PathVariable("id") Long id) {
@@ -129,5 +137,10 @@ public class NoteController {
     }
 
 
+    @ApiOperation("游记统计")
+    @PostMapping("/statistic")
+    public Result<NoteStatistic> getStatistic() {
+        return Result.success(noteService.getStatistic());
+    }
 
 }

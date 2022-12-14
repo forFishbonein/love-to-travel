@@ -3,6 +3,7 @@ import "./style.css";
 import App from "./App.vue";
 import router from "@/router";
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
+import * as echarts from 'echarts'
 
 const app = createApp(App);
 for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
@@ -10,3 +11,4 @@ for (const [key, component] of Object.entries(ElementPlusIconsVue)) {
 }
 app.use(router);
 app.mount("#app");
+app.config.globalProperties.$echarts = echarts;

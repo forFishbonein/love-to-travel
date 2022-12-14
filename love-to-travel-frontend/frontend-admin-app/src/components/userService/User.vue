@@ -13,7 +13,7 @@
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
       <el-table-column label="用户名" prop="name" width="150"/>
-      <el-table-column label="性别" prop="gender" width="100"/>
+      <el-table-column label="性别" prop="gender" width="60"/>
       <!--      <el-table-column label="状态" prop="status" width="80">-->
       <!--        <template #default="scope">-->
       <!--          {{ scope.row.status == 1 ? '在线' : '离线' }}-->

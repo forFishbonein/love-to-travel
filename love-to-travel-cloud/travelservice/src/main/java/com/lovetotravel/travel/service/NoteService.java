@@ -5,6 +5,7 @@ import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
+import com.lovetotravel.travel.entity.vo.note.NoteStatistic;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
 
 import java.util.List;
@@ -43,7 +44,11 @@ public interface NoteService {
 
     void unStar(NoteStar noteStar);
 
+    Boolean isStar(NoteStar noteStar);
+
     List<Note> getStarByUserId(Long id);
+
+    NoteStatistic getStatistic();
 
 
 }

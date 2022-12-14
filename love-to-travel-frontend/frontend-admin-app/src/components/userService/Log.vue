@@ -3,8 +3,8 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="Please input email"/>&nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo">邮箱查询</el-button>
+          <el-input v-model="queryStr" placeholder="请输入邮箱"/>&nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo">查询</el-button>
         </div>
       </div>
     </template>
@@ -12,10 +12,10 @@
     <el-table :data="tableData" style="width: 100%">
       <el-table-column label="uuid" prop="uuid" width="300"/>
       <el-table-column label="用户邮箱" prop="userEmail" width="200"/>
-      <el-table-column label="操作系统" prop="osName" width="200"/>
-      <el-table-column label="浏览器" prop="browser_name" width="150"/>
+      <el-table-column label="操作系统" prop="osName" width="150"/>
+      <el-table-column label="浏览器" prop="browserName" width="200"/>
       <el-table-column label="ip地址" prop="ipAddress" width="150"/>
-      <el-table-column label="创建时间" prop="createName" width="150"/>
+      <el-table-column label="登录时间" prop="createTime" width="200"/>
       <!-- <el-table-column fixed="right" label="Operations" width="150">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="openDetailDialog(scope.row.id)">详情</el-button>
@@ -109,5 +109,10 @@ export default {
 
 .box-card {
   width: auto; //重点，设置成auto
+}
+
+.query {
+  display: flex;
+  justify-content: space-between;
 }
 </style>
