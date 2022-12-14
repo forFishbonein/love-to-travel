@@ -42,7 +42,7 @@
               <el-menu-item index="2-2"
                 ><router-link to="/city">城市</router-link></el-menu-item
               >
-              <el-menu-item index="2-3">景区</el-menu-item>
+              <el-menu-item index="2-3"><router-link to="/scenery">景区</router-link></el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="游记业务">
               <el-menu-item index="2-4">
