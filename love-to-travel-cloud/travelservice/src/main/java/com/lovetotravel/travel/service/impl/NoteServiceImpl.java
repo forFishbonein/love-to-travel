@@ -154,6 +154,7 @@ public class NoteServiceImpl implements NoteService {
         note.setLike(0L);
         note.setComment(0L);
         note.setView(0L);
+        note.setStar(0L);
 
         Result<User> result = userClient.getById(Long.valueOf(noteVo.getUserId()));
         User user = result.getData();
