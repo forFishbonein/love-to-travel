@@ -9,6 +9,7 @@ import { getOneUserPlansInfoById } from "@/apis/travelService/plan";
 import {
   getCommentsByNoteId,
   likeTheComment,
+  islikeTheComment,
 } from "@/apis/travelService/comment";
 import { getFootsByUserId } from "@/apis/travelService/foot";
 import {
@@ -211,7 +212,7 @@ const requestOneNoteInfoAndOthers = async () => {
     });
 };
 requestOneNoteInfoAndOthers();
-const cLikeFlag = ref(false);
+// const cLikeFlag = ref(false);
 const commentLike = async (commentId: string) => {
   if (store.userInfo.id) {
     // alert("点赞");
@@ -276,7 +277,35 @@ const commentLike = async (commentId: string) => {
       message: "请先登录！",
     });
   }
-  cLikeFlag.value = true;
+};
+const commentisLike = (commentId: string) => {
+  let theFlag = false;
+  if (store.userInfo.id) {
+    // alert("点赞");
+    islikeTheComment(commentId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          theFlag = res.data;
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
+  return theFlag;
+};
+const cancelCommentLike = (commentId: string) => {
+  alert("取消点赞");
 };
 </script>
 <template>
@@ -523,7 +552,8 @@ const commentLike = async (commentId: string) => {
                                 <svg
                                   class="icon"
                                   aria-hidden="true"
-                                  v-if="cLikeFlag"
+                                  @click="cancelCommentLike(item.id)"
+                                  v-if="commentisLike(item.id)"
                                 >
                                   <use xlink:href="#icon-dianzan1"></use>
                                 </svg>
