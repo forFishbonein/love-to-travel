@@ -120,4 +120,15 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @Override
+    public Boolean islike(CommentLike commentLike) {
+        QueryWrapper<CommentLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CommentLike::getUserId, commentLike.getUserId()).eq(CommentLike::getCommentId, commentLike.getCommentId());
+        CommentLike commentLikeInMysql = commentLikeMapper.selectOne(queryWrapper);
+        if (commentLikeInMysql == null) {
+            return false;
+        }
+        return true;
+    }
+
 }

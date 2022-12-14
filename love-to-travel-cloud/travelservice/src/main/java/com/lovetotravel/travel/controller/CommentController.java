@@ -52,4 +52,11 @@ public class CommentController {
         return Result.success("点赞成功");
     }
 
+    @ApiOperation("查看是否点赞评论")
+    @PostMapping("/islike")
+    public Boolean isLike(@RequestBody CommentLike commentLike) {
+
+        return commentService.islike(commentLike);
+    }
+
 }
