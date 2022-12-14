@@ -783,7 +783,7 @@ export default {
         }
         .plan-items {
           height: 60%;
-          width: 340px;
+          width: 450px;
           // border: 1px #e8604c solid;
           position: absolute;
           top: 52px;

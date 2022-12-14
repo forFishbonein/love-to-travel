@@ -71,7 +71,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-scrollbar height="350px">
+  <el-scrollbar height="450px">
     <div
       v-for="(item, index) in sceneryListInfo"
       :key="item.id"
