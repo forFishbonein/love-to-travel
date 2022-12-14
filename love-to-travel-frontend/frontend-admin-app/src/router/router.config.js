@@ -45,6 +45,20 @@ export const routes = [
         component: () => import("@/components/serviceManage/Scenery.vue"),
         meta: { title: "景区管理" },
       },
+      {
+        path: "/log",
+        name: "Log",
+        component: () => import("@/components/userService/Log.vue"),
+        meta: { title: "登录日志" },
+      },
+      // 统计分析
+      {
+        path: "/data",
+        name: "Data",
+        component: () => import("@/components/dataManage/Data.vue"),
+        meta: { title: "统计分析" },
+      },
+
     ],
   },
 ];

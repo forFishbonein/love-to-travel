@@ -12,7 +12,7 @@
       <el-table :data="tableData" style="width: 100%">
         <el-table-column prop="uuid" label="uuid" width="300" />
         <el-table-column prop="userEmail" label="用户邮箱" width="200" />
-        <el-table-column prop="osName" label="操作系统" width="200" />
+        <el-table-column prop="osName" label="操作系统" width="150" />
         <el-table-column prop="browser_name" label="浏览器" width="150" />
         <el-table-column prop="ipAddress" label="ip地址" width="150" />
         <el-table-column prop="createName" label="创建时间" width="150" />
@@ -48,7 +48,6 @@ export default {
             pageSize:10,
             currentPage:1,
             queryStr:"",
-            input:"",
         };
     },
     methods: {
@@ -81,11 +80,6 @@ export default {
     },
     mounted() {
       this.getPageData(1,10);
-        // getLogInfo().then((response) => {
-        //     var _this = this;
-        //     _this.tableData = response.data;
-        //     console.log(this.tableData);
-        // })
     }
 }
 

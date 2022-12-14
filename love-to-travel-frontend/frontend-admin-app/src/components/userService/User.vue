@@ -15,24 +15,25 @@
 
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55" />
-      <el-table-column prop="id" label="用户id" width="100" />
-      <el-table-column prop="name" label="用户名称" width="100" />
-      <el-table-column prop="gender" label="性别" width="100" />
+      <el-table-column prop="id" label="用户id" width="80" />
+      <el-table-column prop="name" label="用户名称" width="150" />
+      <el-table-column prop="gender" label="性别" width="80" />
       <el-table-column prop="status" label="状态" width="80">
         <template #default="scope">
       {{scope.row.status==1?'在线':'离线'}}
       </template>
       </el-table-column>
-      <el-table-column prop="birthday" label="出生日期" width="100" />
       <el-table-column prop="email" label="邮箱" width="180" />
-      <el-table-column prop="tele" label="电话" width="100" />
+      <el-table-column prop="tele" label="电话" width="120" />
       <el-table-column prop="grade" label="等级" width="80" />
       <el-table-column prop="experience" label="经验" width="80" />
+      <el-table-column prop="visits" label="访客数量" width="80" />
+      <el-table-column prop="birthday" label="出生日期" width="100" />
       <el-table-column prop="address" label="地址" width="100" />
       <el-table-column prop="post" label="岗位" width="100" />
       <el-table-column prop="profession" label="职业" width="100" />
-      <el-table-column prop="signature" label="个性签名" width="150" />
-      <el-table-column prop="createTime" label="创建时间" width="100" />
+      <el-table-column prop="signature" label="个性签名" width="150" :show-overflow-tooltip="true" />
+      <el-table-column prop="createTime" label="创建时间" width="120" :show-overflow-tooltip="true" />
       <el-table-column fixed="right" label="Operations" width="150">
         <template #default="scope">
           <el-button link type="primary" size="small" @click="openDetailDialog(scope.row.id)">详情</el-button>
@@ -46,7 +47,7 @@
     <el-pagination
     v-model:current-page="currentPage"
     v-model:page-size="pageSize"
-    :page-sizes="[10, 20, 30, 40]" 
+    :page-sizes="[5, 10, 20, 30]" 
     :background="true"
     layout="total, sizes, prev, pager, next, jumper"
     :total="pageInfo.total"
@@ -91,7 +92,7 @@
       <el-input v-model="form.profession" autocomplete="off" />
     </el-form-item>
     <el-form-item label="个性签名" :label-width="formLabelWidth">
-      <el-input v-model="form.signatur" type="textarea"/>
+      <el-input v-model="form.signature" type="textarea" />
     </el-form-item>
   </el-form>
   <template #footer>
@@ -116,6 +117,9 @@
       </el-form-item>
       <el-form-item label="头像" :label-width="formLabelWidth">
         <el-form-item :label="form.url"></el-form-item>
+      </el-form-item>
+      <el-form-item label="密码" :label-width="formLabelWidth">
+        <el-form-item :label="form.password"></el-form-item>
       </el-form-item>
       <el-form-item label="出生日期" :label-width="formLabelWidth">
         <el-form-item :label="form.birthday"></el-form-item>
@@ -163,7 +167,6 @@
 </template>
 
 <script>
-// import {ElMessage,ElMessageBox} from 'element-plus';
 import { getUser,updateUserInfo,deleteUserInfo,getUserByID,getPageUserInfo } from "../../apis/userManage/user";
 export default {
   data() {
@@ -174,8 +177,7 @@ export default {
           multipleSelection:[],
           tableData:[],
           form:{},
-          input:"",
-          formLabelWidth:"140px",
+          formLabelWidth:"150px",
           title:"",
           btnName:"",
           pageInfo:{},
@@ -206,8 +208,6 @@ export default {
           console.log(this.pageInfo.records)
         })
       },
-    //-----------------------------------------
-    // 查看用户信息详情
     openDetailDialog(id){
           this.dialogDetailVisible=true;
           var _this=this;
@@ -216,7 +216,6 @@ export default {
               _this.form=response.data;
           })
       },
-    //-----------------------------------------
     btnUpdate(){
       this.updateUser();
       console.log("修改操作....");
@@ -248,7 +247,7 @@ export default {
     })
     this.form=[];
    },
-    queryInfo(){
+  queryInfo(){
       if(this.queryStr.trim().length>0){
         this.tableData = this.tableData.filter(item => (item.email).match(this.queryStr.trim()))
       }
@@ -256,9 +255,7 @@ export default {
         //     this.tableData=this.queryData;
         // }
           console.log("queryinfo...");
-    },
-    //-----------------------------------------
-    //删除单条数据
+  },
       singleDelete(id){
           console.log(id);
           ElMessageBox.confirm(
@@ -298,7 +295,7 @@ export default {
       multiDelete(){
         console.log("multiDelete().....");
         ElMessageBox.confirm(
-        '您确定要删除目前选中的多条数目吗?',
+        '您确定要删除目前选中的多条数据吗?',
         'Warning',
         {
           confirmButtonText: '确认',
@@ -331,8 +328,6 @@ export default {
           })
         })
       },
-    //-----------------------------------------
-    //多行选择
     handleSelectionChange(val){            
       this.multipleSelection = val;
       console.log(this.multipleSelection);
