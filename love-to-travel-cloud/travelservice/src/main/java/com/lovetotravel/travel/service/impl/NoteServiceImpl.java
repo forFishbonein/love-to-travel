@@ -9,6 +9,7 @@ import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
+import com.lovetotravel.travel.entity.vo.note.NoteStatistic;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.mapper.NoteLikeMapper;
@@ -18,6 +19,7 @@ import com.lovetotravel.travel.redis.RedisService;
 import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.NoteService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -367,6 +369,27 @@ public class NoteServiceImpl implements NoteService {
             notes.add(mongoTemplate.findOne(query, Note.class));
         }
         return notes;
+    }
+
+    @Override
+    public NoteStatistic getStatistic() {
+        Query queryLike = new Query();
+        queryLike.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("like"))).limit(5);
+        List<Note> likeList = mongoTemplate.find(queryLike, Note.class);
+
+        Query queryStar = new Query();
+        queryStar.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("star"))).limit(5);
+        List<Note> starList = mongoTemplate.find(queryStar, Note.class);
+
+        Query queryView = new Query();
+        queryView.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("view"))).limit(5);
+        List<Note> viewList = mongoTemplate.find(queryView, Note.class);
+
+        NoteStatistic noteStatistic = new NoteStatistic();
+        noteStatistic.setLikeList(likeList);
+        noteStatistic.setStarList(starList);
+        noteStatistic.setViewList(viewList);
+        return noteStatistic;
     }
 
 

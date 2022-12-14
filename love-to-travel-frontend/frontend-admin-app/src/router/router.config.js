@@ -46,12 +46,17 @@ export const routes = [
                 meta: {title: "景区管理"},
             },
             {
-              path: "/log",
-              name: "Log",
-              component: () => import("@/components/userService/Log.vue"),
-              meta: {title: "登录日志"},
-          },
-            
+                path: "/log",
+                name: "Log",
+                component: () => import("@/components/userService/Log.vue"),
+                meta: {title: "登录日志"},
+            },
+            {
+                path: "/rank",
+                name: "Rank",
+                component: () => import("@/components/statisticService/Rank.vue"),
+                meta: {title: "游记排行"},
+            },
         ],
     },
 ];

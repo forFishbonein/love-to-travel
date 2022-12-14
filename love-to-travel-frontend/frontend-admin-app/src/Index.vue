@@ -61,8 +61,10 @@
               </el-menu-item
               >
               <el-menu-item index="3-2"
-                ><router-link to="/log">登录日志</router-link></el-menu-item>
-                <el-menu-item index="3-3">管理员</el-menu-item>
+              >
+                <router-link to="/log">登录日志</router-link>
+              </el-menu-item>
+              <el-menu-item index="3-3">管理员</el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="4">
@@ -73,7 +75,9 @@
               <span>统计分析板块</span>
             </template>
             <el-menu-item-group>
-              <el-menu-item index="4-1"><router-link to="/data">分析try</router-link></el-menu-item>
+              <el-menu-item index="4-1">
+                <router-link to="/rank">游记排行</router-link>
+              </el-menu-item>
               <el-menu-item index="4-2">2</el-menu-item>
               <el-menu-item index="4-3">3</el-menu-item>
             </el-menu-item-group>
