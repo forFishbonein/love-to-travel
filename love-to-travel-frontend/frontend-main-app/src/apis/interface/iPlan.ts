@@ -33,10 +33,11 @@ export interface planCityInfoType {
 export interface citysInfoType {
   cityId: string;
   cityName: string;
+  cityEname: string;
   lng: string;
   lat: string;
-  url: null;
-  introduction: null;
+  url: string;
+  introduction: string;
 }
 
 /* 3 */

@@ -179,46 +179,16 @@ export const routes: Array<RouteRecordRaw> = [
               showTab: true,
             },
           },
-          // {
-          //   path: "scenery",
-          //   name: "Scenery",
-          //   component: Scenery,
-          //   meta: {
-          //     title: "景区页",
-          //     keepAlive: false,
-          //     showTab: true,
-          //   },
-          //   redirect: "/goTravel/scenery/list",
-          //   children: [
-          //     {
-          //       path: "list",
-          //       name: "SceneryList",
-          //       component: () =>
-          //         import("@/views/goTravel/scenery/SceneryList.vue"),
-          //       meta: {
-          //         title: "景区列表",
-          //         keepAlive: false,
-          //         showTab: true,
-          //       },
-          //     },
-          //     {
-          //       path: "detail/:sceneryId",
-          //       name: "SceneryDetail",
-          //       component: () =>
-          //         import("@/views/goTravel/scenery/SceneryDetail.vue"),
-          //       meta: {
-          //         title: "景区详情",
-          //         keepAlive: false,
-          //         showTab: true,
-          //       },
-          //       props(route) {
-          //         return {
-          //           sceneryId: route.params.sceneryId,
-          //         };
-          //       },
-          //     },
-          //   ],
-          // },
+          {
+            path: "foot",
+            name: "Foot",
+            component: () => import("@/views/personal/Foot.vue"),
+            meta: {
+              title: "足迹",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
         ],
       },
     ],

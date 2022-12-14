@@ -146,8 +146,10 @@ const requestOneNoteInfoAndOthers = async () => {
           message: res.msg,
         });
       } else {
-        userBeensInfo.value = res.data.beens;
-        console.log(userBeensInfo.value);
+        if (res.data && res.data.beens) {
+          userBeensInfo.value = res.data.beens;
+          console.log(userBeensInfo.value);
+        }
       }
     })
     .catch((error) => {

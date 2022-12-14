@@ -25,6 +25,7 @@ export const getOneNoteInfoById = (noteId: string) => {
     loading: true, //显示加载圈
   });
 };
+/* 根据用户id获取游记 */
 export const getNotesInfoByUserId = (userId: string) => {
   return httpRequest({
     method: "get",
