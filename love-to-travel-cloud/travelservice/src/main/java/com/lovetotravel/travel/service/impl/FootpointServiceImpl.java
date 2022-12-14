@@ -62,6 +62,12 @@ public class FootpointServiceImpl implements FootpointService {
             Want want = new Want();
             want.setCityId(wantVo.getCityId());
             want.setCityName(city.getCityName());
+
+            Double[] pos = new Double[2];
+            pos[0] = Double.valueOf(city.getLng());
+            pos[1] = Double.valueOf(city.getLat());
+            want.setPos(pos);
+
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
@@ -119,6 +125,12 @@ public class FootpointServiceImpl implements FootpointService {
             Been been = new Been();
             been.setCityId(beenVo.getCityId());
             been.setCityName(city.getCityName());
+
+            Double[] pos = new Double[2];
+            pos[0] = Double.valueOf(city.getLng());
+            pos[1] = Double.valueOf(city.getLat());
+            been.setPos(pos);
+
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
@@ -178,6 +190,12 @@ public class FootpointServiceImpl implements FootpointService {
                 Want want = new Want();
                 want.setCityId(wantRemoveVo.getCityId());
                 want.setCityName(city.getCityName());
+
+                Double[] pos = new Double[2];
+                pos[0] = Double.valueOf(city.getLng());
+                pos[1] = Double.valueOf(city.getLat());
+                want.setPos(pos);
+
                 want.setCreateTime(wantRemoveVo.getCreateTime());
                 wants.remove(want);
                 footpoint.setWants(wants);
@@ -208,6 +226,12 @@ public class FootpointServiceImpl implements FootpointService {
                 Been been = new Been();
                 been.setCityId(beenRemoveVo.getCityId());
                 been.setCityName(city.getCityName());
+
+                Double[] pos = new Double[2];
+                pos[0] = Double.valueOf(city.getLng());
+                pos[1] = Double.valueOf(city.getLat());
+                been.setPos(pos);
+
                 been.setCreateTime(beenRemoveVo.getCreateTime());
                 beens.remove(been);
                 footpoint.setBeens(beens);

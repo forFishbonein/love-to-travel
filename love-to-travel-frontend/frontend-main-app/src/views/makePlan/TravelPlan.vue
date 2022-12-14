@@ -342,7 +342,7 @@ export default {
           <input type="text" class="input-search" />
         </div>
         <div class="items">
-          <el-scrollbar height="360px">
+          <el-scrollbar height="460px">
             <div
               v-for="(item, index) in citysInfo"
               :key="index"
@@ -447,9 +447,10 @@ export default {
             <el-radio-button label="3000" />
             <el-radio-button label="5000" />
           </el-radio-group>
-          <div class="select-confirm">
-            <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
-          </div>
+
+        </div>
+        <div class="select-confirm">
+          <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
         </div>
       </div>
       <el-dialog
@@ -472,7 +473,7 @@ export default {
         <template #footer>
           <span class="dialog-footer">
             <!-- <el-button @click="dialogFormVisible = false">Cancel</el-button> -->
-            <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
+            <el-button type="primary" @click="confirmPlan">确认</el-button>
           </span>
         </template>
       </el-dialog>
@@ -568,9 +569,10 @@ export default {
       background-color: #e8604c;
       width: 100%;
       height: 10%;
+      line-height: 50px;
       border: 1px #e8604c solid;
       display: flex;
-      justify-content: left;
+      justify-content: center;
       align-content: center;
       p {
         font-size: 25px;
@@ -599,6 +601,8 @@ export default {
           justify-content: center;
           align-items: center;
           border: 1px #e8604c solid;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
           border-right: 0;
           transition: all 0.3s linear;
           cursor: pointer;
@@ -615,11 +619,13 @@ export default {
           font-size: 15px;
           line-height: 30px;
           border: 1px #e8604c solid;
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
           border-left: 0;
           padding-left: 10px;
           transition: all 0.3s linear;
         }
-        .input-search:focus {
+        .input-search:hover, .input-search:focus {
           background-color: #ffffff;
         }
       }
@@ -638,7 +644,8 @@ export default {
           // margin: 10px;
           margin: 10px 0;
           border-radius: 4px;
-          background: rgba(232, 96, 76, 0.2);
+          background: rgba(253, 252, 176, 0.2);
+          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
           color: var(--el-color-primary);
         }
         .scrollbar-item > div:first-child {
