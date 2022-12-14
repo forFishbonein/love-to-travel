@@ -52,6 +52,13 @@ public class CommentController {
         return Result.success("点赞成功");
     }
 
+    @ApiOperation("根据评论id取消评论")
+    @PostMapping("/unLike")
+    public Result<String> unLike(@RequestBody CommentLike commentLike) {
+        commentService.unLike(commentLike);
+        return Result.success("取消点赞成功");
+    }
+
     @ApiOperation("查看是否点赞评论")
     @PostMapping("/islike")
     public Boolean isLike(@RequestBody CommentLike commentLike) {
