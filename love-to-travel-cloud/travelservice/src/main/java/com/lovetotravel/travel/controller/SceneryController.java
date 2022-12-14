@@ -57,6 +57,13 @@ public class SceneryController {
         return Result.success(sceneryService.getByCityId(id));
     }
 
+    @ApiOperation("根据城市名查询景区")
+    @GetMapping("/scenery/city/name/{name}")
+    public Result<List<Scenery>> getByCityName(@PathVariable("name") String name) {
+        System.out.println(name);
+        return Result.success(sceneryService.getByCityName(name));
+    }
+
     @ApiOperation("新增景区")
     @PostMapping
     public Result<String> insert(@RequestBody SceneryInsertVo sceneryInsertVo) {

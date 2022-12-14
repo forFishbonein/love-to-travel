@@ -20,6 +20,8 @@ public interface SceneryService extends IService<Scenery> {
 
     List<Scenery> getByCityId(String id);
 
+    List<Scenery> getByCityName(String name);
+
     void insert(SceneryInsertVo sceneryInsertVo);
 
     void update(SceneryUpdateVo sceneryUpdateVo);

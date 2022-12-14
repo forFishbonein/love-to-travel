@@ -3151,7 +3151,7 @@ ul {
 .news-one {
     position: relative;
     display: block;
-    padding: 120px 0 84px;
+    padding: 50px 0 84px;
 }
 
 .news-one__top {
@@ -3279,8 +3279,8 @@ ul {
 }
 
 .news-one__date {
-    height: 65px;
-    width: 65px;
+    height: 40px;
+    width: 120px;
     background-color: var(--thm-primary);
     display: flex;
     align-items: center;
@@ -3339,7 +3339,7 @@ ul {
 }
 
 .news-one__title {
-    font-size: 26px;
+    font-size: 18px;
     font-weight: 700;
     line-height: 36px;
 }
