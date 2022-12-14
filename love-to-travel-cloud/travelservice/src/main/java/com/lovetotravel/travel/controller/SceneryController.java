@@ -153,11 +153,7 @@ public class SceneryController {
     @ApiOperation("景区模糊查询")
     @PostMapping("/scenery/query")
     public Result<Page<Scenery>> getSceneryByStr(@RequestBody QueryPageVo pageVo) {
-
-
-
-
-        return null;
+        return Result.success(sceneryService.getSceneryByStr(pageVo));
     }
 
     @ApiOperation("景区评论")
@@ -178,6 +174,8 @@ public class SceneryController {
     public Result<GetUserComment> getUserComment(@PathVariable("id") Long id) {
         return Result.success(sceneryService.getUserComment(id));
     }
+
+
 
 
 

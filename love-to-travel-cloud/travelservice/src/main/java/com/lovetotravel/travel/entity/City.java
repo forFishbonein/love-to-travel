@@ -2,12 +2,12 @@ package com.lovetotravel.travel.entity;
 
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
+import org.springframework.data.annotation.Id;
 
 @Data
 public class City {
 
     @ApiModelProperty("城市id")
-
     private String cityId;
 
     @ApiModelProperty("城市名称")

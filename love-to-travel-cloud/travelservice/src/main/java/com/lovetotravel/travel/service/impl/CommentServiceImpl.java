@@ -65,12 +65,12 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserName(user.getName());
 
         if (commentVo.getParentId() == null) {
-            comment.setParentId("0");
+            comment.setParentId("");
         }
         mongoTemplate.insert(comment);
 
 
-        if (commentVo.getParentId() != "0") {
+        if (commentVo.getParentId() != "") {
             //父评论增加评论数
             Query query = new Query();
             query.addCriteria(Criteria.where("parentId").is(commentVo.getParentId()));
@@ -94,6 +94,25 @@ public class CommentServiceImpl implements CommentService {
     public void removeById(String id) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
+        Comment comment = mongoTemplate.findOne(query, Comment.class);
+        if (comment.getParentId() != "") {
+            //父评论增加评论数
+            Query query2 = new Query();
+            query2.addCriteria(Criteria.where("parentId").is(comment.getParentId()));
+            Comment parentComment = mongoTemplate.findOne(query2, Comment.class);
+            System.out.println("parentComment = " + parentComment);
+            if (parentComment == null) {
+                throw new GlobalException(CodeMsg.COMMENT_NOT_EXIST);
+            }
+            Update update = new Update();
+            if (parentComment.getReply() == null) {
+                parentComment.setReply(0);
+            }
+            update.set("reply", parentComment.getReply() + 1);
+            mongoTemplate.upsert(query, update, Comment.class);
+        }
+
+
         mongoTemplate.remove(query, Comment.class);
     }
 
@@ -118,6 +137,43 @@ public class CommentServiceImpl implements CommentService {
             //保存用户点赞信息
             commentLikeMapper.insert(commentLike);
         }
+    }
+
+    @Override
+    public void unLike(CommentLike commentLike) {
+        QueryWrapper<CommentLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CommentLike::getUserId, commentLike.getUserId()).eq(CommentLike::getCommentId, commentLike.getCommentId());
+        CommentLike commentLikeInMysql = commentLikeMapper.selectOne(queryWrapper);
+        if (commentLikeInMysql != null) {
+            //增加点赞数
+            Query query = new Query();
+            query.addCriteria(Criteria.where("id").is(commentLike.getCommentId()));
+            Comment comment = mongoTemplate.findOne(query, Comment.class);
+            System.out.println("comment = " + comment);
+            if (comment.getLike() == null) {
+                comment.setLike(0);
+            }
+            Update update = new Update();
+            update.set("like", comment.getLike() - 1);
+            if (comment.getLike() < 0) {
+                comment.setLike(0);
+            }
+            mongoTemplate.upsert(query, update, Comment.class);
+            //保存用户点赞信息
+            commentLikeMapper.delete(queryWrapper);
+        }
+
+    }
+
+    @Override
+    public Boolean islike(CommentLike commentLike) {
+        QueryWrapper<CommentLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CommentLike::getUserId, commentLike.getUserId()).eq(CommentLike::getCommentId, commentLike.getCommentId());
+        CommentLike commentLikeInMysql = commentLikeMapper.selectOne(queryWrapper);
+        if (commentLikeInMysql == null) {
+            return false;
+        }
+        return true;
     }
 
 }

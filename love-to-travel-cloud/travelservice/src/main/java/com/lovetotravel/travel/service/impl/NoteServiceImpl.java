@@ -9,6 +9,7 @@ import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
 import com.lovetotravel.travel.entity.vo.note.NoteStar;
+import com.lovetotravel.travel.entity.vo.note.NoteStatistic;
 import com.lovetotravel.travel.entity.vo.note.NoteVo;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.mapper.NoteLikeMapper;
@@ -18,6 +19,7 @@ import com.lovetotravel.travel.redis.RedisService;
 import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.NoteService;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
@@ -87,7 +89,8 @@ public class NoteServiceImpl implements NoteService {
         Integer pageNum = pageVo.getPageNum();
         List<Note> list;
         try {
-            Query query = new Query(new Criteria());
+            Query query = new Query();
+            query.addCriteria(Criteria.where("deleted").is("0"));
             long total = mongoTemplate.count(query, Note.class);
             //默认值为5，
             pageSize = pageSize < 0 ? 5 : pageSize;
@@ -112,7 +115,8 @@ public class NoteServiceImpl implements NoteService {
         Integer pageNum = pageVo.getPageNum();
         List<Note> list;
         try {
-            Query query = new Query(new Criteria());
+            Query query = new Query();
+            query.addCriteria(Criteria.where("deleted").is("0"));
             long total = mongoTemplate.count(query, Note.class);
             //默认值为5，
             pageSize = pageSize < 0 ? 5 : pageSize;
@@ -150,6 +154,7 @@ public class NoteServiceImpl implements NoteService {
         note.setLike(0L);
         note.setComment(0L);
         note.setView(0L);
+        note.setStar(0L);
 
         Result<User> result = userClient.getById(Long.valueOf(noteVo.getUserId()));
         User user = result.getData();
@@ -260,6 +265,17 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public Boolean isLike(NoteLike noteLike) {
+        QueryWrapper<NoteLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteLike::getUserId, noteLike.getUserId()).eq(NoteLike::getNoteId, noteLike.getNoteId());
+        NoteLike commentLikeInMysql = noteLikeMapper.selectOne(queryWrapper);
+        if (commentLikeInMysql == null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void unLike(NoteLike noteLike) {
         //查询用户是否点赞
         QueryWrapper<NoteLike> queryWrapper = new QueryWrapper<>();
@@ -283,6 +299,8 @@ public class NoteServiceImpl implements NoteService {
         }
     }
 
+
+
     @Override
     public void star(NoteStar noteStar) {
         //查询用户是否收藏
@@ -299,7 +317,7 @@ public class NoteServiceImpl implements NoteService {
                 note.setStar(0L);
             }
             Update update = new Update();
-            update.set("like", note.getStar() + 1);
+            update.set("star", note.getStar() + 1);
             mongoTemplate.upsert(query, update, Note.class);
             //保存用户收藏信息
             noteStarMapper.insert(noteStar);
@@ -330,6 +348,17 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public Boolean isStar(NoteStar noteStar) {
+        QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteStar::getUserId, noteStar.getUserId()).eq(NoteStar::getNoteId, noteStar.getNoteId());
+        NoteStar commentStarInMysql = noteStarMapper.selectOne(queryWrapper);
+        if (commentStarInMysql == null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public List<Note> getStarByUserId(Long id) {
         QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(NoteStar::getUserId, id);
@@ -341,6 +370,27 @@ public class NoteServiceImpl implements NoteService {
             notes.add(mongoTemplate.findOne(query, Note.class));
         }
         return notes;
+    }
+
+    @Override
+    public NoteStatistic getStatistic() {
+        Query queryLike = new Query();
+        queryLike.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("like"))).limit(5);
+        List<Note> likeList = mongoTemplate.find(queryLike, Note.class);
+
+        Query queryStar = new Query();
+        queryStar.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("star"))).limit(5);
+        List<Note> starList = mongoTemplate.find(queryStar, Note.class);
+
+        Query queryView = new Query();
+        queryView.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("view"))).limit(5);
+        List<Note> viewList = mongoTemplate.find(queryView, Note.class);
+
+        NoteStatistic noteStatistic = new NoteStatistic();
+        noteStatistic.setLikeList(likeList);
+        noteStatistic.setStarList(starList);
+        noteStatistic.setViewList(viewList);
+        return noteStatistic;
     }
 
 

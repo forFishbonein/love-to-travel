@@ -46,6 +46,9 @@ public class Scenery {
     @ApiModelProperty("小贴士")
     private String tips;
 
+    @ApiModelProperty("对应城市名称")
+    private String cityName;
+
     @ApiModelProperty("对应城市id")
     private String cityId;
 

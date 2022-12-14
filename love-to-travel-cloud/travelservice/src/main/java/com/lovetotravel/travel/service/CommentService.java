@@ -16,5 +16,8 @@ public interface CommentService {
 
     void like(CommentLike commentLike);
 
+    void unLike(CommentLike commentLike);
+
+    Boolean islike(CommentLike commentLike);
 
 }

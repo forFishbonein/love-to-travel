@@ -15,6 +15,9 @@ export default defineConfig({
       resolvers: [ElementPlusResolver()],
     }),
   ],
+  server: {
+    hmr: true
+  },
   resolve: {
     alias: {
       "@": resolve(__dirname, "src"),

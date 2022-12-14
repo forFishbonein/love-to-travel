@@ -100,9 +100,11 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
     @Override
     public Page<Scenery> getSceneryByStr(QueryPageVo pageVo) {
-
-
-        return null;
+        Page<Scenery> page = new Page<>(pageVo.getPageNum(), pageVo.getPageSize());
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(Scenery::getIntroduction, pageVo.getQueryStr());
+        Page<Scenery> cityPage = sceneryMapper.selectPage(page, queryWrapper);
+        return cityPage;
     }
 
 
