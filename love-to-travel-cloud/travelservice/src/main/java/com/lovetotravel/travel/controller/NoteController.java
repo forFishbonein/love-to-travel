@@ -102,6 +102,12 @@ public class NoteController {
         return Result.success("取消点赞成功");
     }
 
+    @ApiOperation("是否点赞")
+    @PostMapping("/islike")
+    public Boolean isLike(@RequestBody NoteLike noteLike) {
+        return noteService.isLike(noteLike);
+    }
+
     @ApiOperation("收藏游记")
     @PostMapping("/star")
     public Result<String> star(@RequestBody NoteStar noteStar) {

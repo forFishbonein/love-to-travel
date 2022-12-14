@@ -35,6 +35,8 @@ public interface NoteService {
 
     void like(NoteLike noteLike);
 
+    Boolean isLike (NoteLike noteLike);
+
     void unLike(NoteLike noteLike);
 
     void star(NoteStar noteStar);

@@ -262,6 +262,17 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public Boolean isLike(NoteLike noteLike) {
+        QueryWrapper<NoteLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteLike::getUserId, noteLike.getUserId()).eq(NoteLike::getNoteId, noteLike.getNoteId());
+        NoteLike commentLikeInMysql = noteLikeMapper.selectOne(queryWrapper);
+        if (commentLikeInMysql == null) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
     public void unLike(NoteLike noteLike) {
         //查询用户是否点赞
         QueryWrapper<NoteLike> queryWrapper = new QueryWrapper<>();
@@ -284,6 +295,8 @@ public class NoteServiceImpl implements NoteService {
             noteLikeMapper.delete(queryWrapper);
         }
     }
+
+
 
     @Override
     public void star(NoteStar noteStar) {
