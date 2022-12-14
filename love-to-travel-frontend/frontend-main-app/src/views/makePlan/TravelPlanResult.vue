@@ -385,29 +385,30 @@ onMounted(() => {
               <el-icon :size="35"><LocationInformation /></el-icon>
               <div class="item-left-text">
                 <p>{{ item.city }}</p>
-                <p>
+                <p>当前天气：{{ item.weather }}</p>
+                <div class="item-left-text-input">
                   旅行<input
                     v-model="item.dayLength"
                     type="number"
                     placeholder="天数"
                     class="budget-city-input"
                   />天
-                </p>
-                <p>
+                </div>
+                <div class="item-left-text-input">
                   预算<input
                     v-model="item.budget"
                     type="number"
                     placeholder="金额"
                     class="budget-city-input"
                   />元
-                </p>
-                <p>当前天气：{{ item.weather }}</p>
+                </div>
+
               </div>
             </div>
             <div class="item-right">
               <el-dropdown trigger="click">
                 <el-button type="primary">
-                  <el-icon size="15"><arrow-down /></el-icon>
+                  <el-icon size="15"><tools /></el-icon>
                 </el-button>
                 <template #dropdown>
                   <el-dropdown-menu>
@@ -425,7 +426,7 @@ onMounted(() => {
               </el-dropdown>
             </div>
           </div>
-          <div class="add-city" @click="openCityDialog(0, 0)">+ 添加城市</div>
+          <div class="add-city" @click="openCityDialog(0, 0)">添加城市</div>
         </el-scrollbar>
       </div>
       <div class="left-footer">
@@ -449,7 +450,7 @@ onMounted(() => {
         </p>
       </div>
       <div class="middle-body">
-        <el-scrollbar max-height="320px" v-if="showFlag">
+        <el-scrollbar max-height="475px" v-if="showFlag">
           <div
             v-for="(item, index) in oneCityDaysDisplay"
             :key="index"
@@ -616,23 +617,24 @@ onMounted(() => {
   background-color: #f2f3f5;
   .body-left {
     width: 250px;
-    height: 470px;
+    height: 565px;
     position: absolute;
     // border: 1px #e8604c solid;
-    left: 20px;
+    left: 130px;
     top: 30px;
     border-radius: 5px;
     background-color: #ffffff;
     box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
     .left-header {
       width: auto;
-      height: 13%;
+      height: 80px;
       border-bottom: 2px #e8604c solid;
       display: flex;
       justify-content: space-around;
-      align-items: center;
+      //align-items: center;
       flex-direction: column;
       p {
+        padding: 4px 20px;
         font-size: 16px;
         margin: 0;
         line-height: 1.5em;
@@ -640,19 +642,21 @@ onMounted(() => {
     }
     .left-footer {
       width: auto;
-      height: 18%;
+      height: 80px;
       // border: 1px #e8604c solid;
       border-top: 2px #e8604c solid;
       display: flex;
       justify-content: space-around;
-      align-items: center;
+      //align-items: center;
       flex-direction: column;
       font-size: 16px;
+      padding: 4px 20px;
       div {
         width: 200px;
         height: 32px;
         display: flex;
-        align-items: center;
+        //align-items: center;
+
         line-height: 30px;
         .footer-input {
           width: 120px;
@@ -664,13 +668,13 @@ onMounted(() => {
     }
     .left-body {
       width: auto;
-      height: 69%;
+      height: 400px;
       // border: 1px #e8604c solid;
       .left-scrollbar-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 90px;
+        height: 130px;
         // border: 1px #e8604c solid;
         background: rgba(255, 255, 255);
         cursor: pointer;
@@ -680,17 +684,18 @@ onMounted(() => {
         border-bottom: 1px #dcdfe6 solid;
         .item-left {
           width: 160px;
-          height: 80px;
+          height: 100px;
           display: flex;
           justify-content: space-around;
           align-items: center;
           padding-left: 10px;
           i {
-            color: #303133;
+            color: #fff;
           }
           .item-left-text {
             p {
-              font-size: 15px;
+              padding: 2px;
+              font-size: 16px;
               margin: 0;
               line-height: 1.4em;
             }
@@ -698,12 +703,14 @@ onMounted(() => {
               color: #303133;
               font-weight: 700;
             }
-            > p:nth-child(3) {
-              width: 100px;
-            }
-            > p:nth-child(4) {
-              width: 130px;
-            }
+            .item-left-text-input {
+
+              padding: 2px;
+
+              font-size: 14px;
+
+              }
+
           }
         }
         .item-right {
@@ -730,6 +737,12 @@ onMounted(() => {
         transition: all 0.3s linear;
         background-color: #f2f6fc;
       }
+      .add-city::after{
+        position: absolute;
+        left: 70px;
+        content: '+';
+        display: block;
+      }
       .add-city:hover {
         background: rgba(245, 245, 245);
       }
@@ -737,10 +750,10 @@ onMounted(() => {
   }
   .body-middle {
     width: 480px;
-    height: 400px;
+    height: 565px;
     position: absolute;
     // border: 1px #e8604c solid;
-    left: 300px;
+    left: 420px;
     top: 30px;
     border-radius: 5px;
     background-color: #ffffff;
@@ -778,7 +791,7 @@ onMounted(() => {
     }
     .middle-body {
       width: auto;
-      height: 320px;
+      height: 475px;
       .scrollbar-middle-items {
         display: flex;
         justify-content: center;
@@ -842,11 +855,11 @@ onMounted(() => {
   }
   .body-right {
     width: 450px;
-    height: 470px;
+    height: 565px;
     position: absolute;
     // border: 1px #e8604c solid;
     box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
-    left: 810px;
+    left: 930px;
     top: 30px;
     background-color: #ffffff;
     border-radius: 5px;
@@ -919,7 +932,7 @@ onMounted(() => {
     }
     .right-body {
       width: auto;
-      height: 350px;
+      height: 450px;
       // border: 1px #e8604c solid;
     }
   }
