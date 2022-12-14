@@ -32,3 +32,11 @@ export const getOneCityInfoById = (cityId: string) => {
     loading: true, //显示加载圈
   });
 };
+
+export const getCitysInfoByName = (cityName: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/city/name/${cityName}`,
+    // loading: true, //显示加载圈
+  });
+};

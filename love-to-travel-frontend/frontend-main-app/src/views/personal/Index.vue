@@ -1,29 +1,203 @@
 <script setup lang="ts">
-import { ref, inject, onMounted } from "vue";
+import { ref, inject, onMounted, computed, watch } from "vue";
 // import * as echarts from "echarts";
 import chinaJson from "@/assets/json/map/china.json";
-// import { mainStore } from "@/store/user";
-// const store2 = mainStore();
+import { getCitysInfoByName } from "@/apis/travelService/city";
+import { citysInfoType } from "@apis/interface/iPlan";
+import { addCityToWant } from "@/apis/travelService/want";
+import { addCityToBeen } from "@/apis/travelService/been";
+import { mainStore } from "@/store/user";
+import { getFootsByUserId } from "@/apis/travelService/foot";
+const store = mainStore();
 const activeIndex = ref("1");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
+const keyword = ref("");
+const citysResultList = ref([] as citysInfoType[]);
+let timer = null;
+const hasNoData = computed(() => {
+  return !citysResultList.value.length;
+});
 
+watch(keyword, (newValue, oldValue) => {
+  // alert(newValue);
+  if (timer) {
+    clearTimeout(timer);
+  }
+  if (!newValue) {
+    citysResultList.value = [] as citysInfoType[];
+    return;
+  }
+  // @ts-ignore
+  timer = setTimeout(async () => {
+    let result = [] as citysInfoType[];
+    await getCitysInfoByName(newValue)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          res.data.forEach((e: citysInfoType) => {
+            if (e.cityName.indexOf(newValue) > -1) {
+              result.push(e);
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+    citysResultList.value = result;
+  }, 100);
+});
+
+const dialogToWantVisible = ref(false);
+const confirmDialogVisible = ref(false);
+const theSelectedCity = ref({} as citysInfoType);
+let wantOrBeenFlag = false;
+const scoreValue = ref(4.5);
+const openAlreadyGoDialog = () => {
+  wantOrBeenFlag = true;
+  dialogToWantVisible.value = true;
+};
+const openToWantDialog = () => {
+  wantOrBeenFlag = false;
+  dialogToWantVisible.value = true;
+};
+const openTheConfirmDialog = (index: number) => {
+  confirmDialogVisible.value = true;
+  theSelectedCity.value = citysResultList.value[index];
+};
+const reSelect = () => {
+  confirmDialogVisible.value = false;
+  theSelectedCity.value = {} as citysInfoType;
+};
+const addOneCityToWant = async () => {
+  if (wantOrBeenFlag === false) {
+    await addCityToWant({
+      userId: store.userInfo.id,
+      cityId: theSelectedCity.value.cityId,
+    })
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          confirmDialogVisible.value = false;
+          dialogToWantVisible.value = false;
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "添加想去成功",
+          });
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else if (wantOrBeenFlag === true) {
+    await addCityToBeen({
+      userId: store.userInfo.id,
+      cityId: theSelectedCity.value.cityId,
+      score: scoreValue.value,
+    })
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          confirmDialogVisible.value = false;
+          dialogToWantVisible.value = false;
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "添加去过成功",
+          });
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    // @ts-ignore
+    ElMessage({
+      type: "error",
+      message: "未知错误",
+    });
+  }
+};
+let scatterDataWant = [
+  {
+    name: "北京",
+    value: [117.283042, 31.86119],
+  },
+  {
+    name: "上海",
+    value: [112.982279, 28.19409],
+  },
+];
+let scatterDataBeen = [
+  {
+    name: "成都",
+    value: [116.283042, 38.86119],
+  },
+  {
+    name: "的的",
+    value: [105.982279, 44.19409],
+  },
+];
+/* 获取初始化点标记数据 */
+const getThescattersInfo = () => {
+  getFootsByUserId(store.userInfo.id)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getThescattersInfo();
+
+/* echarts地图 */
 let echarts = inject("ec"); //引入
-const initEcharts = () => {
+const initEcharts = (scatterDataWant, scatterDataBeen) => {
   //需要获取到element,所以是onMounted的Hook
   // @ts-ignore
   let myChart = echarts.init(document.getElementById("map-container"));
-  let scatterData = [
-    {
-      name: "北京",
-      value: [117.283042, 31.86119],
-    },
-    {
-      name: "上海",
-      value: [112.982279, 28.19409],
-    },
-  ];
+
   // @ts-ignore
   echarts.registerMap("chinaMap", chinaJson);
   var option = {
@@ -113,12 +287,12 @@ const initEcharts = () => {
 
     series: [
       {
-        name: "散点",
+        name: "散点WantTo",
         type: "effectScatter",
         coordinateSystem: "geo",
         // 显示的点
         // data: this.convertData(data),
-        data: scatterData,
+        data: scatterDataWant,
         // 气泡大小
         symbolSize: 9,
         symbol: "circle",
@@ -159,7 +333,53 @@ const initEcharts = () => {
           },
         },
       },
-
+      {
+        name: "散点BeenTo",
+        type: "effectScatter",
+        coordinateSystem: "geo",
+        // 显示的点
+        // data: this.convertData(data),
+        data: scatterDataBeen,
+        // 气泡大小
+        symbolSize: 9,
+        symbol: "circle",
+        label: {
+          //   显示位置
+          normal: {
+            show: false,
+          },
+          emphasis: {
+            show: false,
+          },
+        },
+        showEffectOn: "render",
+        itemStyle: {
+          normal: {
+            color: {
+              type: "radial",
+              x: 0.5,
+              y: 0.5,
+              r: 0.5,
+              colorStops: [
+                {
+                  offset: 0,
+                  color: "rgba(12,46,80,0.1)",
+                },
+                {
+                  offset: 0.8,
+                  color: "rgba(244, 143, 128, 0.3)",
+                },
+                {
+                  offset: 1,
+                  color: "rgba(231,65,40)",
+                },
+              ],
+              // 圆点圈的显示
+              global: false, // 缺省为 false
+            },
+          },
+        },
+      },
       // 常规地图
       {
         type: "map",
@@ -230,7 +450,7 @@ const initEcharts = () => {
   };
 };
 onMounted(() => {
-  initEcharts();
+  initEcharts(scatterDataWant, scatterDataBeen);
   // alert(store2.getUserFlag);
   // alert(JSON.stringify(store2.userInfo));
 });
@@ -239,8 +459,8 @@ onMounted(() => {
 <template>
   <div id="map-container"></div>
   <div class="personal-info-container">
-    <div class="button-already">添加去过</div>
-    <div class="button-want">添加想去</div>
+    <div class="button-already" @click="openAlreadyGoDialog">添加去过</div>
+    <div class="button-want" @click="openToWantDialog">添加想去</div>
     <div class="avater-container">
       <img src="@/assets/images/login-pic.jpg" class="avater-img" />
     </div>
@@ -302,24 +522,68 @@ onMounted(() => {
       <router-view></router-view>
     </div>
   </div>
-  <el-dialog v-model="dialogSearchCityToWant" title="Shipping address">
-    <el-form :model="form">
-      <el-form-item label="Promotion name" :label-width="formLabelWidth">
-        <el-input v-model="form.name" autocomplete="off" />
-      </el-form-item>
-      <el-form-item label="Zones" :label-width="formLabelWidth">
-        <el-select v-model="form.region" placeholder="Please select a zone">
-          <el-option label="Zone No.1" value="shanghai" />
-          <el-option label="Zone No.2" value="beijing" />
-        </el-select>
-      </el-form-item>
-    </el-form>
+  <el-dialog v-model="dialogToWantVisible" title="搜索城市">
+    <template #default>
+      <el-dialog
+        v-model="confirmDialogVisible"
+        width="30%"
+        title="确认面板"
+        append-to-body
+      >
+        <p>
+          <span style="color: #e8604c">您选择的城市为：</span
+          ><el-tag class="mx-1" size="large">{{
+            theSelectedCity.cityName
+          }}</el-tag>
+        </p>
+        <p v-show="wantOrBeenFlag">
+          <span style="color: #e8604c">选择评分：</span
+          ><el-rate
+            v-model="scoreValue"
+            :texts="['1分', '2分', '3分', '4分', '5分']"
+            show-text
+            allow-half
+          />
+        </p>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="reSelect">重新选择</el-button>
+            <el-button type="primary" @click="addOneCityToWant">
+              确认选择
+            </el-button>
+          </span>
+        </template>
+      </el-dialog>
+      <div class="search-citys">
+        <div class="input-box">
+          <input
+            type="text"
+            class="search-input"
+            v-model="keyword"
+            placeholder="请输入城市名"
+          />
+          <span class="search-span">
+            <el-icon><Search /></el-icon>
+          </span>
+          <div class="search-result-content" v-show="keyword">
+            <ul class="result-list">
+              <li
+                v-for="(item, index) in citysResultList"
+                :key="index"
+                @click="openTheConfirmDialog(index)"
+              >
+                {{ item.cityName }}
+              </li>
+              <li v-show="hasNoData">没有找到匹配数据</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </template>
+
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">Cancel</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">
-          Confirm
-        </el-button>
+        <el-button @click="dialogToWantVisible = false">取消</el-button>
       </span>
     </template>
   </el-dialog>
@@ -359,7 +623,7 @@ onMounted(() => {
     position: absolute;
     top: -160px;
     right: 30px;
-    z-index: 1000;
+    z-index: 100;
     background-color: #e8604c;
     border-radius: 10px;
     cursor: pointer;
@@ -381,7 +645,7 @@ onMounted(() => {
     position: absolute;
     top: -100px;
     right: 30px;
-    z-index: 1000;
+    z-index: 100;
     background-color: #e8604c;
     border-radius: 10px;
     cursor: pointer;
@@ -513,6 +777,78 @@ onMounted(() => {
   }
   .textarea-message {
     padding: 10px 20px;
+  }
+}
+.search-citys {
+  display: flex;
+  justify-content: center;
+  .input-box {
+    position: relative;
+    display: inline-block;
+    .search-input {
+      padding: 0 40px 0 20px;
+      width: 160px;
+      height: 38px;
+      font-size: 14px;
+      border: 1px solid #eee;
+      border-radius: 40px;
+      background: #eee;
+      transition: width 0.2s;
+      transition-delay: 0.1s;
+      color: #606266;
+    }
+    .search-input:focus {
+      width: 350px;
+      outline: none;
+      box-shadow: none;
+    }
+    .search-input:focus + .search-span {
+      background-color: #f48f80;
+      color: #fff;
+    }
+    .search-span {
+      position: absolute;
+      top: 4px;
+      right: 5px;
+      width: 30px;
+      height: 30px;
+      line-height: 30px;
+      padding: 0;
+      color: #d4d7de;
+      text-align: center;
+      background: #e8604c;
+      border-radius: 50%;
+      font-size: 15px;
+      cursor: pointer;
+      i {
+        height: 30px; /* 让图标居中的方案 */
+      }
+    }
+    .search-result-content {
+      width: auto;
+      height: auto;
+      // border: 1px #e8604c solid;
+      // background-color: rgba(0, 0, 0, 0.311);
+      border-radius: 5px;
+      .result-list {
+        padding-left: 10px;
+        padding-right: 10px;
+        > li {
+          list-style: none;
+          line-height: 2em;
+          padding-top: 5px;
+          cursor: pointer;
+          transition: all 0.1s linear;
+          padding-left: 5px;
+          border-bottom: 1px solid #e0e0e0;
+        }
+        > li:hover {
+          // background-color: #f48f80;
+          color: #e8604c;
+          font-weight: 700;
+        }
+      }
+    }
   }
 }
 </style>
