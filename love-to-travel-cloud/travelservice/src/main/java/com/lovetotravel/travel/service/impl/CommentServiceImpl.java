@@ -94,6 +94,25 @@ public class CommentServiceImpl implements CommentService {
     public void removeById(String id) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
+        Comment comment = mongoTemplate.findOne(query, Comment.class);
+        if (comment.getParentId() != "") {
+            //父评论增加评论数
+            Query query2 = new Query();
+            query2.addCriteria(Criteria.where("parentId").is(comment.getParentId()));
+            Comment parentComment = mongoTemplate.findOne(query2, Comment.class);
+            System.out.println("parentComment = " + parentComment);
+            if (parentComment == null) {
+                throw new GlobalException(CodeMsg.COMMENT_NOT_EXIST);
+            }
+            Update update = new Update();
+            if (parentComment.getReply() == null) {
+                parentComment.setReply(0);
+            }
+            update.set("reply", parentComment.getReply() + 1);
+            mongoTemplate.upsert(query, update, Comment.class);
+        }
+
+
         mongoTemplate.remove(query, Comment.class);
     }
 
