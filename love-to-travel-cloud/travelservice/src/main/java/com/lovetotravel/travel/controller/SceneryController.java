@@ -51,7 +51,6 @@ public class SceneryController {
         return Result.success(cityMapper.selectList(queryWrapper));
     }
 
-
     @ApiOperation("根据景区id查询景区")
     @GetMapping("/scenery/{id}")
     public Result<Scenery> getById(HttpServletRequest request, @PathVariable("id") Long id) {

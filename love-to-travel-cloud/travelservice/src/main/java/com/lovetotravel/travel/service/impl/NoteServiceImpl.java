@@ -5,15 +5,14 @@ import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Note;
+import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
-import com.lovetotravel.travel.entity.vo.note.NoteLike;
-import com.lovetotravel.travel.entity.vo.note.NoteStar;
-import com.lovetotravel.travel.entity.vo.note.NoteStatistic;
-import com.lovetotravel.travel.entity.vo.note.NoteVo;
+import com.lovetotravel.travel.entity.vo.note.*;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.mapper.NoteLikeMapper;
 import com.lovetotravel.travel.mapper.NoteStarMapper;
+import com.lovetotravel.travel.mapper.SceneryRelatedMapper;
 import com.lovetotravel.travel.redis.NoteKey;
 import com.lovetotravel.travel.redis.RedisService;
 import com.lovetotravel.travel.result.CodeMsg;
@@ -27,6 +26,7 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -39,13 +39,15 @@ public class NoteServiceImpl implements NoteService {
     final NoteLikeMapper noteLikeMapper;
     final NoteStarMapper noteStarMapper;
     final UserClient userClient;
+    final SceneryRelatedMapper sceneryRelatedMapper;
 
-    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService, NoteLikeMapper noteLikeMapper, NoteStarMapper noteStarMapper, UserClient userClient) {
+    public NoteServiceImpl(MongoTemplate mongoTemplate, RedisService redisService, NoteLikeMapper noteLikeMapper, NoteStarMapper noteStarMapper, UserClient userClient, SceneryRelatedMapper sceneryRelatedMapper) {
         this.mongoTemplate = mongoTemplate;
         this.redisService = redisService;
         this.noteLikeMapper = noteLikeMapper;
         this.noteStarMapper = noteStarMapper;
         this.userClient = userClient;
+        this.sceneryRelatedMapper = sceneryRelatedMapper;
     }
 
     /**
@@ -60,6 +62,29 @@ public class NoteServiceImpl implements NoteService {
         query.addCriteria(Criteria.where("id").is(id));
         query.addCriteria(Criteria.where("deleted").is("0"));
         return mongoTemplate.findOne(query, Note.class);
+    }
+
+    @Override
+    public List<Note> getRelatedById(String sceneryId) {
+
+        QueryWrapper<SceneryRelated> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SceneryRelated::getSceneryId, sceneryId);
+        List<SceneryRelated> sceneryRelateds = sceneryRelatedMapper.selectList(queryWrapper);
+        if (sceneryRelateds == null) {
+            return null;
+        }
+
+        List<Note> noteList = new ArrayList<>();
+
+        for (SceneryRelated s : sceneryRelateds) {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("noteId").is(s.getNoteId()));
+            query.addCriteria(Criteria.where("deleted").is("0"));
+            Note one = mongoTemplate.findOne(query, Note.class);
+            noteList.add(one);
+        }
+
+        return noteList;
     }
 
     /**

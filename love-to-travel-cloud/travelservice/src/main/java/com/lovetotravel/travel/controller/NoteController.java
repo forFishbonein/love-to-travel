@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Note;
+import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
 import com.lovetotravel.travel.entity.vo.note.NoteLike;
@@ -34,6 +35,13 @@ public class NoteController {
     public Result<Note> getById(HttpServletRequest request, @PathVariable("id") String id) {
         System.out.println(id);
         return Result.success(noteService.getById(id));
+    }
+
+    @ApiOperation("根据景区id查询相关游记")
+    @GetMapping("/related/{sceneryId}")
+    public Result<List<Note>> getRelatedById(@PathVariable("sceneryId") String sceneryId) {
+        System.out.println(sceneryId);
+        return Result.success(noteService.getRelatedById(sceneryId));
     }
 
     @ApiOperation("根据用户id查询游记")
@@ -135,7 +143,6 @@ public class NoteController {
     public Result<List<Note>> getStarByUserId(@PathVariable("id") Long id) {
         return Result.success(noteService.getStarByUserId(id));
     }
-
 
     @ApiOperation("游记统计")
     @PostMapping("/statistic")
