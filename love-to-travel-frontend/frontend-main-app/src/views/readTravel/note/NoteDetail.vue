@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, nextTick, computed } from "vue";
 import {
   getOneNoteInfoById,
   getNotesInfoByUserId,
@@ -10,7 +10,17 @@ import {
   getCommentsByNoteId,
   likeTheComment,
   islikeTheComment,
+  unlikeTheComment,
+  addAComment,
 } from "@/apis/travelService/comment";
+import {
+  likeTheNote,
+  islikeTheNote,
+  unlikeTheNote,
+  starTheNote,
+  isstarTheNote,
+  unstarTheNote,
+} from "@/apis/travelService/note";
 import { getFootsByUserId } from "@/apis/travelService/foot";
 import {
   theNotesInfoType,
@@ -25,6 +35,7 @@ import { timeFormat } from "@/utils/filters/time";
 import { strFormat } from "@/utils/filters/string";
 import { useRouter } from "vue-router";
 import { mainStore } from "@/store/user";
+import { commentParams } from "@/apis/travelService/tInterface";
 const router = useRouter();
 const store = mainStore();
 const props = defineProps<{
@@ -40,7 +51,6 @@ const otherNotesInfo = ref([] as theNotesInfoType[]);
 const authorInfo = ref({} as UserInfo);
 const noteCommentsInfo = ref([] as theNoteComment[]);
 const finalCommentsArray = ref([] as tranformComments[]);
-
 const commentsFormat = (data: theNoteComment[]) => {
   let oneArray = [] as theNoteComment[];
   data.forEach((e) => {
@@ -201,6 +211,17 @@ const requestOneNoteInfoAndOthers = async () => {
         console.log("-----------");
         console.log(finalCommentsArray.value);
         console.log("-----------");
+        finalCommentsArray.value.forEach((e) => {
+          // alert("加入");
+          // @ts-ignore
+          commentsLikeFlagList.value.push({
+            id: e.id,
+            likeFlag: false,
+          });
+        });
+        console.log("++++++++++");
+        console.log(commentsLikeFlagList.value);
+        console.log("++++++++++");
       }
     })
     .catch((error) => {
@@ -212,6 +233,58 @@ const requestOneNoteInfoAndOthers = async () => {
     });
 };
 requestOneNoteInfoAndOthers();
+
+//存储每一条评论的点赞标志变量
+const commentsLikeFlagList = ref([]);
+// const isLikeFlag = ref(false);
+/* 是否点赞过的标志 */
+const returnTheIsLikeFlag = computed(() => {
+  return function (commentId: string, index: number) {
+    commentisLike(commentId);
+    // @ts-ignore
+    // alert(commentsLikeFlagList.value[index].likeFlag + "....");
+    // @ts-ignore
+    return commentsLikeFlagList.value[index].likeFlag;
+  };
+});
+/* axios同步请求 */
+const commentisLike = (commentId: string) => {
+  if (store.userInfo.id) {
+    // alert("是否点赞");
+    islikeTheComment(commentId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("请求完成");
+          commentsLikeFlagList.value.forEach((e) => {
+            // @ts-ignore
+            if (commentId === e.id) {
+              // @ts-ignore
+              e.likeFlag = res.data;
+            }
+          });
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
+};
+// const returnTheIsLikeFlag = (commentId: string) => {
+//   commentisLike(commentId).then((res) => {
+//     isLikeFlag = res;
+//   });
+//   return isLikeFlag;
+// };
 // const cLikeFlag = ref(false);
 const commentLike = async (commentId: string) => {
   if (store.userInfo.id) {
@@ -232,7 +305,7 @@ const commentLike = async (commentId: string) => {
           });
           setTimeout(
             () =>
-              //更新评论
+              //更新评论：这里不用更新commentsLikeFlagLis，因为数据更新了就会自动重新请求显示是否点赞的标识
               getCommentsByNoteId(noteId)
                 .then((res: any) => {
                   if (res.code != 0) {
@@ -242,12 +315,12 @@ const commentLike = async (commentId: string) => {
                       message: res.msg,
                     });
                   } else {
+                    //这里必须要清空一下
+                    noteCommentsInfo.value = [] as theNoteComment[];
+                    finalCommentsArray.value = [] as tranformComments[];
                     noteCommentsInfo.value = res.data;
-                    console.log(noteCommentsInfo.value);
                     commentsFormat(noteCommentsInfo.value);
-                    console.log("-----------");
-                    console.log(finalCommentsArray.value);
-                    console.log("-----------");
+                    // alert(finalCommentsArray.value[0].like);
                   }
                 })
                 .catch((error) => {
@@ -257,7 +330,7 @@ const commentLike = async (commentId: string) => {
                     message: error.message,
                   });
                 }),
-            2 * 1000
+            1000
           );
         }
       })
@@ -269,8 +342,6 @@ const commentLike = async (commentId: string) => {
         });
       });
   } else {
-    // alert("不保存");
-    // router.push("/login");
     //@ts-ignore
     ElMessage({
       type: "warning",
@@ -278,11 +349,12 @@ const commentLike = async (commentId: string) => {
     });
   }
 };
-const commentisLike = (commentId: string) => {
-  let theFlag = false;
+
+const cancelCommentLike = async (commentId: string) => {
+  // alert("取消点赞");
   if (store.userInfo.id) {
     // alert("点赞");
-    islikeTheComment(commentId, store.userInfo.id)
+    await unlikeTheComment(commentId, store.userInfo.id)
       .then((res: any) => {
         if (res.code != 0) {
           //@ts-ignore
@@ -291,7 +363,39 @@ const commentisLike = (commentId: string) => {
             message: res.msg,
           });
         } else {
-          theFlag = res.data;
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "取消点赞成功",
+          });
+          setTimeout(
+            () =>
+              //更新评论
+              getCommentsByNoteId(noteId)
+                .then((res: any) => {
+                  if (res.code != 0) {
+                    //@ts-ignore
+                    ElMessage({
+                      type: "error",
+                      message: res.msg,
+                    });
+                  } else {
+                    //这里必须要清空一下
+                    noteCommentsInfo.value = [] as theNoteComment[];
+                    finalCommentsArray.value = [] as tranformComments[];
+                    noteCommentsInfo.value = res.data;
+                    commentsFormat(noteCommentsInfo.value);
+                  }
+                })
+                .catch((error) => {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: error.message,
+                  });
+                }),
+            1000
+          );
         }
       })
       .catch((error) => {
@@ -302,10 +406,336 @@ const commentisLike = (commentId: string) => {
         });
       });
   }
-  return theFlag;
+  // 没登录就不可能取消点赞
+  //  else {
+  //   //@ts-ignore
+  //   ElMessage({
+  //     type: "warning",
+  //     message: "请先登录！",
+  //   });
+  // }
 };
-const cancelCommentLike = (commentId: string) => {
-  alert("取消点赞");
+
+const secondCommentContent = ref("");
+const addSecondComment = async (pId: string) => {
+  // alert(pId);
+  if (store.userInfo.id) {
+    const secondCommentParams: commentParams = {
+      parentId: pId,
+      content: secondCommentContent.value,
+      userId: store.userInfo.id,
+      // @ts-ignore
+      userName: store.userInfo.name,
+      noteId: noteId,
+    };
+    console.log("============");
+    console.log(secondCommentParams);
+    console.log("============");
+    await addAComment(secondCommentParams)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "评论成功",
+          });
+          setTimeout(
+            () =>
+              //更新评论
+              getCommentsByNoteId(noteId)
+                .then((res: any) => {
+                  if (res.code != 0) {
+                    //@ts-ignore
+                    ElMessage({
+                      type: "error",
+                      message: res.msg,
+                    });
+                  } else {
+                    //这里必须要清空一下
+                    noteCommentsInfo.value = [] as theNoteComment[];
+                    finalCommentsArray.value = [] as tranformComments[];
+                    noteCommentsInfo.value = res.data;
+                    commentsFormat(noteCommentsInfo.value);
+                  }
+                })
+                .catch((error) => {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: error.message,
+                  });
+                }),
+            1000
+          );
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    //@ts-ignore
+    ElMessage({
+      type: "warning",
+      message: "请先登录！",
+    });
+  }
+};
+
+const firstCommentContent = ref("");
+const addFirstComment = async () => {
+  // alert(pId);
+  if (store.userInfo.id) {
+    const firstCommentParams: commentParams = {
+      parentId: "",
+      content: firstCommentContent.value,
+      userId: store.userInfo.id,
+      // @ts-ignore
+      userName: store.userInfo.name,
+      noteId: noteId,
+    };
+    console.log("============");
+    console.log(firstCommentParams);
+    console.log("============");
+    await addAComment(firstCommentParams)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "评论成功",
+          });
+          setTimeout(
+            () =>
+              //更新评论
+              getCommentsByNoteId(noteId)
+                .then((res: any) => {
+                  if (res.code != 0) {
+                    //@ts-ignore
+                    ElMessage({
+                      type: "error",
+                      message: res.msg,
+                    });
+                  } else {
+                    //这里必须要清空一下
+                    noteCommentsInfo.value = [] as theNoteComment[];
+                    finalCommentsArray.value = [] as tranformComments[];
+                    noteCommentsInfo.value = res.data;
+                    commentsFormat(noteCommentsInfo.value);
+                  }
+                })
+                .catch((error) => {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: error.message,
+                  });
+                }),
+            1000
+          );
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    //@ts-ignore
+    ElMessage({
+      type: "warning",
+      message: "请先登录！",
+    });
+  }
+};
+const noteLikeFlag = ref(false);
+const noteisLike = async (noteId: string) => {
+  if (store.userInfo.id) {
+    await islikeTheNote(noteId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("成功");
+          noteLikeFlag.value = res.data;
+          console.log(noteLikeFlag.value);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
+};
+noteisLike(noteId);
+const noteLike = async () => {
+  if (store.userInfo.id) {
+    // alert("点赞");
+    await likeTheNote(noteId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "点赞成功",
+          });
+          setTimeout(async () => {
+            await getOneNoteInfoById(noteId)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  noteInfo.value = res.data;
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              });
+            await islikeTheNote(noteId, store.userInfo.id)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  // alert("成功");
+                  noteLikeFlag.value = res.data;
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              });
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    //@ts-ignore
+    ElMessage({
+      type: "warning",
+      message: "请先登录！",
+    });
+  }
+};
+
+const cancelNoteLike = async () => {
+  // alert("取消点赞");
+  if (store.userInfo.id) {
+    await unlikeTheNote(noteId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "取消点赞成功",
+          });
+          setTimeout(async () => {
+            await getOneNoteInfoById(noteId)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  noteInfo.value = res.data;
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              });
+            await islikeTheNote(noteId, store.userInfo.id)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  // alert("成功");
+                  noteLikeFlag.value = res.data;
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              });
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
 };
 </script>
 <template>
@@ -327,38 +757,8 @@ const cancelCommentLike = (commentId: string) => {
                 <li>
                   <a href="javascript:;"
                     ><i class="far fa-user-circle"></i
-                    ><span class="span-style"
-                      >你好啊大苏打实打实大{{ noteInfo.userName }}</span
-                    ></a
+                    ><span class="span-style">{{ noteInfo.userName }}</span></a
                   >
-                </li>
-                <li>
-                  <a href="javascript:;"
-                    ><el-icon size="20px"><View /></el-icon>浏览:{{
-                      numberFormat(noteInfo.view)
-                    }}</a
-                  >
-                </li>
-                <li>
-                  <a href="javascript:;"
-                    ><el-icon size="20px"><Pointer /></el-icon>点赞:{{
-                      numberFormat(noteInfo.like)
-                    }}</a
-                  >
-                </li>
-                <li>
-                  <a href="javascript:;"
-                    ><el-icon size="20px"><Star /></el-icon>收藏:{{
-                      numberFormat(noteInfo.star)
-                    }}</a
-                  >
-                </li>
-                <li>
-                  <a href="javascript:;">
-                    <el-icon size="20px"><Document /></el-icon>评论:{{
-                      numberFormat(noteInfo.comment)
-                    }}
-                  </a>
                 </li>
               </ul>
               <h3 class="news-details__title">
@@ -379,12 +779,50 @@ const cancelCommentLike = (commentId: string) => {
                   item
                 }}</a>
               </p>
-              <div class="news-details__social-list">
-                <a href="javascript:;"><i class="fab fa-twitter"></i></a>
-                <a href="javascript:;"><i class="fab fa-facebook"></i></a>
-                <a href="javascript:;"><i class="fab fa-instagram"></i></a>
-                <a href="javascript:;"><i class="fab fa-dribbble"></i></a>
-              </div>
+              <ul class="list-unstyled news-one__meta other-style">
+                <li>
+                  <a href="javascript:;"
+                    ><el-icon size="20px"><View /></el-icon>浏览:{{
+                      numberFormat(noteInfo.view)
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;">
+                    <svg
+                      class="icon"
+                      aria-hidden="true"
+                      v-if="noteLikeFlag"
+                      @click="cancelNoteLike"
+                    >
+                      <use xlink:href="#icon-dianzan1"></use>
+                    </svg>
+                    <svg
+                      class="icon"
+                      aria-hidden="true"
+                      v-else
+                      @click="noteLike"
+                    >
+                      <use xlink:href="#icon-dianzan"></use>
+                    </svg>
+                    点赞:{{ numberFormat(noteInfo.like) }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;"
+                    ><el-icon size="20px"><Star /></el-icon>收藏:{{
+                      numberFormat(noteInfo.star)
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;">
+                    <el-icon size="20px"><Document /></el-icon>评论:{{
+                      numberFormat(noteInfo.comment)
+                    }}
+                  </a>
+                </li>
+              </ul>
             </div>
             <div class="author-one">
               <div class="author-one__image">
@@ -400,21 +838,24 @@ const cancelCommentLike = (commentId: string) => {
             </div>
             <div class="comment-form">
               <h3 class="comment-form__title">发表评论</h3>
-              <form action="inc/sendemail.php" class="comment-one__form">
-                <div class="row">
-                  <div class="col-xl-12">
-                    <div class="comment-form__input-box">
-                      <textarea
-                        name="message"
-                        placeholder="写下评论内容"
-                      ></textarea>
-                      <button type="submit" class="thm-btn comment-form__btn">
-                        Submit Comment
-                      </button>
-                    </div>
+              <div class="row">
+                <div class="col-xl-12">
+                  <div class="comment-form__input-box">
+                    <textarea
+                      name="message"
+                      placeholder="写下评论内容"
+                      v-model="firstCommentContent"
+                    ></textarea>
+                    <button
+                      type="submit"
+                      class="thm-btn comment-form__btn"
+                      @click="addFirstComment"
+                    >
+                      发表
+                    </button>
                   </div>
                 </div>
-              </form>
+              </div>
             </div>
           </div>
         </div>
@@ -520,7 +961,7 @@ const cancelCommentLike = (commentId: string) => {
               <h3 class="sidebar__title">游记评论</h3>
               <ul class="sidebar__category-list list-unstyled">
                 <li>
-                  <el-scrollbar max-height="800px">
+                  <el-scrollbar max-height="800px" style="padding-right: 10px">
                     <el-collapse accordion>
                       <el-collapse-item
                         :name="index"
@@ -540,10 +981,9 @@ const cancelCommentLike = (commentId: string) => {
                               </p>
                             </div>
                             <div class="comment-body">
-                              <el-scrollbar max-height="60px">
+                              <el-scrollbar max-height="40px">
                                 <div class="content-main">
                                   {{ item.content }}
-                                  你的骄傲的哈飒飒大大哇定位的大无大多所大无多无大大无多无多哇大武当哇大无大无多哇大无大大无大无大无大无多
                                 </div>
                               </el-scrollbar>
                             </div>
@@ -553,7 +993,7 @@ const cancelCommentLike = (commentId: string) => {
                                   class="icon"
                                   aria-hidden="true"
                                   @click="cancelCommentLike(item.id)"
-                                  v-if="commentisLike(item.id)"
+                                  v-if="returnTheIsLikeFlag(item.id, index)"
                                 >
                                   <use xlink:href="#icon-dianzan1"></use>
                                 </svg>
@@ -576,14 +1016,47 @@ const cancelCommentLike = (commentId: string) => {
                                 /></el-icon>
                                 {{ item.reply }}
                               </div>
+                              <div>
+                                <el-popover
+                                  placement="right"
+                                  :width="70"
+                                  trigger="click"
+                                >
+                                  <template #reference>
+                                    <el-button class="second-button-one"
+                                      >评论</el-button
+                                    >
+                                  </template>
+                                  <el-input
+                                    v-model="secondCommentContent"
+                                    type="textarea"
+                                  />
+                                  <el-button
+                                    class="second-button-two"
+                                    @click="addSecondComment(item.id)"
+                                    >确认</el-button
+                                  >
+                                </el-popover>
+                              </div>
                             </div>
                           </div>
                         </template>
-                        <el-scrollbar max-height="100px">
-                          <ul>
-                            <li v-for="(i, index2) in item.son" :key="index2">
-                              {{ i.userName }}：{{ i.content }}
-                              {{ i.createTime }}
+                        <el-scrollbar max-height="400px">
+                          <ul class="second-ul">
+                            <li
+                              v-for="(i, index2) in item.son"
+                              :key="index2"
+                              class="second-item"
+                            >
+                              <p>
+                                <span style="color: #e8604c">{{
+                                  i.userName
+                                }}</span
+                                ><span style="color: #909399">{{
+                                  i.createTime
+                                }}</span>
+                              </p>
+                              <p>{{ i.content }}</p>
                             </li>
                           </ul>
                         </el-scrollbar>
@@ -704,7 +1177,7 @@ const cancelCommentLike = (commentId: string) => {
     display: flex;
     align-items: center;
     > div {
-      width: 80px;
+      width: 70px;
       height: 30px;
       // border: 1px #e8604c solid;
       display: flex;
@@ -713,11 +1186,11 @@ const cancelCommentLike = (commentId: string) => {
       color: #606266;
       font-size: 16px;
     }
-    > div:first-child {
-      // width: auto;
-      // height: 1.2em;
-      // border: 1px #e8604c solid;
-    }
+    // > div:first-child {
+    //   // width: auto;
+    //   // height: 1.2em;
+    //   // border: 1px #e8604c solid;
+    // }
   }
 }
 .plan-note-header {
@@ -726,5 +1199,27 @@ const cancelCommentLike = (commentId: string) => {
   // border: 1px #e8604c solid;
   display: flex;
   align-items: center;
+}
+.second-ul {
+  padding-left: 5px;
+}
+.second-item {
+  list-style: none;
+  > p {
+    margin: 0;
+    line-height: 1.5em;
+  }
+  > p:first-child > span {
+    display: inline-block;
+    margin-right: 10px;
+  }
+}
+.second-button-one {
+  height: 30px;
+}
+.second-button-two {
+  margin-top: 10px;
+  height: 30px;
+  float: right;
 }
 </style>
