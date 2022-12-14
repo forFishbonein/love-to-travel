@@ -36,6 +36,7 @@ import { strFormat } from "@/utils/filters/string";
 import { useRouter } from "vue-router";
 import { mainStore } from "@/store/user";
 import { commentParams } from "@/apis/travelService/tInterface";
+import { Picture as IconPicture } from "@element-plus/icons-vue";
 const router = useRouter();
 const store = mainStore();
 const props = defineProps<{
@@ -187,6 +188,7 @@ const requestOneNoteInfoAndOthers = async () => {
       } else {
         authorInfo.value = res.data;
         console.log(otherNotesInfo.value);
+        // alert(authorInfo.value.url);
       }
     })
     .catch((error) => {
@@ -667,7 +669,6 @@ const noteLike = async () => {
     });
   }
 };
-
 const cancelNoteLike = async () => {
   // alert("取消点赞");
   if (store.userInfo.id) {
@@ -716,6 +717,178 @@ const cancelNoteLike = async () => {
                 } else {
                   // alert("成功");
                   noteLikeFlag.value = res.data;
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              });
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
+};
+/* 游记收藏 */
+const noteStarFlag = ref(false);
+const noteisStar = async (noteId: string) => {
+  if (store.userInfo.id) {
+    await isstarTheNote(noteId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("成功");
+          noteStarFlag.value = res.data;
+          console.log(noteStarFlag.value);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
+};
+noteisStar(noteId);
+const noteStar = async () => {
+  if (store.userInfo.id) {
+    // alert("点赞");
+    await starTheNote(noteId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "收藏成功",
+          });
+          setTimeout(async () => {
+            await getOneNoteInfoById(noteId)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  noteInfo.value = res.data;
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              });
+            await isstarTheNote(noteId, store.userInfo.id)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  // alert("成功");
+                  noteStarFlag.value = res.data;
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              });
+          }, 1000);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    //@ts-ignore
+    ElMessage({
+      type: "warning",
+      message: "请先登录！",
+    });
+  }
+};
+const cancelNoteStar = async () => {
+  // alert("取消点赞");
+  if (store.userInfo.id) {
+    await unstarTheNote(noteId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "取消收藏成功",
+          });
+          setTimeout(async () => {
+            await getOneNoteInfoById(noteId)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  noteInfo.value = res.data;
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              });
+            await isstarTheNote(noteId, store.userInfo.id)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  // alert("成功");
+                  noteStarFlag.value = res.data;
                 }
               })
               .catch((error) => {
@@ -809,10 +982,24 @@ const cancelNoteLike = async () => {
                   >
                 </li>
                 <li>
-                  <a href="javascript:;"
-                    ><el-icon size="20px"><Star /></el-icon>收藏:{{
-                      numberFormat(noteInfo.star)
-                    }}</a
+                  <a href="javascript:;">
+                    <svg
+                      class="icon"
+                      aria-hidden="true"
+                      v-if="noteStarFlag"
+                      @click="cancelNoteStar"
+                    >
+                      <use xlink:href="#icon-shoucang1"></use>
+                    </svg>
+                    <svg
+                      class="icon"
+                      aria-hidden="true"
+                      v-else
+                      @click="noteStar"
+                    >
+                      <use xlink:href="#icon-shoucang"></use>
+                    </svg>
+                    收藏:{{ numberFormat(noteInfo.star) }}</a
                   >
                 </li>
                 <li>
@@ -826,8 +1013,19 @@ const cancelNoteLike = async () => {
             </div>
             <div class="author-one">
               <div class="author-one__image">
-                <!-- <img :src="authorInfo.url" alt="" /> -->
-                <img src="/images/blog/author-1-1.jpg" alt="" />
+                <el-image :src="authorInfo.url" alt="" class="img-avater">
+                  <template #error>
+                    <div class="image-slot">
+                      <el-icon><icon-picture /></el-icon>
+                    </div>
+                  </template>
+                </el-image>
+                <!-- <img :src="authorInfo.url" alt="" class="img-avater" /> -->
+                <!-- <img
+                  src="/images/blog/author-1-1.jpg"
+                  alt=""
+                  class="img-avater"
+                /> -->
               </div>
               <div class="author-one__content">
                 <h3>
@@ -1221,5 +1419,9 @@ const cancelNoteLike = async () => {
   margin-top: 10px;
   height: 30px;
   float: right;
+}
+.img-avater {
+  width: 150px;
+  height: 150px;
 }
 </style>
