@@ -121,6 +121,32 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
+    public void unLike(CommentLike commentLike) {
+        QueryWrapper<CommentLike> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(CommentLike::getUserId, commentLike.getUserId()).eq(CommentLike::getCommentId, commentLike.getCommentId());
+        CommentLike commentLikeInMysql = commentLikeMapper.selectOne(queryWrapper);
+        if (commentLikeInMysql != null) {
+            //增加点赞数
+            Query query = new Query();
+            query.addCriteria(Criteria.where("id").is(commentLike.getCommentId()));
+            Comment comment = mongoTemplate.findOne(query, Comment.class);
+            System.out.println("comment = " + comment);
+            if (comment.getLike() == null) {
+                comment.setLike(0);
+            }
+            Update update = new Update();
+            update.set("like", comment.getLike() - 1);
+            if (comment.getLike() < 0) {
+                comment.setLike(0);
+            }
+            mongoTemplate.upsert(query, update, Comment.class);
+            //保存用户点赞信息
+            commentLikeMapper.delete(queryWrapper);
+        }
+
+    }
+
+    @Override
     public Boolean islike(CommentLike commentLike) {
         QueryWrapper<CommentLike> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(CommentLike::getUserId, commentLike.getUserId()).eq(CommentLike::getCommentId, commentLike.getCommentId());
