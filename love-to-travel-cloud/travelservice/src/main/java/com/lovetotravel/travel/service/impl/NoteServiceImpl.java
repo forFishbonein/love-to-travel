@@ -314,7 +314,7 @@ public class NoteServiceImpl implements NoteService {
                 note.setStar(0L);
             }
             Update update = new Update();
-            update.set("like", note.getStar() + 1);
+            update.set("star", note.getStar() + 1);
             mongoTemplate.upsert(query, update, Note.class);
             //保存用户收藏信息
             noteStarMapper.insert(noteStar);
@@ -342,6 +342,17 @@ public class NoteServiceImpl implements NoteService {
             //删除用户收藏信息
             noteStarMapper.delete(queryWrapper);
         }
+    }
+
+    @Override
+    public Boolean isStar(NoteStar noteStar) {
+        QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(NoteStar::getUserId, noteStar.getUserId()).eq(NoteStar::getNoteId, noteStar.getNoteId());
+        NoteStar commentStarInMysql = noteStarMapper.selectOne(queryWrapper);
+        if (commentStarInMysql == null) {
+            return false;
+        }
+        return true;
     }
 
     @Override

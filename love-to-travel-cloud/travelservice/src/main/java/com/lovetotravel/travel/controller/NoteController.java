@@ -122,6 +122,12 @@ public class NoteController {
         return Result.success("取消收藏成功");
     }
 
+    @ApiOperation("是否收藏")
+    @PostMapping("/isstar")
+    public Result<Boolean> isStar(@RequestBody NoteStar noteStar) {
+        return Result.success(noteService.isStar(noteStar));
+    }
+
     @ApiOperation("根据用户id查看收藏")
     @GetMapping("/star")
     public Result<List<Note>> getStarByUserId(@PathVariable("id") Long id) {
