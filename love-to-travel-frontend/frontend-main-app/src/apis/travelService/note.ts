@@ -107,3 +107,12 @@ export const unstarTheNote = (noteId: string, userId: string) => {
     // loading: true, //显示加载圈
   });
 };
+
+/* 根据用户id查询收藏 */
+export const getStarNotesInfoByUserId = (userId: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/note/star/${userId}`,
+    loading: true, //显示加载圈
+  });
+};

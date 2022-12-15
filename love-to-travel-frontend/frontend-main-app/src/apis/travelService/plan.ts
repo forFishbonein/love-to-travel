@@ -21,3 +21,12 @@ export const getOneUserPlansInfoById = (planId: string) => {
     loading: true, //显示加载圈
   });
 };
+
+/* 根据用户id查询其全部行程 */
+export const getUserAllPlansInfoByUserId = (userId: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/plan/user/${userId}`,
+    loading: true, //显示加载圈
+  });
+};

@@ -116,4 +116,12 @@ requestSceneryListInfo();
   margin-left: 20px;
   padding-top: 10px;
 }
+.tour-details-two__last-minute-image {
+  width: 80px;
+  height: 80px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 </style>
