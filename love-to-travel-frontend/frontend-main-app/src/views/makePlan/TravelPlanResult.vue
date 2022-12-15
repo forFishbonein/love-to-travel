@@ -686,7 +686,7 @@ onMounted(() => {
           width: 160px;
           height: 100px;
           display: flex;
-          justify-content: space-around;
+          //justify-content: space-around;
           align-items: center;
           padding-left: 10px;
           i {

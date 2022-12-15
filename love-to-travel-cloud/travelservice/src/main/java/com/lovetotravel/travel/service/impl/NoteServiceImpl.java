@@ -393,7 +393,7 @@ public class NoteServiceImpl implements NoteService {
         List<Note> notes = null;
         for (NoteStar n : noteStars) {
             Query query = new Query();
-            query.addCriteria(Criteria.where("noteId").is(n.getNoteId()));
+            query.addCriteria(Criteria.where("id").is(n.getNoteId()));
             notes.add(mongoTemplate.findOne(query, Note.class));
         }
         return notes;

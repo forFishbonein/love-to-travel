@@ -784,7 +784,9 @@ export default {
         .plan-items {
           height: 60%;
           width: 450px;
+          padding: 16px;
           // border: 1px #e8604c solid;
+          justify-content: left;
           position: absolute;
           top: 52px;
           .scrollbar-item2 {

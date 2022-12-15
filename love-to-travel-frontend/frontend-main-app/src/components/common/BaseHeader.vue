@@ -163,8 +163,8 @@ const displayText = () => {
                   ><i class="fa fa-bars"></i
                 ></a>
                 <ul class="main-menu__list">
-                  <li class="dropdown current aly-index">
-                    <a href="#">爱旅游</a>
+                  <li class="dropdown current">
+                    <a href="#" class="aly-index">爱旅游</a>
                   </li>
                   <li class="dropdown">
                     <a href="#">去旅游</a>
@@ -275,7 +275,7 @@ const displayText = () => {
       <ul class="mobile-nav__contact list-unstyled">
         <li>
           <i class="fa fa-envelope"></i>
-          <a href="mailto:needhelp@packageName__.com">needhelp@tevily.com</a>
+          <a href="mailto:needhelp@alycom">needhelp@aly.com</a>
         </li>
         <li>
           <i class="fa fa-phone-alt"></i>
@@ -362,7 +362,9 @@ const displayText = () => {
 }
 
 .aly-index {
-
+  color: #e8604c !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
 }
 
 </style>
