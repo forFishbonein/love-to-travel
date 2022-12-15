@@ -4,9 +4,12 @@ import { UPLOADER } from "@/utils/uploadImg";
 import { srcPattern } from "@/utils/filters/srcPattern";
 import { mainStore } from "@/store/user";
 import { getUserAllPlansInfoByUserId } from "@/apis/travelService/plan";
-import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { theGivenAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { publishOneNote } from "@/apis/travelService/note";
+import { noteInfoParams } from "@/apis/travelService/tInterface";
 // import { storeToRefs } from "pinia";
 import { ref } from "vue";
+import { useRouter } from "vue-router";
 export default {
   data() {
     return {
@@ -47,9 +50,17 @@ export default {
   },
   setup() {
     const store = mainStore();
+    const router = useRouter();
     const userInfo = ref(store.userInfo);
     // alert(userInfo.value.url);
-    const userAllPlansInfo = ref([] as finalAllCityPlansInfoType[]);
+    let userAllPlansInfo = [] as theGivenAllCityPlansInfoType[];
+
+    interface userPlansOption {
+      planId: string;
+      budget: string;
+      cityNames: string;
+    }
+    const userPlansOption = ref([] as userPlansOption[]);
     const requestMyPlansInfo = async () => {
       await getUserAllPlansInfoByUserId(store.userInfo.id)
         .then((res: any) => {
@@ -60,8 +71,23 @@ export default {
               message: res.msg,
             });
           } else {
-            userAllPlansInfo.value = res.data;
-            console.log(userAllPlansInfo.value);
+            userAllPlansInfo = res.data;
+
+            // console.log(userAllPlansInfo.value);
+            userAllPlansInfo.forEach((e) => {
+              let planId = e.id;
+              let budget = e.budget;
+              let cityNames = "出发地";
+              e.subPlans.forEach((e2) => {
+                cityNames += "—>" + e2.city;
+              });
+              // @ts-ignore
+              userPlansOption.value.push({
+                planId: planId,
+                budget: budget,
+                cityNames: cityNames + "—>返回地",
+              });
+            });
           }
         })
         .catch((error) => {
@@ -73,9 +99,65 @@ export default {
         });
     };
     requestMyPlansInfo();
+    const planId = ref("");
+    const noteTitle = ref("");
+
+    let noteInfo = {} as noteInfoParams;
+    const publishTheNote = async (src: string, info_: any) => {
+      if (info_ !== null && info_ !== "") {
+        // alert("11111");
+        noteInfo.content = info_;
+        noteInfo.url = src;
+        noteInfo.title = noteTitle.value;
+        noteInfo.planId = planId.value;
+        noteInfo.userId = store.userInfo.id;
+        console.log(noteInfo);
+        await publishOneNote(noteInfo)
+          .then((res: any) => {
+            if (res.code != 0) {
+              //@ts-ignore
+              ElMessage({
+                type: "error",
+                message: res.msg,
+              });
+            } else {
+              successDialogVisible.value = true;
+            }
+          })
+          .catch((error) => {
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: error.message,
+            });
+          });
+      } else {
+        //@ts-ignore
+        ElMessage({
+          type: "warn",
+          message: "请先输入内容！",
+        });
+      }
+    };
+    const successDialogVisible = ref(false);
+    const goSeeMyNotes = () => {
+      successDialogVisible.value = false;
+      router.push("/personal/mynote");
+    };
+    const continuePublish = () => {
+      successDialogVisible.value = false;
+      location.reload();
+    };
     return {
       userInfo,
       userAllPlansInfo,
+      planId,
+      userPlansOption,
+      noteTitle,
+      publishTheNote,
+      successDialogVisible,
+      goSeeMyNotes,
+      continuePublish,
     };
   },
   methods: {
@@ -108,11 +190,16 @@ export default {
       // @ts-ignore
       this.editor.customConfig.onchange = (html) => {
         this.info_ = html; // 绑定当前逐渐地值
+        // console.log(srcPattern(html)[0]);
+        // console.log(srcPattern(html));
         // @ts-ignore
-        this.src = srcPattern(html)[0].url;
-        console.log(this.src);
+        if (srcPattern(html) === []) {
+          // @ts-ignore
+          this.src = srcPattern(html)[0].url;
+        }
+        // console.log(this.src);
         this.$emit("change", this.info_); // 将内容同步到父组件中
-        console.log(this.info_);
+        // console.log(this.info_);
       };
 
       // 创建富文本编辑器
@@ -157,18 +244,87 @@ export default {
       /></router-link>
     </div>
   </div>
+  <div class="header-title">
+    <div class="title-left">游记标题</div>
+    <input
+      type="text"
+      placeholder="请输入标题"
+      class="title-right"
+      v-model="noteTitle"
+    />
+  </div>
   <div class="editor-container">
     <div class="editor">
       <div ref="toolbar" class="toolbar"></div>
       <div ref="editor" class="text"></div>
     </div>
   </div>
-  <div class="publish-border">
-    <div class="publish-button">发布游记</div>
+  <div class="select-plan-container">
+    <div class="select-title">选择该游记对应的行程</div>
+    <el-radio-group v-model="planId">
+      <el-radio :label="item.planId" v-for="(item, index) in userPlansOption"
+        ><el-popover
+          placement="top-start"
+          :title="`行程${index + 1}`"
+          :width="150"
+          trigger="hover"
+          :content="`预算:${item.budget}   行程:${item.cityNames}`"
+        >
+          <template #reference>
+            <el-button class="m-2">行程{{ index + 1 }}</el-button>
+          </template>
+        </el-popover></el-radio
+      >
+    </el-radio-group>
   </div>
+  <div class="publish-border">
+    <div class="publish-button" @click="publishTheNote(src, info_)">
+      发布游记
+    </div>
+  </div>
+  <el-dialog
+    v-model="successDialogVisible"
+    title="成功提示"
+    width="30%"
+    draggable
+    show-close="false"
+  >
+    <span>恭喜您，游记发布成功！</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="goSeeMyNotes">
+          查看我的游记
+        </el-button>
+        <el-button type="success" @click="continuePublish">
+          继续发布
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
+input::-webkit-input-placeholder {
+  /* WebKit browsers 适配谷歌 */
+  color: #cdd0d6;
+  font-weight: 0;
+}
+input:-moz-placeholder {
+  /* Mozilla Firefox 4 to 18 适配火狐 */
+  color: #cdd0d6;
+  font-weight: 0;
+}
+input::-moz-placeholder {
+  /* Mozilla Firefox 19+ 适配火狐 */
+  color: #cdd0d6;
+  font-weight: 0;
+}
+input:-ms-input-placeholder {
+  /* Internet Explorer 10+  适配ie*/
+  color: #cdd0d6;
+  font-weight: 0;
+}
+
 .header-border {
   width: 100%;
   height: 60px;
@@ -205,6 +361,44 @@ export default {
     }
   }
 }
+.header-title {
+  width: 100%;
+  height: 60px;
+  padding-left: 150px;
+  display: flex;
+  margin-top: 20px;
+  align-items: center;
+  .title-left {
+    width: 120px;
+    height: 40px;
+    background-color: #e8604c;
+    border-radius: 20px;
+    color: #ffffff;
+    font-weight: 700;
+    font-size: 24px;
+    padding: 5px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  .title-right {
+    margin-left: 30px;
+    padding-left: 20px;
+    width: 800px;
+    height: 50px;
+    border-radius: 20px;
+    background-color: #faf5ee;
+    color: #303133;
+    font-size: 20px;
+    font-weight: 600;
+    outline: none;
+    border: 0;
+    transition: all 0.2s linear;
+  }
+  .title-right:focus {
+    border: 2px #e8604c solid;
+  }
+}
 .editor-container {
   width: 100%;
   height: auto;
@@ -220,6 +414,26 @@ export default {
   .text {
     border: 1px solid #ccc;
     height: 500px;
+  }
+}
+.select-plan-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  .select-title {
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+    display: flex;
+    justify-content: start;
+    padding-left: 125px;
+    color: #e74128;
+    font-weight: 700;
   }
 }
 .publish-border {

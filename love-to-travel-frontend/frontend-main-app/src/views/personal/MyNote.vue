@@ -92,14 +92,16 @@ getNotesInfo();
   width: 800px;
   margin-left: 25px;
   margin-top: 30px;
+  margin-bottom: 20px;
   .card-item-container {
     width: 700px;
-    height: 600px;
+    height: auto;
     // border: 1px #e8604c solid;
     border: 1px #dcdfe6 solid;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 25px;
     .item-img {
       height: 300px;
       width: 300px;

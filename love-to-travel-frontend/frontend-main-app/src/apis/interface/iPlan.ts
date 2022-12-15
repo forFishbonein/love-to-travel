@@ -75,6 +75,16 @@ export interface finalAllCityPlansInfoType {
   // backCity: string;
   // goDate: string;
 }
+
+export interface theGivenAllCityPlansInfoType {
+  id: string;
+  userId: string;
+  budget: string;
+  depart: string;
+  start: string;
+  end: string;
+  subPlans: everyCityPlansInfoType[]; //对应subPlans
+}
 // export interface displayACityPlanInfo {
 //   city: string;
 //   cityId: string;

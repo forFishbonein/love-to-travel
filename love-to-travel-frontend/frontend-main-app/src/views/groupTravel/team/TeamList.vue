@@ -7,7 +7,7 @@
         <div class="tours-list__single">
           <div class="tours-list__content">
             <div class="tours-list__stars">
-              <el-icon><Calendar /></el-icon> 出行时间：
+              <el-icon><Calendar /></el-icon> 出发时间：
             </div>
             <h3 class="tours-list__title">
               <a href="tour-details.html">Moscow Red City Land</a>
@@ -23,23 +23,26 @@
               Lorem ipsum available isn but the majority have suffered alteratin
               in some or form injected semper fames.
             </p>
+            <p class="tours-list__text">
+              <span class="span-style">已加入成员</span>
+              Lorem ipsum available isn but the majority have suffered alteratin
+              in some or form injected semper fames.
+            </p>
             <ul class="tours-list__meta list-unstyled">
               <li>
                 <a href="tour-details.html"
-                  ><i class="far fa-calendar"></i>3 Days</a
+                  ><i class="far fa-calendar"></i>3天</a
                 >
               </li>
               <li>
                 <a href="tour-details.html"
-                  ><i class="far fa-user-circle"></i>12+</a
-                >
-              </li>
-              <li>
-                <a href="tour-details.html"
-                  ><i class="far fa-map"></i>Los Angeles</a
+                  ><i class="far fa-user-circle"></i>预期6人</a
                 >
               </li>
             </ul>
+            <p class="tours-list__text">
+              <div class="join-team-button"></div>
+            </p>
           </div>
         </div>
       </div>
@@ -84,5 +87,8 @@
   font-size: 16px;
   line-height: 1.5em;
   margin-right: 10px;
+}
+.join-team-button{
+
 }
 </style>

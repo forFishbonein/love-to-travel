@@ -214,6 +214,13 @@ export const routes: Array<RouteRecordRaw> = [
               },
             ],
           },
+          {
+            path: "create",
+            name: "Create",
+            component: () => import("@/views/groupTravel/create/Create.vue"),
+            // component: Note,
+            meta: { title: "创建队伍", keepAlive: false, showTab: true },
+          },
         ],
       },
       {
