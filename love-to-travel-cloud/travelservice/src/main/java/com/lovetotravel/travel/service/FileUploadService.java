@@ -1,6 +1,8 @@
 package com.lovetotravel.travel.service;
 
 import com.aliyun.oss.OSSClient;
+import com.aliyun.oss.model.ObjectMetadata;
+import com.aliyun.oss.model.UploadFileRequest;
 import com.lovetotravel.travel.config.AliyunConfig;
 import com.lovetotravel.travel.entity.vo.PicUploadResult;
 import org.apache.commons.lang3.RandomUtils;
@@ -51,7 +53,7 @@ public class FileUploadService {
         return "file/" + dateTime.toString("yyyy")
                 + "/" + dateTime.toString("MM") + "/"
                 + dateTime.toString("dd") + "/" + System.currentTimeMillis() +
-                RandomUtils.nextInt(100, 9999) + "." + sourceFileName ;
+                RandomUtils.nextInt(100, 9999) + "." + sourceFileName;
     }
 
 }

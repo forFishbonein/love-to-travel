@@ -1,5 +1,6 @@
 package com.lovetotravel.travel.service.impl;
 
+import cn.hutool.core.codec.Base64;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.Result;
@@ -170,6 +171,7 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public void insert(NoteVo noteVo) {
+
         Note note = new Note();
         BeanUtils.copyProperties(noteVo, note);
         Date date = new Date();
