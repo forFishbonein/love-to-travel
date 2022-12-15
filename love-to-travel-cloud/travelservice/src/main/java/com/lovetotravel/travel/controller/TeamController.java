@@ -44,7 +44,7 @@ public class TeamController {
     }
 
     @ApiOperation("查询所有队伍")
-    @GetMapping("/user/create/{id}")
+    @GetMapping
     public Result<List<Team>> getAll() {
         return Result.success(teamService.getAll());
     }
