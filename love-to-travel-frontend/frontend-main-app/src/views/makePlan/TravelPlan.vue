@@ -157,7 +157,7 @@ export default {
             zoom: 6, //初始化地图层级
             viewMode: "3D", //是否为3D地图模式
             // center: [116.397436, 39.909165], //初始化地图中心点位置，北京
-            center: [106.550483,29.563707], //初始化地图中心点位置，成都
+            center: [106.550483, 29.563707], //初始化地图中心点位置，成都
             dragEnable: true, //禁止鼠标拖拽
             scrollWheel: true, //鼠标滚轮放大缩小
             doubleClickZoom: true, //双击放大缩小
