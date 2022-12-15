@@ -939,12 +939,8 @@ const cancelNoteStar = async () => {
               <h3 class="news-details__title">
                 {{ noteInfo.title }}
               </h3>
-              <el-scrollbar max-height="500px">
-                <p class="news-details__text-1">
-                  &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{
-                    noteInfo.content
-                  }}
-                </p>
+              <el-scrollbar max-height="700px" class="content-body-note">
+                <p class="news-details__text-1" v-html="noteInfo.content"></p>
               </el-scrollbar>
             </div>
             <div class="news-details__bottom">
@@ -1425,5 +1421,8 @@ const cancelNoteStar = async () => {
 .img-avater {
   width: 150px;
   height: 150px;
+}
+.content-body-note {
+  border: 1px #dcdfe6 solid;
 }
 </style>

@@ -9,3 +9,11 @@ export interface commentParams {
   userName: string;
   parentId: string;
 }
+
+export interface noteInfoParams {
+  userId: string;
+  planId: string;
+  url: string;
+  title: string;
+  content: string;
+}
