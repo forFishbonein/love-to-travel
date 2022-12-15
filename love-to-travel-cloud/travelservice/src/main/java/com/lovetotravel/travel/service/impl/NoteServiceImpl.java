@@ -392,8 +392,9 @@ public class NoteServiceImpl implements NoteService {
         QueryWrapper<NoteStar> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(NoteStar::getUserId, id);
         List<NoteStar> noteStars = noteStarMapper.selectList(queryWrapper);
-        List<Note> notes = null;
+        List<Note> notes = new ArrayList<>();
         for (NoteStar n : noteStars) {
+            System.out.println(n.getNoteId());
             Query query = new Query();
             query.addCriteria(Criteria.where("id").is(n.getNoteId()));
             notes.add(mongoTemplate.findOne(query, Note.class));
