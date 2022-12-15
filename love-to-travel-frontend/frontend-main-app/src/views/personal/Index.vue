@@ -632,10 +632,10 @@ onMounted(() => {
     >
       <el-menu-item index="center">我的中心</el-menu-item>
       <el-menu-item index="foot">足迹</el-menu-item>
-      <el-menu-item index="note">游记</el-menu-item>
+      <el-menu-item index="mynote">游记</el-menu-item>
       <el-menu-item index="star">收藏</el-menu-item>
       <el-menu-item index="question">问答</el-menu-item>
-      <el-menu-item index="route">行程</el-menu-item>
+      <el-menu-item index="myroute">行程</el-menu-item>
       <el-menu-item index="team">队伍</el-menu-item>
       <el-menu-item index="time">时光机</el-menu-item>
     </el-menu>

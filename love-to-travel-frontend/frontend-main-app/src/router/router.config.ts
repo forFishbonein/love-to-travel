@@ -11,6 +11,7 @@ import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 import PersonalIndex from "@/views/personal/Index.vue";
+// import Note from "@/views/readTravel/note/Note.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -129,6 +130,7 @@ export const routes: Array<RouteRecordRaw> = [
             path: "note",
             name: "Note",
             component: () => import("@/views/readTravel/note/Note.vue"),
+            // component: Note,
             meta: { title: " 读游记", keepAlive: false, showTab: true },
             redirect: "/readTravel/note/list",
             children: [
@@ -190,9 +192,9 @@ export const routes: Array<RouteRecordRaw> = [
             },
           },
           {
-            path: "note",
-            name: "Note",
-            component: () => import("@/views/personal/Note.vue"),
+            path: "mynote",
+            name: "MyNote",
+            component: () => import("@/views/personal/MyNote.vue"),
             meta: {
               title: "游记",
               keepAlive: false,
@@ -205,6 +207,16 @@ export const routes: Array<RouteRecordRaw> = [
             component: () => import("@/views/personal/Star.vue"),
             meta: {
               title: "我收藏的游记",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
+            path: "myroute",
+            name: "MyRoute",
+            component: () => import("@/views/personal/MyRoute.vue"),
+            meta: {
+              title: "我的行程",
               keepAlive: false,
               showTab: true,
             },
