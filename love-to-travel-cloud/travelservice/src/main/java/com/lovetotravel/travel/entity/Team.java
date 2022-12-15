@@ -30,11 +30,17 @@ public class Team {
     @ApiModelProperty("出行时间")
     private String depart;
 
+    @ApiModelProperty("出行天数")
+    private String day;
+
     @ApiModelProperty("预算")
     private String budget;
 
     @ApiModelProperty("简介")
     private String introduction;
+
+    @ApiModelProperty("口号")
+    private String slogan;
 
     @ApiModelProperty("预期成员数量")
     private String num;

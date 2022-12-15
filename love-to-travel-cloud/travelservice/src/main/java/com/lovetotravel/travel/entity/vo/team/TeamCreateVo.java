@@ -22,6 +22,9 @@ public class TeamCreateVo {
     @ApiModelProperty("出行时间")
     private String depart;
 
+    @ApiModelProperty("出行天数")
+    private String day;
+
     @ApiModelProperty("预算")
     private String budget;
 
