@@ -121,6 +121,7 @@ export default {
     },
   },
   mounted() {
+    /* 初始化富文本编辑器 */
     this.seteditor();
     // @ts-ignore
     this.editor.txt.html(
