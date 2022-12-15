@@ -163,8 +163,8 @@ const displayText = () => {
                   ><i class="fa fa-bars"></i
                 ></a>
                 <ul class="main-menu__list">
-                  <li class="dropdown current aly-index">
-                    <a href="#">爱旅游</a>
+                  <li class="dropdown current">
+                    <router-link to="/" class="aly-index">爱旅游</router-link>
                   </li>
                   <li class="dropdown">
                     <a href="#">去旅游</a>
@@ -224,9 +224,10 @@ const displayText = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <a href="#">问旅游</a>
+                    <a href="#">购旅游</a>
                     <ul>
-                      <li><a href="news.html">旅行解惑</a></li>
+                      <li><a href="news.html">酒店</a></li>
+                      <li><a href="news-details.html">机票</a></li>
                     </ul>
                   </li>
                   <li><a href="#">旅游脉络</a></li>
@@ -286,7 +287,7 @@ const displayText = () => {
       <ul class="mobile-nav__contact list-unstyled">
         <li>
           <i class="fa fa-envelope"></i>
-          <a href="mailto:needhelp@packageName__.com">needhelp@tevily.com</a>
+          <a href="mailto:needhelp@alycom">needhelp@aly.com</a>
         </li>
         <li>
           <i class="fa fa-phone-alt"></i>
@@ -373,5 +374,7 @@ const displayText = () => {
 }
 
 .aly-index {
+
 }
+
 </style>

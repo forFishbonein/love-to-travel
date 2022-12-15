@@ -1,5 +1,6 @@
 package com.lovetotravel.travel.service.impl;
 
+import cn.hutool.core.codec.Base64;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.Result;
@@ -170,6 +171,7 @@ public class NoteServiceImpl implements NoteService {
      */
     @Override
     public void insert(NoteVo noteVo) {
+
         Note note = new Note();
         BeanUtils.copyProperties(noteVo, note);
         Date date = new Date();
@@ -393,7 +395,7 @@ public class NoteServiceImpl implements NoteService {
         List<Note> notes = null;
         for (NoteStar n : noteStars) {
             Query query = new Query();
-            query.addCriteria(Criteria.where("noteId").is(n.getNoteId()));
+            query.addCriteria(Criteria.where("id").is(n.getNoteId()));
             notes.add(mongoTemplate.findOne(query, Note.class));
         }
         return notes;

@@ -686,7 +686,7 @@ onMounted(() => {
           width: 160px;
           height: 100px;
           display: flex;
-          justify-content: space-around;
+          //justify-content: space-around;
           align-items: center;
           padding-left: 10px;
           i {
@@ -694,7 +694,7 @@ onMounted(() => {
           }
           .item-left-text {
             p {
-              padding: 2px;
+              //padding: 2px;
               font-size: 16px;
               margin: 0;
               line-height: 1.4em;

@@ -114,14 +114,14 @@ const changeCurrentPage = (p: number) => {
                 <span>{{ item.ticket }}</span
                 >元 / 每人
               </p>
-              <ul class="popular-tours__meta list-unstyled">
-                <li>
-                  <el-scrollbar max-height="100px" class="scrollbar-content">
-                    <span style="color: #303133"> 推荐理由：</span
-                    >{{ item.season }}
-                  </el-scrollbar>
-                </li>
-              </ul>
+<!--              <ul class="popular-tours__meta list-unstyled" v-show="item.season">-->
+<!--                <li>-->
+<!--                  <el-scrollbar max-height="100px" class="scrollbar-content">-->
+<!--&lt;!&ndash;                    <span style="color: #303133"></span>&ndash;&gt;-->
+<!--                    {{ item.season }}-->
+<!--                  </el-scrollbar>-->
+<!--                </li>-->
+<!--              </ul>-->
             </div>
           </div>
         </div>

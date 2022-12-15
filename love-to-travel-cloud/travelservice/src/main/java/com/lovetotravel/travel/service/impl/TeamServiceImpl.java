@@ -12,6 +12,7 @@ import com.lovetotravel.travel.service.EmailService;
 import com.lovetotravel.travel.service.TeamService;
 import org.bson.Document;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -58,6 +59,13 @@ public class TeamServiceImpl implements TeamService {
         query.addCriteria(Criteria.where("members").elemMatch(Criteria.where("userId").is(id)));
         query.addCriteria(Criteria.where("deleted").is("0"));
 
+        return mongoTemplate.find(query, Team.class);
+    }
+
+    @Override
+    public List<Team> getAll() {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("createTime")));
         return mongoTemplate.find(query, Team.class);
     }
 
