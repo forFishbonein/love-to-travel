@@ -374,7 +374,5 @@ const displayText = () => {
 }
 
 .aly-index {
-
 }
-
 </style>

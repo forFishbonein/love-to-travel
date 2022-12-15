@@ -55,6 +55,7 @@ let routeInfo = ref({} as routeInfoType);
 /* 添加到行程 */
 const dialogFormVisible = ref(false);
 const openSceneryToPlanDialog = (index: number) => {
+  alert("添加到行程框");
   const theSceneryInfo = sceneryListInfo.value[index];
   //只需要下面两项信息即可！
   routeInfo.value.originName = theSceneryInfo.name;
@@ -64,6 +65,8 @@ const openSceneryToPlanDialog = (index: number) => {
 const addSceneryToPlan = () => {
   dialogFormVisible.value = false;
   emitter.emit("addAScenery", routeInfo.value);
+  //TODO
+  routeInfo.value = {} as routeInfoType; //清空一下！非常重要，否则添加的数据就是连带着之前选择的，出错！
 };
 onMounted(() => {
   requestSceneryListInfo();
