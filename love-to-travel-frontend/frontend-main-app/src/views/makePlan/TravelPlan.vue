@@ -154,10 +154,10 @@ export default {
         .then((AMap) => {
           let map = new AMap.Map("map", {
             //设置地图容器id
-            zoom: 4.5, //初始化地图层级
+            zoom: 6, //初始化地图层级
             viewMode: "3D", //是否为3D地图模式
             // center: [116.397436, 39.909165], //初始化地图中心点位置，北京
-            center: [105.602725, 37.076636], //初始化地图中心点位置，兰州
+            center: [106.550483,29.563707], //初始化地图中心点位置，成都
             dragEnable: true, //禁止鼠标拖拽
             scrollWheel: true, //鼠标滚轮放大缩小
             doubleClickZoom: true, //双击放大缩小
@@ -321,11 +321,6 @@ export default {
 };
 </script>
 <template>
-  <div class="info">
-    <p>当前级别：<span id="map-zoom">11</span></p>
-    <p>当前中心点：<span id="map-center">121.498586,31.239637</span></p>
-    <p>当前经纬度：<span id="lnglat"></span></p>
-  </div>
   <div id="map"></div>
   <div class="main">
     <div class="main-left">
@@ -535,7 +530,6 @@ export default {
   // height: 600px;
   height: 100%;
   padding: 0px;
-  margin: 0px;
 }
 .info {
   position: fixed;

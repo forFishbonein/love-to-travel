@@ -164,7 +164,7 @@ const displayText = () => {
                 ></a>
                 <ul class="main-menu__list">
                   <li class="dropdown current">
-                    <a href="#" class="aly-index">爱旅游</a>
+                    <router-link to="/" class="aly-index">爱旅游</router-link>
                   </li>
                   <li class="dropdown">
                     <a href="#">去旅游</a>
