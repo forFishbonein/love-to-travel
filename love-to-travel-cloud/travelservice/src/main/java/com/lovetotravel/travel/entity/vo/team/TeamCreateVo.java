@@ -12,6 +12,10 @@ public class TeamCreateVo {
     @ApiModelProperty("团队名称")
     private String teamName;
 
+    @ApiModelProperty("所有者")
+    private String ownerId;
+
+
     @ApiModelProperty("途径地点/规划的地点")
     private String[] place;
 
