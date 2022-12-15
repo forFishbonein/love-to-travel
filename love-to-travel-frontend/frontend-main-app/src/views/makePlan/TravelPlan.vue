@@ -14,6 +14,9 @@ import {
   planCityInfoType,
 } from "@apis/interface/iPlan";
 import { getCitysInfo } from "@apis/travelService/city";
+// 引入中文包
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import { timeFormat } from "@/utils/filters/time";
 export default {
   props: ["fromCity", "toCity", "goDate"],
   // 简单功能的实现
@@ -75,7 +78,8 @@ export default {
     };
     // 初始化右边的数据
     const initWantCityInfo = () => {
-      if (toCity) {
+      if (toCity && toCity.cityName) {
+        //要加一下toCity.cityName
         planCityInfo.wantCitys.push({
           //这里必须要转一下，因为数据类型不一样，字段不一样！
           id: toCity.cityId,
@@ -90,6 +94,7 @@ export default {
     };
     // 管理右边的数据
     const addToWant = (index: number) => {
+      initMap(planCityInfo.wantCitys); //往上面放，因为这个慢
       planCityInfo.wantCitys.push({
         id: citysInfo.value[index].cityId,
         toCity: citysInfo.value[index].cityName,
@@ -98,13 +103,12 @@ export default {
         lat: citysInfo.value[index].lat,
       });
       console.log(planCityInfo);
-      initMap(planCityInfo.wantCitys);
     };
     const deleteTheCity = (index: number) => {
+      initMap(planCityInfo.wantCitys);
       console.log(planCityInfo.wantCitys);
       planCityInfo.wantCitys.splice(index, 1);
       console.log(planCityInfo.wantCitys);
-      initMap(planCityInfo.wantCitys);
     };
 
     // 确认计划
@@ -130,7 +134,7 @@ export default {
           //这里必须要转换成json字符串再传输，因为router的参数只接受数字和字符串类型，否则会被转换成字符串"Object object"
           wantCitys: JSON.stringify(array),
           backCity: planCityInfo.backCity,
-          goTheDate: planCityInfo.goTheDate,
+          goTheDate: timeFormat(planCityInfo.goTheDate),
           budget: planCityInfo.budget,
         },
       });
@@ -154,10 +158,11 @@ export default {
         .then((AMap) => {
           let map = new AMap.Map("map", {
             //设置地图容器id
-            zoom: 6, //初始化地图层级
+            zoom: 5, //初始化地图层级
             viewMode: "3D", //是否为3D地图模式
             // center: [116.397436, 39.909165], //初始化地图中心点位置，北京
-            center: [106.550483, 29.563707], //初始化地图中心点位置，成都
+            // center: [106.55048, 29.5637], //初始化地图中心点位置，成都
+            center: [103.834228, 36.060798], //初始化地图中心点位置，兰州
             dragEnable: true, //禁止鼠标拖拽
             scrollWheel: true, //鼠标滚轮放大缩小
             doubleClickZoom: true, //双击放大缩小
@@ -316,6 +321,7 @@ export default {
       addToWant,
       ...toRefs(planCityInfo),
       size,
+      zhCn,
     };
   },
 };
@@ -349,9 +355,13 @@ export default {
                   <p>
                     <a>{{ item.cityName }}</a>
                   </p>
-                  <p>{{ item.cityEname }}</p>
+                  <p>{{ item.cityEname.toUpperCase() }}</p>
                 </div>
-                <div class="content-city">{{ item.introduction }}</div>
+                <div class="content-city">
+                  <el-scrollbar max-height="40px" style="padding-right: 10px">
+                    {{ item.introduction }}
+                  </el-scrollbar>
+                </div>
               </div>
               <div>
                 <div class="button-city">
@@ -368,12 +378,14 @@ export default {
     <div class="main-right">
       <div class="right-title">
         <p>我的行程</p>
-        <el-date-picker
-          v-model="goTheDate"
-          type="date"
-          placeholder="选择出发日期"
-          :size="size"
-        />
+        <el-config-provider :locale="zhCn">
+          <el-date-picker
+            v-model="goTheDate"
+            type="date"
+            placeholder="选择出发日期"
+            :size="size"
+          />
+        </el-config-provider>
       </div>
       <div class="right-body">
         <div class="plan-container">
@@ -500,10 +512,11 @@ export default {
   margin-right: 50px;
 }
 .select-body {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
   .select-confirm {
     margin-left: 20px;
   }
@@ -562,17 +575,20 @@ export default {
       background-color: #e8604c;
       width: 100%;
       height: 10%;
-      line-height: 50px;
+      // line-height: 50px;
       border: 1px #e8604c solid;
       display: flex;
       justify-content: center;
       align-content: center;
       p {
+        display: flex;
+        align-items: center;
         font-size: 25px;
         font-weight: 1000;
         color: white;
-        margin-top: 8px;
-        margin-left: 20px;
+        // margin-top: 8px;
+        // margin-left: 20px;
+        margin: 0;
       }
     }
     .left-body {
@@ -680,7 +696,7 @@ export default {
           }
           .content-city {
             color: #333333;
-            padding-top: 5px;
+            // padding-top: 5px;
             width: 135px;
             height: 40px;
             // border: 1px #e8604c solid;
