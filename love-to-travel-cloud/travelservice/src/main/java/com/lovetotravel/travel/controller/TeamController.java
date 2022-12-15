@@ -43,6 +43,12 @@ public class TeamController {
         return Result.success(teamService.getJoinedById(id));
     }
 
+    @ApiOperation("查询所有队伍")
+    @GetMapping("/user/create/{id}")
+    public Result<List<Team>> getAll() {
+        return Result.success(teamService.getAll());
+    }
+
     @ApiOperation("创建队伍")
     @PostMapping
     public Result<String> insert(@RequestBody TeamCreateVo teamCreateVo) {
