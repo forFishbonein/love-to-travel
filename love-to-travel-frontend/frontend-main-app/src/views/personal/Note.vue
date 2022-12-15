@@ -5,10 +5,6 @@ import { mainStore } from "@/store/user";
 import { theNotesInfoType } from "@apis/interface/iPlan";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
-import emitter from "@/mitt/event";
-const toAddFoot = () => {
-  emitter.emit("addFoot");
-};
 const store = mainStore();
 const userNotesInfo = ref([] as theNotesInfoType[]);
 const getNotesInfo = async () => {
@@ -37,46 +33,6 @@ getNotesInfo();
 </script>
 
 <template>
-  <ul class="main-button">
-    <li class="tour-types__single wow fadeInUp" data-wow-delay="100ms">
-      <div class="tour-types__content">
-        <div class="tour-types__icon">
-          <el-icon><EditPen /></el-icon>
-        </div>
-        <h4 class="tour-types__title">写游记</h4>
-      </div>
-    </li>
-    <li class="tour-types__single wow fadeInUp" data-wow-delay="200ms">
-      <router-link to="/"
-        ><div class="tour-types__content">
-          <div class="tour-types__icon">
-            <el-icon><ChatDotRound /></el-icon>
-          </div>
-          <h4 class="tour-types__title">问答</h4>
-        </div>
-      </router-link>
-    </li>
-    <li
-      class="tour-types__single wow fadeInUp"
-      data-wow-delay="300ms"
-      @click="toAddFoot"
-    >
-      <div class="tour-types__content">
-        <div class="tour-types__icon">
-          <el-icon><MapLocation /></el-icon>
-        </div>
-        <h4 class="tour-types__title">添加足迹</h4>
-      </div>
-    </li>
-    <li class="tour-types__single wow fadeInUp" data-wow-delay="400ms">
-      <div class="tour-types__content">
-        <div class="tour-types__icon">
-          <el-icon><User /></el-icon>
-        </div>
-        <h4 class="tour-types__title">找队友</h4>
-      </div>
-    </li>
-  </ul>
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
@@ -84,7 +40,7 @@ getNotesInfo();
         <el-button class="button" text>发游记</el-button>
       </div>
     </template>
-    <el-scrollbar max-height="420px">
+    <el-scrollbar max-height="600px">
       <div
         class="card-item-container"
         v-for="(item, index) in userNotesInfo"
@@ -127,20 +83,6 @@ getNotesInfo();
 </template>
 
 <style lang="scss" scoped>
-.main-button {
-  width: 100%;
-  margin: 0 auto;
-  // border: 1px #e8604c solid;
-  height: 210px;
-  display: flex;
-  justify-content: space-around;
-  align-items: center;
-  margin-top: 20px;
-  .tour-types__single {
-    margin-bottom: 0;
-    cursor: pointer;
-  }
-}
 .card-header {
   display: flex;
   justify-content: space-between;
@@ -152,7 +94,7 @@ getNotesInfo();
   margin-top: 30px;
   .card-item-container {
     width: 700px;
-    height: 300px;
+    height: 600px;
     // border: 1px #e8604c solid;
     border: 1px #dcdfe6 solid;
     margin: 0 auto;

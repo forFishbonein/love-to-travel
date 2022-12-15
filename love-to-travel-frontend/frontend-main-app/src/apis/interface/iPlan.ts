@@ -33,10 +33,11 @@ export interface planCityInfoType {
 export interface citysInfoType {
   cityId: string;
   cityName: string;
+  cityEname: string;
   lng: string;
   lat: string;
-  url: null;
-  introduction: null;
+  url: string;
+  introduction: string;
 }
 
 /* 3 */
@@ -158,4 +159,23 @@ export interface tranformComments {
   createTime: string;
   reply: number;
   son: secondComment[];
+}
+
+/* 足迹类型 */
+export interface wantInfoType {
+  cityId: string;
+  cityName: string;
+  createTime: string;
+  introduction: string;
+  pos: Array<number>;
+  url: string;
+}
+export interface beenInfoType {
+  cityId: string;
+  cityName: string;
+  createTime: string;
+  introduction: string;
+  score: string;
+  pos: Array<number>;
+  url: string;
 }

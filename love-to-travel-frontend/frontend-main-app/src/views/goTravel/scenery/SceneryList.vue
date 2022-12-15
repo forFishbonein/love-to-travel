@@ -159,4 +159,12 @@ const changeCurrentPage = (p: number) => {
   height: 110px;
   font-size: 14px;
 }
+.popular-tours__img {
+  width: 370px;
+  height: 280px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 </style>

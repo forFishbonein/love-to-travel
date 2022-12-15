@@ -134,11 +134,11 @@ const changeCurrentPage = (p: number) => {
                   </a>
                 </li>
                 <li>
-                  <a href="javascript:;" style="width: 370px; justify-content: left"
-                  ><i class="far fa-user-circle"></i
-                  ><span class="span-style"
-                  >你好啊大苏打实打实大{{ item.userName }}</span
-                  ></a
+                  <a
+                    href="javascript:;"
+                    style="width: 370px; justify-content: left"
+                    ><i class="far fa-user-circle"></i
+                    ><span class="span-style">{{ item.userName }}</span></a
                   >
                 </li>
               </ul>

@@ -348,15 +348,15 @@ export default {
               :key="index"
               class="scrollbar-item"
             >
-              <div><img src="@/assets/images/login-pic.jpg" /></div>
+              <div><img :src="item.url" /></div>
               <div>
                 <div class="title-city">
                   <p>
                     <a>{{ item.cityName }}</a>
                   </p>
-                  <p>{{ item.cityName }}</p>
+                  <p>{{ item.cityEname }}</p>
                 </div>
-                <div class="content-city">20%的人会去，87360人去过</div>
+                <div class="content-city">{{ item.introduction }}</div>
               </div>
               <div>
                 <div class="button-city">
@@ -447,7 +447,6 @@ export default {
             <el-radio-button label="3000" />
             <el-radio-button label="5000" />
           </el-radio-group>
-
         </div>
         <div class="select-confirm">
           <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
@@ -625,7 +624,8 @@ export default {
           padding-left: 10px;
           transition: all 0.3s linear;
         }
-        .input-search:hover, .input-search:focus {
+        .input-search:hover,
+        .input-search:focus {
           background-color: #ffffff;
         }
       }
