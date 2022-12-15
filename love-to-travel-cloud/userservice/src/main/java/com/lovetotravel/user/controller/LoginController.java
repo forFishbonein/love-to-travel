@@ -5,18 +5,17 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lovetotravel.user.entity.Log;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.vo.LoginVo;
+import com.lovetotravel.user.entity.vo.NewNum;
 import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.service.EmailService;
 import com.lovetotravel.user.service.UserService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Api(tags = "登录信息管理接口")
 @RestController
@@ -63,6 +62,12 @@ public class LoginController {
     @PostMapping("/log")
     public Result<Page<Log>> getAllLog(@RequestBody PageVo pageVo) {
         return Result.success(userService.getAllLog(pageVo));
+    }
+
+    @ApiOperation("7天日志统计")
+    @GetMapping("/log/new")
+    public Result<List<NewNum>> getNewLogNum() {
+        return Result.success(userService.getNewLogNum());
     }
 
 

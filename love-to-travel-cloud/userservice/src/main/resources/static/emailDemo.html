@@ -4,124 +4,123 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <style>
-        .main {
-            width: 650px;
-            height: 900px;
-            margin: auto;
-            background: #ffefba; /* fallback for old browsers */
-            background: -webkit-linear-gradient(to top, rgb(255, 252, 240), rgb(248, 227, 227)); /* Chrome 10-25, Safari 5.1-6 */
-            background: linear-gradient(to top, rgb(255, 252, 240), rgb(248, 227, 227)); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-            border: solid 5px aliceblue;
-        }
-
-        .logo {
-            margin-left: -5px;
-            margin-top: 40px;
-
-        }
-
-        .logo h1 {
-            width: 100px;
-            height: 40px;
-            margin-left: 25px;
-            color: #316bad;
-        }
-
-        .decoration1 {
-            height: 13px;
-            width: 585px;
-            margin-left: 20px;
-            margin-top: -15px;
-            background: linear-gradient(to right,
-            rgb(56, 189, 248),
-            rgb(59, 130, 246));
-        }
-
-        .text1 {
-            margin-left: 30px;
-            margin-top: 30px;
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .code {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .code h1 {
-            color: #3C85D7;
-        }
-
-        .tips1 {
-            margin-left: 250px;
-            margin-top: 55px;
-            font-size: 12px;
-            color: #737373;
-        }
-
-        .dividing-line {
-            height: 3px;
-            width: 615px;
-            margin-left: 20px;
-            margin-top: 60px;
-            background-color: #EEEEEE;
-        }
-
-        .tips2 {
-            margin-left: 30px;
-            margin-top: 60px;
-            font-size: 12px;
-            color: #737373;
-        }
-
-        .text2 {
-            margin-left: 30px;
-            margin-top: 30px;
-            font-size: 18px;
-            font-weight: 500;
-        }
-
-        .decoration2 {
-            height: 13px;
-            width: 585px;
-            margin-left: 20px;
-            margin-top: 30px;
-            background: linear-gradient(to right,
-            rgb(96, 165, 250),
-            rgb(52, 211, 153));
-        }
     </style>
 </head>
 <body>
-<div class="main">
-    <div class="logo">
-        <h1>爱旅游</h1>
-    </div>
-    <div class="decoration1"></div>
-    <div class="text1">
-        尊敬的用户:<br><br>
-        &emsp;&emsp;您好！<br><br>
-        &emsp;&emsp;本次请求的邮件验证码为:<br>
-        <div class="code"><h1>[[${message}]]</h1></div>
-    </div>
-    <div class="tips1">
-        此验证码仅在5分钟内有效
-    </div>
-    <div class="dividing-line"></div>
-    <div class="tips2">
-        如果你没有请求此验证码，可放心忽略这封电子邮件<br>
-        请勿直接回复此自动电子邮件
-    </div>
-    <div class="dividing-line"></div>
-    <div></div>
-    <div class="text2">
-        此致，<br>
-        爱旅游团队
-    </div>
-    <div class="decoration2"></div>
+<div>
+    <includetail>
+        <div align="center">
+            <div class="open_email" style="margin-left: 8px; margin-top: 8px; margin-bottom: 8px; margin-right: 8px;">
+                <div>
+                    <br>
+                    <span class="genEmailContent">
+                        <div id="cTMail-Wrap"
+                             style="word-break: break-all;box-sizing:border-box;text-align:center;min-width:320px; max-width:660px; border:1px solid #f6f6f6; background-color:#f7f8fa; margin:auto; padding:20px 0 30px; font-family:'helvetica neue',PingFangSC-Light,arial,'hiragino sans gb','microsoft yahei ui','microsoft yahei',simsun,sans-serif">
+                            <div class="main-content" style="">
+                                <table style="width:100%;font-weight:300;margin-bottom:10px;border-collapse:collapse">
+                                    <tbody>
+                                    <tr style="font-weight:300">
+                                        <td style="width:3%;max-width:30px;"></td>
+                                        <td style="max-width:600px;">
+                                            <img src="./img/love-to-travel-logo1.png" alt="">
+                                            <div id="cTMail-logo" style="width:92px; height:25px;">
+                                                <a href="#">
+                                                </a>
+                                            </div>
+                                            <p style="height:2px;background-color: #e8604c;border: 0;font-size:0;padding:0;width:100%;margin-top:20px;"></p>
+
+                                            <div id="cTMail-inner" style="background-color:#fff; padding:23px 0 20px;box-shadow: 0px 1px 1px 0px rgba(122, 55, 55, 0.2);text-align:left;">
+                                                <table style="width:100%;font-weight:300;margin-bottom:10px;border-collapse:collapse;text-align:left;">
+                                                    <tbody>
+                                                    <tr style="font-weight:300">
+                                                        <td style="width:3.2%;max-width:30px;"></td>
+                                                        <td style="max-width:480px;text-align:left;">
+                                                            <h1 id="cTMail-title" style="font-size: 20px; line-height: 36px; margin: 0px 0px 22px;">
+                                                                爱旅游：欢迎使用
+                                                            </h1>
+
+                                                            <p id="cTMail-userName" style="font-size:14px;color:#333; line-height:24px; margin:0;">
+                                                                尊敬的用户，您好！
+                                                            </p>
+
+                                                            <p class="cTMail-content" style="line-height: 24px; margin: 6px 0px 0px; overflow-wrap: break-word; word-break: break-all;">
+                                                                <span style="color: rgb(51, 51, 51); font-size: 14px;">
+                                                                    有的旅行是为了拓宽眼界，浏览风景名胜。有的旅行是为了体验生活，感悟人生。有的旅行时为了寻找逝去的年华，重温青春的惆怅。而有的旅行是释放负面情绪，换个心情，轻装上阵。
+                                                                </span>
+                                                            </p>
+
+                                                            <p class="cTMail-content" style="line-height: 24px; margin: 6px 0px 0px; overflow-wrap: break-word; word-break: break-all;">
+                                                                <span style="color: rgb(51, 51, 51); font-size: 14px;">请填写下方验证码完成验证。
+                                                                    <span style="font-weight: bold;">非本人操作可忽略。</span>
+                                                                </span>
+                                                            </p>
+
+                                                            <p class="cTMail-content"
+                                                               style="font-size: 14px; color: rgb(51, 51, 51); line-height: 24px; margin: 6px 0px 0px; word-wrap: break-word; word-break: break-all;">
+                                                                <a id="cTMail-btn" href="" title=""
+                                                                   style="font-size: 16px; line-height: 45px; display: block; background-color: #e8604c; color: rgb(255, 255, 255); text-align: center; text-decoration: none; margin-top: 20px; border-radius: 3px;">
+                                                                    [[${message}]]
+                                                                </a>
+                                                            </p>
+
+                                                            <p class="cTMail-content" style="line-height: 24px; margin: 6px 0px 0px; overflow-wrap: break-word; word-break: break-all;">
+                                                                <span style="color: rgb(51, 51, 51); font-size: 14px;">
+                                                                    <br>
+                                                                    无法正常显示？请复制以下链接至浏览器打开：
+                                                                    <br>
+
+                                                                </span>
+                                                            </p>
+                                                            <dl style="font-size: 14px; color: rgb(51, 51, 51); line-height: 18px;">
+                                                                <dd style="margin: 0px 0px 6px; padding: 0px; font-size: 12px; line-height: 22px;">
+                                                                    <p id="cTMail-sender" style="font-size: 14px; line-height: 26px; word-wrap: break-word; word-break: break-all; margin-top: 32px;">
+                                                                        此致
+                                                                        <br>
+                                                                        <strong>爱旅游团队</strong>
+                                                                    </p>
+                                                                </dd>
+                                                            </dl>
+                                                        </td>
+                                                        <td style="width:3.2%;max-width:30px;"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+
+                                            <div id="cTMail-copy" style="text-align:center; font-size:12px; line-height:18px; color:#999">
+                                                <table style="width:100%;font-weight:300;margin-bottom:10px;border-collapse:collapse">
+                                                    <tbody>
+                                                    <tr style="font-weight:300">
+                                                        <td style="width:3.2%;max-width:30px;"></td>
+                                                        <td style="max-width:540px;">
+
+                                                            <p style="text-align:center; margin:20px auto 14px auto;font-size:12px;color:#999;">
+                                                                此为系统邮件，请勿回复。
+                                                                <a href=""
+                                                                   style="text-decoration:none;word-break:break-all;word-wrap:normal; color: #333;" target="_blank">
+                                                                    取消订阅
+                                                                </a>
+                                                            </p>
+                                                        </td>
+                                                        <td style="width:3.2%;max-width:30px;"></td>
+                                                    </tr>
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </td>
+                                        <td style="width:3%;max-width:30px;"></td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </includetail>
 </div>
+
 
 </body>
 </html>
