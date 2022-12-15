@@ -21,7 +21,6 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-
     @ApiOperation("根据队伍id查询队伍信息")
     @GetMapping("/{id}")
     public Result<Team> getById(@PathVariable("id") String id) {

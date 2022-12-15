@@ -3,6 +3,7 @@ import Index from "@/Index.vue";
 import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
 import GoTravel from "@views/goTravel/GoTravel.vue";
+import GroupTravel from "@views/groupTravel/GroupTravel.vue";
 import ReadTravel from "@/views/readTravel/ReadTravel.vue";
 import City from "@/views/goTravel/city/City.vue";
 import Scenery from "@/views/goTravel/scenery/Scenery.vue";
@@ -157,6 +158,57 @@ export const routes: Array<RouteRecordRaw> = [
                 props(route) {
                   return {
                     noteId: route.params.noteId,
+                  };
+                },
+              },
+            ],
+          },
+          {
+            path: "write",
+            name: "Write",
+            component: () => import("@/views/readTravel/write/Write.vue"),
+            meta: { title: " 写游记", keepAlive: false, showTab: true },
+          },
+        ],
+      },
+      {
+        path: "/groupTravel",
+        name: "GroupTravel",
+        component: GroupTravel,
+        meta: { title: "组旅游", keepAlive: false, showTab: true },
+        children: [
+          {
+            path: "team",
+            name: "Team",
+            component: () => import("@/views/groupTravel/team/Team.vue"),
+            // component: Note,
+            meta: { title: "队伍", keepAlive: false, showTab: true },
+            redirect: "/groupTravel/team/list",
+            children: [
+              {
+                path: "list",
+                name: "TeamList",
+                component: () =>
+                  import("@/views/groupTravel/team/TeamList.vue"),
+                meta: {
+                  title: "队伍列表",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail/:noteId",
+                name: "TeamDetail",
+                component: () =>
+                  import("@/views/groupTravel/team/TeamDetail.vue"),
+                meta: {
+                  title: "队伍详情",
+                  keepAlive: false,
+                  showTab: true,
+                },
+                props(route) {
+                  return {
+                    teamId: route.params.teamId,
                   };
                 },
               },

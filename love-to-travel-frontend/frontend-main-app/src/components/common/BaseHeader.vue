@@ -205,17 +205,28 @@ const displayText = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <a href="#">享旅游</a>
+                    <a href="#">组旅游</a>
                     <ul>
-                      <li><a href="about.html">问答</a></li>
-                      <li><a href="about.html">找队友</a></li>
+                      <li>
+                        <router-link
+                          to="/groupTravel/team"
+                          active-class="active-router"
+                          >旅行组队</router-link
+                        >
+                      </li>
+                      <li>
+                        <router-link
+                          to="/groupTravel/create"
+                          active-class="active-router"
+                          >发布组队</router-link
+                        >
+                      </li>
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <a href="#">购旅游</a>
+                    <a href="#">问旅游</a>
                     <ul>
-                      <li><a href="news.html">酒店</a></li>
-                      <li><a href="news-details.html">机票</a></li>
+                      <li><a href="news.html">旅行解惑</a></li>
                     </ul>
                   </li>
                   <li><a href="#">旅游脉络</a></li>
