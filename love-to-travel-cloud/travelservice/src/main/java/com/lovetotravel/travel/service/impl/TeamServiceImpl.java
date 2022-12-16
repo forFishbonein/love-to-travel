@@ -129,20 +129,6 @@ public class TeamServiceImpl implements TeamService {
         update.set("introduction", teamUpdateVo.getIntroduction());
         update.set("num", teamUpdateVo.getNum());
 
-        List<Member> memberList = new ArrayList<>();
-
-        if (teamUpdateVo.getMembers() != null) {
-            memberList = Arrays.asList(teamUpdateVo.getMembers());
-            for (int i = 0; i<memberList.size(); i++) {
-                update.set("members." + i + ".userId", memberList.get(i).getUserId());
-                update.set("members." + i + ".userName", memberList.get(i).getUserName());
-                update.set("members." + i + ".tele", memberList.get(i).getTele());
-                update.set("members." + i + ".email", memberList.get(i).getEmail());
-
-
-            }
-        }
-
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
