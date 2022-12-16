@@ -80,11 +80,20 @@ export const kickOneMember = (data: any) => {
     loading: true, //显示加载圈
   });
 };
+interface postParams {
+  teamId: string;
+  teamName: string;
+  inviterId: string;
+  userEmail: string;
+}
 /* 发送邀请邮件 */
-export const postInviteEmail = (email: string) => {
+export const postInviteEmail = (data: postParams) => {
+  alert("发邮件");
+  console.log(data);
   return httpRequest({
-    method: "get",
-    url: `http://localhost:8082/team/invite/${email}`,
+    method: "post",
+    url: "http://localhost:8082/team/invite",
+    data: data,
     loading: true, //显示加载圈
   });
 };

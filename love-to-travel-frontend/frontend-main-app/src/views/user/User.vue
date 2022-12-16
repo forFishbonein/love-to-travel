@@ -9,6 +9,15 @@ import {
 } from "@/apis/userService/follow";
 import { UserInfo } from "@/apis/userService/uinterface";
 import { getUserInfoById } from "@/apis/userService/user";
+import {
+  isFollowOneUser,
+  followOneUser,
+  cancelfollowOneUser,
+} from "@/apis/userService/follow";
+import { getNotesInfoByUserId } from "@/apis/travelService/note";
+import { theNotesInfoType } from "@apis/interface/iPlan";
+import { numberFormat } from "@/utils/filters/number";
+import { timeFormat } from "@/utils/filters/time";
 const theUserInfo = ref({} as UserInfo);
 const props = defineProps<{
   userId: string;
@@ -438,6 +447,139 @@ const getFolloweeNum = () => {
     });
 };
 getFolloweeNum();
+
+/* 关注和取消关注 */
+const isFollowFlag = ref(false);
+const searchIsFollow = () => {
+  if (store.userInfo.id) {
+    isFollowOneUser(userId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          isFollowFlag.value = res.data;
+          console.log(isFollowFlag.value);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
+};
+searchIsFollow();
+
+const followTheUser = () => {
+  if (store.userInfo.id) {
+    followOneUser(userId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "关注成功",
+          });
+          isFollowFlag.value = true;
+          setTimeout(
+            () => {
+              searchIsFollow();
+              getFollowerNum();
+            },
+            //更新评论
+            1000
+          );
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  } else {
+    //@ts-ignore
+    ElMessage({
+      type: "error",
+      message: "请先登录",
+    });
+  }
+};
+const cancelFollowTheUser = () => {
+  if (store.userInfo.id) {
+    cancelfollowOneUser(userId, store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "取消关注成功",
+          });
+          isFollowFlag.value = false;
+          setTimeout(
+            () => {
+              searchIsFollow();
+              getFollowerNum();
+            },
+            //更新评论
+            1000
+          );
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
+};
+
+/* 游记 */
+const userNotesInfo = ref([] as theNotesInfoType[]);
+const getNotesInfo = async () => {
+  await getNotesInfoByUserId(store.userInfo.id)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        userNotesInfo.value = res.data;
+        console.log(userNotesInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getNotesInfo();
 </script>
 
 <template>
@@ -447,8 +589,16 @@ getFolloweeNum();
       <img :src="theUserInfo.url" class="avater-img" />
     </div>
     <div class="follow-button">
-      <el-button type="success" round>Success</el-button>
-      <el-button type="warning" round>Warning</el-button>
+      <el-button
+        type="danger"
+        round
+        v-if="isFollowFlag"
+        @click="cancelFollowTheUser"
+        >取消关注</el-button
+      >
+      <el-button type="primary" round v-else @click="followTheUser"
+        >关注</el-button
+      >
     </div>
     <div class="info-border">
       <el-descriptions :title="theUserInfo.name">
@@ -465,7 +615,7 @@ getFolloweeNum();
         }}</el-descriptions-item>
         <el-descriptions-item label="等级">
           <el-tag size="medium" style="font-weight: 600">{{
-            theUserInfo.grade
+            theUserInfo.grade || "人在旅途"
           }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="个性签名">{{
@@ -545,7 +695,62 @@ getFolloweeNum();
         <button type="submit" class="thm-btn comment-form__btn">发送</button>
       </el-card>
     </div>
-    <div class="main-body"></div>
+    <div class="main-body">
+      <el-card class="box-card">
+        <template #header>
+          <div class="card-header">
+            <span>ta发布的游记</span>
+            <el-button class="button" text
+              ><router-link to="/readTravel/write"
+                >发游记</router-link
+              ></el-button
+            >
+          </div>
+        </template>
+        <el-scrollbar max-height="600px">
+          <div
+            class="card-item-container"
+            v-for="(item, index) in userNotesInfo"
+            :key="index"
+          >
+            <div class="item-img">
+              <img :src="item.url" />
+            </div>
+            <div class="item-content">
+              <div class="content-left">
+                <div>
+                  <router-link :to="`/readTravel/note/detail/${item.id}`">{{
+                    item.title
+                  }}</router-link>
+                </div>
+                <div>
+                  <span class="span-style">相关城市:</span>{{ item.city }}
+                </div>
+                <div>
+                  <span class="span-style">发表时间:</span
+                  >{{ timeFormat(item.createTime) }}
+                </div>
+              </div>
+              <div class="content-right">
+                <div>
+                  <el-icon size="16px"><View /></el-icon>浏览:{{
+                    numberFormat(item.view)
+                  }}
+                  &nbsp;&nbsp; <el-icon size="16px"><Pointer /></el-icon>点赞:{{
+                    numberFormat(item.like)
+                  }}&nbsp;&nbsp; <el-icon size="16px"><Star /></el-icon>收藏:{{
+                    numberFormat(item.star)
+                  }}&nbsp;&nbsp;
+                  <el-icon size="16px"><Document /></el-icon>评论:{{
+                    numberFormat(item.comment)
+                  }}
+                </div>
+              </div>
+            </div>
+          </div>
+        </el-scrollbar>
+      </el-card>
+    </div>
   </div>
 </template>
 
@@ -587,7 +792,12 @@ getFolloweeNum();
     position: absolute;
     top: 90px;
     left: 55px;
-    border: 1px #e8604c solid;
+    // border: 1px #e8604c solid;
+    display: flex;
+    justify-content: center;
+    .el-button {
+      width: 80px;
+    }
   }
   .info-border {
     padding-top: 15px;
@@ -714,6 +924,90 @@ getFolloweeNum();
   }
   .textarea-message {
     padding: 10px 20px;
+  }
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.box-card {
+  width: 800px;
+  margin-left: 25px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  .card-item-container {
+    width: 700px;
+    height: auto;
+    // border: 1px #e8604c solid;
+    border: 1px #dcdfe6 solid;
+    margin: 0 auto;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 25px;
+    .item-img {
+      height: 300px;
+      width: 300px;
+      img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+    .item-content {
+      width: 400px;
+      height: 300px;
+      display: flex;
+      justify-content: space-around;
+      flex-direction: column;
+      .content-left {
+        width: 400px;
+        height: 170px;
+        // border: 1px #e8604c solid;
+        padding-top: 10px;
+        .span-style {
+          color: #ffffff;
+          background-color: #e8604c;
+          border-radius: 5px;
+          padding: 5px;
+          margin-right: 5px;
+        }
+        > div {
+          height: 50px;
+          width: 400px;
+          padding-left: 30px;
+        }
+        > div:first-child {
+          font-size: 22px;
+          font-weight: 700;
+          height: auto;
+        }
+        > div:nth-child(2) {
+          margin-top: 15px;
+          font-size: 16px;
+        }
+        > div:nth-child(3) {
+          font-size: 16px;
+        }
+      }
+      .content-right {
+        width: 400px;
+        height: 100px;
+        // border: 1px #e8604c solid;
+        display: flex;
+        flex-direction: column;
+        justify-content: end;
+        div {
+          text-align: right;
+          // border: 1px #e8604c solid;
+          font-size: 16px;
+          display: flex;
+          align-items: center;
+          justify-content: end;
+          padding-right: 10px;
+        }
+      }
+    }
   }
 }
 </style>

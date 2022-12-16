@@ -300,6 +300,16 @@ export const routes: Array<RouteRecordRaw> = [
               },
             ],
           },
+          {
+            path: "follow",
+            name: "Follow",
+            component: () => import("@/views/personal/Follow.vue"),
+            meta: {
+              title: "我的粉丝和关注",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
         ],
       },
       {
@@ -307,6 +317,10 @@ export const routes: Array<RouteRecordRaw> = [
         name: "User",
         component: User,
         meta: { title: "其他用户的主页", keepAlive: false, showTab: true },
+        // beforeEnter: (to, from, next) => {
+        //   if()
+        //   next();
+        // },
         props(route) {
           return {
             userId: route.params.userId,

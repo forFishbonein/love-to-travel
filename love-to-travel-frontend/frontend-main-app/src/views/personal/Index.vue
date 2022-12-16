@@ -634,10 +634,10 @@ onMounted(() => {
       <el-menu-item index="/personal/foot">足迹</el-menu-item>
       <el-menu-item index="/personal/mynote">游记</el-menu-item>
       <el-menu-item index="/personal/star">收藏</el-menu-item>
-      <el-menu-item index="/personal/question">问答</el-menu-item>
       <el-menu-item index="/personal/myroute">行程</el-menu-item>
       <el-menu-item index="/personal/myteam">队伍</el-menu-item>
-      <el-menu-item index="/personal/time">时光机</el-menu-item>
+      <el-menu-item index="/personal/follow">粉丝/关注</el-menu-item>
+      <el-menu-item index="/personal/buy">订单</el-menu-item>
     </el-menu>
   </div>
   <div class="main-container">
