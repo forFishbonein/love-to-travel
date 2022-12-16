@@ -8,10 +8,11 @@ export const getProvinceInfo = () => {
     });
 }
 
-export const getPageProvinceInfo = () => {
+export const getPageProvinceInfo = (page) => {
     return httpRequest({
-        method: "get",
+        method: "post",
         url: "http://localhost:8082/province/page",
+        data:page,
         loading: true, //显示加载圈
     });
 }
@@ -24,3 +25,4 @@ export const updateProvinceInfo = (data) => {
         loading: true, //显示加载圈
     });
 }
+

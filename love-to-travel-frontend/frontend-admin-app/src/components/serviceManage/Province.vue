@@ -1,4 +1,4 @@
-<script lang="ts" setup></script>
+<!-- <script lang="ts" setup></script> -->
 
 <template>
   <el-card class="box-card">
@@ -26,19 +26,30 @@
             <el-button text class="button">查看</el-button>
           </div>
         </div>
-      </el-card>
 
+       
+      </el-card>
+      <br>
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :background="true"
+        :page-sizes="[6, 10, 20]"
+        :total="pageInfo.total"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
   </el-card>
 </template>
 
 <script>
 // import {ElMessage} from 'element-plus'
-import {getProvinceInfo} from '@/apis/serviceManage/province.js'
+import {getProvinceInfo,getPageProvinceInfo} from '../../apis/serviceManage/province.js'
 // import {updateSceneryInfo} from "@apis/serviceManage/scenery.js";
 
 
 export default {
-
   data() {
     return {
       dialogFormVisible: false, //对话框是否显示
@@ -47,18 +58,45 @@ export default {
       form: {},   //对话框表单数据
       formLabelWidth: "140px",  //对话框label宽度
       title: "",  //对话框标题
-      btnName: ""  //对话框按钮文字
+      btnName: "", //对话框按钮文字
+      pageInfo: {},
+      pageSize: 6,
+      currentPage: 1,
     }
   },
   mounted() {
-    getProvinceInfo().then((response) => {
-      var _this = this;
-      console.log(response.data);
-      _this.tableData = response.data;
-      _this.queryData = response.data;
-    });
+    this.getPageData(1, 6);
+    // getProvinceInfo().then((response) => {
+    //   var _this = this;
+    //   console.log(response.data);
+    //   _this.tableData = response.data;
+    //   _this.queryData = response.data;
+    // });
   },
   methods: {
+    // 选择每一页记录数     size
+    handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.getPageData(this.currentPage, this.pageSize);
+      console.log("size:", pageSize);
+    },
+    //切换页号得到当前页码   current
+    handleCurrentChange(pageNum) {
+      this.currentPage = pageNum;
+      this.getPageData(this.currentPage, this.pageSize);
+      console.log("num:", pageNum);
+    },
+    getPageData(num, size) {
+      num = parseInt(num)
+      size = parseInt(size)
+      getPageProvinceInfo({pageNum: num, pageSize: size}).then((response) => {
+        this.pageInfo = response.data;
+        this.tableData = this.pageInfo.records;
+        console.log(response.data)
+        console.log(this.pageInfo.records)
+      })
+    },
+
     openUpdateDialog(row) {
       this.btnName = "修改"
       this.title = "修改省份信息"
