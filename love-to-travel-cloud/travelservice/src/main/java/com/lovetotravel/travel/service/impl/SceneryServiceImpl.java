@@ -51,6 +51,7 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
     @Override
     public Page<Scenery> getPage(PageVo pageVo) {
+        System.out.println(pageVo);
         Page<Scenery> page = Page.of(pageVo.getPageNum(), pageVo.getPageSize());
         page.addOrder(OrderItem.desc("score"));
         Page<Scenery> sceneryPage = sceneryMapper.selectPage(page, null);

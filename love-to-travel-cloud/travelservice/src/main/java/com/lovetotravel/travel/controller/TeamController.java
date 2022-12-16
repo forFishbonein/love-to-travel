@@ -78,7 +78,7 @@ public class TeamController {
 
     @ApiOperation("发送邀请邮件")
     @PostMapping("/invite")
-    public Result<String> invite(TeamInviteVo teamInviteVo) {
+    public Result<String> invite(@RequestBody TeamInviteVo teamInviteVo) {
         teamService.invite(teamInviteVo);
         return Result.success("邀请成功");
     }
