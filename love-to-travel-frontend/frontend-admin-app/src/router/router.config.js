@@ -5,7 +5,9 @@ export const routes = [
     {
         path: "/",
         name: "Index", //App中包裹Index
-        meta: {title: "首页"},
+        meta: {
+            title: "首页"
+        },
         component: Index,
         redirect: "/home", //Index中包裹Home等组件
         children: [

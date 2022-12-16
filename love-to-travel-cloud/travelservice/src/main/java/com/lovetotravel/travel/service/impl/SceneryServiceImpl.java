@@ -114,25 +114,38 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
         return cityPage;
     }
 
+    @Override
+    public Page<Scenery> getSceneryByStr2(QueryPageVo pageVo) {
+        Page<Scenery> page = new Page<>(pageVo.getPageNum(), pageVo.getPageSize());
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(Scenery::getName, pageVo.getQueryStr());
+        Page<Scenery> cityPage = sceneryMapper.selectPage(page, queryWrapper);
+        return cityPage;
+    }
+
 
     @Override
     public void removeById(Long id) {
-        if (id == null) {
-            throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
-        }
-        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(Scenery::getId, id);
-        Scenery SceneryInMysql = sceneryMapper.selectOne(queryWrapper);
-        if (SceneryInMysql == null) {
-            throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
-        }
-        Scenery scenery = new Scenery();
-        scenery.setDeleted("0");
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String currentTimeStamp = dateFormat.format(date);
-        scenery.setUpdateTime(currentTimeStamp);
-        sceneryMapper.update(scenery, queryWrapper);
+//        if (id == null) {
+//            throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
+//        }
+//        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.lambda().eq(Scenery::getId, id);
+//        Scenery SceneryInMysql = sceneryMapper.selectOne(queryWrapper);
+//        if (SceneryInMysql == null) {
+//            throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
+//        }
+//        Scenery scenery = new Scenery();
+//        BeanUtils.copyProperties(SceneryInMysql, scenery);
+//
+//        System.out.println("scenery = " + scenery);
+//        Date date = new Date();
+//        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+//        String currentTimeStamp = dateFormat.format(date);
+//        scenery.setUpdateTime(currentTimeStamp);
+//        scenery.setDeleted("1");
+//        sceneryMapper.update(scenery, queryWrapper);
+        sceneryMapper.deleteById(id);
     }
 
     @Override
