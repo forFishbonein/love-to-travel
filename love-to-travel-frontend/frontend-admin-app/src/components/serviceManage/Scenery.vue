@@ -1,5 +1,3 @@
-<script lang="ts" setup></script>
-
 <script>
 import {deleteSceneryInfo, getSceneryInfo, postSceneryInfo, updateSceneryInfo} from '@/apis/serviceManage/scenery.js'
 // import {ElMessage, ElMessageBox} from "element-plus";
@@ -16,18 +14,28 @@ export default {
       form: {},   //对话框表单数据
       formLabelWidth: "140px",  //对话框label宽度
       title: "",  //对话框标题
-      btnName: ""  //对话框按钮文字
+      btnName: "",  //对话框按钮文字
+      pageSize: 10,
+      currentPage: 1,
     }
   },
   mounted() {
-    getSceneryInfo().then((response) => {
-      var _this = this;
-      console.log(response.data);
-      _this.tableData = response.data;
-      _this.queryData = response.data;
-    });
+    this.getSceneryInfo();
+
   },
   methods: {
+    getSceneryInfo(){
+      console.log(123)
+      getSceneryInfo().then((response) => {
+
+        var _this = this;
+        console.log(response.data);
+        _this.tableData = response.data;
+        _this.queryData = response.data;
+      });
+    },
+
+
     handleSizeChange(pageSize) {
       console.log("size:", pageSize);
     },
@@ -164,7 +172,6 @@ export default {
 }
 </script>
 
-
 <template>
   <el-card class="box-card">
     <template #header>
@@ -180,6 +187,7 @@ export default {
 
       </div>
     </template>
+
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
 
