@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Team;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.team.*;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.TeamService;
@@ -48,6 +49,12 @@ public class TeamController {
         return Result.success(teamService.getAll());
     }
 
+    @ApiOperation("所有队伍分页")
+    @PostMapping("/page")
+    public Result<PageVo<Team>> getPage(@RequestBody PageVo pageVo) {
+        return Result.success(teamService.getPage(pageVo));
+    }
+
     @ApiOperation("创建队伍")
     @PostMapping
     public Result<String> insert(@RequestBody TeamCreateVo teamCreateVo) {
@@ -78,8 +85,8 @@ public class TeamController {
 
     @ApiOperation("移出成员")
     @DeleteMapping("kick")
-    public Result<String> kick(@RequestBody TeamKickVo teamKickVo) {
-        teamService.kick(teamKickVo);
+    public Result<String> kick(@RequestBody TeamVo teamVo) {
+        teamService.kick(teamVo);
         return Result.success("移出成员成功");
     }
 
@@ -88,6 +95,12 @@ public class TeamController {
     public Result<String> join(@RequestBody TeamJoinVo teamJoinVo) {
         teamService.join(teamJoinVo);
         return Result.success("加入成功");
+    }
+
+    @ApiOperation("是否加入队伍")
+    @PostMapping("/isjoin")
+    public Result<Boolean> isJoin(@RequestBody TeamVo teamVo) {
+        return Result.success(teamService.isJoin(teamVo));
     }
 
     @ApiOperation("退出队伍")

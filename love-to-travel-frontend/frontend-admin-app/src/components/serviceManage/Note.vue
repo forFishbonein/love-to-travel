@@ -3,13 +3,13 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="Please input"/> &nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo_u">用户ID查询</el-button>
+          <el-input v-model="queryStr" placeholder="请输入用户名"/> &nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo_u">查询</el-button>
         </div>
 
         <div class="query">
-          <el-input v-model="input" placeholder="Please input"/> &nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo_n">游记ID查询</el-button>
+          <el-input v-model="input" placeholder="请输入内容"/> &nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo_n">查询</el-button>
         </div>
 
         <div>
@@ -24,14 +24,14 @@
       <el-table-column label="游记标题" prop="title"/>
       <el-table-column label="发布者" prop="userName" width="100"/>
       <el-table-column label="相关城市" prop="city" width="80"/>
-<!--      <el-table-column :show-overflow-tooltip="true" label="内容" prop="content" width="100"/>-->
+      <!--      <el-table-column :show-overflow-tooltip="true" label="内容" prop="content" width="100"/>-->
       <el-table-column label="评论量" prop="comment" width="100"/>
       <el-table-column label="点赞量" prop="like" width="100"/>
       <el-table-column label="浏览量" prop="view" width="100"/>
       <el-table-column label="标签" prop="trip" width="150"/>
       <el-table-column fixed="right" label="操作" prop="oppo" width="150">
         <template #default="scope">
-          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">详情</el-button>
+          <el-button link size="small" type="primary" @click="openShowDialog(scope.row)">详情</el-button>
           <el-button link size="small" type="primary" @click="singleDelete(scope.row)">删除</el-button>
           <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">编辑</el-button>
         </template>
@@ -79,6 +79,17 @@
     </template>
   </el-dialog>
 
+  <el-dialog v-model="showVisible" :title="title">
+    <el-form :model="showVisibleForm">
+      <el-form-item v-html="showVisibleForm.content"/>
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="showVisible = false">关闭</el-button>
+      </span>
+    </template>
+  </el-dialog>
+
 
 </template>
 
@@ -93,6 +104,8 @@ export default {
   data() {
     return {
       dialogFormVisible: false, //对话框是否显示
+      showVisible: false,
+      showVisibleForm: {},
       queryStr: "",  //查询条件
       input: "",
       multipleSelection: [], //多选删除
@@ -137,6 +150,11 @@ export default {
         console.log(this.pageInfo.records)
         this.tableData = response.data.records
       })
+    },
+    openShowDialog(row) {
+      this.showVisible = true;
+      this.title = row.title
+      this.showVisibleForm = row
     },
     openAddDialog() {
       this.btnName = "添加"

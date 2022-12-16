@@ -5,6 +5,7 @@ import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Team;
 import com.lovetotravel.travel.entity.dto.Member;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.team.*;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.result.CodeMsg;
@@ -67,6 +68,29 @@ public class TeamServiceImpl implements TeamService {
         Query query = new Query();
         query.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("createTime")));
         return mongoTemplate.find(query, Team.class);
+    }
+
+    @Override
+    public PageVo<Team> getPage(PageVo pageVo) {
+        Integer pageSize = pageVo.getPageSize();
+        Integer pageNum = pageVo.getPageNum();
+        List<Team> list;
+        try {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("deleted").is("0"));
+            long total = mongoTemplate.count(query, Team.class);
+            //默认值为5，
+            pageSize = pageSize < 0 ? 5 : pageSize;
+            query.limit(pageSize);
+            query.skip((pageNum - 1) * pageSize);
+            list = mongoTemplate.find(query, Team.class);
+            pageVo.setRecords(list);
+            pageVo.setTotal(total);
+            return pageVo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -144,10 +168,10 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void kick(TeamKickVo teamKickVo) {
+    public void kick(TeamVo teamVo) {
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(teamKickVo.getTeamId()));
+        query.addCriteria(Criteria.where("id").is(teamVo.getTeamId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
         Team team = mongoTemplate.findOne(query, Team.class);
 
@@ -159,7 +183,7 @@ public class TeamServiceImpl implements TeamService {
             int membersLength = members.length;
 
             for (int i = 0; i < membersLength; i++) {
-                if (!members[i].getUserId().equals(teamKickVo.getUserId())) {
+                if (!members[i].getUserId().equals(teamVo.getUserId())) {
                     update.set("members." + i + ".userId", members[i].getUserId());
                     update.set("members." + i + ".userName", members[i].getUserName());
                     update.set("members." + i + ".email", members[i].getEmail());
@@ -189,6 +213,16 @@ public class TeamServiceImpl implements TeamService {
         updateDoc.append("$addToSet", new Document().append("members", member));
         BasicUpdate update = new BasicUpdate(updateDoc);
         mongoTemplate.upsert(query, update, Team.class);
+    }
+
+    @Override
+    public Boolean isJoin(TeamVo teamVo) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(teamVo.getTeamId()));
+        query.addCriteria(Criteria.where("members").elemMatch(Criteria.where("userId").is(teamVo.getUserId())));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        Team team = mongoTemplate.findOne(query, Team.class);
+        return team != null;
     }
 
     @Override

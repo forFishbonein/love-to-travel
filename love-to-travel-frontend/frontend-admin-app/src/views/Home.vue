@@ -34,8 +34,8 @@ export default {
       this.dateList.push(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), this.subDate(date, 1), this.subDate(date, 2), this.subDate(date, 3), this.subDate(date, 4), this.subDate(date, 5), this.subDate(date, 6))
 
     },
-    getNewUserNum() {
-      getNewUserNum().then((response) => {
+    async getNewUserNum() {
+      await getNewUserNum().then((response) => {
         let tmpDate = response.data
         // console.log(tmpDate)
         // console.log(this.dateList)
@@ -113,7 +113,7 @@ export default {
       console.log("=============")
       var option = {
         title: {
-          text: '7日新增用户'
+          text: '7日数据统计'
         },
         tooltip: {
           trigger: 'axis',
@@ -137,13 +137,22 @@ export default {
           type: 'category',
           data: this.dateList.reverse(),
         },
-        yAxis: {
-          type: 'value'
-        },
+        yAxis: [
+          {
+            type: 'value',
+            name: '新用户注册',
+          },
+          {
+            type: 'value',
+            name: '用户访问',
+          },
+
+        ],
+
         series: [
 
           {
-            name: "7日新增用户",
+            name: "7日新用户注册",
             data: this.totalList.reverse(),
             type: 'line',
             areaStyle: {},
@@ -154,7 +163,8 @@ export default {
 
           },
           {
-            name: "7日访问",
+            name: "7日用户访问",
+            yAxisIndex: 1,
             data: this.totalList2.reverse(),
             type: 'line',
             areaStyle: {},
