@@ -1,12 +1,12 @@
 <script>
-import {getNewUserNum,getNewLogNum} from "../apis/statisticManage/home";
+import {getNewLogNum, getNewUserNum} from "../apis/statisticManage/home";
 
 export default {
   data() {
     return {
       dateList: [],
-      totalList: [0,0,0,0,0,0,0],
-      totalList2: [0,0,0,0,0,0,0],
+      totalList: [0, 0, 0, 0, 0, 0, 0],
+      totalList2: [0, 0, 0, 0, 0, 0, 0],
     };
   },
   // 页面初始化挂载dom
@@ -80,8 +80,6 @@ export default {
     },
 
 
-
-
     addDate(date, days) {
       if (days == undefined || days == '') {
         days = 1;
@@ -145,7 +143,7 @@ export default {
 
           {
             name: "7日新增用户",
-            data: this.totalList2.reverse(),
+            data: this.totalList.reverse(),
             type: 'line',
             areaStyle: {},
             // stack: 'Total',
@@ -156,7 +154,7 @@ export default {
           },
           {
             name: "7日访问",
-            data: this.totalList.reverse(),
+            data: this.totalList2.reverse(),
             type: 'line',
             areaStyle: {},
             // stack: 'Total',
@@ -201,8 +199,7 @@ export default {
     </li>
   </ul>
 
-  <div id="echart" class="echarts1"></div>
-  <div id="echart2" class="echarts2"></div>
+  <div id="echart" class="echarts"></div>
 
 </template>
 <style>
@@ -277,28 +274,15 @@ export default {
   background: linear-gradient(90deg, rgba(72, 106, 237, 1) 0%, rgba(234, 150, 255, 1) 100%);
 }
 
-.echarts1 {
+.echarts {
   display: inline-block;
   margin-left: 20px;
   padding: 16px;
   box-sizing: border-box;
-  width: 830px;
+  width: 1250px;
   height: 350px;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
-
-.echarts2 {
-  display: inline-block;
-  margin-left: 30px;
-  padding: 16px;
-  box-sizing: border-box;
-  width: 390px;
-  height: 350px;
-  background-color: #fff;
-  box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-
-}
-
 
 </style>
