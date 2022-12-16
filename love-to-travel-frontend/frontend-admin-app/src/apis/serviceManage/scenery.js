@@ -17,10 +17,25 @@ export const postSceneryInfo = (data) => {
     });
 }
 
-export const deleteSceneryInfo = ({id}) => {
+
+export const insertProvinceInfo = (data) => {
+    return httpRequest({
+        method: "post",
+        url: "http://localhost:8082/",
+        data,
+        loading: true, //显示加载圈
+    });
+}
+
+export const deleteSceneryInfo = (id) => {
+    console.log("========")
+    console.log("========")
+    console.log(id)
+    console.log("========")
+    console.log("========")
     return httpRequest({
         method: "delete",
-        url: "http://localhost:8082/{id}",
+        url: "http://localhost:8082/"+id,
         loading: true, //显示加载圈
     });
 }

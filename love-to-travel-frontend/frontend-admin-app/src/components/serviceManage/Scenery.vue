@@ -1,4 +1,3 @@
-
 <template>
   <el-card class="box-card">
     <template #header>
@@ -55,7 +54,8 @@
         <el-input v-model="form.name" autocomplete="off"/>
       </el-form-item>
       <el-form-item :label-width="formLabelWidth" label="景区简介">
-        <el-input v-model="form.introduction" type="textarea"  :autosize="{ minRows: 8, maxRows: 16 }" autocomplete="off"/>
+        <el-input v-model="form.introduction" type="textarea" :autosize="{ minRows: 8, maxRows: 16 }"
+                  autocomplete="off"/>
       </el-form-item>
       <el-form-item :label-width="formLabelWidth" label="景区门票">
         <el-input v-model="form.ticket" autocomplete="off"/>
@@ -142,8 +142,13 @@
   </el-dialog>
 </template>
 <script>
-import {deleteSceneryInfo, postSceneryInfo, updateSceneryInfo} from '@/apis/serviceManage/scenery.js'
-import {getPageProvinceInfo} from "../../apis/serviceManage/province";
+import {
+  deleteSceneryInfo,
+  insertProvinceInfo,
+  postSceneryInfo,
+  updateSceneryInfo
+} from '@/apis/serviceManage/scenery.js'
+import reload from "../../../../frontend-manage-app/src/router/reload";
 // import {ElMessage, ElMessageBox} from "element-plus";
 
 
@@ -162,6 +167,7 @@ export default {
       btnName: "",  //对话框按钮文字
       pageSize: 10,
       currentPage: 1,
+      showVisible: false
     }
   },
   mounted() {
@@ -169,7 +175,7 @@ export default {
 
   },
   methods: {
-    postSceneryInfo(num, size){
+    postSceneryInfo(num, size) {
       num = parseInt(num)
       size = parseInt(size)
       console.log(123)
@@ -213,6 +219,7 @@ export default {
       this.btnName = "添加"
       this.title = "添加景区信息"
       this.dialogFormVisible = true
+      this.form = {}
       console.log("openAddDialog")
     },
 
@@ -248,7 +255,7 @@ export default {
     addScenery() {
       var _this = this;
       //this.form.stu_interest = this.form.stu_interest.join(',')
-      postSceneryInfo(_this.form).then((response) => {
+      insertProvinceInfo(_this.form).then((response) => {
         var _this = this;
         console.log(response === 1);
         if (response.data !== 1) {
@@ -282,23 +289,25 @@ export default {
     singleDelete(row) {
       console.log(row.id)
       ElMessageBox.confirm(
-          '您确定要删除这条数目吗?',
-          'Warning',
+          '您确定要删除这条记录吗?',
+          '提示',
           {
-            confirmButtonText: 'OK',
-            cancelButtonText: 'Cancel',
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
             type: 'warning',
           }
-      )
-          .then(() => {
+      ).then(() => {
             deleteSceneryInfo(row.id).then((response) => {
               var _this = this;
               console.log(response.data);
-              if (response.data === "删除成功") {
+              console.log(response);
+              if (response.code === 0) {
                 ElMessage({
                   type: 'success',
                   message: '删除成功',
                 })
+
+
               } else {
                 ElMessage({
                   type: 'warning',
@@ -314,6 +323,7 @@ export default {
               message: 'Delete canceled',
             })
           })
+      // this.postSceneryInfo(1, 10);
     },
     multiDelete() {
       console.log("multiDelete()")
