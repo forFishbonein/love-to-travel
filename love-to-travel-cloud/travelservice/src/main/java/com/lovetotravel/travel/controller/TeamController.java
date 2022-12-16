@@ -85,8 +85,8 @@ public class TeamController {
 
     @ApiOperation("移出成员")
     @DeleteMapping("/kick")
-    public Result<String> kick(@RequestBody TeamVo teamVo) {
-        teamService.kick(teamVo);
+    public Result<String> kick(@RequestBody TeamKickVo teamKickVo) {
+        teamService.kick(teamKickVo);
         return Result.success("移出成员成功");
     }
 

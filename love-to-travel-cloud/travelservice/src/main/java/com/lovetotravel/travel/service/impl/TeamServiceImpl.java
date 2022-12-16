@@ -129,20 +129,6 @@ public class TeamServiceImpl implements TeamService {
         update.set("introduction", teamUpdateVo.getIntroduction());
         update.set("num", teamUpdateVo.getNum());
 
-        List<Member> memberList = new ArrayList<>();
-
-        if (teamUpdateVo.getMembers() != null) {
-            memberList = Arrays.asList(teamUpdateVo.getMembers());
-            for (int i = 0; i<memberList.size(); i++) {
-                update.set("members." + i + ".userId", memberList.get(i).getUserId());
-                update.set("members." + i + ".userName", memberList.get(i).getUserName());
-                update.set("members." + i + ".tele", memberList.get(i).getTele());
-                update.set("members." + i + ".email", memberList.get(i).getEmail());
-
-
-            }
-        }
-
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
         String currentTimeStamp = dateFormat.format(date);
@@ -184,36 +170,14 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void kick(TeamVo teamVo) {
+    public void kick(TeamKickVo teamKickVo) {
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(teamVo.getTeamId()));
+        query.addCriteria(Criteria.where("id").is(teamKickVo.getTeamId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
-        Team team = mongoTemplate.findOne(query, Team.class);
-
         Update update = new Update();
-
-        if (team.getMembers() != null) {
-            Member[] members = team.getMembers();
-
-            int membersLength = members.length;
-
-            for (int i = 0; i < membersLength; i++) {
-                if (!members[i].getUserId().equals(teamVo.getUserId())) {
-                    update.set("members." + i + ".userId", members[i].getUserId());
-                    update.set("members." + i + ".userName", members[i].getUserName());
-                    update.set("members." + i + ".email", members[i].getEmail());
-                    update.set("members." + i + ".tele", members[i].getTele());
-                }
-            }
-        }
-
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String currentTimeStamp = dateFormat.format(date);
-
-        update.set("updateTime", currentTimeStamp);
-        mongoTemplate.updateFirst(query, update, Team.class);
+        update.pull("members", teamKickVo.getMember());
+        mongoTemplate.updateMulti(query, update, Team.class);
 
 
     }
