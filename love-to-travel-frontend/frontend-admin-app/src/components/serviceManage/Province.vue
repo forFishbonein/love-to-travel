@@ -65,7 +65,7 @@ export default {
     }
   },
   mounted() {
-    this.getPageData(1, 6);
+    this.getPageData(1, 9);
     // getProvinceInfo().then((response) => {
     //   var _this = this;
     //   console.log(response.data);
