@@ -380,7 +380,9 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-1.png" alt="" />
               <div class="destinations-one__content">
-                <p class="destinations-one__sub-title">{{ hotCityOne.cityEname }}</p>
+                <p class="destinations-one__sub-title">
+                  {{ hotCityOne.cityEname }}
+                </p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">
                     {{ hotCityOne.cityName }}</a
@@ -398,7 +400,9 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-2.png" alt="" />
               <div class="destinations-one__content">
-                <p class="destinations-one__sub-title">{{ hotCityTwo.cityEname }}</p>
+                <p class="destinations-one__sub-title">
+                  {{ hotCityTwo.cityEname }}
+                </p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">{{
                     hotCityTwo.cityName
@@ -416,7 +420,9 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-3.png" alt="" />
               <div class="destinations-one__content">
-                <p class="destinations-one__sub-title">{{ hotCityThree.cityEname }}</p>
+                <p class="destinations-one__sub-title">
+                  {{ hotCityThree.cityEname }}
+                </p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">{{
                     hotCityThree.cityName
@@ -435,7 +441,9 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-4.png" alt="" />
               <div class="destinations-one__content">
-                <p class="destinations-one__sub-title">{{ hotCityFour.cityEname }}</p>
+                <p class="destinations-one__sub-title">
+                  {{ hotCityFour.cityEname }}
+                </p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">{{
                     hotCityFour.cityName
@@ -453,7 +461,9 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-5.png" alt="" />
               <div class="destinations-one__content">
-                <p class="destinations-one__sub-title">{{ hotCityFive.cityEname }}</p>
+                <p class="destinations-one__sub-title">
+                  {{ hotCityFive.cityEname }}
+                </p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">{{
                     hotCityFive.cityName
