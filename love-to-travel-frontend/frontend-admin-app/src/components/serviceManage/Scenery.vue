@@ -30,7 +30,7 @@
 
       <el-table-column fixed="right" label="操作">
         <template #default="scope">
-          <el-button link size="small" type="primary" @click="singleDelete(scope.row)">详情</el-button>
+          <el-button link size="small" type="primary" @click="openShowDialog(scope.row)">详情</el-button>
           <el-button link size="small" type="primary" @click="singleDelete(scope.row)">删除</el-button>
           <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">修改</el-button>
         </template>
@@ -98,6 +98,48 @@
       </span>
     </template>
   </el-dialog>
+
+  <el-dialog v-model="showVisible" :title="title">
+    <el-form :model="showVisibleForm">
+
+    </el-form>
+
+    <el-descriptions
+        :title="showVisibleForm.name"
+        direction="vertical"
+        :column="4"
+        :size="size"
+        border
+    >
+      <el-descriptions-item label="地区" width="100">{{ showVisibleForm.cityName }}</el-descriptions-item>
+      <el-descriptions-item label="景区等级">{{ showVisibleForm.level }}</el-descriptions-item>
+
+      <el-descriptions-item label="地址" :span="2">{{ showVisibleForm.address }}</el-descriptions-item>
+      <el-descriptions-item label="评分">
+        <el-tag size="small">{{ showVisibleForm.score }}</el-tag>
+      </el-descriptions-item>
+      <el-descriptions-item label="经度">{{ showVisibleForm.lng }}</el-descriptions-item>
+      <el-descriptions-item label="维度">{{ showVisibleForm.lat }}</el-descriptions-item>
+      <el-descriptions-item label="票价">{{ showVisibleForm.ticket }}</el-descriptions-item>
+      <el-descriptions-item label="开放时间" :span="4">{{ showVisibleForm.opening }}</el-descriptions-item>
+
+      <el-descriptions-item label="简介" :span="4">
+        {{ showVisibleForm.introduction }}
+      </el-descriptions-item>
+      <el-descriptions-item label="适宜时节" :span="4">
+        {{ showVisibleForm.season }}
+      </el-descriptions-item>
+      <el-descriptions-item label="小贴士" :span="4">
+        {{ showVisibleForm.tips }}
+      </el-descriptions-item>
+    </el-descriptions>
+
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="showVisible=false">关闭</el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 <script>
 import {deleteSceneryInfo, postSceneryInfo, updateSceneryInfo} from '@/apis/serviceManage/scenery.js'
@@ -161,6 +203,11 @@ export default {
         console.log(response.data)
         console.log(this.pageInfo.records)
       })
+    },
+    openShowDialog(row) {
+      this.showVisible = true;
+      this.title = row.title
+      this.showVisibleForm = row
     },
     openAddDialog() {
       this.btnName = "添加"
