@@ -114,6 +114,15 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
         return cityPage;
     }
 
+    @Override
+    public Page<Scenery> getSceneryByStr2(QueryPageVo pageVo) {
+        Page<Scenery> page = new Page<>(pageVo.getPageNum(), pageVo.getPageSize());
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(Scenery::getName, pageVo.getQueryStr());
+        Page<Scenery> cityPage = sceneryMapper.selectPage(page, queryWrapper);
+        return cityPage;
+    }
+
 
     @Override
     public void removeById(Long id) {

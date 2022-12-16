@@ -28,6 +28,8 @@ public interface SceneryService extends IService<Scenery> {
 
     Page<Scenery> getSceneryByStr(QueryPageVo pageVo);
 
+    Page<Scenery> getSceneryByStr2(QueryPageVo pageVo);
+
     void removeById(Long id);
 
     void removeList(Long[] ids);
