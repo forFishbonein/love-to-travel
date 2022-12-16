@@ -19,12 +19,11 @@
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
 
-      <el-table-column label="城市id" prop="cityId" width="100"/>
-      <el-table-column label="城市名称" prop="cityName" width="100"/>
-      <el-table-column label="城市" prop="cityEname" width="200"/>
+      <el-table-column label="城市名称" prop="cityName" width="90"/>
+      <el-table-column label="Pinyin" prop="cityEname" width="120"/>
       <el-table-column label="经度" prop="lng" width="150"/>
       <el-table-column label="纬度" prop="lat" width="150"/>
-      <el-table-column label="图片url" prop="url" width="150"/>
+      <el-table-column label="简介" prop="introduction"/>
       <el-table-column fixed="right" label="操作" width="120">
         <template #default>
           <el-button link size="small" type="primary" @click="singleDelete">删除

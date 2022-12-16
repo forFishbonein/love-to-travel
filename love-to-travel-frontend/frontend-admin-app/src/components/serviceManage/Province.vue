@@ -16,7 +16,8 @@
 
       <el-card class="province-card" v-for="item in tableData" :body-style="{ padding: '0px' }">
         <img
-            src="item.url"
+            :src="item.url"
+            height="154"
             class="image"/>
         <div style="padding: 14px">
           <span></span>
