@@ -55,7 +55,7 @@ let routeInfo = ref({} as routeInfoType);
 /* 添加到行程 */
 const dialogFormVisible = ref(false);
 const openSceneryToPlanDialog = (index: number) => {
-  alert("添加到行程框");
+  // alert("添加到行程框");
   const theSceneryInfo = sceneryListInfo.value[index];
   //只需要下面两项信息即可！
   routeInfo.value.originName = theSceneryInfo.name;

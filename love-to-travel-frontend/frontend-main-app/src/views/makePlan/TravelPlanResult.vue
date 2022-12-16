@@ -46,7 +46,7 @@ emitter.on("addAScenery", (routeInfo) => {
   // alert("添加景区信息到行程");
   // if (oneCityDaysDisplay.value === ([] as everyDayRoutesType[])) {
   if (oneCityDaysDisplay.value.length == 0) {
-    alert("方法1:新增");
+    // alert("方法1:新增");
     //在该城市没有行程内容的情况下
     //给subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days的route数组新增一个信息
     // 这些应该都不需要，需要我们展示的就只是days的内容而已，所以把citysPlansInfo舍弃换成days即everyDayRoutesType[]
@@ -75,7 +75,7 @@ emitter.on("addAScenery", (routeInfo) => {
     console.log("+++++++");
     showFlag.value = true;
   } else {
-    alert("方法2:合并");
+    // alert("方法2:合并");
     //在该城市已经有行程内容的情况下
     //把subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days合并
     //给最后一天的route里面加一项
@@ -194,7 +194,7 @@ const saveFinalPlans = async () => {
 const successDialogVisible = ref(false);
 const goSeeMyPlans = () => {
   successDialogVisible.value = false;
-  router.push("/");
+  router.push("/personal/myroute");
 };
 const backToIndex = () => {
   successDialogVisible.value = false;
@@ -317,7 +317,7 @@ const addACity = async () => {
 const deleteCity = (index: any) => {
   subPlans.value.splice(index, 1);
 };
-const activeIndex = ref(`/result/route/list/${store.searchCityId}`);
+const activeIndex = ref("/result/route/list");
 const handleSelect = (key: string, keyPath: string[]) => {
   // console.log(key, keyPath);
 };
