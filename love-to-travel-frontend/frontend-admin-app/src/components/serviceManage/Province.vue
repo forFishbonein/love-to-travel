@@ -34,7 +34,7 @@
         v-model:current-page="currentPage"
         v-model:page-size="pageSize"
         :background="true"
-        :page-sizes="[6, 10, 20]"
+        :page-sizes="[6, 9, 18]"
         :total="pageInfo.total"
         layout="total, sizes, prev, pager, next, jumper"
         @size-change="handleSizeChange"

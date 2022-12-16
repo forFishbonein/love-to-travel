@@ -1,5 +1,107 @@
+
+<template>
+  <el-card class="box-card">
+    <template #header>
+      <div class="card-header">
+        <div class="query">
+          <el-input v-model="queryStr" placeholder="请输入查询景点"/> &nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo">查询</el-button>
+        </div>
+        <div>
+          <el-button class="button" round type="success" @click="openAddDialog">添加</el-button>
+          <el-button class="button" round type="warning" @click="multiDelete">删除</el-button>
+        </div>
+
+      </div>
+    </template>
+
+    <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
+      <el-table-column type="selection" width="55"/>
+
+      <el-table-column label="景区名称" prop="name" width="100"/>
+      <el-table-column label="评分" prop="score" width="80"/>
+      <el-table-column label="门票" prop="ticket" width="80"/>
+      <el-table-column label="开放时间" prop="opening" width="150"/>
+      <el-table-column label="经度" prop="lng" width="100"/>
+      <el-table-column label="纬度" prop="lat" width="100"/>
+      <el-table-column label="等级" prop="level" width="80"/>
+      <el-table-column label="地址" prop="address"/>
+      <el-table-column label="电话" prop="tele" width="150"/>
+
+      <el-table-column fixed="right" label="操作">
+        <template #default="scope">
+          <el-button link size="small" type="primary" @click="singleDelete(scope.row)">详情</el-button>
+          <el-button link size="small" type="primary" @click="singleDelete(scope.row)">删除</el-button>
+          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">修改</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :background="true"
+        :page-sizes="[10, 20, 50]"
+        :total="pageInfo.total"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
+  </el-card>
+
+  <!-- 对话框：添加修改功能 -->
+  <el-dialog v-model="dialogFormVisible" :title="title">
+    <el-form :model="form">
+      <el-form-item :label-width="formLabelWidth" label="景区名称">
+        <el-input v-model="form.name" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="景区简介">
+        <el-input v-model="form.introduction" type="textarea"  :autosize="{ minRows: 8, maxRows: 16 }" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="景区门票">
+        <el-input v-model="form.ticket" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="开放时间">
+        <el-input v-model="form.opening" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="经度">
+        <el-input v-model="form.lng" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="纬度">
+        <el-input v-model="form.lat" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="景区等级">
+        <el-input v-model="form.level" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="地址">
+        <el-input v-model="form.address" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="适宜季节">
+        <el-input v-model="form.season" type="textarea" :autosize="{ minRows: 2, maxRows: 8 }" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="温馨提醒">
+        <el-input v-model="form.tips" type="textarea" :autosize="{ minRows: 2, maxRows: 8 }" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="所属城市">
+        <el-input v-model="form.cityName" autocomplete="off"/>
+      </el-form-item>
+      <el-form-item :label-width="formLabelWidth" label="电话">
+        <el-input v-model="form.tele" autocomplete="off"/>
+      </el-form-item>
+
+    </el-form>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="btnAddUpdate">
+          {{ btnName }}
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+</template>
 <script>
-import {deleteSceneryInfo, getSceneryInfo, postSceneryInfo, updateSceneryInfo} from '@/apis/serviceManage/scenery.js'
+import {deleteSceneryInfo, postSceneryInfo, updateSceneryInfo} from '@/apis/serviceManage/scenery.js'
+import {getPageProvinceInfo} from "../../apis/serviceManage/province";
 // import {ElMessage, ElMessageBox} from "element-plus";
 
 
@@ -12,6 +114,7 @@ export default {
       tableData: [], //省份信息数据
       queryData: [],//保存查询数据
       form: {},   //对话框表单数据
+      pageInfo: {},
       formLabelWidth: "140px",  //对话框label宽度
       title: "",  //对话框标题
       btnName: "",  //对话框按钮文字
@@ -20,30 +123,44 @@ export default {
     }
   },
   mounted() {
-    this.getSceneryInfo();
+    this.postSceneryInfo(1, 10);
 
   },
   methods: {
-    getSceneryInfo(){
+    postSceneryInfo(num, size){
+      num = parseInt(num)
+      size = parseInt(size)
       console.log(123)
-      getSceneryInfo().then((response) => {
-
-        var _this = this;
-        console.log(response.data);
-        _this.tableData = response.data;
-        _this.queryData = response.data;
+      postSceneryInfo({pageNum: num, pageSize: size}).then((response) => {
+        console.log(response);
+        this.pageInfo = response.data;
+        this.tableData = this.pageInfo.records;
+        console.log(response.data)
+        console.log(this.pageInfo.records)
       });
     },
 
 
     handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.getPageData(this.currentPage, this.pageSize);
       console.log("size:", pageSize);
     },
+    //切换页号得到当前页码   current
     handleCurrentChange(pageNum) {
+      this.currentPage = pageNum;
+      this.getPageData(this.currentPage, this.pageSize);
       console.log("num:", pageNum);
     },
     getPageData(num, size) {
-
+      num = parseInt(num)
+      size = parseInt(size)
+      postSceneryInfo({pageNum: num, pageSize: size}).then((response) => {
+        this.pageInfo = response.data;
+        this.tableData = this.pageInfo.records;
+        console.log(response.data)
+        console.log(this.pageInfo.records)
+      })
     },
     openAddDialog() {
       this.btnName = "添加"
@@ -51,14 +168,15 @@ export default {
       this.dialogFormVisible = true
       console.log("openAddDialog")
     },
+
     openUpdateDialog(row) {
       this.btnName = "修改"
       this.title = "修改景区信息"
       this.dialogFormVisible = true
       console.log(row);
       this.form = row  //得到要修改的数据，并回显到对话框
-
     },
+
     updateScenery() {
       console.log(this.form)
       var _this = this;
@@ -163,126 +281,16 @@ export default {
 
       console.log("queryInfo...");
     },
+
     handleSelectionChange(val) {
       this.multipleSelection = val
       console.log(this.multipleSelection)
     }
+
   },
 
 }
 </script>
-
-<template>
-  <el-card class="box-card">
-    <template #header>
-      <div class="card-header">
-        <div class="query">
-          <el-input v-model="queryStr" placeholder="请输入查询景点"/> &nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo">查询</el-button>
-        </div>
-        <div>
-          <el-button class="button" round type="success" @click="openAddDialog">添加</el-button>
-          <el-button class="button" round type="warning" @click="multiDelete">删除</el-button>
-        </div>
-
-      </div>
-    </template>
-
-    <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
-      <el-table-column type="selection" width="55"/>
-
-      <el-table-column label="景区id" prop="id" width="50"/>
-      <el-table-column label="景区名称" prop="name" width="80"/>
-      <el-table-column label="景区简介" prop="introduction" width="600"/>
-      <el-table-column label="景区评分" prop="score" width="50"/>
-      <el-table-column label="景区门票" prop="ticket" width="60"/>
-      <el-table-column label="开放时间" prop="opening" width="150"/>
-      <el-table-column label="经度" prop="lng" width="80"/>
-      <el-table-column label="纬度" prop="lat" width="80"/>
-      <el-table-column label="景区等级" prop="level" width="50"/>
-      <el-table-column label="地址" prop="address" width="80"/>
-      <el-table-column label="适宜季节" prop="season" width="150"/>
-      <el-table-column label="温馨提醒" prop="tips" width="200"/>
-      <el-table-column label="所属城市id" prop="city_id" width="80"/>
-      <el-table-column label="图片url" prop="url" width="150"/>
-      <el-table-column label="电话" prop="tele" width="100"/>
-
-      <el-table-column fixed="right" label="操作" width="120">
-        <template #default="scope">
-          <el-button link size="small" type="primary" @click="singleDelete(scope.row)"
-          >删除
-          </el-button
-          >
-          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">修改</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <el-pagination
-        :background="true"
-        :current-page.sync="currentPage2"
-        :page-size="100"
-        :page-sizes="[3, 4, 5, 10]"
-        :total="1000"
-        layout="total, sizes, prev, pager, next, jumper"
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange">
-    </el-pagination>
-  </el-card>
-
-  <!-- 对话框：添加修改功能 -->
-  <el-dialog v-model="dialogFormVisible" :title="title">
-    <el-form :model="form">
-      <el-form-item :label-width="formLabelWidth" label="景区名称">
-        <el-input v-model="form.name" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="景区简介">
-        <el-input v-model="form.introduction" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="景区评分">
-        <el-input v-model="form.score" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="景区门票">
-        <el-input v-model="form.ticket" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="开放时间">
-        <el-input v-model="form.opening" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="经度">
-        <el-input v-model="form.lng" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="纬度">
-        <el-input v-model="form.lat" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="景区等级">
-        <el-input v-model="form.level" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="地址">
-        <el-input v-model="form.address" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="适宜季节">
-        <el-input v-model="form.season" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="温馨提醒">
-        <el-input v-model="form.tips" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="所属城市id">
-        <el-input v-model="form.address" autocomplete="off"/>
-      </el-form-item>
-      <el-form-item :label-width="formLabelWidth" label="电话">
-        <el-input v-model="form.tele" autocomplete="off"/>
-      </el-form-item>
-
-    </el-form>
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取消</el-button>
-        <el-button type="primary" @click="btnAddUpdate">
-          {{ btnName }}
-        </el-button>
-      </span>
-    </template>
-  </el-dialog>
-</template>
 
 
 <style scoped>
