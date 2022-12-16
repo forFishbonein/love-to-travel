@@ -189,31 +189,11 @@ public class TeamServiceImpl implements TeamService {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(teamVo.getTeamId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
-        Team team = mongoTemplate.findOne(query, Team.class);
-
         Update update = new Update();
-
-        if (team.getMembers() != null) {
-            Member[] members = team.getMembers();
-
-            int membersLength = members.length;
-
-            for (int i = 0; i < membersLength; i++) {
-                if (!members[i].getUserId().equals(teamVo.getUserId())) {
-                    update.set("members." + i + ".userId", members[i].getUserId());
-                    update.set("members." + i + ".userName", members[i].getUserName());
-                    update.set("members." + i + ".email", members[i].getEmail());
-                    update.set("members." + i + ".tele", members[i].getTele());
-                }
-            }
-        }
-
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String currentTimeStamp = dateFormat.format(date);
-
-        update.set("updateTime", currentTimeStamp);
-        mongoTemplate.updateFirst(query, update, Team.class);
+        Document doc = new Document();
+        doc.put("userId", teamVo.getUserId());
+        update.pull("members", doc);
+        mongoTemplate.updateMulti(query, update, Team.class);
 
 
     }
