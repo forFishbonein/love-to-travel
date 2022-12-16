@@ -60,7 +60,7 @@ export default {
       title: "",  //对话框标题
       btnName: "", //对话框按钮文字
       pageInfo: {},
-      pageSize: 6,
+      pageSize: 9,
       currentPage: 1,
     }
   },
