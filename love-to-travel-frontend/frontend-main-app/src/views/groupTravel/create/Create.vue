@@ -138,7 +138,7 @@ const createTheTeam = () => {
 const successDialogVisible = ref(false);
 const goSeeMyNotes = () => {
   successDialogVisible.value = false;
-  router.push("/personal/myteam");
+  router.push("/personal/myteam/mycreate");
 };
 const continuePublish = () => {
   successDialogVisible.value = false;

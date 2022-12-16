@@ -12,6 +12,7 @@ import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 import PersonalIndex from "@/views/personal/Index.vue";
+import User from "@/views/user/User.vue";
 // import Note from "@/views/readTravel/note/Note.vue";
 
 export const routes: Array<RouteRecordRaw> = [
@@ -31,7 +32,7 @@ export const routes: Array<RouteRecordRaw> = [
         name: "Index",
         // component: () => import("@/views/Home.vue"), //这个不行，会加载不出来
         component: Home,
-        meta: { title: "首页", keepAlive: true, showTab: true },
+        meta: { title: "首页", keepAlive: false, showTab: true },
       },
       {
         path: "/goTravel",
@@ -196,22 +197,6 @@ export const routes: Array<RouteRecordRaw> = [
                   showTab: true,
                 },
               },
-              {
-                path: "detail/:noteId",
-                name: "TeamDetail",
-                component: () =>
-                  import("@/views/groupTravel/team/TeamDetail.vue"),
-                meta: {
-                  title: "队伍详情",
-                  keepAlive: false,
-                  showTab: true,
-                },
-                props(route) {
-                  return {
-                    teamId: route.params.teamId,
-                  };
-                },
-              },
             ],
           },
           {
@@ -280,7 +265,53 @@ export const routes: Array<RouteRecordRaw> = [
               showTab: true,
             },
           },
+          {
+            path: "myteam",
+            name: "MyTeam",
+            component: () => import("@/views/personal/myteam/MyTeam.vue"),
+            meta: {
+              title: "我的队伍",
+              keepAlive: false,
+              showTab: true,
+            },
+            redirect: "/personal/myteam/myjoin",
+            children: [
+              {
+                path: "myjoin",
+                name: "MyJoin",
+                component: () => import("@/views/personal/myteam/MyJoin.vue"),
+                // component: Note,
+                meta: {
+                  title: "我加入的队伍",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "mycreate",
+                name: "MyCreate",
+                component: () => import("@/views/personal/myteam/MyCreate.vue"),
+                // component: Note,
+                meta: {
+                  title: "我创建的队伍",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+            ],
+          },
         ],
+      },
+      {
+        path: "/user/:userId",
+        name: "User",
+        component: User,
+        meta: { title: "其他用户的主页", keepAlive: false, showTab: true },
+        props(route) {
+          return {
+            userId: route.params.userId,
+          };
+        },
       },
     ],
   },

@@ -3,6 +3,7 @@ import {
   joinTeamParams,
   theTeamParams,
 } from "@/apis/travelService/tInterface";
+import { teamModifyParams } from "@/apis/interface/iPlan";
 import httpRequest from "@/request";
 /* 创建队伍 */
 export const createOneTeam = (data: teamInfoParams) => {
@@ -35,7 +36,7 @@ export const getPageTeamsInfo = (page: number, limit: number) => {
   });
 };
 /* 根据队伍id查询队伍信息 */
-/* 加入队伍 */
+
 export const getTeamInfoById = (teamId: string) => {
   return httpRequest({
     method: "get",
@@ -43,7 +44,24 @@ export const getTeamInfoById = (teamId: string) => {
     loading: true, //显示加载圈
   });
 };
-
+/* 查询是否加入了队伍 */
+export const isJoinTheTeam = (data: theTeamParams) => {
+  return httpRequest({
+    method: "post",
+    url: "http://localhost:8082/team/isjoin",
+    data: data,
+    loading: true, //显示加载圈
+  });
+};
+/* 加入队伍 */
+export const joinOneTeam = (data: theTeamParams) => {
+  return httpRequest({
+    method: "post",
+    url: "http://localhost:8082/team/join",
+    data: data,
+    loading: true, //显示加载圈
+  });
+};
 /* 退出队伍 */
 export const leaveOneTeam = (data: theTeamParams) => {
   return httpRequest({
@@ -81,14 +99,18 @@ export const deleteTheTeam = (teamId: string) => {
 };
 
 /* 修改队伍信息 */
-export const modifyTheTeamInfo = (data: theTeamParams) => {
+export const modifyTheTeamInfo = (data: teamModifyParams) => {
+  alert("修改队伍信息");
+  console.log(data);
   return httpRequest({
     method: "put",
     url: "http://localhost:8082/team/",
+    data: data,
     loading: true, //显示加载圈
   });
 };
-/* 根据id查询加入的队伍 */
+
+/* 根据用户id查询加入的队伍 */
 export const searchJoinTeamByUserId = (userId: string) => {
   return httpRequest({
     method: "get",
@@ -97,7 +119,7 @@ export const searchJoinTeamByUserId = (userId: string) => {
   });
 };
 
-/* 根据id查询创建的队伍 */
+/* 根据用户id查询创建的队伍 */
 export const searchCreateTeamByUserId = (userId: string) => {
   return httpRequest({
     method: "get",

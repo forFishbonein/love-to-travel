@@ -56,7 +56,7 @@ router.beforeEach((to, from, next) => {
         store
           .getUserInfo() // 获取用户信息
           .then((res) => {
-            alert("获取用户信息成功");
+            // alert("获取用户信息成功");
             console.log("用户信息：");
             console.log(store.userInfo);
             console.log(store.userInfo.email);

@@ -215,3 +215,18 @@ export interface theTeamInfoType {
   teamName: string;
   updateTime: string;
 }
+
+export interface teamModifyParams {
+  id: string;
+  planId: string;
+  teamName: string;
+  ownerId: string;
+  place: Array<string>;
+  depart: string;
+  day: string;
+  budget: string;
+  introduction: string;
+  slogan: string;
+  num: string;
+  members: teamMemberInfoType[];
+}

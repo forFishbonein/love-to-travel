@@ -12,12 +12,12 @@ import {
   getUserFollowersNum,
   getUserFolloweesNum,
 } from "@/apis/userService/follow";
-import emitter from "@/mitt/event";
-emitter.on("addFoot", () => {
-  openAlreadyGoDialog();
-});
+const props = defineProps<{
+  userId: string;
+}>();
+
+const userId = props.userId;
 const store = mainStore();
-const activeIndex = ref("/personal/center");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
@@ -562,8 +562,6 @@ onMounted(() => {
 <template>
   <div id="map-container"></div>
   <div class="personal-info-container">
-    <div class="button-already" @click="openAlreadyGoDialog">添加去过</div>
-    <div class="button-want" @click="openToWantDialog">添加想去</div>
     <div class="avater-container">
       <img :src="store.userInfo.url" class="avater-img" />
     </div>
@@ -622,42 +620,24 @@ onMounted(() => {
       </el-collapse>
     </div>
   </div>
-  <div class="header-nav-container">
-    <el-menu
-      :default-active="activeIndex"
-      class="el-menu-demo"
-      mode="horizontal"
-      @select="handleSelect"
-      router="true"
-    >
-      <el-menu-item index="/personal/center">我的中心</el-menu-item>
-      <el-menu-item index="/personal/foot">足迹</el-menu-item>
-      <el-menu-item index="/personal/mynote">游记</el-menu-item>
-      <el-menu-item index="/personal/star">收藏</el-menu-item>
-      <el-menu-item index="/personal/question">问答</el-menu-item>
-      <el-menu-item index="/personal/myroute">行程</el-menu-item>
-      <el-menu-item index="/personal/myteam">队伍</el-menu-item>
-      <el-menu-item index="/personal/time">时光机</el-menu-item>
-    </el-menu>
-  </div>
   <div class="main-container">
     <div class="main-left">
       <div class="follower">
         <div>
           <div>
-            <router-link to="/">我的关注：{{ followeeNum }}</router-link>
+            <router-link to="/">ta的关注：{{ followeeNum }}</router-link>
           </div>
         </div>
         <div>
           <div>
-            <router-link to="/">我的粉丝：{{ followerNum }}</router-link>
+            <router-link to="/">ta的粉丝：{{ followerNum }}</router-link>
           </div>
         </div>
       </div>
       <el-card class="box-card">
         <template #header>
           <div class="card-header">
-            <span>我的勋章</span>
+            <span>ta的勋章</span>
           </div>
         </template>
         <div v-for="o in 2" :key="o" class="text item">
@@ -684,71 +664,6 @@ onMounted(() => {
       <router-view></router-view>
     </div>
   </div>
-  <el-dialog v-model="dialogToWantVisible" title="搜索城市">
-    <template #default>
-      <el-dialog
-        v-model="confirmDialogVisible"
-        width="30%"
-        title="确认面板"
-        append-to-body
-      >
-        <p>
-          <span style="color: #e8604c">您选择的城市为：</span
-          ><el-tag class="mx-1" size="large">{{
-            theSelectedCity.cityName
-          }}</el-tag>
-        </p>
-        <p v-show="wantOrBeenFlag">
-          <span style="color: #e8604c">选择评分：</span
-          ><el-rate
-            v-model="scoreValue"
-            :texts="['1分', '2分', '3分', '4分', '5分']"
-            show-text
-            allow-half
-          />
-        </p>
-        <template #footer>
-          <span class="dialog-footer">
-            <el-button @click="reSelect">重新选择</el-button>
-            <el-button type="primary" @click="addOneCityToWant">
-              确认选择
-            </el-button>
-          </span>
-        </template>
-      </el-dialog>
-      <div class="search-citys">
-        <div class="input-box">
-          <input
-            type="text"
-            class="search-input"
-            v-model="keyword"
-            placeholder="请输入城市名"
-          />
-          <span class="search-span">
-            <el-icon><Search /></el-icon>
-          </span>
-          <div class="search-result-content" v-show="keyword">
-            <ul class="result-list">
-              <li
-                v-for="(item, index) in citysResultList"
-                :key="index"
-                @click="openTheConfirmDialog(index)"
-              >
-                {{ item.cityName }}
-              </li>
-              <li v-show="hasNoData">没有找到匹配数据</li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </template>
-
-    <template #footer>
-      <span class="dialog-footer">
-        <el-button @click="dialogToWantVisible = false">取消</el-button>
-      </span>
-    </template>
-  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
