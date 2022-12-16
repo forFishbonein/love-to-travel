@@ -10,7 +10,7 @@
               <el-icon><Calendar /></el-icon> 出发时间：
             </div>
             <h3 class="tours-list__title">
-              <a href="tour-details.html">Moscow Red City Land</a>
+              <a href="tour-details.html"><span style="color:#e8604c;margin-right:10px">队名:</span>Moscow Red City Land</a>
             </h3>
             <p class="tours-list__rate">预算：<span>￥870</span> / 每人</p>
             <p class="tours-list__text">
@@ -31,7 +31,7 @@
             <ul class="tours-list__meta list-unstyled">
               <li>
                 <a href="tour-details.html"
-                  ><i class="far fa-calendar"></i>3天</a
+                  ><i class="far fa-calendar"></i>预计3天</a
                 >
               </li>
               <li>
@@ -39,9 +39,15 @@
                   ><i class="far fa-user-circle"></i>预期6人</a
                 >
               </li>
+              <li>
+                <a href="tour-details.html">
+                  <i class="far fa-map"></i>口号:我们必胜！
+                </a>
+              </li>
             </ul>
             <p class="tours-list__text">
-              <div class="join-team-button"></div>
+              <div class="join-team-button">加入队伍</div>
+              <!-- <div class="out-team-button">退出队伍</div> -->
             </p>
           </div>
         </div>
@@ -63,7 +69,7 @@
   .tours-list__content {
     border-left: 1px solid #ece8e0;
     border-radius: 8px;
-    padding-bottom: 40px;
+    padding-bottom: 20px;
     .tours-list__text {
       padding: 10px 0;
       display: flex;
@@ -89,6 +95,20 @@
   margin-right: 10px;
 }
 .join-team-button{
-
+  width: 150px;
+  height: 40px;
+  float:right;
+  border: 1px #e8604c solid;
+  cursor: pointer;
+  border-radius: 20px;
+  background-color: #e8604c;
+  font-weight: 700;
+  color:#ffffff;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.join-team-button:hover{
+  background-color: #e74128;
 }
 </style>

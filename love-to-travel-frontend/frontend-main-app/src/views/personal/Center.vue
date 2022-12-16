@@ -80,7 +80,7 @@ getNotesInfo();
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
-        <span>我的旅行游记</span>
+        <span>我发布的游记</span>
         <el-button class="button" text>发游记</el-button>
       </div>
     </template>
@@ -152,12 +152,13 @@ getNotesInfo();
   margin-top: 30px;
   .card-item-container {
     width: 700px;
-    height: 300px;
+    height: auto;
     // border: 1px #e8604c solid;
     border: 1px #dcdfe6 solid;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 25px;
     .item-img {
       height: 300px;
       width: 300px;

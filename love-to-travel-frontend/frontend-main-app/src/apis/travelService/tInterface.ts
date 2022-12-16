@@ -17,3 +17,16 @@ export interface noteInfoParams {
   title: string;
   content: string;
 }
+
+export interface teamInfoParams {
+  planId: string;
+  teamName: string;
+  ownerId: string;
+  place: Array<string>;
+  depart: string;
+  day: string;
+  budget: string;
+  introduction: string;
+  slogan: string;
+  num: string;
+}

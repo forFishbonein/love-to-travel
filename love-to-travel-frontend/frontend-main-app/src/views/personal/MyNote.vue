@@ -36,7 +36,7 @@ getNotesInfo();
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
-        <span>我的旅行游记</span>
+        <span>我发布的游记</span>
         <el-button class="button" text>发游记</el-button>
       </div>
     </template>
