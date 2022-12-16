@@ -212,12 +212,17 @@ public class TeamServiceImpl implements TeamService {
         query.addCriteria(Criteria.where("members.userId").is(teamLeaveVo.getUserId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
         Team one = mongoTemplate.findOne(query, Team.class);
+        if (one == null) {
+            return;
+        }
         Member member = new Member();
         Member[] members = one.getMembers();
         if (members != null) {
             for (Member m : members) {
-                if (m.getUserId() == teamLeaveVo.getUserId())
+                if (m.getUserId().equals(teamLeaveVo.getUserId())) {
                     member = m;
+                }
+
             }
         }
         Update update = new Update();
