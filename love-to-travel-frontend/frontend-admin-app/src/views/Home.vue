@@ -137,14 +137,22 @@ export default {
           type: 'category',
           data: this.dateList.reverse(),
         },
-        yAxis: {
-          type: 'value'
+        yAxis: [{
+          type: 'value',
+          data: this.totalList.reverse(),
         },
+          {
+            type: 'value',
+            data: this.totalList2.reverse(),
+          },
+
+        ],
+
         series: [
 
           {
             name: "7日新增用户",
-            data: this.totalList.reverse(),
+
             type: 'line',
             areaStyle: {},
             // stack: 'Total',
@@ -155,7 +163,7 @@ export default {
           },
           {
             name: "7日访问",
-            data: this.totalList2.reverse(),
+
             type: 'line',
             areaStyle: {},
             // stack: 'Total',
