@@ -30,3 +30,18 @@ export interface teamInfoParams {
   slogan: string;
   num: string;
 }
+
+/* 加入队伍的参数 */
+export interface joinTeamParams {
+  teamId: string;
+  userId: string;
+  userName: string;
+  email: string;
+  tele: string;
+}
+
+/* 队伍参数 */
+export interface theTeamParams {
+  teamId: string;
+  userId: string;
+}

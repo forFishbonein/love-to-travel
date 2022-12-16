@@ -189,3 +189,29 @@ export interface beenInfoType {
   pos: Array<number>;
   url: string;
 }
+
+/* 组队 */
+export interface teamMemberInfoType {
+  email: string;
+  tele: string;
+  userId: string;
+  userName: string;
+}
+
+export interface theTeamInfoType {
+  budget: string;
+  createTime: string;
+  day: string;
+  deleted: string;
+  depart: string;
+  id: string;
+  introduction: string;
+  members: teamMemberInfoType[];
+  num: string;
+  ownerId: string;
+  place: Array<string>;
+  planId: string;
+  slogan: string;
+  teamName: string;
+  updateTime: string;
+}

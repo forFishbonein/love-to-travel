@@ -5,6 +5,11 @@ import { ElInput } from "element-plus";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { mainStore } from "@/store/user";
+import { getUserAllPlansInfoByUserId } from "@/apis/travelService/plan";
+import { theGivenAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { createOneTeam } from "@/apis/travelService/team";
+import { useRouter } from "vue-router";
+const router = useRouter();
 const size = ref<"default" | "large" | "small">("default");
 const store = mainStore();
 /* el-tag需要的变量方法 */
@@ -37,11 +42,58 @@ const handleInputConfirm = () => {
 const handleChange = (value: number) => {
   console.log(value);
 };
+/* 行程选项 */
+interface userPlansOption {
+  planId: string;
+  budget: string;
+  cityNames: string;
+}
+let userAllPlansInfo = [] as theGivenAllCityPlansInfoType[];
+const userPlansOption = ref([] as userPlansOption[]);
+const requestMyPlansInfo = async () => {
+  await getUserAllPlansInfoByUserId(store.userInfo.id)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        userAllPlansInfo = res.data;
+
+        // console.log(userAllPlansInfo.value);
+        userAllPlansInfo.forEach((e) => {
+          let planId = e.id;
+          let budget = e.budget;
+          let cityNames = "出发地";
+          e.subPlans.forEach((e2) => {
+            cityNames += "—>" + e2.city;
+          });
+          // @ts-ignore
+          userPlansOption.value.push({
+            planId: planId,
+            budget: budget,
+            cityNames: cityNames + "—>返回地",
+          });
+        });
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+requestMyPlansInfo();
 /* 创建队伍 */
+/* 注意：下面这个toRefs里面的内容会自动同步到reactive这个大对象里面 */
 const createTeamInfo = reactive({
   planId: "",
   teamName: "",
-  ownerId: "",
+  ownerId: store.userInfo.id,
   place: [],
   depart: "",
   day: "",
@@ -52,7 +104,6 @@ const createTeamInfo = reactive({
 } as teamInfoParams);
 const {
   planId,
-  ownerId,
   teamName,
   place,
   depart,
@@ -62,6 +113,37 @@ const {
   slogan,
   introduction,
 } = toRefs(createTeamInfo);
+
+const createTheTeam = () => {
+  createOneTeam(createTeamInfo)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        successDialogVisible.value = true;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+const successDialogVisible = ref(false);
+const goSeeMyNotes = () => {
+  successDialogVisible.value = false;
+  router.push("/personal/myteam");
+};
+const continuePublish = () => {
+  successDialogVisible.value = false;
+  location.reload();
+};
 </script>
 
 <template>
@@ -181,7 +263,7 @@ const {
         <el-input
           :autosize="{ minRows: 2, maxRows: 4 }"
           type="textarea"
-          placeholder="Please input"
+          placeholder="请输入内容"
           v-model="introduction"
         />
       </div>
@@ -206,8 +288,27 @@ const {
     </el-radio-group>
   </div>
   <div class="publish-border">
-    <div class="publish-button">创建队伍</div>
+    <div class="publish-button" @click="createTheTeam">创建队伍</div>
   </div>
+  <el-dialog
+    v-model="successDialogVisible"
+    title="成功提示"
+    width="30%"
+    draggable
+    show-close="false"
+  >
+    <span>恭喜您，队伍创建成功！</span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="goSeeMyNotes">
+          查看我的队伍
+        </el-button>
+        <el-button type="success" @click="continuePublish">
+          继续创建
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
