@@ -170,14 +170,14 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
-    public void kick(TeamVo teamVo) {
+    public void kick(TeamKickVo teamKickVo) {
 
         Query query = new Query();
-        query.addCriteria(Criteria.where("id").is(teamVo.getTeamId()));
+        query.addCriteria(Criteria.where("id").is(teamKickVo.getTeamId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
         Update update = new Update();
         Document doc = new Document();
-        doc.put("userId", teamVo.getUserId());
+        doc.put("members", teamKickVo.getMember());
         update.pull("members", doc);
         mongoTemplate.updateMulti(query, update, Team.class);
 

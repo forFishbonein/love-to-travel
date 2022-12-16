@@ -26,7 +26,7 @@ public interface TeamService {
 
     void invite(TeamInviteVo teamInviteVo);
 
-    void kick(TeamVo teamVo);
+    void kick(TeamKickVo teamKickVo);
 
     void join(TeamJoinVo teamJoinVo);
 
