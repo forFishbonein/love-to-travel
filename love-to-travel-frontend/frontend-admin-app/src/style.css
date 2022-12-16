@@ -36,6 +36,7 @@ th,
 td {
     margin: 0;
     padding: 0;
+    box-sizing: border-box;
 }
 
 /*文字自动居中*/

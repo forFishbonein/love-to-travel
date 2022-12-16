@@ -23,14 +23,15 @@
       <el-table-column type="selection" width="55"/>
       <el-table-column label="游记标题" prop="title"/>
       <el-table-column label="发布者" prop="userName" width="100"/>
-      <el-table-column label="相关城市" prop="city" width="150"/>
+      <el-table-column label="相关城市" prop="city" width="80"/>
 <!--      <el-table-column :show-overflow-tooltip="true" label="内容" prop="content" width="100"/>-->
       <el-table-column label="评论量" prop="comment" width="100"/>
       <el-table-column label="点赞量" prop="like" width="100"/>
       <el-table-column label="浏览量" prop="view" width="100"/>
       <el-table-column label="标签" prop="trip" width="150"/>
-      <el-table-column fixed="right" label="Operations" prop="oppo" width="120">
+      <el-table-column fixed="right" label="操作" prop="oppo" width="150">
         <template #default="scope">
+          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">详情</el-button>
           <el-button link size="small" type="primary" @click="singleDelete(scope.row)">删除</el-button>
           <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">编辑</el-button>
         </template>

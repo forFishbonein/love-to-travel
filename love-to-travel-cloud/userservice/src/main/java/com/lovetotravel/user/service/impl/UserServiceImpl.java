@@ -1,6 +1,5 @@
 package com.lovetotravel.user.service.impl;
 
-import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
@@ -8,10 +7,7 @@ import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.user.entity.Log;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
-import com.lovetotravel.user.entity.vo.FollowerVo;
-import com.lovetotravel.user.entity.vo.LoginVo;
-import com.lovetotravel.user.entity.vo.RegisterVo;
-import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
+import com.lovetotravel.user.entity.vo.*;
 import com.lovetotravel.user.exception.GlobalException;
 import com.lovetotravel.user.mapper.LogMapper;
 import com.lovetotravel.user.mapper.UserMapper;
@@ -401,5 +397,17 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         page.addOrder(OrderItem.desc("create_time"));
         Page<Log> logPage = logMapper.selectPage(page, null);
         return logPage;
+    }
+
+    @Override
+    public List<NewNum> getNewUserNum() {
+        List<NewNum> newNum = userMapper.getNewUserNum();
+        return newNum;
+    }
+
+    @Override
+    public List<NewNum> getNewLogNum() {
+        List<NewNum> newNum = logMapper.getNewLogNum();
+        return newNum;
     }
 }
