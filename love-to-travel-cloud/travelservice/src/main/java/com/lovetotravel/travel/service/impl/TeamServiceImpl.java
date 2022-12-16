@@ -22,6 +22,8 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -126,6 +128,20 @@ public class TeamServiceImpl implements TeamService {
         update.set("slogan", teamUpdateVo.getSlogan());
         update.set("introduction", teamUpdateVo.getIntroduction());
         update.set("num", teamUpdateVo.getNum());
+
+        List<Member> memberList = new ArrayList<>();
+
+        if (teamUpdateVo.getMembers() != null) {
+            memberList = Arrays.asList(teamUpdateVo.getMembers());
+            for (int i = 0; i<memberList.size(); i++) {
+                update.set("members." + i + ".userId", memberList.get(i).getUserId());
+                update.set("members." + i + ".userName", memberList.get(i).getUserName());
+                update.set("members." + i + ".tele", memberList.get(i).getTele());
+                update.set("members." + i + ".email", memberList.get(i).getEmail());
+
+
+            }
+        }
 
         Date date = new Date();
         SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
