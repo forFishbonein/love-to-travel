@@ -50,7 +50,7 @@ public class TeamController {
     }
 
     @ApiOperation("所有队伍分页")
-    @GetMapping
+    @PostMapping("/page")
     public Result<PageVo<Team>> getPage(@RequestBody PageVo pageVo) {
         return Result.success(teamService.getPage(pageVo));
     }

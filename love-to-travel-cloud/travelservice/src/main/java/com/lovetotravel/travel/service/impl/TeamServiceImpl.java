@@ -3,7 +3,6 @@ package com.lovetotravel.travel.service.impl;
 import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
-import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Team;
 import com.lovetotravel.travel.entity.dto.Member;
 import com.lovetotravel.travel.entity.page.PageVo;
@@ -79,7 +78,7 @@ public class TeamServiceImpl implements TeamService {
         try {
             Query query = new Query();
             query.addCriteria(Criteria.where("deleted").is("0"));
-            long total = mongoTemplate.count(query, Note.class);
+            long total = mongoTemplate.count(query, Team.class);
             //默认值为5，
             pageSize = pageSize < 0 ? 5 : pageSize;
             query.limit(pageSize);
