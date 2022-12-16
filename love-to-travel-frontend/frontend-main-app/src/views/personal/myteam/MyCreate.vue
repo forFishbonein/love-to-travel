@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs, nextTick } from "vue";
+import { theTeamParams } from "@/apis/travelService/tInterface";
 import {
   theTeamInfoType,
   teamModifyParams,
@@ -10,7 +11,9 @@ import { mainStore } from "@/store/user";
 import { ElInput } from "element-plus";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { modifyTheTeamInfo } from "@/apis/travelService/team";
+import { modifyTheTeamInfo, kickOneMember } from "@/apis/travelService/team";
+import { getOneUserPlansInfoById } from "@/apis/travelService/plan";
+import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
 const store = mainStore();
 const myCreateTeamsInfo = ref([] as theTeamInfoType[]);
 const requestMyCreateTeamsInfo = async () => {
@@ -117,22 +120,46 @@ const handleChange = (value: number) => {
 };
 
 /* 移除一个成员的方法 */
+let theMemberId = "";
 let theMemberIndex = 0;
-const openTheRemoveDialog = (index: number) => {
+const openTheRemoveDialog = (userId: string, index: number) => {
   innerVisible2.value = true;
+  theMemberId = userId;
   theMemberIndex = index;
 };
 const removeOneMember = () => {
-  members.value.splice(theMemberIndex, 1);
+  kickOneMember({
+    userId: theMemberId,
+    teamId: id.value,
+  } as theTeamParams)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        members.value.splice(theMemberIndex, 1);
+        //@ts-ignore
+        ElMessage({
+          type: "success",
+          message: "删除成功",
+        });
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
   innerVisible2.value = false;
-  //@ts-ignore
-  ElMessage({
-    type: "success",
-    message: "删除成功",
-  });
 };
 
 /* 保存修改的信息 */
+/* 取消保存 */
 const cancelSaveTheInfo = () => {
   modifyDialogVisible.value = false;
   id.value = "";
@@ -148,6 +175,7 @@ const cancelSaveTheInfo = () => {
   num.value = "";
   members.value = [] as teamMemberInfoType[];
 };
+/* 确认保存 */
 const saveTheModifiedInfo = async () => {
   await modifyTheTeamInfo(theModifyFormInfo)
     .then((res: any) => {
@@ -176,6 +204,32 @@ const saveTheModifiedInfo = async () => {
       });
     });
 };
+
+const planDialogVisible = ref(false);
+const oneUserPlansInfo = ref({} as finalAllCityPlansInfoType);
+const openSeeThePlanDialog = async (planId: string) => {
+  await getOneUserPlansInfoById(planId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        oneUserPlansInfo.value = res.data;
+        console.log(oneUserPlansInfo.value);
+        planDialogVisible.value = true;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
 </script>
 
 <template>
@@ -194,6 +248,9 @@ const saveTheModifiedInfo = async () => {
           border
         >
           <template #extra>
+            <el-button type="success" @click="openSeeThePlanDialog(item.planId)"
+              >查看对应行程方案</el-button
+            >
             <el-button type="primary" @click="openModifyTheTeamDialog(item)"
               >修改信息</el-button
             >
@@ -409,7 +466,7 @@ const saveTheModifiedInfo = async () => {
               class="mx-1"
               closable
               type="warning"
-              @close="openTheRemoveDialog(index)"
+              @close="openTheRemoveDialog(m.userId, index)"
             >
               {{ m.userName }}
             </el-tag>
@@ -426,7 +483,7 @@ const saveTheModifiedInfo = async () => {
         title="确认框"
         append-to-body
       >
-        确定要移除该成员吗？
+        确定要移除该成员吗？<span style="color: red">(该操作不可逆)</span>
         <template #footer>
           <span class="dialog-footer">
             <el-button @click="innerVisible2 = false">取消</el-button>
@@ -459,6 +516,63 @@ const saveTheModifiedInfo = async () => {
         <el-button @click="cancelSaveTheInfo">取消</el-button>
         <el-button type="primary" @click="innerVisible = true">
           修改
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
+  <el-dialog v-model="planDialogVisible" :show-close="false">
+    <template #header="{ close, titleId, titleClass }">
+      <div class="my-header">
+        <h4 :id="titleId" :class="titleClass">行程方案</h4>
+        <el-button type="text" @click="close">
+          <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
+          关闭
+        </el-button>
+      </div>
+    </template>
+    <div class="sidebar__single sidebar__category">
+      <h3 class="sidebar__title">对应行程表</h3>
+      <ul class="sidebar__category-list list-unstyled">
+        <li style="font-size: 16px">总预算:{{ oneUserPlansInfo?.budget }}元</li>
+        <li>
+          <span class="span-style text-amber">行程信息</span>
+          <el-scrollbar max-height="300px">
+            <el-collapse accordion>
+              <el-collapse-item
+                :name="index"
+                v-for="(item, index) in oneUserPlansInfo?.subPlans"
+                :key="index"
+              >
+                <template #title>
+                  <div class="plan-note-header">
+                    {{ item?.city
+                    }}<el-icon class="header-icon" size="16px">
+                      <Place />
+                    </el-icon>
+                    <span style="margin-left: 10px">预算:</span
+                    >{{ item?.budget }}元
+                  </div>
+                </template>
+                <ul>
+                  <li v-for="(i, index2) in item?.days" :key="index2">
+                    第{{ index2 + 1 }}天
+                    <span v-for="(k, index3) in i.route" :key="index3">
+                      {{ k?.originName }}({{ k?.departTime }}小时)
+                      <el-icon><Right /></el-icon>
+                    </span>
+                    结束
+                  </li>
+                </ul>
+              </el-collapse-item>
+            </el-collapse>
+          </el-scrollbar>
+        </li>
+      </ul>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button type="primary" @click="planDialogVisible = false">
+          确定
         </el-button>
       </span>
     </template>

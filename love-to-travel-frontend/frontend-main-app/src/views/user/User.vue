@@ -12,12 +12,39 @@ import {
   getUserFollowersNum,
   getUserFolloweesNum,
 } from "@/apis/userService/follow";
+import { UserInfo } from "@/apis/userService/uinterface";
+import { getUserInfoById } from "@/apis/userService/user";
+const theUserInfo = ref({} as UserInfo);
 const props = defineProps<{
   userId: string;
 }>();
-
 const userId = props.userId;
 const store = mainStore();
+const requestUserAllInfo = async () => {
+  await getUserInfoById(userId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        theUserInfo.value = res.data;
+        console.log(theUserInfo.value);
+        // alert(authorInfo.value.url);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+requestUserAllInfo();
+
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
