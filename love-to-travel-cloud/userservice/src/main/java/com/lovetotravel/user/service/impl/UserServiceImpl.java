@@ -316,6 +316,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         redisService.srem(FollowKey.getFollowee, followerId, id);
     }
 
+    @Override
+    public Boolean isFollow(FollowerVo followerVo) {
+        return redisService.sismember(FollowKey.getFollower, followerVo.getId().toString(), followerVo.getFollowerId().toString());
+    }
+
     /**
      * 总关注数
      *
@@ -348,6 +353,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         String idToString = id.toString();
         Set<String> set = redisService.smembers(FollowKey.getFollower, idToString);
+        if (set.size() == 0) {
+            return null;
+        }
+
         List<User> users = listByIds(set);
         System.out.println(users);
 
@@ -386,6 +395,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         String idToString = id.toString();
         Set<String> set = redisService.smembers(FollowKey.getFollowee, idToString);
+        if (set.size() == 0) {
+            return null;
+        }
         List<User> users = listByIds(set);
         System.out.println(users);
         return users;
