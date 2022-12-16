@@ -41,6 +41,8 @@ public interface UserService extends IService<User> {
 
     void removeFollower(FollowerVo followerVo);
 
+    Boolean isFollow(FollowerVo followerVo);
+
     Long sumFollower(Long id);
 
     List<User> getAllFollower(Long id);

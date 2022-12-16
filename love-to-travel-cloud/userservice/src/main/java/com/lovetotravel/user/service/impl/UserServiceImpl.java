@@ -316,6 +316,11 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         redisService.srem(FollowKey.getFollowee, followerId, id);
     }
 
+    @Override
+    public Boolean isFollow(FollowerVo followerVo) {
+        return redisService.sismember(FollowKey.getFollower, followerVo.getId().toString(), followerVo.getFollowerId().toString());
+    }
+
     /**
      * 总关注数
      *

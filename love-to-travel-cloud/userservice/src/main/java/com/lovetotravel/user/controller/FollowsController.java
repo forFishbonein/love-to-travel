@@ -39,6 +39,12 @@ public class FollowsController {
         return Result.success("取消关注成功");
     }
 
+    @ApiOperation("是否关注")
+    @PostMapping("/isfollow")
+    public Result<Boolean> isFollow(@RequestBody FollowerVo followerVo) {
+        return Result.success(userService.isFollow(followerVo));
+    }
+
     @ApiOperation("查看关注数量")
     @PostMapping("/sumfollower")
     public Result<Long> sumFollower(@RequestBody FollowerVo followerVo) {
