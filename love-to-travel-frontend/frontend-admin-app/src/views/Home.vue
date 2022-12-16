@@ -17,6 +17,7 @@ export default {
     // this.getNewUserNum();
     // this.getNewLogNum();
     // this.getLoadEcharts();
+
   },
   methods: {
 
@@ -176,19 +177,21 @@ export default {
   </div>
   <ul class="scoreboard">
     <li>
-      <div class="scoreboard-number">1600</div>
+      <div class="scoreboard-number">{{ totalList[0] }}</div>
       <div class="scoreboard-title">今日新增用户</div>
 
       <div class="scoreboard-line scoreboard-line1"><span></span></div>
-      <div class="scoreboard-yesterday">较昨日15%</div>
-
+      <div class="scoreboard-yesterday" v-show="totalList[1] !== 0">较昨日{{ totalList[0] / totalList[1] * 100 }}%</div>
+      <div class="scoreboard-yesterday" v-show="totalList[1] === 0">较昨日0%</div>
     </li>
+
     <li>
-      <div class="scoreboard-number">1600</div>
+      <div class="scoreboard-number">{{ totalList2[0] }}</div>
       <div class="scoreboard-title">今日访问</div>
 
       <div class="scoreboard-line scoreboard-line2"><span></span></div>
-      <div class="scoreboard-yesterday">较昨日15%</div>
+      <div class="scoreboard-yesterday" v-show="totalList2[1] !== 0">较昨日{{ totalList2[0] / totalList2[1] * 100 }}%</div>
+      <div class="scoreboard-yesterday" v-show="totalList2[1] === 0">较昨日0%</div>
     </li>
     <li>
       <div class="scoreboard-number">1600</div>
