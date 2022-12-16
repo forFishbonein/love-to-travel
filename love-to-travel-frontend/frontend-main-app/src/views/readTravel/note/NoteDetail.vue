@@ -1032,7 +1032,9 @@ const cancelNoteStar = async () => {
               </div>
               <div class="author-one__content">
                 <h3>
-                  <router-link to="/">{{ authorInfo.name }}</router-link>
+                  <router-link :to="`/user/${authorInfo.id}`">{{
+                    authorInfo.name
+                  }}</router-link>
                 </h3>
                 <p>个性签名:{{ authorInfo.signature }}</p>
               </div>
