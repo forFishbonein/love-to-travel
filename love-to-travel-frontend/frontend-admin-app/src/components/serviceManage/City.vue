@@ -1,4 +1,4 @@
-<script lang="ts" setup></script>
+<!-- <script lang="ts" setup></script> -->
 
 <template>
   <el-card class="box-card">
@@ -18,7 +18,6 @@
     </template>
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
-
       <el-table-column label="城市名称" prop="cityName" width="90"/>
       <el-table-column label="Pinyin" prop="cityEname" width="120"/>
       <el-table-column label="经度" prop="lng" width="150"/>
@@ -33,11 +32,22 @@
         </template>
       </el-table-column>
     </el-table>
+    <br>
+      <el-pagination
+        v-model:current-page="currentPage"
+        v-model:page-size="pageSize"
+        :background="true"
+        :page-sizes="[10, 20, 20,30]"
+        :total="pageInfo.total"
+        layout="total, sizes, prev, pager, next, jumper"
+        @size-change="handleSizeChange"
+        @current-change="handleCurrentChange"
+    />
   </el-card>
 </template>
 
 <script>
-import {getCityInfo} from "@apis/serviceManage/city.js";
+import {getCityInfo,getPageCityInfo} from "@apis/serviceManage/city.js";
 
 export default {
   data() {
@@ -49,18 +59,44 @@ export default {
       form: {},   //对话框表单数据
       formLabelWidth: "140px",  //对话框label宽度
       title: "",  //对话框标题
-      btnName: ""  //对话框按钮文字
+      btnName: "", //对话框按钮文字
+      pageInfo: {},
+      pageSize: 10,
+      currentPage: 1,
     }
   },
   mounted() {
-    getCityInfo().then((response) => {
-      var _this = this;
-      console.log(response.data);
-      _this.tableData = response.data;
-      _this.queryData = response.data;
-    });
+    this.getPageData(1, 10);
+    // getCityInfo().then((response) => {
+    //   var _this = this;
+    //   console.log(response.data);
+    //   _this.tableData = response.data;
+    //   _this.queryData = response.data;
+    // });
   },
   methods: {
+     // 选择每一页记录数     size
+     handleSizeChange(pageSize) {
+      this.pageSize = pageSize;
+      this.getPageData(this.currentPage, this.pageSize);
+      console.log("size:", pageSize);
+    },
+    //切换页号得到当前页码   current
+    handleCurrentChange(pageNum) {
+      this.currentPage = pageNum;
+      this.getPageData(this.currentPage, this.pageSize);
+      console.log("num:", pageNum);
+    },
+    getPageData(num, size) {
+      num = parseInt(num)
+      size = parseInt(size)
+      getPageCityInfo({pageNum: num, pageSize: size}).then((response) => {
+        this.pageInfo = response.data;
+        this.tableData = this.pageInfo.records;
+        console.log(response.data)
+        console.log(this.pageInfo.records)
+      })
+    },
     queryInfo() {
       if (this.queryStr.trim().length > 0) {
         this.tableData = this.tableData.filter(item => (item.cityName).match(this.queryStr.trim()))
