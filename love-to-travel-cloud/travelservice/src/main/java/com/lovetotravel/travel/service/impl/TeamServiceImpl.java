@@ -176,9 +176,7 @@ public class TeamServiceImpl implements TeamService {
         query.addCriteria(Criteria.where("id").is(teamKickVo.getTeamId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
         Update update = new Update();
-        Document doc = new Document();
-        doc.put("members", teamKickVo.getMember());
-        update.pull("members", doc);
+        update.pull("members", teamKickVo.getMember());
         mongoTemplate.updateMulti(query, update, Team.class);
 
 
