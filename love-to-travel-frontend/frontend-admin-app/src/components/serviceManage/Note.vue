@@ -3,13 +3,13 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="Please input"/> &nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo_u">用户ID查询</el-button>
+          <el-input v-model="queryStr" placeholder="请输入用户名"/> &nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo_u">查询</el-button>
         </div>
 
         <div class="query">
-          <el-input v-model="input" placeholder="Please input"/> &nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo_n">游记ID查询</el-button>
+          <el-input v-model="input" placeholder="请输入内容"/> &nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo_n">查询</el-button>
         </div>
 
         <div>
@@ -79,13 +79,13 @@
     </template>
   </el-dialog>
 
-  <el-dialog v-model="showVisible">
+  <el-dialog v-model="showVisible" :title="title">
     <el-form :model="showVisibleForm">
-      <el-input v-model="showVisibleForm.content" autocomplete="off"/>
+      <el-form-item v-html="showVisibleForm.content"/>
     </el-form>
     <template #footer>
       <span class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">关闭</el-button>
+        <el-button @click="showVisible = false">关闭</el-button>
       </span>
     </template>
   </el-dialog>
@@ -153,6 +153,7 @@ export default {
     },
     openShowDialog(row) {
       this.showVisible = true;
+      this.title = row.title
       this.showVisibleForm = row
     },
     openAddDialog() {
