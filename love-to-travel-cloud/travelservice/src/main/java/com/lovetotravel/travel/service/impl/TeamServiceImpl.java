@@ -222,7 +222,6 @@ public class TeamServiceImpl implements TeamService {
                 if (m.getUserId().equals(teamLeaveVo.getUserId())) {
                     member = m;
                 }
-
             }
         }
         Update update = new Update();

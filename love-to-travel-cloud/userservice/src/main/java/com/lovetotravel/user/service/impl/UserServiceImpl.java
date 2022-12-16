@@ -348,6 +348,10 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         String idToString = id.toString();
         Set<String> set = redisService.smembers(FollowKey.getFollower, idToString);
+        if (set.size() == 0) {
+            return null;
+        }
+
         List<User> users = listByIds(set);
         System.out.println(users);
 
@@ -386,6 +390,9 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         }
         String idToString = id.toString();
         Set<String> set = redisService.smembers(FollowKey.getFollowee, idToString);
+        if (set.size() == 0) {
+            return null;
+        }
         List<User> users = listByIds(set);
         System.out.println(users);
         return users;
