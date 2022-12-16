@@ -8,10 +8,8 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
-import org.springframework.data.mongodb.core.query.Update;
 
 import java.io.IOException;
-import java.util.List;
 
 
 @SpringBootTest
@@ -27,20 +25,11 @@ class TravelserviceApplicationTests {
     @Test
     void contextLoads() throws IOException {
 
-        List<Note> all = noteService.getAll();
 
-        for (Note n : all) {
-            Query query = new Query();
-            query.addCriteria(Criteria.where("deleted").is("0"));
-            query.addCriteria(Criteria.where("id").is(n.getId()));
-            query.addCriteria(Criteria.where("star").is(null));
-            query.limit(100);
-            Update update = new Update();
-            update.set("star", 0L);
-            mongoTemplate.upsert(query, update, Note.class);
-
-        }
-
+        Query query = new Query();
+        query.addCriteria(Criteria.where("noteId").is("6398747b3dbf3dc4b86cbcf3"));
+        Note one = mongoTemplate.findOne(query, Note.class);
+        System.out.println("one = " + one);
 
 
     }

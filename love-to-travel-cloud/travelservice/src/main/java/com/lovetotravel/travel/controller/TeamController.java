@@ -21,7 +21,6 @@ public class TeamController {
         this.teamService = teamService;
     }
 
-
     @ApiOperation("根据队伍id查询队伍信息")
     @GetMapping("/{id}")
     public Result<Team> getById(@PathVariable("id") String id) {
@@ -41,6 +40,12 @@ public class TeamController {
     public Result<List<Team>> getJoinedById(@PathVariable("id") String id) {
         System.out.println(id);
         return Result.success(teamService.getJoinedById(id));
+    }
+
+    @ApiOperation("查询所有队伍")
+    @GetMapping
+    public Result<List<Team>> getAll() {
+        return Result.success(teamService.getAll());
     }
 
     @ApiOperation("创建队伍")

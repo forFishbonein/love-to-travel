@@ -33,10 +33,11 @@ export interface planCityInfoType {
 export interface citysInfoType {
   cityId: string;
   cityName: string;
+  cityEname: string;
   lng: string;
   lat: string;
-  url: null;
-  introduction: null;
+  url: string;
+  introduction: string;
 }
 
 /* 3 */
@@ -73,6 +74,16 @@ export interface finalAllCityPlansInfoType {
   // fromCity: string;
   // backCity: string;
   // goDate: string;
+}
+
+export interface theGivenAllCityPlansInfoType {
+  id: string;
+  userId: string;
+  budget: string;
+  depart: string;
+  start: string;
+  end: string;
+  subPlans: everyCityPlansInfoType[]; //对应subPlans
 }
 // export interface displayACityPlanInfo {
 //   city: string;
@@ -158,4 +169,23 @@ export interface tranformComments {
   createTime: string;
   reply: number;
   son: secondComment[];
+}
+
+/* 足迹类型 */
+export interface wantInfoType {
+  cityId: string;
+  cityName: string;
+  createTime: string;
+  introduction: string;
+  pos: Array<number>;
+  url: string;
+}
+export interface beenInfoType {
+  cityId: string;
+  cityName: string;
+  createTime: string;
+  introduction: string;
+  score: string;
+  pos: Array<number>;
+  url: string;
 }

@@ -21,7 +21,5 @@ public class TeamJoinVo {
     @ApiModelProperty("联系方式")
     private String tele;
 
-    @ApiModelProperty("口号")
-    private String slogan;
 
 }

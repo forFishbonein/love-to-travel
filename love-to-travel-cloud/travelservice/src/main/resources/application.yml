@@ -51,7 +51,7 @@ spring:
 
   data:
     mongodb:
-      uri: mongodb://admin:12345678@121.41.107.144:27017/travelservice?authMechanism=DEFAULT&authSource=admin&authMechanism=SCRAM-SHA-1
+      uri: mongodb://travelservice:W6xDFpnZb86hH7mj@47.98.138.0:27017/travelservice
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml

@@ -43,6 +43,14 @@ public class SceneryController {
         return Result.success(cityMapper.selectOne(queryWrapper));
     }
 
+    @ApiOperation("根据城市名查询城市")
+    @GetMapping("/city/name/{name}")
+    public Result<List<City>> getByCityName(@PathVariable("name") String name) {
+        QueryWrapper<City> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().like(City::getCityName, name);
+        return Result.success(cityMapper.selectList(queryWrapper));
+    }
+
     @ApiOperation("根据景区id查询景区")
     @GetMapping("/scenery/{id}")
     public Result<Scenery> getById(HttpServletRequest request, @PathVariable("id") Long id) {
@@ -52,9 +60,16 @@ public class SceneryController {
 
     @ApiOperation("根据城市id查询景区")
     @GetMapping("/scenery/city/{id}")
-    public Result<List<Scenery>> getByCityId(@PathVariable("id") String id) {
+    public Result<List<Scenery>> getSceneryByCityId(@PathVariable("id") String id) {
         System.out.println(id);
         return Result.success(sceneryService.getByCityId(id));
+    }
+
+    @ApiOperation("根据城市名查询景区")
+    @GetMapping("/scenery/city/name/{name}")
+    public Result<List<Scenery>> getSceneryByCityName(@PathVariable("name") String name) {
+        System.out.println(name);
+        return Result.success(sceneryService.getByCityName(name));
     }
 
     @ApiOperation("新增景区")

@@ -18,8 +18,7 @@
                   /></a>
                 </div>
                 <p class="footer-widget__about-text">
-                  Welcome to our Trip and Tour Agency. Lorem simply text amet
-                  cing elit.
+                  欢迎光临爱旅游
                 </p>
                 <ul class="footer-widget__about-contact list-unstyled">
                   <li>
@@ -45,7 +44,7 @@
                       <i class="fas fa-map-marker-alt"></i>
                     </div>
                     <div class="text">
-                      <p>666 road, broklyn street new york</p>
+                      <p>中南民族大学</p>
                     </div>
                   </li>
                 </ul>
@@ -58,13 +57,13 @@
               <div
                 class="footer-widget__column footer-widget__company clearfix"
               >
-                <h3 class="footer-widget__title">Company</h3>
+                <h3 class="footer-widget__title">公司</h3>
                 <ul class="footer-widget__company-list list-unstyled">
-                  <li><a href="about.html">About Us</a></li>
-                  <li><a href="#">Community Blog</a></li>
-                  <li><a href="#">Rewards</a></li>
-                  <li><a href="#">Work with Us</a></li>
-                  <li><a href="#">Meet the Team</a></li>
+                  <li><a href="about.html">关于我们</a></li>
+                  <li><a href="#">游记</a></li>
+                  <li><a href="#">景区</a></li>
+                  <li><a href="#">问答</a></li>
+                  <li><a href="#">团队</a></li>
                 </ul>
               </div>
             </div>
@@ -73,13 +72,13 @@
               data-wow-delay="300ms"
             >
               <div class="footer-widget__column footer-widget__explore">
-                <h3 class="footer-widget__title">Explore</h3>
+                <h3 class="footer-widget__title">探索</h3>
                 <ul class="list-unstyled footer-widget__explore-list">
-                  <li><a href="#">Account</a></li>
-                  <li><a href="#">Legal</a></li>
-                  <li><a href="#">Contact</a></li>
-                  <li><a href="#">Affilitate Program</a></li>
-                  <li><a href="#">Privacy Policy</a></li>
+                  <li><a href="#">账户</a></li>
+                  <li><a href="#">法律</a></li>
+                  <li><a href="#">联系</a></li>
+                  <li><a href="#">程序</a></li>
+                  <li><a href="#">隐私政策</a></li>
                 </ul>
               </div>
             </div>
@@ -88,7 +87,7 @@
               data-wow-delay="400ms"
             >
               <div class="footer-widget__column footer-widget__newsletter">
-                <h3 class="footer-widget__title">Newsletter</h3>
+                <h3 class="footer-widget__title">持续关注我们</h3>
                 <form
                   class="footer-widget__newsletter-form mc-form"
                   data-url="https://xyz.us18.list-manage.com/subscribe/post?u=20e91746ef818cd941998c598&id=cc0ee8140e"
@@ -96,12 +95,10 @@
                   <div class="footer-widget__newsletter-input-box">
                     <input
                       type="email"
-                      placeholder="Email address"
+                      placeholder="您的电子邮箱地址"
                       name="EMAIL"
                     />
-                    <button type="submit" class="footer-widget__newsletter-btn">
-                      Subscribe
-                    </button>
+                    <button style="width: 100%;" type="submit" class="footer-widget__newsletter-btn">立即订阅</button>
                   </div>
                 </form>
                 <div class="mc-form__response text-center"></div>
@@ -111,7 +108,7 @@
                     <i class="fa fa-check"></i>
                   </div>
                   <div class="footer-widget__newsletter-bottom-text">
-                    <p>I agree to all terms and policies</p>
+                    <p>我同意所有条款和政策</p>
                   </div>
                 </div>
               </div>

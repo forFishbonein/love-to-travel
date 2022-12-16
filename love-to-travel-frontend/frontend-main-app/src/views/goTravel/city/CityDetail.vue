@@ -68,10 +68,7 @@ requestSceneryListInfo();
         <div class="col-xl-8 col-lg-7">
           <div class="destinations-details__left">
             <div class="destinations-details__img">
-              <img
-                src="/images/resources/destinations-details-img-1.jpg"
-                alt=""
-              />
+              <img :src="cityInfo.url" alt="" />
             </div>
             <div class="destinations-details__discover">
               <h3 class="destinations-details__title">
@@ -79,15 +76,6 @@ requestSceneryListInfo();
               </h3>
               <p class="destinations-details__discover-text-1">
                 {{ cityInfo.introduction }}
-              </p>
-              <p class="destinations-details__discover-text-2">
-                There are many variations of passages of Lorem Ipsum available,
-                but the majority have suffered alteration in some injected or
-                words which don't look even slightly believable. If you are
-                going to use a passage of Lorem Ipsum, you need to be sure there
-                isn't anything embarrassing hidden in the middle of text. All
-                the Lorem Ipsum generators on the Internet tend to repeat
-                predefined chunks as necessary,
               </p>
             </div>
           </div>
@@ -127,5 +115,13 @@ requestSceneryListInfo();
 .tour-details-two__last-minute-content {
   margin-left: 20px;
   padding-top: 10px;
+}
+.tour-details-two__last-minute-image {
+  width: 80px;
+  height: 80px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

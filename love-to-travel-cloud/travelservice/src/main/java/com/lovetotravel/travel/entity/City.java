@@ -28,4 +28,5 @@ public class City {
     @ApiModelProperty("简介")
     private String introduction;
 
+
 }

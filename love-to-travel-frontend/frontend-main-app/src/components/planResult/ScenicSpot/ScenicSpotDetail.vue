@@ -23,7 +23,7 @@ const backToList = () => {
       <el-icon :size="30"><Close /></el-icon>
     </div>
   </div>
-  <el-scrollbar max-height="300px" class="detail-main">
+  <el-scrollbar max-height="390px" class="detail-main">
     <div class="detail-main-header">
       <div class="left-img">
         <img :src="sceneryDetailInfo.url" alt="" />
@@ -99,7 +99,7 @@ const backToList = () => {
 .detail-main {
   width: 100%;
   margin: 0 auto;
-  height: 300px;
+  height: 390px;
   .detail-main-header {
     margin: 10px auto;
     display: flex;

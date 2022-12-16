@@ -2,6 +2,7 @@
 import { ref } from "vue";
 import { getOneSceneryInfoById } from "@/apis/travelService/scenery";
 import { theCityScenerysInfoType } from "@/apis/interface/iPlan";
+import { keepTwoDecimal } from "@/utils/filters/number";
 const props = defineProps<{
   sceneryId: number;
 }>();
@@ -131,8 +132,11 @@ requestOneSceneryInfo();
                   </div>
                   <div class="destinations-details__overview-right">
                     <p>
-                      <el-icon><CaretRight /></el-icon>东经{{ sceneryInfo.lat
-                      }}<el-icon><CaretTop /></el-icon>北纬{{ sceneryInfo.lat }}
+                      <el-icon><CaretRight /></el-icon>东经{{
+                        keepTwoDecimal(sceneryInfo.lng)
+                      }}<el-icon><CaretTop /></el-icon>北纬{{
+                        keepTwoDecimal(sceneryInfo.lat)
+                      }}
                     </p>
                   </div>
                 </li>
@@ -192,7 +196,7 @@ requestOneSceneryInfo();
               <ul class="tour-details-two__last-minute-list list-unstyled">
                 <li>
                   <div class="tour-details-two__last-minute-image">
-                    <img src="assets/images/resources/td-img-1.jpg" alt="" />
+                    <img src="/images/resources/td-img-1.jpg" alt="" />
                   </div>
                   <div class="tour-details-two__last-minute-content">
                     <h6>$380</h6>
@@ -202,7 +206,7 @@ requestOneSceneryInfo();
                 </li>
                 <li>
                   <div class="tour-details-two__last-minute-image">
-                    <img src="assets/images/resources/td-img-2.jpg" alt="" />
+                    <img src="/images/resources/td-img-2.jpg" alt="" />
                   </div>
                   <div class="tour-details-two__last-minute-content">
                     <h6>$380</h6>
@@ -212,7 +216,7 @@ requestOneSceneryInfo();
                 </li>
                 <li>
                   <div class="tour-details-two__last-minute-image">
-                    <img src="assets/images/resources/td-img-3.jpg" alt="" />
+                    <img src="/images/resources/td-img-3.jpg" alt="" />
                   </div>
                   <div class="tour-details-two__last-minute-content">
                     <h6>$380</h6>

@@ -155,7 +155,7 @@ const displayText = () => {
             <div class="main-menu-wrapper__left clearfix">
               <div class="main-menu-wrapper__logo">
                 <router-link to="/"
-                  ><img src="/images/resources/logo-1.png" alt=""
+                  ><img src="/images/resources/love-to-travel-logo1.png" alt=""
                 /></router-link>
               </div>
               <div class="main-menu-wrapper__main-menu">
@@ -164,7 +164,7 @@ const displayText = () => {
                 ></a>
                 <ul class="main-menu__list">
                   <li class="dropdown current">
-                    <a href="#">爱旅游</a>
+                    <router-link to="/" class="aly-index">爱旅游</router-link>
                   </li>
                   <li class="dropdown">
                     <a href="#">去旅游</a>
@@ -205,10 +205,22 @@ const displayText = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <a href="#">享旅游</a>
+                    <a href="#">组旅游</a>
                     <ul>
-                      <li><a href="about.html">问答</a></li>
-                      <li><a href="about.html">找队友</a></li>
+                      <li>
+                        <router-link
+                          to="/groupTravel/team"
+                          active-class="active-router"
+                          >旅行组队</router-link
+                        >
+                      </li>
+                      <li>
+                        <router-link
+                          to="/groupTravel/create"
+                          active-class="active-router"
+                          >发布组队</router-link
+                        >
+                      </li>
                     </ul>
                   </li>
                   <li class="dropdown">
@@ -275,7 +287,7 @@ const displayText = () => {
       <ul class="mobile-nav__contact list-unstyled">
         <li>
           <i class="fa fa-envelope"></i>
-          <a href="mailto:needhelp@packageName__.com">needhelp@tevily.com</a>
+          <a href="mailto:needhelp@alycom">needhelp@aly.com</a>
         </li>
         <li>
           <i class="fa fa-phone-alt"></i>
@@ -359,5 +371,8 @@ const displayText = () => {
 }
 .el-radio {
   --el-radio-input-border-color-hover: #e8604c !important;
+}
+
+.aly-index {
 }
 </style>

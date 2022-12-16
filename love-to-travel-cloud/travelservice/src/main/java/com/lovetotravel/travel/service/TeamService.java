@@ -13,6 +13,8 @@ public interface TeamService {
 
     List<Team> getJoinedById(String id);
 
+    List<Team> getAll();
+
     void insert(TeamCreateVo teamCreateVo);
 
     void update(TeamUpdateVo teamUpdateVo);

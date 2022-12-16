@@ -1,5 +1,6 @@
 package com.lovetotravel.travel.entity;
 
+import cn.hutool.core.codec.Base64;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
@@ -34,6 +35,14 @@ public class Note {
 
     @ApiModelProperty("内容")
     private String content;
+
+    public void setContent(String content) {
+        this.content = Base64.encodeUrlSafe(content);
+    }
+
+    public String getContent() {
+        return Base64.decodeStr(this.content);
+    }
 
 //    @ApiModelProperty("评分")
 //    private String score;

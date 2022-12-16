@@ -20,7 +20,10 @@ import axios from "axios";
 import { saveFinalPlansInfo } from "@/apis/travelService/plan";
 import router from "@/router";
 import { mainStore } from "@/store/user";
+// 引入中文包
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
 const store2 = mainStore();
+const size = ref<"default" | "large" | "small">("default");
 emitter.on("addPlan", (daysPlanInfo) => {
   // alert("添加行程信息到行程");
   //不管怎么样，不管有没有数据，我们要展示的就是days，所以直接赋值就完事了！
@@ -43,7 +46,7 @@ emitter.on("addAScenery", (routeInfo) => {
   // alert("添加景区信息到行程");
   // if (oneCityDaysDisplay.value === ([] as everyDayRoutesType[])) {
   if (oneCityDaysDisplay.value.length == 0) {
-    // alert("方法1:新增");
+    alert("方法1:新增");
     //在该城市没有行程内容的情况下
     //给subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days的route数组新增一个信息
     // 这些应该都不需要，需要我们展示的就只是days的内容而已，所以把citysPlansInfo舍弃换成days即everyDayRoutesType[]
@@ -72,7 +75,7 @@ emitter.on("addAScenery", (routeInfo) => {
     console.log("+++++++");
     showFlag.value = true;
   } else {
-    // alert("方法2:合并");
+    alert("方法2:合并");
     //在该城市已经有行程内容的情况下
     //把subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days合并
     //给最后一天的route里面加一项
@@ -143,15 +146,22 @@ let finalPlansInfo: finalAllCityPlansInfoType = reactive({
 });
 // 这个是用于修改整体预算的
 const budget = toRef(finalPlansInfo, "budget");
+const start = toRef(finalPlansInfo, "start");
+const end = toRef(finalPlansInfo, "end");
+// 这个是用于修改整体日期的
+const depart = toRef(finalPlansInfo, "depart");
 // 这个是用于展示在左边的内容！
 const subPlans = toRef(finalPlansInfo, "subPlans"); //这里也不是最终的内容，也是用于展示的，后面保存行程的时候要拼接给final
 /* 保存最终的计划 */
 const saveFinalPlans = async () => {
   if (store2.userInfo.id) {
-    alert("保存");
+    // alert("保存");
     finalPlansInfo.userId = store2.userInfo.id;
     finalPlansInfo.budget = budget.value;
     finalPlansInfo.subPlans = subPlans.value;
+    finalPlansInfo.start = start.value;
+    finalPlansInfo.end = end.value;
+    finalPlansInfo.depart = depart.value;
     await saveFinalPlansInfo(finalPlansInfo)
       .then((res: any) => {
         if (res.code != 0) {
@@ -355,165 +365,195 @@ const searchRoutes = (cityId: string, cityName: string) => {
 
 onMounted(() => {
   initSubPlans();
-  alert(store2.userInfo.id);
+  // alert(store2.userInfo.id);
   console.log(store2.userInfo);
 });
 </script>
 
 <template>
-  <div class="base-header">
-    <div class="header-left">{{ store2.userInfo.name }}的行程</div>
-    <div class="header-right">
-      <div class="save-button" @click="saveFinalPlans">保存行程</div>
+  <div class="warp">
+    <div class="base-header">
+      <div class="header-left">{{ store2.userInfo.name }}的行程</div>
+      <div class="header-right">
+        <div class="save-button" @click="saveFinalPlans">保存行程</div>
+      </div>
     </div>
-  </div>
-  <div class="base-container">
-    <div class="body-left">
-      <div class="left-header">
-        <p>出发城市：{{ fromTheCity }}</p>
-        <p>出发时间：{{ goTheDate }}</p>
-      </div>
-      <div class="left-body">
-        <el-scrollbar max-height="400px">
-          <div
-            v-for="(item, index) in subPlans"
-            :key="item.cityId"
-            class="left-scrollbar-item"
-            @click="searchRoutes(item.cityId, item.city)"
-          >
-            <div class="item-left">
-              <el-icon :size="35"><LocationInformation /></el-icon>
-              <div class="item-left-text">
-                <p>{{ item.city }}</p>
-                <p>
-                  旅行<input
-                    v-model="item.dayLength"
-                    type="number"
-                    placeholder="天数"
-                    class="budget-city-input"
-                  />天
-                </p>
-                <p>
-                  预算<input
-                    v-model="item.budget"
-                    type="number"
-                    placeholder="金额"
-                    class="budget-city-input"
-                  />元
-                </p>
-                <p>当前天气：{{ item.weather }}</p>
-              </div>
-            </div>
-            <div class="item-right">
-              <el-dropdown trigger="click">
-                <el-button type="primary">
-                  <el-icon size="15"><arrow-down /></el-icon>
-                </el-button>
-                <template #dropdown>
-                  <el-dropdown-menu>
-                    <el-dropdown-item @click="openCityDialog(1, index)">
-                      <el-icon><Plus /></el-icon> 之前添加一个城市
-                    </el-dropdown-item>
-                    <el-dropdown-item @click="openCityDialog(2, index)">
-                      <el-icon><Plus /></el-icon> 之后添加一个城市
-                    </el-dropdown-item>
-                    <el-dropdown-item @click="deleteCity(index)">
-                      <el-icon><DeleteFilled /></el-icon> 删除该城市
-                    </el-dropdown-item>
-                  </el-dropdown-menu>
-                </template>
-              </el-dropdown>
-            </div>
-          </div>
-          <div class="add-city" @click="openCityDialog(0, 0)">+ 添加城市</div>
-        </el-scrollbar>
-      </div>
-      <div class="left-footer">
-        返回城市：{{ backCity }}
-        <div>
-          总预算：<el-input
-            v-model="budget"
-            type="number"
-            placeholder="金额"
-            clearable
-            class="footer-input"
-          />元
+    <div class="base-container">
+      <div class="body-left">
+        <div class="left-header">
+          <p>
+            出发城市：<el-input
+              v-model="start"
+              placeholder="城市名"
+              clearable
+              class="header-input"
+            />
+          </p>
+          <!-- <p>出发城市：{{ fromTheCity }}</p> -->
+          <p>
+            <el-config-provider :locale="zhCn">
+              <el-date-picker
+                v-model="depart"
+                type="date"
+                placeholder="选择出发日期"
+                :size="size"
+              />
+            </el-config-provider>
+          </p>
         </div>
-      </div>
-    </div>
-    <div class="body-middle">
-      <div class="middle-header">
-        <p>{{ goTheDate }}</p>
-        <p>
-          <span>{{ searchCityName }}</span>
-        </p>
-      </div>
-      <div class="middle-body">
-        <el-scrollbar max-height="320px" v-if="showFlag">
-          <div
-            v-for="(item, index) in oneCityDaysDisplay"
-            :key="index"
-            class="scrollbar-middle-items"
-          >
-            <div class="theDay">第{{ index + 1 }}天</div>
-            <div v-for="(i, index2) in item.route" :key="index2">
-              <div class="item-step-content">
-                <div @click="deleteOneRoute(index, index2)" class="step-button">
-                  <el-icon><CloseBold /></el-icon>
+        <div class="left-body">
+          <el-scrollbar max-height="400px">
+            <div
+              v-for="(item, index) in subPlans"
+              :key="item.cityId"
+              class="left-scrollbar-item"
+              @click="searchRoutes(item.cityId, item.city)"
+            >
+              <div class="item-left">
+                <el-icon :size="35"><LocationInformation /></el-icon>
+                <div class="item-left-text">
+                  <p>{{ item.city }}</p>
+                  <p>当前天气：{{ item.weather }}</p>
+                  <div class="item-left-text-input">
+                    旅行<input
+                      v-model="item.dayLength"
+                      type="number"
+                      placeholder="天数"
+                      class="budget-city-input"
+                    />天
+                  </div>
+                  <div class="item-left-text-input">
+                    预算<input
+                      v-model="item.budget"
+                      type="number"
+                      placeholder="金额"
+                      class="budget-city-input"
+                    />元
+                  </div>
                 </div>
-                <el-steps :space="50" :active="1" simple class="item-step">
-                  <el-step title="出发地" :icon="MapLocation" />
-                  <el-step :title="i.originName" :icon="Place" />
-                </el-steps>
-                <el-collapse accordion class="item-content">
-                  <el-collapse-item name="1">
-                    <template #title>
-                      <span class="content-header-text">详细信息</span
-                      ><el-icon class="header-icon content-header-icon">
-                        <info-filled />
-                      </el-icon>
-                    </template>
-                    <div>交通工具：{{ i.vehicle }}</div>
-                    <div>停留时间：{{ i.departTime }} 小时</div>
-                    <div>经纬度：{{ i.origin }}</div>
-                  </el-collapse-item>
-                </el-collapse>
+              </div>
+              <div class="item-right">
+                <el-dropdown trigger="click">
+                  <el-button type="primary">
+                    <el-icon size="15"><tools /></el-icon>
+                  </el-button>
+                  <template #dropdown>
+                    <el-dropdown-menu>
+                      <el-dropdown-item @click="openCityDialog(1, index)">
+                        <el-icon><Plus /></el-icon> 之前添加一个城市
+                      </el-dropdown-item>
+                      <el-dropdown-item @click="openCityDialog(2, index)">
+                        <el-icon><Plus /></el-icon> 之后添加一个城市
+                      </el-dropdown-item>
+                      <el-dropdown-item @click="deleteCity(index)">
+                        <el-icon><DeleteFilled /></el-icon> 删除该城市
+                      </el-dropdown-item>
+                    </el-dropdown-menu>
+                  </template>
+                </el-dropdown>
               </div>
             </div>
+            <div class="add-city" @click="openCityDialog(0, 0)">添加城市</div>
+          </el-scrollbar>
+        </div>
+        <div class="left-footer">
+          <div>
+            返回城市：<el-input
+              v-model="end"
+              placeholder="城市名"
+              clearable
+              class="footer-input"
+            />
           </div>
-        </el-scrollbar>
-        <el-empty description="该城市还未安排行程" :image-size="150" v-else />
-      </div>
-    </div>
-    <div class="body-right">
-      <div class="right-header">
-        <span>{{ searchCityName }}</span>
-        <div class="input-box">
-          <input type="text" class="search-input" />
-          <span class="search-span">
-            <el-icon><Search /></el-icon>
-          </span>
+          <div>
+            总预算：<el-input
+              v-model="budget"
+              type="number"
+              placeholder="金额"
+              clearable
+              class="footer-input"
+            />元
+          </div>
         </div>
       </div>
-      <div class="right-nav">
-        <el-menu
-          :default-active="activeIndex"
-          class="el-menu"
-          mode="horizontal"
-          @select="handleSelect"
-          router="true"
-        >
-          <!-- 前面加/就是覆盖路径，不加就是在后面添加路径 -->
-          <el-menu-item :index="`/result/route/list/${store.searchCityId}`"
-            >路线</el-menu-item
-          >
-          <el-menu-item :index="`/result/scenicSpot/list/${store.searchCityId}`"
-            >游玩</el-menu-item
-          >
-        </el-menu>
+      <div class="body-middle">
+        <div class="middle-header">
+          <p>{{ goTheDate }}</p>
+          <p>
+            <span>{{ searchCityName }}</span>
+          </p>
+        </div>
+        <div class="middle-body">
+          <el-scrollbar max-height="475px" v-if="showFlag">
+            <div
+              v-for="(item, index) in oneCityDaysDisplay"
+              :key="index"
+              class="scrollbar-middle-items"
+            >
+              <div class="theDay">第{{ index + 1 }}天</div>
+              <div v-for="(i, index2) in item.route" :key="index2">
+                <div class="item-step-content">
+                  <div
+                    @click="deleteOneRoute(index, index2)"
+                    class="step-button"
+                  >
+                    <el-icon><CloseBold /></el-icon>
+                  </div>
+                  <el-steps :space="50" :active="1" simple class="item-step">
+                    <el-step title="出发地" :icon="MapLocation" />
+                    <el-step :title="i.originName" :icon="Place" />
+                  </el-steps>
+                  <el-collapse accordion class="item-content">
+                    <el-collapse-item name="1">
+                      <template #title>
+                        <span class="content-header-text">详细信息</span
+                        ><el-icon class="header-icon content-header-icon">
+                          <info-filled />
+                        </el-icon>
+                      </template>
+                      <div>交通工具：{{ i.vehicle }}</div>
+                      <div>停留时间：{{ i.departTime }} 小时</div>
+                      <div>经纬度：{{ i.origin }}</div>
+                    </el-collapse-item>
+                  </el-collapse>
+                </div>
+              </div>
+            </div>
+          </el-scrollbar>
+          <el-empty description="该城市还未安排行程" :image-size="150" v-else />
+        </div>
       </div>
-      <div class="right-body">
-        <router-view></router-view>
+      <div class="body-right">
+        <div class="right-header">
+          <span>{{ searchCityName }}</span>
+          <div class="input-box">
+            <input type="text" class="search-input" />
+            <span class="search-span">
+              <el-icon><Search /></el-icon>
+            </span>
+          </div>
+        </div>
+        <div class="right-nav">
+          <el-menu
+            :default-active="activeIndex"
+            class="el-menu"
+            mode="horizontal"
+            @select="handleSelect"
+            router="true"
+          >
+            <!-- 前面加/就是覆盖路径，不加就是在后面添加路径 -->
+            <el-menu-item :index="`/result/route/list/${store.searchCityId}`"
+              >路线</el-menu-item
+            >
+            <el-menu-item
+              :index="`/result/scenicSpot/list/${store.searchCityId}`"
+              >游玩</el-menu-item
+            >
+          </el-menu>
+        </div>
+        <div class="right-body">
+          <router-view></router-view>
+        </div>
       </div>
     </div>
   </div>
@@ -556,6 +596,11 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.warp {
+  width: 100%;
+  height: 100%;
+  background-color: #f2f3f5;
+}
 .budget-city-input {
   width: 45px;
   height: 20px;
@@ -564,7 +609,7 @@ onMounted(() => {
 }
 .base-header {
   width: 100%;
-  height: 10%;
+  height: 80px;
   // border: 1px #e8604c solid;
   background-color: #ffffff;
   border-bottom: 2px #e8604c solid;
@@ -572,8 +617,8 @@ onMounted(() => {
   padding: 0 25px 0 20px;
   .header-left {
     float: left;
-    width: 530px;
-    height: 100%;
+    width: auto;
+    height: 80px;
     // border: 1px #e8604c solid;
     display: flex;
     align-items: center;
@@ -581,13 +626,19 @@ onMounted(() => {
   }
   .header-right {
     float: right;
-    width: 530px;
-    height: 100%;
+    // width: 530px;
+    width: auto;
+    height: 80px;
     // border: 1px #e8604c solid;
-    display: flex;
-    align-items: center;
-    justify-content: right;
+    // display: flex;
+    // align-items: center;
+    // justify-content: right;
+    position: relative;
     .save-button {
+      position: absolute;
+      top: 20px;
+      right: 20px;
+      margin-right: 20px;
       width: 120px;
       height: 40px;
       // border: 1px #e8604c solid;
@@ -610,49 +661,64 @@ onMounted(() => {
 }
 .base-container {
   width: 100%;
-  height: 90%;
+  height: auto;
   // border: 1px #e8604c solid;
   position: relative;
-  background-color: #f2f3f5;
+  display: flex;
+  justify-content: space-around;
   .body-left {
     width: 250px;
-    height: 470px;
-    position: absolute;
-    // border: 1px #e8604c solid;
-    left: 20px;
-    top: 30px;
+    height: 565px;
+    // position: absolute;
+    // // border: 1px #e8604c solid;
+    // left: 130px;
+    // top: 30px;
+    margin-left: 30px;
+    margin-top: 30px;
     border-radius: 5px;
     background-color: #ffffff;
     box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
     .left-header {
       width: auto;
-      height: 13%;
+      height: 80px;
       border-bottom: 2px #e8604c solid;
       display: flex;
       justify-content: space-around;
-      align-items: center;
+      //align-items: center;
       flex-direction: column;
       p {
+        padding: 4px 20px;
         font-size: 16px;
         margin: 0;
         line-height: 1.5em;
+        .header-input {
+          width: 110px;
+          height: 25px;
+          // padding-right: 10px;
+        }
+        ::v-deep .el-input__wrapper {
+          width: 190px !important;
+          height: 25px !important;
+        }
       }
     }
     .left-footer {
       width: auto;
-      height: 18%;
+      height: 80px;
       // border: 1px #e8604c solid;
       border-top: 2px #e8604c solid;
       display: flex;
       justify-content: space-around;
-      align-items: center;
+      //align-items: center;
       flex-direction: column;
       font-size: 16px;
+      padding: 4px 20px;
       div {
         width: 200px;
         height: 32px;
         display: flex;
-        align-items: center;
+        //align-items: center;
+
         line-height: 30px;
         .footer-input {
           width: 120px;
@@ -664,13 +730,13 @@ onMounted(() => {
     }
     .left-body {
       width: auto;
-      height: 69%;
+      height: 400px;
       // border: 1px #e8604c solid;
       .left-scrollbar-item {
         display: flex;
         align-items: center;
         justify-content: space-between;
-        height: 90px;
+        height: 130px;
         // border: 1px #e8604c solid;
         background: rgba(255, 255, 255);
         cursor: pointer;
@@ -680,29 +746,33 @@ onMounted(() => {
         border-bottom: 1px #dcdfe6 solid;
         .item-left {
           width: 160px;
-          height: 80px;
+          height: 100px;
           display: flex;
-          justify-content: space-around;
+          //justify-content: space-around;
           align-items: center;
           padding-left: 10px;
           i {
-            color: #303133;
+            color: #fff;
           }
           .item-left-text {
             p {
-              font-size: 15px;
-              margin: 0;
+              //padding: 2px;
+              font-size: 16px;
+              margin: 5px 0;
               line-height: 1.4em;
             }
             > p:first-child {
               color: #303133;
               font-weight: 700;
             }
-            > p:nth-child(3) {
-              width: 100px;
+            > p:nth-child(2) {
+              margin-bottom: 0;
             }
-            > p:nth-child(4) {
-              width: 130px;
+
+            .item-left-text-input {
+              padding: 2px;
+
+              font-size: 14px;
             }
           }
         }
@@ -730,6 +800,12 @@ onMounted(() => {
         transition: all 0.3s linear;
         background-color: #f2f6fc;
       }
+      .add-city::after {
+        position: absolute;
+        left: 70px;
+        content: "+";
+        display: block;
+      }
       .add-city:hover {
         background: rgba(245, 245, 245);
       }
@@ -737,11 +813,12 @@ onMounted(() => {
   }
   .body-middle {
     width: 480px;
-    height: 400px;
-    position: absolute;
-    // border: 1px #e8604c solid;
-    left: 300px;
-    top: 30px;
+    height: 565px;
+    // position: absolute;
+    // // border: 1px #e8604c solid;
+    // left: 420px;
+    // top: 30px;
+    margin-top: 30px;
     border-radius: 5px;
     background-color: #ffffff;
     box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
@@ -778,7 +855,7 @@ onMounted(() => {
     }
     .middle-body {
       width: auto;
-      height: 320px;
+      height: 475px;
       .scrollbar-middle-items {
         display: flex;
         justify-content: center;
@@ -842,12 +919,14 @@ onMounted(() => {
   }
   .body-right {
     width: 450px;
-    height: 470px;
-    position: absolute;
+    height: 565px;
+    // position: absolute;
     // border: 1px #e8604c solid;
     box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
-    left: 810px;
-    top: 30px;
+    // left: 930px;
+    // top: 30px;
+    margin-top: 30px;
+    margin-right: 30px;
     background-color: #ffffff;
     border-radius: 5px;
     .right-header {
@@ -919,7 +998,7 @@ onMounted(() => {
     }
     .right-body {
       width: auto;
-      height: 350px;
+      height: 450px;
       // border: 1px #e8604c solid;
     }
   }

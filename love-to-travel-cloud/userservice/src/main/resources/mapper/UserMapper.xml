@@ -3,4 +3,11 @@
 <mapper namespace="com.lovetotravel.user.mapper.UserMapper">
 
 
+    <select id="getNewUserNum" resultType="com.lovetotravel.user.entity.vo.NewNum">
+        SELECT DATE_FORMAT(create_time, "%Y-%m-%d" ) AS time, COUNT(*) AS total FROM user WHERE create_time &lt; now() AND
+        create_time > date_sub(now(), interval 7 day) GROUP BY DATE_FORMAT(create_time, "%Y-%m-%d") ORDER BY create_time
+        DESC
+    </select>
+
+
 </mapper>

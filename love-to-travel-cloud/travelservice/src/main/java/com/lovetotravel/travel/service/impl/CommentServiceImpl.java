@@ -69,11 +69,10 @@ public class CommentServiceImpl implements CommentService {
         }
         mongoTemplate.insert(comment);
 
-
         if (commentVo.getParentId() != "") {
             //父评论增加评论数
             Query query = new Query();
-            query.addCriteria(Criteria.where("parentId").is(commentVo.getParentId()));
+            query.addCriteria(Criteria.where("id").is(commentVo.getParentId()));
             Comment parentComment = mongoTemplate.findOne(query, Comment.class);
             System.out.println("parentComment = " + parentComment);
             if (parentComment == null) {
@@ -98,7 +97,7 @@ public class CommentServiceImpl implements CommentService {
         if (comment.getParentId() != "") {
             //父评论增加评论数
             Query query2 = new Query();
-            query2.addCriteria(Criteria.where("parentId").is(comment.getParentId()));
+            query2.addCriteria(Criteria.where("id").is(comment.getParentId()));
             Comment parentComment = mongoTemplate.findOne(query2, Comment.class);
             System.out.println("parentComment = " + parentComment);
             if (parentComment == null) {
@@ -108,8 +107,11 @@ public class CommentServiceImpl implements CommentService {
             if (parentComment.getReply() == null) {
                 parentComment.setReply(0);
             }
-            update.set("reply", parentComment.getReply() + 1);
-            mongoTemplate.upsert(query, update, Comment.class);
+            update.set("reply", parentComment.getReply() - 1);
+            if (parentComment.getReply() < 0) {
+                parentComment.setReply(0);
+            }
+            mongoTemplate.upsert(query2, update, Comment.class);
         }
 
 

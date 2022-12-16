@@ -14,6 +14,9 @@ import {
   planCityInfoType,
 } from "@apis/interface/iPlan";
 import { getCitysInfo } from "@apis/travelService/city";
+// 引入中文包
+import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import { timeFormat } from "@/utils/filters/time";
 export default {
   props: ["fromCity", "toCity", "goDate"],
   // 简单功能的实现
@@ -75,7 +78,8 @@ export default {
     };
     // 初始化右边的数据
     const initWantCityInfo = () => {
-      if (toCity) {
+      if (toCity && toCity.cityName) {
+        //要加一下toCity.cityName
         planCityInfo.wantCitys.push({
           //这里必须要转一下，因为数据类型不一样，字段不一样！
           id: toCity.cityId,
@@ -90,6 +94,7 @@ export default {
     };
     // 管理右边的数据
     const addToWant = (index: number) => {
+      initMap(planCityInfo.wantCitys); //往上面放，因为这个慢
       planCityInfo.wantCitys.push({
         id: citysInfo.value[index].cityId,
         toCity: citysInfo.value[index].cityName,
@@ -98,13 +103,12 @@ export default {
         lat: citysInfo.value[index].lat,
       });
       console.log(planCityInfo);
-      initMap(planCityInfo.wantCitys);
     };
     const deleteTheCity = (index: number) => {
+      initMap(planCityInfo.wantCitys);
       console.log(planCityInfo.wantCitys);
       planCityInfo.wantCitys.splice(index, 1);
       console.log(planCityInfo.wantCitys);
-      initMap(planCityInfo.wantCitys);
     };
 
     // 确认计划
@@ -130,7 +134,7 @@ export default {
           //这里必须要转换成json字符串再传输，因为router的参数只接受数字和字符串类型，否则会被转换成字符串"Object object"
           wantCitys: JSON.stringify(array),
           backCity: planCityInfo.backCity,
-          goTheDate: planCityInfo.goTheDate,
+          goTheDate: timeFormat(planCityInfo.goTheDate),
           budget: planCityInfo.budget,
         },
       });
@@ -154,10 +158,11 @@ export default {
         .then((AMap) => {
           let map = new AMap.Map("map", {
             //设置地图容器id
-            zoom: 4.5, //初始化地图层级
+            zoom: 5, //初始化地图层级
             viewMode: "3D", //是否为3D地图模式
             // center: [116.397436, 39.909165], //初始化地图中心点位置，北京
-            center: [105.602725, 37.076636], //初始化地图中心点位置，兰州
+            // center: [106.55048, 29.5637], //初始化地图中心点位置，成都
+            center: [103.834228, 36.060798], //初始化地图中心点位置，兰州
             dragEnable: true, //禁止鼠标拖拽
             scrollWheel: true, //鼠标滚轮放大缩小
             doubleClickZoom: true, //双击放大缩小
@@ -316,16 +321,12 @@ export default {
       addToWant,
       ...toRefs(planCityInfo),
       size,
+      zhCn,
     };
   },
 };
 </script>
 <template>
-  <div class="info">
-    <p>当前级别：<span id="map-zoom">11</span></p>
-    <p>当前中心点：<span id="map-center">121.498586,31.239637</span></p>
-    <p>当前经纬度：<span id="lnglat"></span></p>
-  </div>
   <div id="map"></div>
   <div class="main">
     <div class="main-left">
@@ -342,21 +343,25 @@ export default {
           <input type="text" class="input-search" />
         </div>
         <div class="items">
-          <el-scrollbar height="360px">
+          <el-scrollbar height="460px">
             <div
               v-for="(item, index) in citysInfo"
               :key="index"
               class="scrollbar-item"
             >
-              <div><img src="@/assets/images/login-pic.jpg" /></div>
+              <div><img :src="item.url" /></div>
               <div>
                 <div class="title-city">
                   <p>
                     <a>{{ item.cityName }}</a>
                   </p>
-                  <p>{{ item.cityName }}</p>
+                  <p>{{ item.cityEname.toUpperCase() }}</p>
                 </div>
-                <div class="content-city">20%的人会去，87360人去过</div>
+                <div class="content-city">
+                  <el-scrollbar max-height="40px" style="padding-right: 10px">
+                    {{ item.introduction }}
+                  </el-scrollbar>
+                </div>
               </div>
               <div>
                 <div class="button-city">
@@ -373,12 +378,14 @@ export default {
     <div class="main-right">
       <div class="right-title">
         <p>我的行程</p>
-        <el-date-picker
-          v-model="goTheDate"
-          type="date"
-          placeholder="选择出发日期"
-          :size="size"
-        />
+        <el-config-provider :locale="zhCn">
+          <el-date-picker
+            v-model="goTheDate"
+            type="date"
+            placeholder="选择出发日期"
+            :size="size"
+          />
+        </el-config-provider>
       </div>
       <div class="right-body">
         <div class="plan-container">
@@ -447,9 +454,9 @@ export default {
             <el-radio-button label="3000" />
             <el-radio-button label="5000" />
           </el-radio-group>
-          <div class="select-confirm">
-            <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
-          </div>
+        </div>
+        <div class="select-confirm">
+          <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
         </div>
       </div>
       <el-dialog
@@ -472,7 +479,7 @@ export default {
         <template #footer>
           <span class="dialog-footer">
             <!-- <el-button @click="dialogFormVisible = false">Cancel</el-button> -->
-            <el-button type="primary" @click="confirmPlan"> 确认 </el-button>
+            <el-button type="primary" @click="confirmPlan">确认</el-button>
           </span>
         </template>
       </el-dialog>
@@ -505,10 +512,11 @@ export default {
   margin-right: 50px;
 }
 .select-body {
-  margin-top: 20px;
+  margin-top: 10px;
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-bottom: 10px;
   .select-confirm {
     margin-left: 20px;
   }
@@ -535,7 +543,6 @@ export default {
   // height: 600px;
   height: 100%;
   padding: 0px;
-  margin: 0px;
 }
 .info {
   position: fixed;
@@ -568,16 +575,20 @@ export default {
       background-color: #e8604c;
       width: 100%;
       height: 10%;
+      // line-height: 50px;
       border: 1px #e8604c solid;
       display: flex;
-      justify-content: left;
+      justify-content: center;
       align-content: center;
       p {
+        display: flex;
+        align-items: center;
         font-size: 25px;
         font-weight: 1000;
         color: white;
-        margin-top: 8px;
-        margin-left: 20px;
+        // margin-top: 8px;
+        // margin-left: 20px;
+        margin: 0;
       }
     }
     .left-body {
@@ -599,6 +610,8 @@ export default {
           justify-content: center;
           align-items: center;
           border: 1px #e8604c solid;
+          border-top-left-radius: 4px;
+          border-bottom-left-radius: 4px;
           border-right: 0;
           transition: all 0.3s linear;
           cursor: pointer;
@@ -615,10 +628,13 @@ export default {
           font-size: 15px;
           line-height: 30px;
           border: 1px #e8604c solid;
+          border-top-right-radius: 4px;
+          border-bottom-right-radius: 4px;
           border-left: 0;
           padding-left: 10px;
           transition: all 0.3s linear;
         }
+        .input-search:hover,
         .input-search:focus {
           background-color: #ffffff;
         }
@@ -638,7 +654,8 @@ export default {
           // margin: 10px;
           margin: 10px 0;
           border-radius: 4px;
-          background: rgba(232, 96, 76, 0.2);
+          background: rgba(253, 252, 176, 0.2);
+          box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
           color: var(--el-color-primary);
         }
         .scrollbar-item > div:first-child {
@@ -679,7 +696,7 @@ export default {
           }
           .content-city {
             color: #333333;
-            padding-top: 5px;
+            // padding-top: 5px;
             width: 135px;
             height: 40px;
             // border: 1px #e8604c solid;
@@ -776,8 +793,10 @@ export default {
         }
         .plan-items {
           height: 60%;
-          width: 340px;
+          width: 450px;
+          padding: 16px;
           // border: 1px #e8604c solid;
+          justify-content: left;
           position: absolute;
           top: 52px;
           .scrollbar-item2 {

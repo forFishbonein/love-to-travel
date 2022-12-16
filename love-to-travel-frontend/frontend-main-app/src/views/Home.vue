@@ -232,7 +232,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>Where Would You Like To Go?</p>
+                  <p>每个人心中,都会有一个古镇情怀，流水江南，烟笼人家。</p>
                 </div>
               </div>
             </div>
@@ -251,7 +251,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>Where Would You Like To Go?</p>
+                  <p>南风未起，念你成疾。</p>
                 </div>
               </div>
             </div>
@@ -270,7 +270,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>Where Would You Like To Go?</p>
+                  <p>因为有梦，所以勇敢出发，选择出发，便只顾风雨兼程。</p>
                 </div>
               </div>
             </div>
@@ -380,6 +380,7 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-1.png" alt="" />
               <div class="destinations-one__content">
+                <p class="destinations-one__sub-title">{{ hotCityOne.cityEname }}</p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">
                     {{ hotCityOne.cityName }}</a
@@ -397,7 +398,7 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-2.png" alt="" />
               <div class="destinations-one__content">
-                <p class="destinations-one__sub-title">Wildlife</p>
+                <p class="destinations-one__sub-title">{{ hotCityTwo.cityEname }}</p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">{{
                     hotCityTwo.cityName
@@ -415,6 +416,7 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-3.png" alt="" />
               <div class="destinations-one__content">
+                <p class="destinations-one__sub-title">{{ hotCityThree.cityEname }}</p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">{{
                     hotCityThree.cityName
@@ -433,6 +435,7 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-4.png" alt="" />
               <div class="destinations-one__content">
+                <p class="destinations-one__sub-title">{{ hotCityFour.cityEname }}</p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">{{
                     hotCityFour.cityName
@@ -450,7 +453,7 @@ onMounted(() => {});
             <div class="destinations-one__img">
               <img src="/images/destination/destination-1-5.png" alt="" />
               <div class="destinations-one__content">
-                <p class="destinations-one__sub-title">Adventure</p>
+                <p class="destinations-one__sub-title">{{ hotCityFive.cityEname }}</p>
                 <h2 class="destinations-one__title">
                   <a href="destinations-details.html">{{
                     hotCityFive.cityName

@@ -69,6 +69,13 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
     }
 
     @Override
+    public List<Scenery> getByCityName(String name) {
+        QueryWrapper<Scenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(Scenery::getDeleted, "0").like(Scenery::getName, name);
+        return sceneryMapper.selectList(queryWrapper);
+    }
+
+    @Override
     public void insert(SceneryInsertVo sceneryInsertVo) {
         if (sceneryInsertVo == null) {
             throw new GlobalException(CodeMsg.SCENERY_NOT_EXIST);
