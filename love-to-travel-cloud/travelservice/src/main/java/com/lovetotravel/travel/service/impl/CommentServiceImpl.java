@@ -65,15 +65,14 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserName(user.getName());
 
         if (commentVo.getParentId() == null) {
-            comment.setParentId("0");
+            comment.setParentId("");
         }
         mongoTemplate.insert(comment);
 
-
-        if (commentVo.getParentId() != "0") {
+        if (commentVo.getParentId() != "") {
             //父评论增加评论数
             Query query = new Query();
-            query.addCriteria(Criteria.where("parentId").is(commentVo.getParentId()));
+            query.addCriteria(Criteria.where("id").is(commentVo.getParentId()));
             Comment parentComment = mongoTemplate.findOne(query, Comment.class);
             System.out.println("parentComment = " + parentComment);
             if (parentComment == null) {
@@ -94,6 +93,28 @@ public class CommentServiceImpl implements CommentService {
     public void removeById(String id) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
+        Comment comment = mongoTemplate.findOne(query, Comment.class);
+        if (comment.getParentId() != "") {
+            //父评论增加评论数
+            Query query2 = new Query();
+            query2.addCriteria(Criteria.where("id").is(comment.getParentId()));
+            Comment parentComment = mongoTemplate.findOne(query2, Comment.class);
+            System.out.println("parentComment = " + parentComment);
+            if (parentComment == null) {
+                throw new GlobalException(CodeMsg.COMMENT_NOT_EXIST);
+            }
+            Update update = new Update();
+            if (parentComment.getReply() == null) {
+                parentComment.setReply(0);
+            }
+            update.set("reply", parentComment.getReply() - 1);
+            if (parentComment.getReply() < 0) {
+                parentComment.setReply(0);
+            }
+            mongoTemplate.upsert(query2, update, Comment.class);
+        }
+
+
         mongoTemplate.remove(query, Comment.class);
     }
 

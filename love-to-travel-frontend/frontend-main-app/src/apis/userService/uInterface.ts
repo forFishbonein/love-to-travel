@@ -17,7 +17,7 @@ export interface UserInfo {
   url?: string;
   name?: string;
   grade?: string;
-  experience?: string;
+  experience?: number;
   tele?: string;
   birthday?: string;
   post?: string;

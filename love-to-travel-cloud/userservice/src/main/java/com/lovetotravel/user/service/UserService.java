@@ -5,10 +5,7 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.lovetotravel.user.entity.Log;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
-import com.lovetotravel.user.entity.vo.FollowerVo;
-import com.lovetotravel.user.entity.vo.LoginVo;
-import com.lovetotravel.user.entity.vo.RegisterVo;
-import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
+import com.lovetotravel.user.entity.vo.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -53,5 +50,9 @@ public interface UserService extends IService<User> {
     List<User> getAllFollowee(Long id);
 
     Page<Log> getAllLog(PageVo pageVo);
+
+    List<NewNum> getNewUserNum();
+
+    List<NewNum> getNewLogNum();
 
 }

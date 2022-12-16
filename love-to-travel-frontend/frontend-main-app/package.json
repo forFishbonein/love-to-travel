@@ -19,7 +19,8 @@
     "mitt": "^3.0.0",
     "pinia": "^2.0.27",
     "pinia-plugin-persistedstate": "^3.0.1",
-    "vue": "^3.2.41"
+    "vue": "^3.2.41",
+    "wangeditor": "^3.1.1"
   },
   "devDependencies": {
     "@types/node": "^18.11.9",

@@ -62,6 +62,14 @@ public class FootpointServiceImpl implements FootpointService {
             Want want = new Want();
             want.setCityId(wantVo.getCityId());
             want.setCityName(city.getCityName());
+            want.setIntroduction(city.getIntroduction());
+            want.setUrl(city.getUrl());
+
+            Double[] pos = new Double[2];
+            pos[0] = Double.valueOf(city.getLng());
+            pos[1] = Double.valueOf(city.getLat());
+            want.setPos(pos);
+
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
@@ -77,6 +85,8 @@ public class FootpointServiceImpl implements FootpointService {
             Want want = new Want();
             want.setCityId(wantVo.getCityId());
             want.setCityName(city.getCityName());
+            want.setIntroduction(city.getIntroduction());
+            want.setUrl(city.getUrl());
             //判断是否添加过
             if (wants != null) {
                 for (Want b : wants) {
@@ -91,6 +101,12 @@ public class FootpointServiceImpl implements FootpointService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
             want.setCreateTime(currentTimeStamp);
+
+            Double[] pos = new Double[2];
+            pos[0] = Double.valueOf(city.getLng());
+            pos[1] = Double.valueOf(city.getLat());
+            want.setPos(pos);
+
             wants.add(want);
             footpoint.setWants(wants);
             mongoTemplate.remove(query, Footpoint.class);
@@ -119,6 +135,14 @@ public class FootpointServiceImpl implements FootpointService {
             Been been = new Been();
             been.setCityId(beenVo.getCityId());
             been.setCityName(city.getCityName());
+            been.setIntroduction(city.getIntroduction());
+            been.setUrl(city.getUrl());
+
+            Double[] pos = new Double[2];
+            pos[0] = Double.valueOf(city.getLng());
+            pos[1] = Double.valueOf(city.getLat());
+            been.setPos(pos);
+
             Date date = new Date();
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
@@ -135,6 +159,8 @@ public class FootpointServiceImpl implements FootpointService {
             Been been = new Been();
             been.setCityId(beenVo.getCityId());
             been.setCityName(city.getCityName());
+            been.setIntroduction(city.getIntroduction());
+            been.setUrl(city.getUrl());
             //判断是否添加过
             if (beens != null) {
                 for (Been b : beens) {
@@ -149,6 +175,12 @@ public class FootpointServiceImpl implements FootpointService {
             SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
             String currentTimeStamp = dateFormat.format(date);
             been.setCreateTime(currentTimeStamp);
+
+            Double[] pos = new Double[2];
+            pos[0] = Double.valueOf(city.getLng());
+            pos[1] = Double.valueOf(city.getLat());
+            been.setPos(pos);
+
             been.setScore(beenVo.getScore());
             beens.add(been);
             footpoint.setBeens(beens);
@@ -178,6 +210,13 @@ public class FootpointServiceImpl implements FootpointService {
                 Want want = new Want();
                 want.setCityId(wantRemoveVo.getCityId());
                 want.setCityName(city.getCityName());
+
+                Double[] pos = new Double[2];
+                pos[0] = Double.valueOf(city.getLng());
+                pos[1] = Double.valueOf(city.getLat());
+                want.setPos(pos);
+                want.setIntroduction(city.getIntroduction());
+                want.setUrl(city.getUrl());
                 want.setCreateTime(wantRemoveVo.getCreateTime());
                 wants.remove(want);
                 footpoint.setWants(wants);
@@ -208,6 +247,13 @@ public class FootpointServiceImpl implements FootpointService {
                 Been been = new Been();
                 been.setCityId(beenRemoveVo.getCityId());
                 been.setCityName(city.getCityName());
+
+                Double[] pos = new Double[2];
+                pos[0] = Double.valueOf(city.getLng());
+                pos[1] = Double.valueOf(city.getLat());
+                been.setPos(pos);
+                been.setIntroduction(city.getIntroduction());
+                been.setUrl(city.getUrl());
                 been.setCreateTime(beenRemoveVo.getCreateTime());
                 beens.remove(been);
                 footpoint.setBeens(beens);

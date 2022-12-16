@@ -3,6 +3,7 @@ package com.lovetotravel.user.controller;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
+import com.lovetotravel.user.entity.vo.NewNum;
 import com.lovetotravel.user.entity.vo.RegisterVo;
 import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
 import com.lovetotravel.user.result.Result;
@@ -84,6 +85,12 @@ public class UserController {
     public Result<String> removeById(@PathVariable("id") Long id) {
         userService.removeById(id);
         return Result.success("删除成功");
+    }
+
+    @ApiOperation("查询新用户数量")
+    @GetMapping("/new")
+    public Result<List<NewNum>> getNewUserNum() {
+        return Result.success(userService.getNewUserNum());
     }
 
 

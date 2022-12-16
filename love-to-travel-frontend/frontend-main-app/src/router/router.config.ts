@@ -3,6 +3,7 @@ import Index from "@/Index.vue";
 import LoginAndRegister from "@views/LoginAndRegister.vue";
 import Home from "@views/Home.vue";
 import GoTravel from "@views/goTravel/GoTravel.vue";
+import GroupTravel from "@views/groupTravel/GroupTravel.vue";
 import ReadTravel from "@/views/readTravel/ReadTravel.vue";
 import City from "@/views/goTravel/city/City.vue";
 import Scenery from "@/views/goTravel/scenery/Scenery.vue";
@@ -11,6 +12,7 @@ import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 import PersonalIndex from "@/views/personal/Index.vue";
+// import Note from "@/views/readTravel/note/Note.vue";
 
 export const routes: Array<RouteRecordRaw> = [
   {
@@ -129,6 +131,7 @@ export const routes: Array<RouteRecordRaw> = [
             path: "note",
             name: "Note",
             component: () => import("@/views/readTravel/note/Note.vue"),
+            // component: Note,
             meta: { title: " 读游记", keepAlive: false, showTab: true },
             redirect: "/readTravel/note/list",
             children: [
@@ -160,6 +163,64 @@ export const routes: Array<RouteRecordRaw> = [
               },
             ],
           },
+          {
+            path: "write",
+            name: "Write",
+            component: () => import("@/views/readTravel/write/Write.vue"),
+            meta: { title: " 写游记", keepAlive: false, showTab: true },
+          },
+        ],
+      },
+      {
+        path: "/groupTravel",
+        name: "GroupTravel",
+        component: GroupTravel,
+        meta: { title: "组旅游", keepAlive: false, showTab: true },
+        children: [
+          {
+            path: "team",
+            name: "Team",
+            component: () => import("@/views/groupTravel/team/Team.vue"),
+            // component: Note,
+            meta: { title: "队伍", keepAlive: false, showTab: true },
+            redirect: "/groupTravel/team/list",
+            children: [
+              {
+                path: "list",
+                name: "TeamList",
+                component: () =>
+                  import("@/views/groupTravel/team/TeamList.vue"),
+                meta: {
+                  title: "队伍列表",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail/:noteId",
+                name: "TeamDetail",
+                component: () =>
+                  import("@/views/groupTravel/team/TeamDetail.vue"),
+                meta: {
+                  title: "队伍详情",
+                  keepAlive: false,
+                  showTab: true,
+                },
+                props(route) {
+                  return {
+                    teamId: route.params.teamId,
+                  };
+                },
+              },
+            ],
+          },
+          {
+            path: "create",
+            name: "Create",
+            component: () => import("@/views/groupTravel/create/Create.vue"),
+            // component: Note,
+            meta: { title: "创建队伍", keepAlive: false, showTab: true },
+          },
         ],
       },
       {
@@ -179,46 +240,46 @@ export const routes: Array<RouteRecordRaw> = [
               showTab: true,
             },
           },
-          // {
-          //   path: "scenery",
-          //   name: "Scenery",
-          //   component: Scenery,
-          //   meta: {
-          //     title: "景区页",
-          //     keepAlive: false,
-          //     showTab: true,
-          //   },
-          //   redirect: "/goTravel/scenery/list",
-          //   children: [
-          //     {
-          //       path: "list",
-          //       name: "SceneryList",
-          //       component: () =>
-          //         import("@/views/goTravel/scenery/SceneryList.vue"),
-          //       meta: {
-          //         title: "景区列表",
-          //         keepAlive: false,
-          //         showTab: true,
-          //       },
-          //     },
-          //     {
-          //       path: "detail/:sceneryId",
-          //       name: "SceneryDetail",
-          //       component: () =>
-          //         import("@/views/goTravel/scenery/SceneryDetail.vue"),
-          //       meta: {
-          //         title: "景区详情",
-          //         keepAlive: false,
-          //         showTab: true,
-          //       },
-          //       props(route) {
-          //         return {
-          //           sceneryId: route.params.sceneryId,
-          //         };
-          //       },
-          //     },
-          //   ],
-          // },
+          {
+            path: "foot",
+            name: "Foot",
+            component: () => import("@/views/personal/Foot.vue"),
+            meta: {
+              title: "足迹",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
+            path: "mynote",
+            name: "MyNote",
+            component: () => import("@/views/personal/MyNote.vue"),
+            meta: {
+              title: "游记",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
+            path: "star",
+            name: "Star",
+            component: () => import("@/views/personal/Star.vue"),
+            meta: {
+              title: "我收藏的游记",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
+            path: "myroute",
+            name: "MyRoute",
+            component: () => import("@/views/personal/MyRoute.vue"),
+            meta: {
+              title: "我的行程",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
         ],
       },
     ],

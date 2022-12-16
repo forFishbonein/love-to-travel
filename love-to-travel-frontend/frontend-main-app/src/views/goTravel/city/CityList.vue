@@ -87,7 +87,7 @@ const changeCurrentPage = (p: number) => {
         <div class="col-xl-3 col-lg-3" v-for="(item, index) in citysInfo">
           <div class="destinations-one__single">
             <div class="destinations-one__img">
-              <img src="/images/destination/destination-1-1.png" alt="" />
+              <img :src="item.url" alt="" />
               <div class="destinations-one__content">
                 <h2 class="destinations-one__title">
                   <router-link :to="`detail/${item.cityId}`">{{
@@ -137,5 +137,13 @@ const changeCurrentPage = (p: number) => {
 .el-pagination {
   display: flex;
   justify-content: center;
+}
+.destinations-one__img {
+  width: 285px;
+  height: 250px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

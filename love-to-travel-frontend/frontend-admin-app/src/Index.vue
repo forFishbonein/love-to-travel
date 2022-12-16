@@ -34,7 +34,7 @@
                 <router-link to="/city">城市</router-link>
               </el-menu-item
               >
-              <el-menu-item index="2-3">景区</el-menu-item>
+              <el-menu-item index="2-3"><router-link to="/scenery">景区</router-link></el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="游记业务">
               <el-menu-item index="2-4">
@@ -142,7 +142,7 @@ const handleClose = (key: string, keyPath: string[]) => {
 <style lang="scss" scoped>
 .el-menu-vertical-demo:not(.el-menu--collapse) {
   width: 200px;
-  min-height: 100%;
+  min-height: 100vh;
 }
 
 /* 右上header */
@@ -213,9 +213,13 @@ const handleClose = (key: string, keyPath: string[]) => {
 
 .router-container {
   //   border-radius: 10px;
+  font-family: '方正字汇-明涵黑 简';
   margin: 10px;
   width: auto;
-  min-height: 490px;
+  min-height: 100vh;
+  background: rgb(240,240,240);
+  background: linear-gradient(90deg, rgba(240,240,240,1) 0%, rgba(241,241,241,1) 48%, rgba(255,255,255,1) 100%);
+
   box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
 }
 </style>

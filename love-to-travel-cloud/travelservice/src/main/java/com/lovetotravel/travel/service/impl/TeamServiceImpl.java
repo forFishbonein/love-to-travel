@@ -12,6 +12,7 @@ import com.lovetotravel.travel.service.EmailService;
 import com.lovetotravel.travel.service.TeamService;
 import org.bson.Document;
 import org.springframework.beans.BeanUtils;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.BasicUpdate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -62,6 +63,13 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public List<Team> getAll() {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("createTime")));
+        return mongoTemplate.find(query, Team.class);
+    }
+
+    @Override
     public void insert(TeamCreateVo teamCreateVo) {
         Team team = new Team();
         BeanUtils.copyProperties(teamCreateVo, team);
@@ -85,9 +93,13 @@ public class TeamServiceImpl implements TeamService {
 
         update.set("planId", teamUpdateVo.getPlanId());
         update.set("teamName", teamUpdateVo.getBudget());
+        update.set("ownerId", teamUpdateVo.getOwnerId());
         update.set("place", teamUpdateVo.getPlace());
         update.set("depart", teamUpdateVo.getBudget());
+        update.set("day", teamUpdateVo.getDay());
         update.set("budget", teamUpdateVo.getBudget());
+        update.set("introduction", teamUpdateVo.getIntroduction());
+        update.set("slogan", teamUpdateVo.getSlogan());
         update.set("introduction", teamUpdateVo.getIntroduction());
         update.set("num", teamUpdateVo.getNum());
 
@@ -152,7 +164,6 @@ public class TeamServiceImpl implements TeamService {
                     update.set("members." + i + ".userName", members[i].getUserName());
                     update.set("members." + i + ".email", members[i].getEmail());
                     update.set("members." + i + ".tele", members[i].getTele());
-                    update.set("members." + i + ".slogan", members[i].getSlogan());
                 }
             }
         }

@@ -16,5 +16,6 @@ console.log("---环境变量----", import.meta.env);
   vertical-align: -0.15em;
   fill: currentColor;
   overflow: hidden;
+  color: #e8604c;
 }
 </style>

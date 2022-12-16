@@ -85,7 +85,7 @@ const changeCurrentPage = (p: number) => {
     <div class="container">
       <div class="row">
         <div
-          class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp"
+          class="col-xl-4 col-lg-6 col-md-6 fadeInUp"
           data-wow-delay="100ms"
           v-for="(item, index) in notesPageInfo"
           :key="item.id"
@@ -99,21 +99,12 @@ const changeCurrentPage = (p: number) => {
               </router-link>
               <div class="news-one__date">
                 <p>
-                  <!-- 28 <br /> -->
                   <span>{{ timeFormat(item.createTime) }}</span>
                 </p>
               </div>
             </div>
             <div class="news-one__content">
               <ul class="list-unstyled news-one__meta">
-                <li>
-                  <a href="javascript:;"
-                    ><i class="far fa-user-circle"></i
-                    ><span class="span-style"
-                      >你好啊大苏打实打实大{{ item.userName }}</span
-                    ></a
-                  >
-                </li>
                 <li>
                   <a href="javascript:;"
                     ><el-icon size="20px"><View /></el-icon>浏览:{{
@@ -141,6 +132,14 @@ const changeCurrentPage = (p: number) => {
                       numberFormat(item.comment)
                     }}
                   </a>
+                </li>
+                <li>
+                  <a
+                    href="javascript:;"
+                    style="width: 370px; justify-content: left"
+                    ><i class="far fa-user-circle"></i
+                    ><span class="span-style">{{ item.userName }}</span></a
+                  >
                 </li>
               </ul>
               <h3 class="news-one__title">

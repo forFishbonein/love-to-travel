@@ -1,7 +1,39 @@
 <script setup lang="ts">
 import { ref } from "vue";
-
-const currentDate = ref(new Date());
+import { getNotesInfoByUserId } from "@/apis/travelService/note";
+import { mainStore } from "@/store/user";
+import { theNotesInfoType } from "@apis/interface/iPlan";
+import { numberFormat } from "@/utils/filters/number";
+import { timeFormat } from "@/utils/filters/time";
+import emitter from "@/mitt/event";
+const toAddFoot = () => {
+  emitter.emit("addFoot");
+};
+const store = mainStore();
+const userNotesInfo = ref([] as theNotesInfoType[]);
+const getNotesInfo = async () => {
+  await getNotesInfoByUserId(store.userInfo.id)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        userNotesInfo.value = res.data;
+        console.log(userNotesInfo.value);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+getNotesInfo();
 </script>
 
 <template>
@@ -24,7 +56,11 @@ const currentDate = ref(new Date());
         </div>
       </router-link>
     </li>
-    <li class="tour-types__single wow fadeInUp" data-wow-delay="300ms">
+    <li
+      class="tour-types__single wow fadeInUp"
+      data-wow-delay="300ms"
+      @click="toAddFoot"
+    >
       <div class="tour-types__content">
         <div class="tour-types__icon">
           <el-icon><MapLocation /></el-icon>
@@ -49,22 +85,39 @@ const currentDate = ref(new Date());
       </div>
     </template>
     <el-scrollbar max-height="420px">
-      <div class="card-item-container">
+      <div
+        class="card-item-container"
+        v-for="(item, index) in userNotesInfo"
+        :key="index"
+      >
         <div class="item-img">
-          <img src="@/assets/images/login-pic.jpg" />
+          <img :src="item.url" />
         </div>
         <div class="item-content">
           <div class="content-left">
-            <div><router-link to="/">I love 北京</router-link></div>
-            <div><span class="span-style">相关城市:</span>北京</div>
-            <div><span class="span-style">发表时间:</span>2022年12月12日</div>
+            <div>
+              <router-link :to="`/readTravel/note/detail/${item.id}`">{{
+                item.title
+              }}</router-link>
+            </div>
+            <div><span class="span-style">相关城市:</span>{{ item.city }}</div>
+            <div>
+              <span class="span-style">发表时间:</span
+              >{{ timeFormat(item.createTime) }}
+            </div>
           </div>
           <div class="content-right">
             <div>
-              <el-icon size="16px"><View /></el-icon>浏览:1000 &nbsp;&nbsp;
-              <el-icon size="16px"><Pointer /></el-icon>点赞:100&nbsp;&nbsp;
-              <el-icon size="16px"><Star /></el-icon>收藏:5&nbsp;&nbsp;
-              <el-icon size="16px"><Document /></el-icon>评论:10
+              <el-icon size="16px"><View /></el-icon>浏览:{{
+                numberFormat(item.view)
+              }}
+              &nbsp;&nbsp; <el-icon size="16px"><Pointer /></el-icon>点赞:{{
+                numberFormat(item.like)
+              }}&nbsp;&nbsp; <el-icon size="16px"><Star /></el-icon>收藏:{{
+                numberFormat(item.star)
+              }}&nbsp;&nbsp; <el-icon size="16px"><Document /></el-icon>评论:{{
+                numberFormat(item.comment)
+              }}
             </div>
           </div>
         </div>
@@ -139,8 +192,10 @@ const currentDate = ref(new Date());
         > div:first-child {
           font-size: 22px;
           font-weight: 700;
+          height: auto;
         }
         > div:nth-child(2) {
+          margin-top: 15px;
           font-size: 16px;
         }
         > div:nth-child(3) {
