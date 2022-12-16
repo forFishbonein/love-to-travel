@@ -11,7 +11,7 @@ export const getSceneryInfo = () => {
 export const postSceneryInfo = (data) => {
     return httpRequest({
         method: "post",
-        url: "http://localhost:8082/",
+        url: "http://localhost:8082/scenery/page",
         data,
         loading: true, //显示加载圈
     });

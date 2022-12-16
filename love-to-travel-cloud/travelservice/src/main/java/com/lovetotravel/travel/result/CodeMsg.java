@@ -33,6 +33,9 @@ public class CodeMsg {
     //评论模块 5008XX
     public static CodeMsg COMMENT_NOT_EXIST = new CodeMsg(500801, "评论不存在");
 
+    //产品模块 5009XX
+    public static CodeMsg PRODUCT_NOT_EXIST = new CodeMsg(500901, "评论不存在");
+
 
     private int code;
     private String msg;
