@@ -4,7 +4,7 @@ import io.swagger.annotations.ApiModelProperty;
 import lombok.Data;
 
 @Data
-public class TeamKickVo {
+public class TeamVo {
 
     @ApiModelProperty("组队id")
     private String teamId;
