@@ -285,26 +285,26 @@ const openSeeThePlanDialog = async(planId: string)=>{
             </p>
             <p class="tours-list__text" style="width:844px;height:54px">
               <span class="span-style">已加入成员</span>
-              <span v-for="i in item.members" style="margin-right:20px">{{i.userName||"暂无"}}</span>
+              <span v-for="i in item.members" style="margin-right:20px"><router-link :to="`/user/${i.userId}`">{{i.userName||"暂无"}}</router-link></span>
             </p>
             <ul class="tours-list__meta list-unstyled">
               <li>
-                <a href="tour-details.html"
+                <a href="javascript:;"
                   ><i class="far fa-calendar"></i>预计{{ item.day||"-" }}天</a
                 >
               </li>
               <li>
-                <a href="tour-details.html"
+                <a href="javascript:;"
                   ><i class="far fa-user-circle"></i>预期{{ item.num||"-" }}人</a
                 >
               </li>
               <li>
-                <a href="tour-details.html"
+                <a href="javascript:;"
                   ><i class="far fa-user-circle"></i>已加入{{ item.members?.length ||0 }}人</a
                 >
               </li>
               <li>
-                <a href="tour-details.html">
+                <a href="javascript:;">
                   <i class="far fa-map"></i>口号:{{ item.slogan||"暂无" }}
                 </a>
               </li>

@@ -1,11 +1,6 @@
 <script setup lang="ts">
-import { ref, inject, onMounted, computed, watch } from "vue";
-// import * as echarts from "echarts";
+import { ref, inject } from "vue";
 import chinaJson from "@/assets/json/map/china.json";
-import { getCitysInfoByName } from "@/apis/travelService/city";
-import { citysInfoType } from "@apis/interface/iPlan";
-import { addCityToWant } from "@/apis/travelService/want";
-import { addCityToBeen } from "@/apis/travelService/been";
 import { mainStore } from "@/store/user";
 import { getFootsByUserId } from "@/apis/travelService/foot";
 import {
@@ -20,6 +15,7 @@ const props = defineProps<{
 }>();
 const userId = props.userId;
 const store = mainStore();
+// alert(userId);
 const requestUserAllInfo = async () => {
   await getUserInfoById(userId)
     .then((res: any) => {
@@ -45,153 +41,11 @@ const requestUserAllInfo = async () => {
 };
 requestUserAllInfo();
 
-const handleSelect = (key: string, keyPath: string[]) => {
-  console.log(key, keyPath);
-};
-const keyword = ref("");
-const citysResultList = ref([] as citysInfoType[]);
-let timer = null;
-const hasNoData = computed(() => {
-  return !citysResultList.value.length;
-});
-
-watch(keyword, (newValue, oldValue) => {
-  // alert(newValue);
-  if (timer) {
-    clearTimeout(timer);
-  }
-  if (!newValue) {
-    citysResultList.value = [] as citysInfoType[];
-    return;
-  }
-  // @ts-ignore
-  timer = setTimeout(async () => {
-    let result = [] as citysInfoType[];
-    await getCitysInfoByName(newValue)
-      .then((res: any) => {
-        if (res.code != 0) {
-          //@ts-ignore
-          ElMessage({
-            type: "error",
-            message: res.msg,
-          });
-        } else {
-          res.data.forEach((e: citysInfoType) => {
-            if (e.cityName.indexOf(newValue) > -1) {
-              result.push(e);
-            }
-          });
-        }
-      })
-      .catch((error) => {
-        //@ts-ignore
-        ElMessage({
-          type: "error",
-          message: error.message,
-        });
-      });
-    citysResultList.value = result;
-  }, 100);
-});
-
-const dialogToWantVisible = ref(false);
-const confirmDialogVisible = ref(false);
-const theSelectedCity = ref({} as citysInfoType);
-let wantOrBeenFlag = false;
-const scoreValue = ref(4.5);
-const openAlreadyGoDialog = () => {
-  wantOrBeenFlag = true;
-  dialogToWantVisible.value = true;
-};
-const openToWantDialog = () => {
-  wantOrBeenFlag = false;
-  dialogToWantVisible.value = true;
-};
-const openTheConfirmDialog = (index: number) => {
-  confirmDialogVisible.value = true;
-  theSelectedCity.value = citysResultList.value[index];
-};
-const reSelect = () => {
-  confirmDialogVisible.value = false;
-  theSelectedCity.value = {} as citysInfoType;
-};
-const addOneCityToWant = async () => {
-  if (wantOrBeenFlag === false) {
-    await addCityToWant({
-      userId: store.userInfo.id,
-      cityId: theSelectedCity.value.cityId,
-    })
-      .then((res: any) => {
-        if (res.code != 0) {
-          //@ts-ignore
-          ElMessage({
-            type: "error",
-            message: res.msg,
-          });
-        } else {
-          confirmDialogVisible.value = false;
-          dialogToWantVisible.value = false;
-          keyword.value = "";
-          //@ts-ignore
-          ElMessage({
-            type: "success",
-            message: "添加想去成功",
-          });
-          getThescattersInfo();
-        }
-      })
-      .catch((error) => {
-        //@ts-ignore
-        ElMessage({
-          type: "error",
-          message: error.message,
-        });
-      });
-  } else if (wantOrBeenFlag === true) {
-    await addCityToBeen({
-      userId: store.userInfo.id,
-      cityId: theSelectedCity.value.cityId,
-      score: scoreValue.value,
-    })
-      .then((res: any) => {
-        if (res.code != 0) {
-          //@ts-ignore
-          ElMessage({
-            type: "error",
-            message: res.msg,
-          });
-        } else {
-          confirmDialogVisible.value = false;
-          dialogToWantVisible.value = false;
-          //@ts-ignore
-          ElMessage({
-            type: "success",
-            message: "添加去过成功",
-          });
-          getThescattersInfo();
-        }
-      })
-      .catch((error) => {
-        //@ts-ignore
-        ElMessage({
-          type: "error",
-          message: error.message,
-        });
-      });
-  } else {
-    // @ts-ignore
-    ElMessage({
-      type: "error",
-      message: "未知错误",
-    });
-  }
-};
 let scatterDataWant = [];
 let scatterDataBeen = [];
 /* 获取初始化点标记数据 */
 const getThescattersInfo = async () => {
-  // alert(222);
-  await getFootsByUserId(store.userInfo.id)
+  await getFootsByUserId(userId)
     .then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
@@ -200,6 +54,7 @@ const getThescattersInfo = async () => {
           message: res.msg,
         });
       } else {
+        // alert("成功1");
         if (res.data && res.data.wants) {
           // alert(333);
           res.data.wants.forEach((e) => {
@@ -536,7 +391,8 @@ const initEcharts = (scatterDataWant, scatterDataBeen) => {
 const followerNum = ref(0);
 const followeeNum = ref(0);
 const getFollowerNum = () => {
-  getUserFollowersNum(store.userInfo.id)
+  //   alert("得到粉丝方法" + theUserInfo.value.id);
+  getUserFollowersNum(userId)
     .then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
@@ -545,6 +401,7 @@ const getFollowerNum = () => {
           message: res.msg,
         });
       } else {
+        // alert("成功2");
         followerNum.value = res.data;
       }
     })
@@ -558,7 +415,8 @@ const getFollowerNum = () => {
 };
 getFollowerNum();
 const getFolloweeNum = () => {
-  getUserFolloweesNum(store.userInfo.id)
+  //   alert("得到关注方法" + theUserInfo.value.id);
+  getUserFolloweesNum(userId)
     .then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
@@ -567,6 +425,7 @@ const getFolloweeNum = () => {
           message: res.msg,
         });
       } else {
+        // alert("成功3");
         followeeNum.value = res.data;
       }
     })
@@ -579,42 +438,41 @@ const getFolloweeNum = () => {
     });
 };
 getFolloweeNum();
-onMounted(() => {
-  // alert(111);
-  // alert(store2.getUserFlag);
-  // alert(JSON.stringify(store2.userInfo));
-});
 </script>
 
 <template>
   <div id="map-container"></div>
   <div class="personal-info-container">
     <div class="avater-container">
-      <img :src="store.userInfo.url" class="avater-img" />
+      <img :src="theUserInfo.url" class="avater-img" />
+    </div>
+    <div class="follow-button">
+      <el-button type="success" round>Success</el-button>
+      <el-button type="warning" round>Warning</el-button>
     </div>
     <div class="info-border">
-      <el-descriptions :title="store.userInfo.name">
+      <el-descriptions :title="theUserInfo.name">
         <el-descriptions-item label="访问量"
           ><span class="visit-num">{{
-            store.userInfo.visits
+            theUserInfo.visits
           }}</span></el-descriptions-item
         >
         <el-descriptions-item label="邮箱">{{
-          store.userInfo.email
+          theUserInfo.email
         }}</el-descriptions-item>
         <el-descriptions-item label="所在地">{{
-          store.userInfo.address
+          theUserInfo.address
         }}</el-descriptions-item>
         <el-descriptions-item label="等级">
           <el-tag size="medium" style="font-weight: 600">{{
-            store.userInfo.grade
+            theUserInfo.grade
           }}</el-tag>
         </el-descriptions-item>
         <el-descriptions-item label="个性签名">{{
-          store.userInfo.signature
+          theUserInfo.signature
         }}</el-descriptions-item>
         <el-descriptions-item label="加入爱旅游时间">{{
-          store.userInfo.createTime
+          theUserInfo.createTime
         }}</el-descriptions-item>
       </el-descriptions>
     </div>
@@ -624,22 +482,22 @@ onMounted(() => {
           <div>
             <el-descriptions>
               <el-descriptions-item label="性别">{{
-                store.userInfo.gender
+                theUserInfo.gender
               }}</el-descriptions-item>
               <el-descriptions-item label="电话">{{
-                store.userInfo.tele
+                theUserInfo.tele
               }}</el-descriptions-item>
               <el-descriptions-item label="出生日期">{{
-                store.userInfo.birthday
+                theUserInfo.birthday
               }}</el-descriptions-item>
               <el-descriptions-item label="经验值">{{
-                store.userInfo.experience
+                theUserInfo.experience
               }}</el-descriptions-item>
               <el-descriptions-item label="岗位">{{
-                store.userInfo.post
+                theUserInfo.post
               }}</el-descriptions-item>
               <el-descriptions-item label="职业">{{
-                store.userInfo.profession
+                theUserInfo.profession
               }}</el-descriptions-item>
             </el-descriptions>
           </div>
@@ -652,12 +510,12 @@ onMounted(() => {
       <div class="follower">
         <div>
           <div>
-            <router-link to="/">ta的关注：{{ followeeNum }}</router-link>
+            <a href="javascript:;">ta的关注：{{ followeeNum }}</a>
           </div>
         </div>
         <div>
           <div>
-            <router-link to="/">ta的粉丝：{{ followerNum }}</router-link>
+            <a href="javascript:;">ta的粉丝：{{ followerNum }}</a>
           </div>
         </div>
       </div>
@@ -687,9 +545,7 @@ onMounted(() => {
         <button type="submit" class="thm-btn comment-form__btn">发送</button>
       </el-card>
     </div>
-    <div class="main-body">
-      <router-view></router-view>
-    </div>
+    <div class="main-body"></div>
   </div>
 </template>
 
@@ -725,6 +581,14 @@ onMounted(() => {
   display: flex;
   justify-content: center;
   flex-direction: column;
+  .follow-button {
+    width: 100px;
+    height: 80px;
+    position: absolute;
+    top: 90px;
+    left: 55px;
+    border: 1px #e8604c solid;
+  }
   .info-border {
     padding-top: 15px;
     width: 800px;
@@ -742,50 +606,6 @@ onMounted(() => {
     height: auto;
     margin-left: 200px;
   }
-  .button-already {
-    width: 150px;
-    height: 40px;
-    // border: 1px #e8604c solid;
-    position: absolute;
-    top: -160px;
-    right: 30px;
-    z-index: 100;
-    background-color: #e8604c;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #ffffff;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s linear;
-  }
-  .button-already:hover {
-    box-shadow: 0 16px 32px 0 rgba(48, 55, 66, 0.15);
-    transform: translate(0, -3px);
-  }
-  .button-want {
-    width: 150px;
-    height: 40px;
-    // border: 1px #e8604c solid;
-    position: absolute;
-    top: -100px;
-    right: 30px;
-    z-index: 100;
-    background-color: #e8604c;
-    border-radius: 10px;
-    cursor: pointer;
-    color: #ffffff;
-    font-weight: 700;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    transition: all 0.3s linear;
-  }
-  .button-want:hover {
-    box-shadow: 0 16px 32px 0 rgba(48, 55, 66, 0.15);
-    transform: translate(0, -3px);
-  }
   .avater-container {
     width: 150px;
     height: 150px;
@@ -801,16 +621,6 @@ onMounted(() => {
       border-radius: 75px;
       background-color: #f7f2ea;
     }
-  }
-}
-.header-nav-container {
-  width: 100%;
-  height: 60px;
-  // margin: 0 auto;
-  // border: 1px #e8604c solid;
-  .el-menu-demo {
-    display: flex;
-    justify-content: space-around;
   }
 }
 .main-container {
@@ -904,78 +714,6 @@ onMounted(() => {
   }
   .textarea-message {
     padding: 10px 20px;
-  }
-}
-.search-citys {
-  display: flex;
-  justify-content: center;
-  .input-box {
-    position: relative;
-    display: inline-block;
-    .search-input {
-      padding: 0 40px 0 20px;
-      width: 160px;
-      height: 38px;
-      font-size: 14px;
-      border: 1px solid #eee;
-      border-radius: 40px;
-      background: #eee;
-      transition: width 0.2s;
-      transition-delay: 0.1s;
-      color: #606266;
-    }
-    .search-input:focus {
-      width: 350px;
-      outline: none;
-      box-shadow: none;
-    }
-    .search-input:focus + .search-span {
-      background-color: #f48f80;
-      color: #fff;
-    }
-    .search-span {
-      position: absolute;
-      top: 4px;
-      right: 5px;
-      width: 30px;
-      height: 30px;
-      line-height: 30px;
-      padding: 0;
-      color: #d4d7de;
-      text-align: center;
-      background: #e8604c;
-      border-radius: 50%;
-      font-size: 15px;
-      cursor: pointer;
-      i {
-        height: 30px; /* 让图标居中的方案 */
-      }
-    }
-    .search-result-content {
-      width: auto;
-      height: auto;
-      // border: 1px #e8604c solid;
-      // background-color: rgba(0, 0, 0, 0.311);
-      border-radius: 5px;
-      .result-list {
-        padding-left: 10px;
-        padding-right: 10px;
-        > li {
-          list-style: none;
-          line-height: 2em;
-          padding-top: 5px;
-          cursor: pointer;
-          transition: all 0.1s linear;
-          padding-left: 5px;
-          border-bottom: 1px solid #e0e0e0;
-        }
-        > li:hover {
-          // background-color: #f48f80;
-          color: #e8604c;
-          font-weight: 700;
-        }
-      }
-    }
   }
 }
 </style>

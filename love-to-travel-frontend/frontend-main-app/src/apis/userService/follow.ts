@@ -3,6 +3,7 @@ export const getUserFollowersNum = (userId: string) => {
   return httpRequest({
     url: "http://localhost:8081/follow/sumfollower",
     data: {
+      // @ts-ignore
       id: userId,
     },
     method: "post",
@@ -21,7 +22,7 @@ export const getUserFolloweesNum = (userId: string) => {
 };
 export const getUserFollowersInfo = (userId: string) => {
   return httpRequest({
-    url: "http://localhost:8081/follow/sumfollower",
+    url: "http://localhost:8081/follow/getallfollower",
     data: {
       id: userId,
     },
@@ -39,7 +40,7 @@ export const getUserFolloweesInfo = (userId: string) => {
     loading: true,
   });
 };
-export const followeOneUser = (userId: string) => {
+export const followOneUser = (userId: string) => {
   return httpRequest({
     url: "http://localhost:8081/follow/add",
     data: {
@@ -49,7 +50,7 @@ export const followeOneUser = (userId: string) => {
     loading: true,
   });
 };
-export const cancelfolloweOneUser = (userId: string) => {
+export const cancelfollowOneUser = (userId: string) => {
   return httpRequest({
     url: "http://localhost:8081/follow/remove",
     data: {

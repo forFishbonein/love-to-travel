@@ -120,18 +120,18 @@ const handleChange = (value: number) => {
 };
 
 /* 移除一个成员的方法 */
-let theMemberId = "";
+// let theMemberId = "";
 let theMemberIndex = 0;
-const openTheRemoveDialog = (userId: string, index: number) => {
+const openTheRemoveDialog = (index: number) => {
   innerVisible2.value = true;
-  theMemberId = userId;
+  // theMemberId = userId;
   theMemberIndex = index;
 };
 const removeOneMember = () => {
   kickOneMember({
-    userId: theMemberId,
     teamId: id.value,
-  } as theTeamParams)
+    member: members.value[theMemberIndex],
+  })
     .then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
@@ -466,7 +466,7 @@ const openSeeThePlanDialog = async (planId: string) => {
               class="mx-1"
               closable
               type="warning"
-              @close="openTheRemoveDialog(m.userId, index)"
+              @close="openTheRemoveDialog(index)"
             >
               {{ m.userName }}
             </el-tag>

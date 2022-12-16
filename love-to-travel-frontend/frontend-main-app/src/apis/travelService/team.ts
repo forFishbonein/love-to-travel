@@ -72,9 +72,9 @@ export const leaveOneTeam = (data: theTeamParams) => {
   });
 };
 /* 移除成员 */
-export const kickOneMember = (data: theTeamParams) => {
+export const kickOneMember = (data: any) => {
   return httpRequest({
-    method: "post",
+    method: "delete",
     url: "http://localhost:8082/team/kick",
     data: data,
     loading: true, //显示加载圈

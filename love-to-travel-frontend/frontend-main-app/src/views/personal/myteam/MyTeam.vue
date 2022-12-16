@@ -17,7 +17,7 @@ const handleSelect = (key: string, keyPath: string[]) => {
     <el-menu-item index="myjoin">我加入的</el-menu-item>
     <el-menu-item index="mycreate">我创建的</el-menu-item>
   </el-menu>
-  <router-view></router-view>
+  <router-view :key="$route.fullPath"></router-view>
 </template>
 
 <style lang="scss" scoped></style>
