@@ -218,7 +218,7 @@ const displayText = () => {
                         <router-link
                           to="/groupTravel/create"
                           active-class="active-router"
-                          >发布组队</router-link
+                          >创建队伍</router-link
                         >
                       </li>
                     </ul>
