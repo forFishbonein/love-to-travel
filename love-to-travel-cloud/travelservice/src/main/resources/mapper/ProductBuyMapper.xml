@@ -16,7 +16,7 @@
     </select>
 
     <select id="getNewProductBuyNum" resultType="com.lovetotravel.travel.entity.vo.NewNum">
-        SELECT DATE_FORMAT(create_time, "%Y-%m-%d") AS time, COUNT(*),SUM(cost) AS cost AS total
+        SELECT DATE_FORMAT(create_time, "%Y-%m-%d") AS time, COUNT(*) AS total,SUM(cost) AS cost
         FROM product_buy
         WHERE create_time
          &lt; now()
