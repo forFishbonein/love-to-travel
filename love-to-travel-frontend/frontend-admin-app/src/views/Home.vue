@@ -1,5 +1,5 @@
 <script>
-import {getNewLogNum, getNewUserNum, getAllUser, getAllLog} from "../apis/statisticManage/home";
+import {getNewLogNum, getNewUserNum, getAllUser, getAllLog, getNewProductNum, getAllProductBuy} from "../apis/statisticManage/home";
 
 export default {
   data() {
@@ -7,8 +7,10 @@ export default {
       dateList: [],
       totalList: [0, 0, 0, 0, 0, 0, 0],
       totalList2: [0, 0, 0, 0, 0, 0, 0],
+      totalList3: [0, 0, 0, 0, 0, 0, 0],
       userNum: 0,
-      logNum: 0
+      logNum: 0,
+      buyNum: 0
     };
   },
   // 页面初始化挂载dom
@@ -29,6 +31,7 @@ export default {
       this.getDataList();
       this.getNewUserNum();
       this.getNewLogNum();
+      this.getNewProductNum()
 
     },
 
@@ -40,22 +43,17 @@ export default {
     async getNewUserNum() {
       await getNewUserNum().then((response) => {
         let tmpDate = response.data
-        // console.log(tmpDate)
-        // console.log(this.dateList)
         for (let i = 0; i < tmpDate.length; i++) {
           for (let j = 0; j < 7; j++) {
-            // console.log(this.dateList[j])
-            // console.log(tmpDate[i][0])
             if (this.dateList[j] === tmpDate[i].time) {
               this.totalList[j] = tmpDate[i].total
             }
           }
         }
-        // console.log(this.dateList)
-        // console.log(this.totalList)
-
       })
     },
+
+
     getNewLogNum() {
       getNewLogNum().then((response) => {
         let tmpDate = response.data
@@ -70,8 +68,22 @@ export default {
             }
           }
         }
-        // console.log(this.dateList)
-        // console.log(this.totalList2)
+
+
+
+      })
+    },
+
+    getNewProductNum() {
+      getNewProductNum().then((response) => {
+        let tmpDate = response.data
+        for (let i = 0; i < tmpDate.length; i++) {
+          for (let j = 0; j < 7; j++) {
+            if (this.dateList[j] === tmpDate[i].time) {
+              this.totalList3[j] = tmpDate[i].total
+            }
+          }
+        }
 
         this.getLoadEcharts();
         window.onresize = () => {
@@ -79,7 +91,6 @@ export default {
           let myChart = this.$echarts.init(document.getElementById('newEcharts'));
           myChart.resize();
         };
-
       })
     },
 
@@ -91,6 +102,10 @@ export default {
       })
       getAllLog().then((response) => {
         this.logNum = response.data
+
+      })
+      getAllProductBuy().then((response) => {
+        this.buyNum = response.data
 
       })
       console.log(this.userNum)
@@ -220,11 +235,11 @@ export default {
       <div class="scoreboard-yesterday">较昨日{{ ((totalList2[6]/this.logNum-totalList2[5]/this.logNum) * 100).toFixed(2) }}%</div>
     </li>
     <li>
-      <div class="scoreboard-number">1600</div>
+      <div class="scoreboard-number">{{ totalList3[6] }}</div>
       <div class="scoreboard-title">日订单</div>
 
       <div class="scoreboard-line scoreboard-line3"><span></span></div>
-      <div class="scoreboard-yesterday">较昨日15%</div>
+      <div class="scoreboard-yesterday">较昨日{{ ((totalList3[6]/this.logNum-totalList3[5]/this.logNum) * 100).toFixed(2) }}%</div>
     </li>
     <li>
       <div class="scoreboard-number">1600</div>

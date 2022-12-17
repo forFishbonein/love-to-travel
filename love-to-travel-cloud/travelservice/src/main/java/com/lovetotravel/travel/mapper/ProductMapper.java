@@ -10,7 +10,7 @@ import java.util.List;
 @Mapper
 public interface ProductMapper extends BaseMapper<Product> {
 
-    List<NewNum> getNewProductNum();
+
 
 
 }

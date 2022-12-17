@@ -31,3 +31,19 @@ export const getAllLog = () => {
         loading: true, //显示加载圈
     });
 };
+
+export const getNewProductNum = () => {
+    return httpRequest({
+        method: "get",
+        url: "http://localhost:8082/product/new",
+        loading: true, //显示加载圈
+    });
+};
+
+export const getAllProductBuy = () => {
+    return httpRequest({
+        method: "get",
+        url: "http://localhost:8082/product/all",
+        loading: true, //显示加载圈
+    });
+};

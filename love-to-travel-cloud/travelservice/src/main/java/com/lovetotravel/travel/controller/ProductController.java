@@ -86,6 +86,7 @@ public class ProductController {
 
         List<ProductShowVo> productShowVoList = new ArrayList<>();
 
+        //获取plan
         if (productPage.getRecords().size() != 0) {
             for (Product p : productPage.getRecords()) {
                 Query query = new Query();
@@ -158,7 +159,7 @@ public class ProductController {
     @ApiOperation("7天订单统计")
     @GetMapping("/new")
     public Result<List<NewNum>> getNewProductNum() {
-        return Result.success(productMapper.getNewProductNum());
+        return Result.success(productBuyMapper.getNewProductNum());
     }
 
 

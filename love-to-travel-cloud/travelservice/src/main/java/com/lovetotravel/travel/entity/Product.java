@@ -1,13 +1,14 @@
 package com.lovetotravel.travel.entity;
 
+import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableLogic;
 import lombok.Data;
-import org.springframework.data.annotation.Id;
 
 @Data
 public class Product {
 
-    @Id
+    @TableId(type = IdType.ASSIGN_ID)
     private Long id;
 
     private String name;
@@ -17,6 +18,10 @@ public class Product {
     private String planId;
 
     private String price;
+
+    private String tele;
+
+    private String url;
 
     @TableLogic
     private String deleted;
