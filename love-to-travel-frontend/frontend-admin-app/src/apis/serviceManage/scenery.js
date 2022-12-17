@@ -8,6 +8,16 @@ export const getSceneryInfo = () => {
 
 }
 
+export const getSceneryByStr2 = (data) => {
+    return httpRequest({
+        method: "post",
+        url: "http://localhost:8082/scenery/query2",
+        data,
+        loading: true, //显示加载圈
+    });
+
+}
+
 export const postSceneryInfo = (data) => {
     return httpRequest({
         method: "post",

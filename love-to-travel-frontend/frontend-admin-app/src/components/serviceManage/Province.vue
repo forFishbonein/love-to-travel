@@ -23,7 +23,7 @@
           <span></span>
           <div class="bottom">
             <time class="time">{{ item.provinceName }}</time>
-            <el-button text class="button">查看</el-button>
+            <el-button text class="button" @click="getDetails(item)">查看</el-button>
           </div>
         </div>
 
@@ -41,6 +41,35 @@
         @current-change="handleCurrentChange"
     />
   </el-card>
+
+
+  <el-dialog v-model="showVisible" :title="title">
+    <el-form :model="showVisibleForm">
+
+    </el-form>
+
+    <el-descriptions
+        :title="showVisibleForm.name"
+        direction="vertical"
+        :column="4"
+        :size="size"
+        border
+    >
+
+      <el-descriptions-item label="简介" :span="4">
+        {{ showVisibleForm.introduction }}
+      </el-descriptions-item>
+
+    </el-descriptions>
+
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="showVisible=false">关闭</el-button>
+      </span>
+    </template>
+  </el-dialog>
+
+
 </template>
 
 <script>
@@ -62,6 +91,9 @@ export default {
       pageInfo: {},
       pageSize: 9,
       currentPage: 1,
+      showVisible: false,
+      showVisibleForm: {}
+
     }
   },
   mounted() {
@@ -95,6 +127,15 @@ export default {
         console.log(response.data)
         console.log(this.pageInfo.records)
       })
+    },
+
+    getDetails(item) {
+      // console.log(this.tableData)
+      this.showVisibleForm= {};
+      this.showVisible = true;
+      this.title = item.provinceName
+      this.showVisibleForm = item
+
     },
 
     openUpdateDialog(row) {

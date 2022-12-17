@@ -3,10 +3,10 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="请输入查询景点"/> &nbsp;&nbsp;
+          <el-input v-model="queryStr" placeholder="请输入景点名称"/> &nbsp;&nbsp;
           <el-button class="button" round type="primary" @click="queryInfo">查询</el-button>
         </div>
-        <div>
+        <div style="margin-top: 10px">
           <el-button class="button" round type="success" @click="openAddDialog">添加</el-button>
           <el-button class="button" round type="warning" @click="multiDelete">删除</el-button>
         </div>
@@ -146,9 +146,9 @@ import {
   deleteSceneryInfo,
   insertProvinceInfo,
   postSceneryInfo,
-  updateSceneryInfo
+  updateSceneryInfo,
+  getSceneryByStr2
 } from '@/apis/serviceManage/scenery.js'
-import reload from "../../../../frontend-manage-app/src/router/reload";
 // import {ElMessage, ElMessageBox} from "element-plus";
 
 
@@ -263,6 +263,8 @@ export default {
             message: '景区信息添加成功',
             type: 'success',
           })
+          location.reload()
+          _this.$router.go(0)
         } else {
           ElMessage({
             message: '景区信息添加失败',
@@ -307,6 +309,8 @@ export default {
                   message: '删除成功',
                 })
 
+                location.reload()
+                _this.$router.go(0)
 
               } else {
                 ElMessage({
@@ -351,5 +355,9 @@ export default {
 
 
 <style scoped>
+.query {
+  display: flex;
+  justify-content: space-between;
+}
 
 </style>
