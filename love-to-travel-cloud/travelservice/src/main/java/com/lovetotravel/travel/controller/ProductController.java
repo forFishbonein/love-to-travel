@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.Product;
 import com.lovetotravel.travel.entity.page.PageVo;
+import com.lovetotravel.travel.entity.vo.NewNum;
 import com.lovetotravel.travel.entity.vo.product.ProductBuy;
 import com.lovetotravel.travel.entity.vo.product.ProductShowVo;
 import com.lovetotravel.travel.entity.vo.product.ProductVo;
@@ -152,6 +153,19 @@ public class ProductController {
         }
         productBuyMapper.insert(productBuy);
         return Result.success("购买成功");
+    }
+
+    @ApiOperation("7天订单统计")
+    @GetMapping("/new")
+    public Result<List<NewNum>> getNewProductNum() {
+        return Result.success(productMapper.getNewProductNum());
+    }
+
+
+    @ApiOperation("获取订单总数")
+    @GetMapping("/all")
+    public Result<Integer> getAllProductBuy() {
+        return Result.success(productBuyMapper.selectCount(null));
     }
 
 
