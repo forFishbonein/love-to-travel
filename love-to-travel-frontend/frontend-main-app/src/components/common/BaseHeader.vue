@@ -278,7 +278,7 @@ const searchSomething = () => {
                       </li>
                     </ul>
                   </li>
-                  <li><a href="#">旅游脉络</a></li>
+                  <li><router-link to="/canvasTravel">旅游脉络</router-link></li>
                 </ul>
               </div>
             </div>
