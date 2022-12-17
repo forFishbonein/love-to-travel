@@ -8,7 +8,7 @@ import {
   everyCityPlansInfoType,
   routeInfoType,
   everyDayRoutesType,
-} from "@apis/interface/iPlan";
+} from "@/apis/interface/myInterface";
 import { getHotCitysInfo } from "@apis/travelService/city";
 import { onMounted } from "@vue/runtime-core";
 import { cityStore } from "@/store/city";

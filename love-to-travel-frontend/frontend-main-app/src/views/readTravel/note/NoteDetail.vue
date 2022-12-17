@@ -27,9 +27,9 @@ import {
   theNoteComment,
   tranformComments,
   secondComment,
-} from "@apis/interface/iPlan";
+} from "@/apis/interface/myInterface";
 import { UserInfo } from "@/apis/userService/uinterface";
-import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { finalAllCityPlansInfoType } from "@/apis/interface/myInterface";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
 import { strFormat } from "@/utils/filters/string";

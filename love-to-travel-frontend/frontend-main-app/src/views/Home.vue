@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
-import { citysInfoType, planInfoType } from "@apis/interface/iPlan";
+import { citysInfoType, planInfoType } from "@/apis/interface/myInterface";
 import { getHotCitysInfo } from "@apis/travelService/city";
 import { onMounted } from "@vue/runtime-core";
 import { utilStore } from "@/store/util";
-import { theNotesInfoType } from "@apis/interface/iPlan";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { getAllNoteList, getPageNotesInfo } from "@apis/travelService/note";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";

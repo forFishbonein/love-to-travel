@@ -3,7 +3,7 @@ import {
   joinTeamParams,
   theTeamParams,
 } from "@/apis/travelService/tInterface";
-import { teamModifyParams } from "@/apis/interface/iPlan";
+import { teamModifyParams } from "@/apis/interface/myInterface";
 import httpRequest from "@/request";
 /* 创建队伍 */
 export const createOneTeam = (data: teamInfoParams) => {

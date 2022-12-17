@@ -267,10 +267,15 @@ const searchSomething = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <a href="#">购旅游</a>
+                    <router-link to="/buyTravel/product">购旅游</router-link>
                     <ul>
-                      <li><a href="javascript:;">酒店</a></li>
-                      <li><a href="javascript:;">机票</a></li>
+                      <li>
+                        <router-link
+                          to="/buyTravel/product"
+                          active-class="active-router"
+                          >旅游产品</router-link
+                        >
+                      </li>
                     </ul>
                   </li>
                   <li><a href="#">旅游脉络</a></li>

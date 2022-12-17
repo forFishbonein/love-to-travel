@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { getNotesInfoByUserId } from "@/apis/travelService/note";
 import { mainStore } from "@/store/user";
-import { theNotesInfoType } from "@apis/interface/iPlan";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
 import emitter from "@/mitt/event";

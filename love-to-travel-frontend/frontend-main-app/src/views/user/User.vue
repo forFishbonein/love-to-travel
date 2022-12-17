@@ -15,7 +15,7 @@ import {
   cancelfollowOneUser,
 } from "@/apis/userService/follow";
 import { getNotesInfoByUserId } from "@/apis/travelService/note";
-import { theNotesInfoType } from "@apis/interface/iPlan";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
 const theUserInfo = ref({} as UserInfo);

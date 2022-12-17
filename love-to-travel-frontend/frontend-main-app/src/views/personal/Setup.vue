@@ -2,7 +2,7 @@
 import { ref, reactive, toRefs, watch } from "vue";
 import { mainStore } from "@/store/user";
 import { UserInfo } from "@/apis/userService/uinterface";
-import { userInfoModifyType } from "@/apis/interface/iPlan";
+import { userInfoModifyType } from "@/apis/interface/myInterface";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { modifyUserInfo, modifyUserPass } from "@/apis/userService/user";

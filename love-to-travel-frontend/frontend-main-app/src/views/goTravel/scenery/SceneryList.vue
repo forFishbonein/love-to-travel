@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
-import { theCityScenerysInfoType } from "@apis/interface/iPlan";
+import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 import { getPageScenerysInfoByKeyword } from "@/apis/travelService/search";
 import {
   getAllSceneryList,
