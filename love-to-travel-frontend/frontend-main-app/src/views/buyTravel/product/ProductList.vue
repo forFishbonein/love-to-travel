@@ -113,7 +113,6 @@ const changeCurrentPage = (p: number) => {
           background
           @size-change="changePageSize"
           @current-change="changeCurrentPage"
-          hide-on-single-page
           pager-count="10"
           prev-icon="Back"
           next-icon="Right"

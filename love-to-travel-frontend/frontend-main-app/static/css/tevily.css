@@ -1478,7 +1478,7 @@ ul {
     position: absolute;
     bottom: 7px;
     right: -8px;
-    background-image: url(../images/shapes/main-slider-shape-1.png);
+    background-image: url(/images/shapes/main-slider-shape-1.png);
     background-repeat: no-repeat;
     width: 409px;
     height: 24px;
