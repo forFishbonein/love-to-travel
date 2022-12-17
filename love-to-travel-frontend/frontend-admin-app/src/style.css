@@ -37,6 +37,10 @@ td {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+}
+body {
+    background: url("../src/assets/bg.jpg");
 }
 
 /*文字自动居中*/

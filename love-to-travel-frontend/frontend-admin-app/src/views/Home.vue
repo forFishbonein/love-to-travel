@@ -183,7 +183,7 @@ export default {
 </script>
 <template>
   <div class="top">
-    <p>欢迎您：<span>XXX</span></p>
+    <p>欢迎您：<span>{{ this.$route.query.email }}</span></p>
   </div>
   <ul class="scoreboard">
     <li>
