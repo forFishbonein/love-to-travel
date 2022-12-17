@@ -13,13 +13,13 @@
             >
               <div class="footer-widget__column footer-widget__about">
                 <div class="footer-widget__about-logo">
-                  <a href="index.html"
-                    ><img src="/images/resources/footer-logo.png" alt=""
-                  /></a>
+                  <router-link to="/"
+                    ><img
+                      src="/images/resources/love-to-travel-logo2.png"
+                      alt=""
+                  /></router-link>
                 </div>
-                <p class="footer-widget__about-text">
-                  欢迎光临爱旅游
-                </p>
+                <p class="footer-widget__about-text">欢迎光临爱旅游</p>
                 <ul class="footer-widget__about-contact list-unstyled">
                   <li>
                     <div class="icon">
@@ -34,9 +34,7 @@
                       <i class="fas fa-envelope"></i>
                     </div>
                     <div class="text">
-                      <a href="mailto:needhelp@company.com"
-                        >needhelp@company.com</a
-                      >
+                      <a href="javascript:;">lovetotravel@scmzu.com</a>
                     </div>
                   </li>
                   <li>
@@ -59,11 +57,11 @@
               >
                 <h3 class="footer-widget__title">公司</h3>
                 <ul class="footer-widget__company-list list-unstyled">
-                  <li><a href="about.html">关于我们</a></li>
-                  <li><a href="#">游记</a></li>
-                  <li><a href="#">景区</a></li>
-                  <li><a href="#">问答</a></li>
-                  <li><a href="#">团队</a></li>
+                  <li><a href="javascript:;">关于我们</a></li>
+                  <li><a href="javascript:;">游记</a></li>
+                  <li><a href="javascript:;">景区</a></li>
+                  <li><a href="javascript:;">问答</a></li>
+                  <li><a href="javascript:;">团队</a></li>
                 </ul>
               </div>
             </div>
@@ -74,11 +72,11 @@
               <div class="footer-widget__column footer-widget__explore">
                 <h3 class="footer-widget__title">探索</h3>
                 <ul class="list-unstyled footer-widget__explore-list">
-                  <li><a href="#">账户</a></li>
-                  <li><a href="#">法律</a></li>
-                  <li><a href="#">联系</a></li>
-                  <li><a href="#">程序</a></li>
-                  <li><a href="#">隐私政策</a></li>
+                  <li><a href="javascript:;">账户</a></li>
+                  <li><a href="javascript:;">法律</a></li>
+                  <li><a href="javascript:;">联系</a></li>
+                  <li><a href="javascript:;">程序</a></li>
+                  <li><a href="javascript:;">隐私政策</a></li>
                 </ul>
               </div>
             </div>
@@ -98,7 +96,13 @@
                       placeholder="您的电子邮箱地址"
                       name="EMAIL"
                     />
-                    <button style="width: 100%;" type="submit" class="footer-widget__newsletter-btn">立即订阅</button>
+                    <button
+                      style="width: 100%"
+                      type="submit"
+                      class="footer-widget__newsletter-btn"
+                    >
+                      立即订阅
+                    </button>
                   </div>
                 </form>
                 <div class="mc-form__response text-center"></div>
@@ -132,13 +136,13 @@
               </div>
               <div class="site-footer__bottom-right">
                 <p>
-                  @ All Copyright 2021,
-                  <a href="https://www.861ppt.com/">861ppt</a>
+                  @ All Copyright 2022.12,
+                  <a href="javascript:;">aly</a>
                 </p>
               </div>
               <div class="site-footer__bottom-left-arrow">
                 <a
-                  href="#"
+                  href="javascript:;"
                   data-target="html"
                   class="scroll-to-target scroll-to-top"
                   ><span class="icon-right-arrow"></span

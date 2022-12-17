@@ -81,6 +81,13 @@ service.interceptors.response.use(
         });
         return;
       }
+      if (res.code == 500204) {
+        Message({
+          type: "error",
+          message: res.msg,
+        });
+        return;
+      }
       // 若后台返回错误值，此处返回对应错误对象，下面 error 就会接收
       return Promise.reject(new Error(res.msg || "Error"));
     } else {

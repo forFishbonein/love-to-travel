@@ -13,6 +13,7 @@ import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 import PersonalIndex from "@/views/personal/Index.vue";
 import User from "@/views/user/User.vue";
+import Search from "@/views/search/Search.vue";
 // import Note from "@/views/readTravel/note/Note.vue";
 
 export const routes: Array<RouteRecordRaw> = [
@@ -62,6 +63,17 @@ export const routes: Array<RouteRecordRaw> = [
                   keepAlive: false,
                   showTab: true,
                 },
+                // beforeEnter: (to, from, next) => {
+                //   alert("要进入了");
+                //   next();
+                // },
+                //把route对象直接拆出属性
+                /* params刷新一下就没了，更好 */
+                props({ params: { keyword } }) {
+                  return {
+                    keyword,
+                  };
+                },
               },
               {
                 path: "detail/:cityId",
@@ -100,6 +112,11 @@ export const routes: Array<RouteRecordRaw> = [
                   title: "景区列表",
                   keepAlive: false,
                   showTab: true,
+                },
+                props({ params: { keyword } }) {
+                  return {
+                    keyword,
+                  };
                 },
               },
               {
@@ -144,6 +161,11 @@ export const routes: Array<RouteRecordRaw> = [
                   title: "游记列表",
                   keepAlive: false,
                   showTab: true,
+                },
+                props({ params: { keyword } }) {
+                  return {
+                    keyword,
+                  };
                 },
               },
               {
@@ -310,6 +332,16 @@ export const routes: Array<RouteRecordRaw> = [
               showTab: true,
             },
           },
+          {
+            path: "setup",
+            name: "Setup",
+            component: () => import("@/views/personal/Setup.vue"),
+            meta: {
+              title: "设置",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
         ],
       },
       {
@@ -324,6 +356,21 @@ export const routes: Array<RouteRecordRaw> = [
         props(route) {
           return {
             userId: route.params.userId,
+          };
+        },
+      },
+      {
+        path: "/search",
+        name: "Search",
+        component: Search,
+        meta: { title: "全局搜索结果页", keepAlive: false, showTab: true },
+        // beforeEnter: (to, from, next) => {
+        //   if()
+        //   next();
+        // },
+        props(route) {
+          return {
+            keyword: route.params.keyword,
           };
         },
       },

@@ -5,6 +5,7 @@ import { theTeamInfoType } from "@/apis/interface/iPlan";
 import {
   searchJoinTeamByUserId,
   leaveOneTeam,
+  postInviteEmail,
 } from "@/apis/travelService/team";
 import { mainStore } from "@/store/user";
 import { getOneUserPlansInfoById } from "@/apis/travelService/plan";
@@ -93,6 +94,48 @@ const openSeeThePlanDialog = async (planId: string) => {
         oneUserPlansInfo.value = res.data;
         console.log(oneUserPlansInfo.value);
         planDialogVisible.value = true;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+/* 发送邮件 */
+let postTeamId = "";
+let postTeamName = "";
+const openEmailDialog = (teamId: string, teamName: string) => {
+  postTeamId = teamId;
+  postTeamName = teamName;
+  emailDialogVisible.value = true;
+};
+const postEmail = ref("");
+const emailDialogVisible = ref(false);
+const postEmailToOnePeople = () => {
+  postInviteEmail({
+    teamId: postTeamId,
+    teamName: postTeamName,
+    inviterId: store.userInfo.id,
+    // inviterId: store.userInfo.id,
+    userEmail: postEmail.value,
+  })
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        emailDialogVisible.value = false;
+        // @ts-ignore
+        ElMessage({
+          type: "success",
+          message: "邮件发送成功",
+        });
       }
     })
     .catch((error) => {
@@ -218,6 +261,14 @@ const openSeeThePlanDialog = async (planId: string) => {
             </el-popover>
           </el-descriptions-item>
         </el-descriptions>
+        <div class="bottom-button">
+          <el-button
+            type="warning"
+            @click="openEmailDialog(item.id, item.teamName)"
+          >
+            邀请队友<el-icon class="el-icon--right"><Message /></el-icon>
+          </el-button>
+        </div>
       </el-tab-pane>
     </el-tabs>
   </div>
@@ -297,6 +348,27 @@ const openSeeThePlanDialog = async (planId: string) => {
       </span>
     </template>
   </el-dialog>
+  <el-dialog
+    v-model="emailDialogVisible"
+    title="填写邮箱"
+    width="30%"
+    draggable
+  >
+    <span>请填写邮箱地址，我们将会发送一封邀请邮件给ta~</span>
+    <el-input v-model="postEmail" class="w-60" placeholder="邮箱地址">
+      <template #prefix>
+        <el-icon class="el-input__icon"><Message /></el-icon>
+      </template>
+    </el-input>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="emailDialogVisible = false">取消发送</el-button>
+        <el-button type="primary" @click="postEmailToOnePeople">
+          确认发送
+        </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
@@ -324,5 +396,13 @@ const openSeeThePlanDialog = async (planId: string) => {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+.bottom-button {
+  width: 100%;
+  height: 50px;
+  // border: 1px #e8604c solid;
+  display: flex;
+  align-items: end;
+  justify-content: end;
 }
 </style>

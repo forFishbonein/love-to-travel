@@ -1,12 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
 import { theCityScenerysInfoType } from "@apis/interface/iPlan";
+import { getPageScenerysInfoByKeyword } from "@/apis/travelService/search";
 import {
   getAllSceneryList,
   getPageScenerysInfo,
 } from "@apis/travelService/scenery";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
+/* 全局根据简介查询 */
+const props = defineProps<{
+  keyword: string;
+}>();
+const keyword = props.keyword;
 /* 分页获取数据 */
 let scenerysPageInfo = ref([] as theCityScenerysInfoType[]);
 const pageParams = reactive({
@@ -16,29 +22,54 @@ const pageParams = reactive({
 });
 const { total, page, limit } = toRefs(pageParams);
 const requestPageScenerysInfo = async () => {
-  await getPageScenerysInfo(page.value, limit.value)
-    .then((res: any) => {
-      if (res.code != 0) {
+  if (keyword) {
+    await getPageScenerysInfoByKeyword(keyword, page.value, limit.value)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("获取成功");
+          scenerysPageInfo.value = res.data.records;
+          total.value = res.data.total;
+          console.log(scenerysPageInfo);
+        }
+      })
+      .catch((error) => {
         //@ts-ignore
         ElMessage({
           type: "error",
-          message: res.msg,
+          message: error.message,
         });
-      } else {
-        // alert("获取成功");
-        // citysInfo.value = res.data.slice(0, 5);
-        scenerysPageInfo.value = res.data.records; //注意这里是records
-        total.value = res.data.total;
-        console.log(scenerysPageInfo.value);
-      }
-    })
-    .catch((error) => {
-      //@ts-ignore
-      ElMessage({
-        type: "error",
-        message: error.message,
       });
-    });
+  } else {
+    await getPageScenerysInfo(page.value, limit.value)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("获取成功");
+          // citysInfo.value = res.data.slice(0, 5);
+          scenerysPageInfo.value = res.data.records; //注意这里是records
+          total.value = res.data.total;
+          console.log(scenerysPageInfo.value);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
 };
 requestPageScenerysInfo();
 // 回调函数1：每页记录数改变时调用，size：回调参数，表示当前选中的“每页条数”
@@ -79,9 +110,65 @@ const changeCurrentPage = (p: number) => {
 //     });
 // };
 // requestScenerysInfo();
+const thisPageKeyword = ref("");
+const searchTheCity = async () => {
+  total.value = 0;
+  page.value = 1;
+  limit.value = 12;
+  await getPageScenerysInfoByKeyword(
+    thisPageKeyword.value,
+    page.value,
+    limit.value
+  )
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert("获取成功");
+        scenerysPageInfo.value = res.data.records;
+        total.value = res.data.total;
+        console.log(scenerysPageInfo);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
 </script>
-
+<script lang="ts">
+//@ts-ignore
+(function ($) {
+  $(document).ready(function () {
+    $(".search-popup").css("transform", "translateY(-110%)");
+  });
+  //@ts-ignore
+})(jQuery);
+</script>
 <template>
+  <div class="search-input-container">
+    <form
+      autocomplete="off"
+      @submit.prevent="searchTheCity()"
+      class="sidebar__search-form"
+    >
+      <input
+        type="search"
+        placeholder="输入搜索内容"
+        v-model="thisPageKeyword"
+      />
+      <button type="submit" class="search-page-button">
+        <i class="icon-magnifying-glass"></i>
+      </button>
+    </form>
+  </div>
   <section class="popular-tours-two">
     <div class="container">
       <div class="row">
@@ -114,14 +201,14 @@ const changeCurrentPage = (p: number) => {
                 <span>{{ item.ticket }}</span
                 >元 / 每人
               </p>
-<!--              <ul class="popular-tours__meta list-unstyled" v-show="item.season">-->
-<!--                <li>-->
-<!--                  <el-scrollbar max-height="100px" class="scrollbar-content">-->
-<!--&lt;!&ndash;                    <span style="color: #303133"></span>&ndash;&gt;-->
-<!--                    {{ item.season }}-->
-<!--                  </el-scrollbar>-->
-<!--                </li>-->
-<!--              </ul>-->
+              <!--              <ul class="popular-tours__meta list-unstyled" v-show="item.season">-->
+              <!--                <li>-->
+              <!--                  <el-scrollbar max-height="100px" class="scrollbar-content">-->
+              <!--&lt;!&ndash;                    <span style="color: #303133"></span>&ndash;&gt;-->
+              <!--                    {{ item.season }}-->
+              <!--                  </el-scrollbar>-->
+              <!--                </li>-->
+              <!--              </ul>-->
             </div>
           </div>
         </div>
@@ -166,5 +253,23 @@ const changeCurrentPage = (p: number) => {
     width: 100%;
     height: 100%;
   }
+}
+/* 搜索框部分需要的样式 */
+.popular-tours-two {
+  padding-top: 0px;
+}
+.search-input-container {
+  width: 100%;
+  padding: 50px 200px;
+}
+.search-page-button {
+  border-radius: 10px;
+  transition: all 0.3s linear;
+}
+.search-page-button:hover {
+  background-color: #e8604c;
+}
+.search-page-button:hover > i {
+  color: #ffffff;
 }
 </style>

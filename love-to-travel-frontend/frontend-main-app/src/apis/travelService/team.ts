@@ -88,8 +88,8 @@ interface postParams {
 }
 /* 发送邀请邮件 */
 export const postInviteEmail = (data: postParams) => {
-  alert("发邮件");
-  console.log(data);
+  // alert("发邮件");
+  // console.log(data);
   return httpRequest({
     method: "post",
     url: "http://localhost:8082/team/invite",

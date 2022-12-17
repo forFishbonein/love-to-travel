@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { ref, reactive } from "vue";
+import { ref, reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
 import { citysInfoType, planInfoType } from "@apis/interface/iPlan";
 import { getHotCitysInfo } from "@apis/travelService/city";
 import { onMounted } from "@vue/runtime-core";
 import { utilStore } from "@/store/util";
-
+import { theNotesInfoType } from "@apis/interface/iPlan";
+import { getAllNoteList, getPageNotesInfo } from "@apis/travelService/note";
+import { numberFormat } from "@/utils/filters/number";
+import { timeFormat } from "@/utils/filters/time";
 const store = utilStore();
 const router = useRouter();
 let citysInfos = [
@@ -104,7 +107,14 @@ let hotCityTwo = ref({} as citysInfoType);
 let hotCityThree = ref({} as citysInfoType);
 let hotCityFour = ref({} as citysInfoType);
 let hotCityFive = ref({} as citysInfoType);
-const requestCitysInfo = async () => {
+/* 游记内容 */
+let notesInfo = ref([] as theNotesInfoType[]);
+const pageParams = reactive({
+  page: 1,
+  limit: 3,
+});
+const { page, limit } = toRefs(pageParams);
+const requestCitysAndNotesInfo = async () => {
   await getHotCitysInfo()
     .then((res: any) => {
       if (res.code != 0) {
@@ -114,7 +124,7 @@ const requestCitysInfo = async () => {
           message: res.msg,
         });
       } else {
-        // alert("获取成功");
+        // alert("获取成功1");
         hotCitysInfo.value = res.data.slice(0, 5);
         // citysInfo.value = res.data;
         console.log(hotCitysInfo);
@@ -132,8 +142,29 @@ const requestCitysInfo = async () => {
         message: error.message,
       });
     });
+  await getPageNotesInfo(page.value, limit.value)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert("获取成功2");
+        notesInfo.value = res.data.records;
+        console.log(notesInfo);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
 };
-requestCitysInfo();
+requestCitysAndNotesInfo();
 
 const planInfo: planInfoType = reactive({
   fromCity: "",
@@ -371,66 +402,98 @@ onMounted(() => {});
   <section class="destinations-one">
     <div class="container">
       <div class="section-title text-center">
-        <span class="section-title__tagline">Destination lists</span>
+        <span class="section-title__tagline"> The city we yearn for</span>
         <h2 class="section-title__title">向往的城市</h2>
       </div>
       <div class="row masonary-layout">
         <div class="col-xl-3 col-lg-3">
           <div class="destinations-one__single">
-            <div class="destinations-one__img">
-              <img src="/images/destination/destination-1-1.png" alt="" />
+            <div
+              class="destinations-one__img"
+              style="width: 285px; height: 285px"
+            >
+              <img
+                :src="hotCityOne.url"
+                alt=""
+                style="width: 100%; height: 100%"
+              />
               <div class="destinations-one__content">
                 <p class="destinations-one__sub-title">
                   {{ hotCityOne.cityEname }}
                 </p>
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">
-                    {{ hotCityOne.cityName }}</a
+                  <router-link
+                    :to="`/goTravel/city/detail/${hotCityOne.cityId}`"
+                  >
+                    {{ hotCityOne.cityName }}</router-link
                   >
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">查看详情</a>
+                <router-link :to="`/goTravel/city/detail/${hotCityOne.cityId}`"
+                  >查看详情</router-link
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="col-xl-6 col-lg-6">
           <div class="destinations-one__single">
-            <div class="destinations-one__img">
-              <img src="/images/destination/destination-1-2.png" alt="" />
+            <div
+              class="destinations-one__img"
+              style="width: 580px; height: 285px"
+            >
+              <img
+                :src="hotCityTwo.url"
+                alt=""
+                style="width: 100%; height: 100%"
+              />
               <div class="destinations-one__content">
                 <p class="destinations-one__sub-title">
                   {{ hotCityTwo.cityEname }}
                 </p>
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">{{
-                    hotCityTwo.cityName
-                  }}</a>
+                  <router-link
+                    :to="`/goTravel/city/detail/${hotCityTwo.cityId}`"
+                    >{{ hotCityTwo.cityName }}</router-link
+                  >
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">查看详情</a>
+                <router-link :to="`/goTravel/city/detail/${hotCityTwo.cityId}`"
+                  >查看详情</router-link
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="col-xl-3 col-lg-3">
           <div class="destinations-one__single">
-            <div class="destinations-one__img">
-              <img src="/images/destination/destination-1-3.png" alt="" />
+            <div
+              class="destinations-one__img"
+              style="width: 285px; height: 285px"
+            >
+              <img
+                :src="hotCityThree.url"
+                alt=""
+                style="width: 100%; height: 100%"
+              />
               <div class="destinations-one__content">
                 <p class="destinations-one__sub-title">
                   {{ hotCityThree.cityEname }}
                 </p>
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">{{
-                    hotCityThree.cityName
-                  }}</a>
+                  <router-link
+                    :to="`/goTravel/city/detail/${hotCityThree.cityId}`"
+                    >{{ hotCityThree.cityName }}</router-link
+                  >
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">查看详情</a>
+                <router-link
+                  :to="`/goTravel/city/detail/${hotCityThree.cityId}`"
+                  >查看详情</router-link
+                >
               </div>
             </div>
           </div>
@@ -438,40 +501,60 @@ onMounted(() => {});
 
         <div class="col-xl-6 col-lg-6">
           <div class="destinations-one__single">
-            <div class="destinations-one__img">
-              <img src="/images/destination/destination-1-4.png" alt="" />
+            <div
+              class="destinations-one__img"
+              style="width: 580px; height: 285px"
+            >
+              <img
+                :src="hotCityFour.url"
+                alt=""
+                style="width: 100%; height: 100%"
+              />
               <div class="destinations-one__content">
                 <p class="destinations-one__sub-title">
                   {{ hotCityFour.cityEname }}
                 </p>
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">{{
-                    hotCityFour.cityName
-                  }}</a>
+                  <router-link
+                    :to="`/goTravel/city/detail/${hotCityFour.cityId}`"
+                    >{{ hotCityFour.cityName }}</router-link
+                  >
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">查看详情</a>
+                <router-link :to="`/goTravel/city/detail/${hotCityFour.cityId}`"
+                  >查看详情</router-link
+                >
               </div>
             </div>
           </div>
         </div>
         <div class="col-xl-6 col-lg-6">
           <div class="destinations-one__single">
-            <div class="destinations-one__img">
-              <img src="/images/destination/destination-1-5.png" alt="" />
+            <div
+              class="destinations-one__img"
+              style="width: 580px; height: 285px"
+            >
+              <img
+                :src="hotCityFive.url"
+                alt=""
+                style="width: 100%; height: 100%"
+              />
               <div class="destinations-one__content">
                 <p class="destinations-one__sub-title">
                   {{ hotCityFive.cityEname }}
                 </p>
                 <h2 class="destinations-one__title">
-                  <a href="destinations-details.html">{{
-                    hotCityFive.cityName
-                  }}</a>
+                  <router-link
+                    :to="`/goTravel/city/detail/${hotCityFive.cityId}`"
+                    >{{ hotCityFive.cityName }}</router-link
+                  >
                 </h2>
               </div>
               <div class="destinations-one__button">
-                <a href="#">查看详情</a>
+                <router-link :to="`/goTravel/city/detail/${hotCityFive.cityId}`"
+                  >查看详情</router-link
+                >
               </div>
             </div>
           </div>
@@ -489,15 +572,17 @@ onMounted(() => {});
           <div class="col-xl-9 col-lg-9">
             <div class="news-one__top-left">
               <div class="section-title text-left">
-                <span class="section-title__tagline">From the blog post</span>
+                <span class="section-title__tagline"
+                  >Travels And Strategies</span
+                >
                 <h2 class="section-title__title">游记 & 攻略</h2>
               </div>
             </div>
           </div>
           <div class="col-xl-3 col-lg-3">
             <div class="news-one__top-right">
-              <a href="news-details.html" class="news-one__btn thm-btn"
-                >查看全部</a
+              <router-link to="/readTravel/note" class="news-one__btn thm-btn"
+                >查看全部</router-link
               >
             </div>
           </div>
@@ -505,110 +590,68 @@ onMounted(() => {});
       </div>
       <div class="news-one__bottom">
         <div class="row">
-          <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="100ms">
+          <div
+            class="col-xl-4 col-lg-6 col-md-6 fadeInUp"
+            data-wow-delay="100ms"
+            v-for="(item, index) in notesInfo"
+            :key="item.id"
+          >
             <!--News One Single-->
             <div class="news-one__single">
               <div class="news-one__img">
-                <img src="/images/blog/news-one-img-1.jpg" alt="" />
-                <a href="news-details.html">
+                <img :src="item.url" alt="" class="notes-img" />
+                <router-link :to="`/readTravel/note/detail/${item.id}`">
                   <span class="news-one__plus"></span>
-                </a>
+                </router-link>
                 <div class="news-one__date">
                   <p>
-                    28 <br />
-                    <span>Aug</span>
+                    <span>{{ timeFormat(item.createTime) }}</span>
                   </p>
                 </div>
               </div>
               <div class="news-one__content">
                 <ul class="list-unstyled news-one__meta">
                   <li>
-                    <a href="news-details.html"
-                      ><i class="far fa-user-circle"></i>Admin</a
+                    <a href="javascript:;"
+                      ><el-icon size="20px"><View /></el-icon>浏览:{{
+                        numberFormat(item.view)
+                      }}</a
                     >
                   </li>
                   <li>
-                    <a href="news-details.html"
-                      ><i class="far fa-comments"></i>2 Comments</a
+                    <a href="javascript:;"
+                      ><el-icon size="20px"><Pointer /></el-icon>点赞:{{
+                        numberFormat(item.like)
+                      }}</a
+                    >
+                  </li>
+                  <li>
+                    <a href="javascript:;"
+                      ><el-icon size="20px"><Star /></el-icon>收藏:{{
+                        numberFormat(item.star)
+                      }}</a
+                    >
+                  </li>
+                  <li>
+                    <a href="javascript:;">
+                      <el-icon size="20px"><Document /></el-icon>评论:{{
+                        numberFormat(item.comment)
+                      }}
+                    </a>
+                  </li>
+                  <li>
+                    <a
+                      href="javascript:;"
+                      style="width: 370px; justify-content: left"
+                      ><i class="far fa-user-circle"></i
+                      ><span class="span-style">{{ item.userName }}</span></a
                     >
                   </li>
                 </ul>
                 <h3 class="news-one__title">
-                  <a href="news-details.html"
-                    >Things to See and Do When Visiting Japan</a
-                  >
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="200ms">
-            <!--News One Single-->
-            <div class="news-one__single">
-              <div class="news-one__img">
-                <img src="/images/blog/news-one-img-2.jpg" alt="" />
-                <a href="news-details.html">
-                  <span class="news-one__plus"></span>
-                </a>
-                <div class="news-one__date">
-                  <p>
-                    28 <br />
-                    <span>Aug</span>
-                  </p>
-                </div>
-              </div>
-              <div class="news-one__content">
-                <ul class="list-unstyled news-one__meta">
-                  <li>
-                    <a href="news-details.html"
-                      ><i class="far fa-user-circle"></i>Admin</a
-                    >
-                  </li>
-                  <li>
-                    <a href="news-details.html"
-                      ><i class="far fa-comments"></i>2 Comments</a
-                    >
-                  </li>
-                </ul>
-                <h3 class="news-one__title">
-                  <a href="news-details.html"
-                    >Journeys are Best Measured in New Friends</a
-                  >
-                </h3>
-              </div>
-            </div>
-          </div>
-          <div class="col-xl-4 col-lg-4 wow fadeInUp" data-wow-delay="300ms">
-            <!--News One Single-->
-            <div class="news-one__single">
-              <div class="news-one__img">
-                <img src="/images/blog/news-one-img-3.jpg" alt="" />
-                <a href="news-details.html">
-                  <span class="news-one__plus"></span>
-                </a>
-                <div class="news-one__date">
-                  <p>
-                    28 <br />
-                    <span>Aug</span>
-                  </p>
-                </div>
-              </div>
-              <div class="news-one__content">
-                <ul class="list-unstyled news-one__meta">
-                  <li>
-                    <a href="news-details.html"
-                      ><i class="far fa-user-circle"></i>Admin</a
-                    >
-                  </li>
-                  <li>
-                    <a href="news-details.html"
-                      ><i class="far fa-comments"></i>2 Comments</a
-                    >
-                  </li>
-                </ul>
-                <h3 class="news-one__title">
-                  <a href="news-details.html"
-                    >Travel the Most Beautiful Places in the World</a
-                  >
+                  <router-link :to="`/readTravel/note/detail/${item.id}`">{{
+                    item.title
+                  }}</router-link>
                 </h3>
               </div>
             </div>
@@ -776,7 +819,47 @@ onMounted(() => {});
   <!--Brand One End-->
 </template>
 
-<style scoped>
+<style scoped lang="scss">
+.list-unstyled {
+  display: flex;
+  flex-wrap: wrap;
+  > li {
+    margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    > a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.span-style {
+  display: inline-block;
+  width: auto;
+  max-width: 100px;
+  overflow: hidden;
+  height: 2em;
+  color: #ffffff;
+  background-color: #e8604c;
+  border-radius: 5px;
+  padding: 0 5px;
+  line-height: 2em;
+  margin-right: 5px;
+}
+.el-pagination {
+  display: flex;
+  justify-content: center;
+}
+/* 修改图片那个地方的样式！ */
+.notes-img {
+  width: 100%;
+  height: 100%;
+}
+.news-one__img {
+  width: 350px;
+  height: 300px;
+}
 .tour-search-one__btn-wrap {
   height: 105px;
 }

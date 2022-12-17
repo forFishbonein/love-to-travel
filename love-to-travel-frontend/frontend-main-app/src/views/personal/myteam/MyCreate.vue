@@ -248,8 +248,8 @@ const postEmailToOnePeople = () => {
   postInviteEmail({
     teamId: postTeamId,
     teamName: postTeamName,
-    // inviterId: store.userInfo.id.toString(),
     inviterId: store.userInfo.id,
+    // inviterId: store.userInfo.id,
     userEmail: postEmail.value,
   })
     .then((res: any) => {

@@ -230,3 +230,15 @@ export interface teamModifyParams {
   num: string;
   members: teamMemberInfoType[];
 }
+
+export interface userInfoModifyType {
+  id: string;
+  name: string;
+  tele: string;
+  birthday: string;
+  post: string;
+  profession: string;
+  signature: string;
+  gender: string;
+  address: string;
+}
