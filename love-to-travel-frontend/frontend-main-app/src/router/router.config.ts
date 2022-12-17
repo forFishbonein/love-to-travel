@@ -5,6 +5,8 @@ import Home from "@views/Home.vue";
 import GoTravel from "@views/goTravel/GoTravel.vue";
 import GroupTravel from "@views/groupTravel/GroupTravel.vue";
 import ReadTravel from "@/views/readTravel/ReadTravel.vue";
+import BuyTravel from "@/views/buyTravel/BuyTravel.vue";
+import Product from "@/views/buyTravel/product/Product.vue";
 import City from "@/views/goTravel/city/City.vue";
 import Scenery from "@/views/goTravel/scenery/Scenery.vue";
 import TravelPlan from "@/views/makePlan/TravelPlan.vue";
@@ -227,6 +229,54 @@ export const routes: Array<RouteRecordRaw> = [
             component: () => import("@/views/groupTravel/create/Create.vue"),
             // component: Note,
             meta: { title: "创建队伍", keepAlive: false, showTab: true },
+          },
+        ],
+      },
+      {
+        path: "/buyTravel",
+        name: "BuyTravel",
+        component: BuyTravel,
+        meta: { title: "购旅游", keepAlive: false, showTab: true },
+        children: [
+          {
+            path: "product",
+            name: "Product",
+            component: Product,
+            meta: {
+              title: "旅游产品页",
+              keepAlive: false,
+              showTab: true,
+            },
+            redirect: "/buyTravel/product/list",
+            children: [
+              {
+                path: "list",
+                name: "ProductList",
+                component: () =>
+                  import("@/views/buyTravel/product/ProductList.vue"),
+                meta: {
+                  title: "产品列表",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail/:productId",
+                name: "ProductDetail",
+                component: () =>
+                  import("@/views/buyTravel/product/ProductDetail.vue"),
+                meta: {
+                  title: "产品详情",
+                  keepAlive: false,
+                  showTab: true,
+                },
+                props(route) {
+                  return {
+                    productId: route.params.productId,
+                  };
+                },
+              },
+            ],
           },
         ],
       },

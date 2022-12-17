@@ -6,7 +6,7 @@ import { ElInput } from "element-plus";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { mainStore } from "@/store/user";
 import { getUserAllPlansInfoByUserId } from "@/apis/travelService/plan";
-import { theGivenAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { theGivenAllCityPlansInfoType } from "@/apis/interface/myInterface";
 import { createOneTeam } from "@/apis/travelService/team";
 import { useRouter } from "vue-router";
 const router = useRouter();

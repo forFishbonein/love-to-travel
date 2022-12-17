@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { theTeamParams } from "@/apis/travelService/tInterface";
-import { theTeamInfoType } from "@/apis/interface/iPlan";
+import { theTeamInfoType } from "@/apis/interface/myInterface";
 import {
   searchJoinTeamByUserId,
   leaveOneTeam,
@@ -9,7 +9,7 @@ import {
 } from "@/apis/travelService/team";
 import { mainStore } from "@/store/user";
 import { getOneUserPlansInfoById } from "@/apis/travelService/plan";
-import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { finalAllCityPlansInfoType } from "@/apis/interface/myInterface";
 const store = mainStore();
 const myJoinTeamsInfo = ref([] as theTeamInfoType[]);
 const requestMyJoinTeamsInfo = async () => {

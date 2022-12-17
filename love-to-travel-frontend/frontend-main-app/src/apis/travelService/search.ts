@@ -51,14 +51,11 @@ export const getPageNotesInfoByKeyword = (
 };
 
 /* 全局模糊搜索 */
-export const getSomeInfoByKeyword = (str: string) => {
+export const getSomeInfoByKeyword = (queryStr: string) => {
   // console.log(str);
   return httpRequest({
-    method: "post",
-    data: {
-      queryStr: str,
-    },
-    url: "http://localhost:8082/query",
+    method: "get",
+    url: `http://localhost:8082/query/${queryStr}`,
     loading: true, //显示加载圈
   });
 };

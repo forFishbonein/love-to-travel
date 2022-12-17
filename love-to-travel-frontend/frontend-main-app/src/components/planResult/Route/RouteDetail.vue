@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { everyCityPlansInfoType } from "@/apis/interface/iPlan";
+import { everyCityPlansInfoType } from "@/apis/interface/myInterface";
 const router = useRouter();
 const props = defineProps<{
   routeDetailInfoString: string;

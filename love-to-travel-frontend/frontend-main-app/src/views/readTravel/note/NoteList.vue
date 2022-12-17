@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
-import { theNotesInfoType } from "@apis/interface/iPlan";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { getAllNoteList, getPageNotesInfo } from "@apis/travelService/note";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";

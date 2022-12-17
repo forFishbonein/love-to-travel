@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { useRouter } from "vue-router";
-import { theCityScenerysInfoType } from "@/apis/interface/iPlan";
+import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 const router = useRouter();
 const props = defineProps<{
   sceneryDetailInfoString: string;

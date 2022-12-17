@@ -5,7 +5,7 @@ import { onMounted } from "@vue/runtime-core";
 import {
   everyCityPlansInfoType,
   everyDayRoutesType,
-} from "@/apis/interface/iPlan";
+} from "@/apis/interface/myInterface";
 import emitter from "@/mitt/event";
 import { useRouter } from "vue-router";
 const router = useRouter();

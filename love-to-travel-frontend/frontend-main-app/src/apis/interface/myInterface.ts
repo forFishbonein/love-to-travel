@@ -242,3 +242,14 @@ export interface userInfoModifyType {
   gender: string;
   address: string;
 }
+
+/* 产品类型 */
+export interface productInfoType {
+  id: string;
+  introduction: string;
+  name: string;
+  plan: finalAllCityPlansInfoType;
+  price: string;
+  tele: string;
+  url: string;
+}

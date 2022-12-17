@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { getUserAllPlansInfoByUserId } from "@/apis/travelService/plan";
-import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { finalAllCityPlansInfoType } from "@/apis/interface/myInterface";
 import { mainStore } from "@/store/user";
 const store = mainStore();
 const userAllPlansInfo = ref([] as finalAllCityPlansInfoType[]);

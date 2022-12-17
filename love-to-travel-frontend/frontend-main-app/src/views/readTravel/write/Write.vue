@@ -4,7 +4,7 @@ import { UPLOADER } from "@/utils/uploadImg";
 import { srcPattern } from "@/utils/filters/srcPattern";
 import { mainStore } from "@/store/user";
 import { getUserAllPlansInfoByUserId } from "@/apis/travelService/plan";
-import { theGivenAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { theGivenAllCityPlansInfoType } from "@/apis/interface/myInterface";
 import { publishOneNote } from "@/apis/travelService/note";
 import { noteInfoParams } from "@/apis/travelService/tInterface";
 // import { storeToRefs } from "pinia";

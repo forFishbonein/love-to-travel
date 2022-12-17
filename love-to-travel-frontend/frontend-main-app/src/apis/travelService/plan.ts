@@ -1,6 +1,6 @@
 /* 新增计划 */
 import httpRequest from "@/request";
-import { finalAllCityPlansInfoType } from "@/apis/interface/iPlan";
+import { finalAllCityPlansInfoType } from "@/apis/interface/myInterface";
 export const saveFinalPlansInfo = (
   finalPlansInfo: finalAllCityPlansInfoType
 ) => {

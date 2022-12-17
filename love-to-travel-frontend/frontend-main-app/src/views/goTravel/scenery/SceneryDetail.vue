@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { ref } from "vue";
 import { getOneSceneryInfoById } from "@/apis/travelService/scenery";
-import { theCityScenerysInfoType } from "@/apis/interface/iPlan";
+import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 import { keepTwoDecimal } from "@/utils/filters/number";
 const props = defineProps<{
   sceneryId: number;

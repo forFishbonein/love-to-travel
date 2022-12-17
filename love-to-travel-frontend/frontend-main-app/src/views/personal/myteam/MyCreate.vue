@@ -5,7 +5,7 @@ import {
   theTeamInfoType,
   teamModifyParams,
   teamMemberInfoType,
-} from "@/apis/interface/iPlan";
+} from "@/apis/interface/myInterface";
 import { searchCreateTeamByUserId } from "@/apis/travelService/team";
 import { mainStore } from "@/store/user";
 import { ElInput } from "element-plus";
@@ -17,7 +17,7 @@ import {
   postInviteEmail,
 } from "@/apis/travelService/team";
 import { getOneUserPlansInfoById } from "@/apis/travelService/plan";
-import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { finalAllCityPlansInfoType } from "@/apis/interface/myInterface";
 const store = mainStore();
 const myCreateTeamsInfo = ref([] as theTeamInfoType[]);
 const requestMyCreateTeamsInfo = async () => {

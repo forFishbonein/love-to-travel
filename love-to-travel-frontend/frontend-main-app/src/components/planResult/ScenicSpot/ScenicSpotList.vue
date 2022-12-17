@@ -3,7 +3,10 @@ import { ref } from "vue";
 import { onMounted } from "@vue/runtime-core";
 import { getSceneryListByCityId } from "@apis/travelService/scenery";
 import { useRouter } from "vue-router";
-import { theCityScenerysInfoType, routeInfoType } from "@/apis/interface/iPlan";
+import {
+  theCityScenerysInfoType,
+  routeInfoType,
+} from "@/apis/interface/myInterface";
 import emitter from "@/mitt/event";
 const router = useRouter();
 const props = defineProps<{

@@ -12,7 +12,7 @@ import {
   wantCityWithLalType,
   citysInfoType,
   planCityInfoType,
-} from "@apis/interface/iPlan";
+} from "@/apis/interface/myInterface";
 import { getCitysInfo } from "@apis/travelService/city";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";

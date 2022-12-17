@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
-import { citysInfoType } from "@apis/interface/iPlan";
+import { citysInfoType } from "@/apis/interface/myInterface";
 import { getCitysInfo, getPageCitysInfo } from "@apis/travelService/city";
 import { getPageCitysInfoByKeyword } from "@/apis/travelService/search";
 // ElConfigProvider 组件

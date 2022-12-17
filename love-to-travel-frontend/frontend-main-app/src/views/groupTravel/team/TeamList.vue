@@ -5,14 +5,14 @@ import {
   joinTeamParams,
   theTeamParams,
 } from "@/apis/travelService/tInterface";
-import {theTeamInfoType} from "@/apis/interface/iPlan"
+import {theTeamInfoType} from "@/apis/interface/myInterface"
 import { getPageTeamsInfo,isJoinTheTeam,joinOneTeam,leaveOneTeam } from "@/apis/travelService/team";
 import { timeFormat } from "@/utils/filters/time";
 import { mainStore } from "@/store/user";
 import { getOneUserPlansInfoById } from "@/apis/travelService/plan";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { finalAllCityPlansInfoType } from "@/apis/interface/myInterface";
 const store = mainStore();
 /* 分页获取数据 */
 let teamsPageInfo = ref([] as theTeamInfoType[]);

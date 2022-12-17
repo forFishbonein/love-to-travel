@@ -7,7 +7,7 @@ import {
   citysInfoType,
   theNotesInfoType,
   theCityScenerysInfoType,
-} from "@apis/interface/iPlan";
+} from "@/apis/interface/myInterface";
 const props = defineProps<{
   keyword: string;
 }>();
@@ -46,7 +46,11 @@ const requestSearchAllInfo = async () => {
 requestSearchAllInfo();
 
 const thisPageKeyword = ref("");
+// let params = {
+//   queryStr: "",
+// };
 const searchTheAll = async () => {
+  // params.queryStr = thisPageKeyword.value;
   await getSomeInfoByKeyword(thisPageKeyword.value)
     .then((res: any) => {
       if (res.code != 0) {
@@ -71,7 +75,15 @@ const searchTheAll = async () => {
     });
 };
 </script>
-
+<script lang="ts">
+//@ts-ignore
+(function ($) {
+  $(document).ready(function () {
+    $(".search-popup").css("transform", "translateY(-110%)");
+  });
+  //@ts-ignore
+})(jQuery);
+</script>
 <template>
   <div class="page-header__bottom">
     <div class="container">
@@ -102,7 +114,13 @@ const searchTheAll = async () => {
   </div>
   <section class="destinations-one destinations-page">
     <div class="container">
-      <div class="row masonary-layout">
+      <div class="row">
+        <div class="news-one__top-left">
+          <div class="section-title text-left">
+            <span class="section-title__tagline">The Citys</span>
+            <h2 class="section-title__title">相关城市</h2>
+          </div>
+        </div>
         <div class="col-xl-3 col-lg-3" v-for="(item, index) in citysInfo">
           <div class="destinations-one__single">
             <div class="destinations-one__img">
@@ -128,6 +146,12 @@ const searchTheAll = async () => {
   <section class="popular-tours-two">
     <div class="container">
       <div class="row">
+        <div class="news-one__top-left">
+          <div class="section-title text-left">
+            <span class="section-title__tagline">The Sceneries</span>
+            <h2 class="section-title__title">相关景区</h2>
+          </div>
+        </div>
         <div
           class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp margindiv"
           data-wow-delay="100ms"
@@ -166,6 +190,12 @@ const searchTheAll = async () => {
   <section class="news-one">
     <div class="container">
       <div class="row">
+        <div class="news-one__top-left">
+          <div class="section-title text-left">
+            <span class="section-title__tagline">The Notes</span>
+            <h2 class="section-title__title">相关游记</h2>
+          </div>
+        </div>
         <div
           class="col-xl-4 col-lg-6 col-md-6 fadeInUp"
           data-wow-delay="100ms"
@@ -241,6 +271,8 @@ const searchTheAll = async () => {
 /* 搜索框部分需要的样式 */
 .destinations-one {
   padding-top: 0px;
+  // margin-bottom: 50px;
+  // min-height: 450px;
 }
 .news-one {
   padding-top: 0px;
@@ -262,7 +294,15 @@ const searchTheAll = async () => {
 .search-page-button:hover > i {
   color: #ffffff;
 }
-
+/* city */
+.destinations-one__img {
+  width: 285px;
+  height: 250px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 /* note */
 .list-unstyled {
   display: flex;

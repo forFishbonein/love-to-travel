@@ -3,7 +3,7 @@ import { ref, inject, onMounted, computed, watch } from "vue";
 // import * as echarts from "echarts";
 import chinaJson from "@/assets/json/map/china.json";
 import { getCitysInfoByName } from "@/apis/travelService/city";
-import { citysInfoType } from "@apis/interface/iPlan";
+import { citysInfoType } from "@/apis/interface/myInterface";
 import { addCityToWant } from "@/apis/travelService/want";
 import { addCityToBeen } from "@/apis/travelService/been";
 import { mainStore } from "@/store/user";
