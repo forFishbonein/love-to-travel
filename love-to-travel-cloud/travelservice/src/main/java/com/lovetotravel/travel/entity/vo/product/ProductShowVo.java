@@ -8,7 +8,7 @@ import org.springframework.data.annotation.Id;
 public class ProductShowVo {
 
     @Id
-    private Long id;
+    private String id;
 
     private String name;
 
