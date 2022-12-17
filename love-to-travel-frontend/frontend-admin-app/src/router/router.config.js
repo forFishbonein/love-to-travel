@@ -44,6 +44,12 @@ export const routes = [
                 meta: {title: "用户管理"},
             },
             {
+                path: "/admin",
+                name: "Admin",
+                component: () => import("@/components/userService/Admin.vue"),
+                meta: {title: "用户管理"},
+            },
+            {
                 path: "/scenery",
                 name: "Scenery",
                 component: () => import("@/components/serviceManage/Scenery.vue"),

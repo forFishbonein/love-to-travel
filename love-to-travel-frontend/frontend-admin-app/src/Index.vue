@@ -64,7 +64,7 @@
               >
                 <router-link to="/log">登录日志</router-link>
               </el-menu-item>
-              <el-menu-item index="3-3">管理员</el-menu-item>
+              <el-menu-item index="3-3"><router-link to="/admin">管理员</router-link></el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="4">
