@@ -19,7 +19,7 @@ export const getOneProductInfoById = (productId: number) => {
   });
 };
 
-export const buyOneProduct = (pId: string, uId: string) => {
+export const buyOneProduct = (pId: number, uId: string) => {
   return httpRequest({
     method: "post",
     url: "http://localhost:8082/product/buy",

@@ -245,7 +245,7 @@ export interface userInfoModifyType {
 
 /* 产品类型 */
 export interface productInfoType {
-  id: string;
+  id: number;
   introduction: string;
   name: string;
   plan: finalAllCityPlansInfoType;
