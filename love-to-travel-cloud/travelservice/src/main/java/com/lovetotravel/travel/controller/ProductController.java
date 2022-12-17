@@ -86,6 +86,7 @@ public class ProductController {
 
         List<ProductShowVo> productShowVoList = new ArrayList<>();
 
+        //获取plan
         if (productPage.getRecords().size() != 0) {
             for (Product p : productPage.getRecords()) {
                 Query query = new Query();
