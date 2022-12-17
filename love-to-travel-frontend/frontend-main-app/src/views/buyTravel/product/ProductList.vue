@@ -82,13 +82,13 @@ const changeCurrentPage = (p: number) => {
                   <a href="javascript:;"
                     ><el-icon style="margin-right: 10px"
                       ><OfficeBuilding /></el-icon
-                    >途径{{ item.plan.subPlans.length }}城市</a
+                    >途径{{ item.plan?.subPlans?.length }}城市</a
                   >
                 </li>
                 <li>
                   <a href="javascript:;"
                     ><el-icon style="margin-right: 10px"><Clock /></el-icon
-                    >历时{{ subPlansFormat(item.plan.subPlans) }}天</a
+                    >历时{{ subPlansFormat(item.plan?.subPlans) }}天</a
                   >
                 </li>
                 <li>

@@ -245,11 +245,12 @@ export interface userInfoModifyType {
 
 /* 产品类型 */
 export interface productInfoType {
-  id: number;
+  id: string;
   introduction: string;
   name: string;
   plan: finalAllCityPlansInfoType;
   price: string;
   tele: string;
   url: string;
+  createTime: string;
 }

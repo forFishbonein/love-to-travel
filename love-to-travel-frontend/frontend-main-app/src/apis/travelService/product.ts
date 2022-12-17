@@ -11,7 +11,7 @@ export const getPageProductsInfo = (page: number, limit: number) => {
     loading: true, //显示加载圈
   });
 };
-export const getOneProductInfoById = (productId: number) => {
+export const getOneProductInfoById = (productId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/product/${productId}`,
@@ -19,13 +19,14 @@ export const getOneProductInfoById = (productId: number) => {
   });
 };
 
-export const buyOneProduct = (pId: number, uId: string) => {
+export const buyOneProduct = (pId: string, uId: string, pCost: string) => {
   return httpRequest({
     method: "post",
     url: "http://localhost:8082/product/buy",
     data: {
       productId: pId,
       userId: uId,
+      cost: pCost,
     },
     loading: true, //显示加载圈
   });

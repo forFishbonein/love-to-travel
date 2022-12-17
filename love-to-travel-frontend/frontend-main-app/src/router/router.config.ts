@@ -383,6 +383,16 @@ export const routes: Array<RouteRecordRaw> = [
             },
           },
           {
+            path: "buy",
+            name: "Buy",
+            component: () => import("@/views/personal/Buy.vue"),
+            meta: {
+              title: "我的订单",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
             path: "setup",
             name: "Setup",
             component: () => import("@/views/personal/Setup.vue"),
