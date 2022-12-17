@@ -158,7 +158,7 @@ public class ProductController {
     @ApiOperation("7天订单统计")
     @GetMapping("/new")
     public Result<List<NewNum>> getNewProductNum() {
-        return Result.success(productMapper.getNewProductNum());
+        return Result.success(productBuyMapper.getNewProductNum());
     }
 
 

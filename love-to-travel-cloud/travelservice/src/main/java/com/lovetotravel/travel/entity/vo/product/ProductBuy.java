@@ -9,4 +9,6 @@ public class ProductBuy {
 
     private String userId;
 
+    private String createTime;
+
 }

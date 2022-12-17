@@ -18,6 +18,10 @@ public class Product {
 
     private String price;
 
+    private String tele;
+
+    private String url;
+
     @TableLogic
     private String deleted;
 
