@@ -93,5 +93,12 @@ public class UserController {
         return Result.success(userService.getNewUserNum());
     }
 
+    @ApiOperation("获取用户总数")
+    @GetMapping("/all")
+    public Result<Integer> getAllNum() {
+        return Result.success(userService.getAllNum());
+    }
+
+
 
 }

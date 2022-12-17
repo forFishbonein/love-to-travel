@@ -57,4 +57,8 @@ public interface UserService extends IService<User> {
 
     List<NewNum> getNewLogNum();
 
+    Integer getAllNum();
+
+    Integer getAllLog();
+
 }

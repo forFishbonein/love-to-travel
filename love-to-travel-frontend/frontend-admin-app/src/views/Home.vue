@@ -1,5 +1,5 @@
 <script>
-import {getNewLogNum, getNewUserNum} from "../apis/statisticManage/home";
+import {getNewLogNum, getNewUserNum, getAllUser, getAllLog} from "../apis/statisticManage/home";
 
 export default {
   data() {
@@ -7,6 +7,8 @@ export default {
       dateList: [],
       totalList: [0, 0, 0, 0, 0, 0, 0],
       totalList2: [0, 0, 0, 0, 0, 0, 0],
+      userNum: 0,
+      logNum: 0
     };
   },
   // 页面初始化挂载dom
@@ -17,6 +19,7 @@ export default {
     // this.getNewUserNum();
     // this.getNewLogNum();
     // this.getLoadEcharts();
+    this.getAllUserAndLog();
 
   },
   methods: {
@@ -78,6 +81,21 @@ export default {
         };
 
       })
+    },
+
+    getAllUserAndLog() {
+      getAllUser().then((response) => {
+        this.userNum = response.data
+        console.log(this.userNum)
+
+      })
+      getAllLog().then((response) => {
+        this.logNum = response.data
+
+      })
+      console.log(this.userNum)
+      console.log(this.logNum)
+
     },
 
 
@@ -183,29 +201,34 @@ export default {
 </script>
 <template>
   <div class="top">
-    <p>欢迎您：<span>XXX</span></p>
+    <p>欢迎您：<span>{{ this.$route.query.email }}</span></p>
   </div>
   <ul class="scoreboard">
     <li>
-      <div class="scoreboard-number">{{ totalList[0] }}</div>
+      <div class="scoreboard-number">{{ totalList[6] }}</div>
       <div class="scoreboard-title">今日新增用户</div>
 
       <div class="scoreboard-line scoreboard-line1"><span></span></div>
-      <div class="scoreboard-yesterday" v-show="totalList[1] !== 0">较昨日{{ totalList[0] / totalList[1] * 100 }}%</div>
-      <div class="scoreboard-yesterday" v-show="totalList[1] === 0">较昨日0%</div>
+      <div class="scoreboard-yesterday">较昨日{{ ((totalList[6]/this.userNum-totalList[5]/this.userNum) * 100).toFixed(2) }}%</div>
     </li>
 
     <li>
-      <div class="scoreboard-number">{{ totalList2[0] }}</div>
+      <div class="scoreboard-number">{{ totalList2[6] }}</div>
       <div class="scoreboard-title">今日访问</div>
 
       <div class="scoreboard-line scoreboard-line2"><span></span></div>
-      <div class="scoreboard-yesterday" v-show="totalList2[1] !== 0">较昨日{{ totalList2[0] / totalList2[1] * 100 }}%</div>
-      <div class="scoreboard-yesterday" v-show="totalList2[1] === 0">较昨日0%</div>
+      <div class="scoreboard-yesterday">较昨日{{ ((totalList2[6]/this.logNum-totalList2[5]/this.logNum) * 100).toFixed(2) }}%</div>
     </li>
     <li>
       <div class="scoreboard-number">1600</div>
-      <div class="scoreboard-title">今日发布游记</div>
+      <div class="scoreboard-title">日订单</div>
+
+      <div class="scoreboard-line scoreboard-line3"><span></span></div>
+      <div class="scoreboard-yesterday">较昨日15%</div>
+    </li>
+    <li>
+      <div class="scoreboard-number">1600</div>
+      <div class="scoreboard-title">日销售额</div>
 
       <div class="scoreboard-line scoreboard-line3"><span></span></div>
       <div class="scoreboard-yesterday">较昨日15%</div>
@@ -240,11 +263,18 @@ export default {
 
   /*position: absolute;*/
   padding: 20px;
-  width: 400px;
+  width: 300px;
   height: 100%;
   background-color: white;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
+  transition: 0.18s ease-in-out;
+}
+
+.scoreboard li:hover {
+  transform: translateY(-15px);
+
+
 }
 
 .scoreboard-title {

@@ -70,5 +70,9 @@ public class LoginController {
         return Result.success(userService.getNewLogNum());
     }
 
-
+    @ApiOperation("获取登录总数")
+    @GetMapping("/log/all")
+    public Result<Integer> getAllLog() {
+        return Result.success(userService.getAllLog());
+    }
 }

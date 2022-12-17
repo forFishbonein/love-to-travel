@@ -422,4 +422,14 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         List<NewNum> newNum = logMapper.getNewLogNum();
         return newNum;
     }
+
+    @Override
+    public Integer getAllNum() {
+        return userMapper.selectCount(null);
+    }
+
+    @Override
+    public Integer getAllLog() {
+        return logMapper.selectCount(null);
+    }
 }

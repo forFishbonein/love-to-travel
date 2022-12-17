@@ -15,3 +15,19 @@ export const getNewLogNum = () => {
         loading: true, //显示加载圈
     });
 };
+
+export const getAllUser = () => {
+    return httpRequest({
+        method: "get",
+        url: "http://localhost:8081/user/all",
+        loading: true, //显示加载圈
+    });
+};
+
+export const getAllLog = () => {
+    return httpRequest({
+        method: "get",
+        url: "http://localhost:8081/log/all",
+        loading: true, //显示加载圈
+    });
+};
