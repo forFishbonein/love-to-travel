@@ -9,7 +9,7 @@ import lombok.Data;
 public class Product {
 
     @TableId(type = IdType.ASSIGN_ID)
-    private Long id;
+    private String id;
 
     private String name;
 
