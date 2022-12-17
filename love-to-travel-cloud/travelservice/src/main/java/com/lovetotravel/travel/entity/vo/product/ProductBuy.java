@@ -11,4 +11,6 @@ public class ProductBuy {
 
     private String createTime;
 
+    private String cost;
+
 }

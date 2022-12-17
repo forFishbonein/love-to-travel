@@ -14,4 +14,25 @@
         ORDER BY create_time
                 DESC
     </select>
+
+    <select id="getNewProductBuyNum" resultType="com.lovetotravel.travel.entity.vo.NewNum">
+        SELECT DATE_FORMAT(create_time, "%Y-%m-%d") AS time, COUNT(*),SUM(cost) AS cost AS total
+        FROM product_buy
+        WHERE create_time
+         &lt; now()
+          AND
+            create_time
+            > date_sub(now()
+            , interval 7 day)
+        GROUP BY DATE_FORMAT(create_time, "%Y-%m-%d")
+        ORDER BY create_time
+                DESC
+    </select>
+
+    <select id="getCost" resultType="com.lovetotravel.travel.entity.vo.NewNum">
+        SELECT SUM(cost) AS cost FROM product_buy
+    </select>
+
+
+
 </mapper>

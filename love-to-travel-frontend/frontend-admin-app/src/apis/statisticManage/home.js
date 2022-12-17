@@ -47,3 +47,19 @@ export const getAllProductBuy = () => {
         loading: true, //显示加载圈
     });
 };
+
+export const getNewProductCost = () => {
+    return httpRequest({
+        method: "get",
+        url: "http://localhost:8082/product/cost/new",
+        loading: true, //显示加载圈
+    });
+};
+
+export const getAllProductCost = () => {
+    return httpRequest({
+        method: "get",
+        url: "http://localhost:8082/product/cost/all",
+        loading: true, //显示加载圈
+    });
+};

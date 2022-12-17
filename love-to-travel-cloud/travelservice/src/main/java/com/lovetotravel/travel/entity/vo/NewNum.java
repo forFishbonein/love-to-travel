@@ -9,4 +9,6 @@ public class NewNum {
 
     private String total;
 
+    private String cost;
+
 }

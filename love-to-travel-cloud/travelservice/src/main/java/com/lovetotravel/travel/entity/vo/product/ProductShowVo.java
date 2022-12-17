@@ -18,6 +18,10 @@ public class ProductShowVo {
 
     private String price;
 
+    private String tele;
+
+    private String url;
+
     private String createTime;
 
 }

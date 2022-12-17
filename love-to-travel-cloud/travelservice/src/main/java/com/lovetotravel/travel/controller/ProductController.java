@@ -170,4 +170,19 @@ public class ProductController {
     }
 
 
+    @ApiOperation("7天销售额统计")
+    @GetMapping("/cost/new")
+    public Result<List<NewNum>> getNewProductCost() {
+        return Result.success(productBuyMapper.getNewProductBuyNum());
+    }
+
+
+    @ApiOperation("获取总销售额")
+    @GetMapping("/cost/all")
+    public Result<NewNum> getAllProductCost() {
+        return Result.success(productBuyMapper.getCost());
+    }
+
+
+
 }

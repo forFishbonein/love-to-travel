@@ -1,5 +1,5 @@
 <script>
-import {getNewLogNum, getNewUserNum, getAllUser, getAllLog, getNewProductNum, getAllProductBuy} from "../apis/statisticManage/home";
+import {getNewLogNum, getNewUserNum, getAllUser, getAllLog, getNewProductNum, getAllProductBuy, getNewProductCost, getAllProductCost} from "../apis/statisticManage/home";
 
 export default {
   data() {
@@ -31,7 +31,7 @@ export default {
       this.getDataList();
       this.getNewUserNum();
       this.getNewLogNum();
-      this.getNewProductNum()
+      this.getNewProductNum();
 
     },
 
@@ -84,6 +84,7 @@ export default {
             }
           }
         }
+        console.log(this.totalList3)
 
         this.getLoadEcharts();
         window.onresize = () => {
@@ -97,7 +98,6 @@ export default {
     getAllUserAndLog() {
       getAllUser().then((response) => {
         this.userNum = response.data
-        console.log(this.userNum)
 
       })
       getAllLog().then((response) => {
@@ -108,8 +108,6 @@ export default {
         this.buyNum = response.data
 
       })
-      console.log(this.userNum)
-      console.log(this.logNum)
 
     },
 
@@ -139,11 +137,6 @@ export default {
       var myChart = this.$echarts.init(
           document.getElementById("echart")
       );
-      console.log("=============")
-      console.log(this.dateList)
-      console.log(this.totalList)
-      console.log(this.totalList2)
-      console.log("=============")
       var option = {
         title: {
           text: '7日数据统计'
@@ -158,7 +151,7 @@ export default {
           }
         },
         legend: {
-          data: ['7日新增用户', '7日访问']
+          data: ['新用户注册', '用户访问']
         },
         grid: {
           left: '3%',
@@ -193,7 +186,6 @@ export default {
             emphasis: {
               focus: 'series'
             },
-
           },
           {
             name: "7日用户访问",
@@ -235,11 +227,11 @@ export default {
       <div class="scoreboard-yesterday">较昨日{{ ((totalList2[6]/this.logNum-totalList2[5]/this.logNum) * 100).toFixed(2) }}%</div>
     </li>
     <li>
-      <div class="scoreboard-number">{{ totalList3[6] }}</div>
+      <div class="scoreboard-number">{{ totalList3[0] }}</div>
       <div class="scoreboard-title">日订单</div>
 
       <div class="scoreboard-line scoreboard-line3"><span></span></div>
-      <div class="scoreboard-yesterday">较昨日{{ ((totalList3[6]/this.logNum-totalList3[5]/this.logNum) * 100).toFixed(2) }}%</div>
+      <div class="scoreboard-yesterday">较昨日{{ ((totalList3[0]/this.buyNum-totalList3[1]/this.buyNum) * 100).toFixed(2) }}%</div>
     </li>
     <li>
       <div class="scoreboard-number">1600</div>
@@ -283,11 +275,12 @@ export default {
   background-color: white;
   border-radius: 4px;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
-  transition: 0.18s ease-in-out;
+  transition: 0.2s cubic-bezier(.46,1.9,.4,1.9);
 }
 
 .scoreboard li:hover {
   transform: translateY(-15px);
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 
 
 }

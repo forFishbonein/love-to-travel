@@ -12,4 +12,8 @@ public interface ProductBuyMapper extends BaseMapper<ProductBuy> {
 
     List<NewNum> getNewProductNum();
 
+
+    List<NewNum> getNewProductBuyNum();
+
+    NewNum getCost();
 }
