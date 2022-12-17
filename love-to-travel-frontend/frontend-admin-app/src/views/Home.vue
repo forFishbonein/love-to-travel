@@ -8,9 +8,11 @@ export default {
       totalList: [0, 0, 0, 0, 0, 0, 0],
       totalList2: [0, 0, 0, 0, 0, 0, 0],
       totalList3: [0, 0, 0, 0, 0, 0, 0],
+      totalList4: [0, 0, 0, 0, 0, 0, 0],
       userNum: 0,
       logNum: 0,
-      buyNum: 0
+      buyNum: 0,
+      cost: 0.00
     };
   },
   // 页面初始化挂载dom
@@ -32,7 +34,7 @@ export default {
       this.getNewUserNum();
       this.getNewLogNum();
       this.getNewProductNum();
-
+      this.getNewProductCost();
     },
 
     getDataList() {
@@ -54,8 +56,8 @@ export default {
     },
 
 
-    getNewLogNum() {
-      getNewLogNum().then((response) => {
+    async getNewLogNum() {
+      await getNewLogNum().then((response) => {
         let tmpDate = response.data
         // console.log(tmpDate)
         // console.log(this.dateList)
@@ -73,9 +75,8 @@ export default {
 
       })
     },
-
-    getNewProductNum() {
-      getNewProductNum().then((response) => {
+    async getNewProductNum() {
+      await getNewProductNum().then((response) => {
         let tmpDate = response.data
         for (let i = 0; i < tmpDate.length; i++) {
           for (let j = 0; j < 7; j++) {
@@ -95,17 +96,43 @@ export default {
       })
     },
 
-    getAllUserAndLog() {
-      getAllUser().then((response) => {
+    async getNewProductCost() {
+      await getNewProductCost().then((response) => {
+        let tmpDate = response.data
+        for (let i = 0; i < tmpDate.length; i++) {
+          for (let j = 0; j < 7; j++) {
+            if (this.dateList[j] === tmpDate[i].time) {
+              this.totalList4[j] = tmpDate[i].cost
+            }
+          }
+        }
+        console.log(this.totalList4)
+
+        this.getLoadEcharts();
+        window.onresize = () => {
+          // 基于准备好的dom，初始化echarts实例
+          let myChart = this.$echarts.init(document.getElementById('newEcharts'));
+          myChart.resize();
+        };
+      })
+    },
+
+    async getAllUserAndLog() {
+      await getAllUser().then((response) => {
         this.userNum = response.data
 
       })
-      getAllLog().then((response) => {
+      await getAllLog().then((response) => {
         this.logNum = response.data
 
       })
-      getAllProductBuy().then((response) => {
+      await getAllProductBuy().then((response) => {
         this.buyNum = response.data
+
+      })
+      await getAllProductCost().then((response) => {
+        this.cost = response.data.cost
+        console.log(response)
 
       })
 
@@ -161,7 +188,7 @@ export default {
         },
         xAxis: {
           type: 'category',
-          data: this.dateList.reverse(),
+          data: [this.dateList[6], this.dateList[5], this.dateList[4], this.dateList[3], this.dateList[2], this.dateList[1], this.dateList[0]]
         },
         yAxis: [
           {
@@ -179,7 +206,7 @@ export default {
 
           {
             name: "7日新用户注册",
-            data: this.totalList.reverse(),
+            data: [this.totalList[6], this.totalList[5], this.totalList[4], this.totalList[3], this.totalList[2], this.totalList[1], this.totalList[0]],
             type: 'line',
             areaStyle: {},
             // stack: 'Total',
@@ -190,7 +217,7 @@ export default {
           {
             name: "7日用户访问",
             yAxisIndex: 1,
-            data: this.totalList2.reverse(),
+            data: [this.totalList2[6], this.totalList2[5], this.totalList2[4], this.totalList2[3], this.totalList2[2], this.totalList2[1], this.totalList2[0]],
             type: 'line',
             areaStyle: {},
             // stack: 'Total',
@@ -234,11 +261,11 @@ export default {
       <div class="scoreboard-yesterday">较昨日{{ ((totalList3[0]/this.buyNum-totalList3[1]/this.buyNum) * 100).toFixed(2) }}%</div>
     </li>
     <li>
-      <div class="scoreboard-number">1600</div>
+      <div class="scoreboard-number">{{ totalList4[0] }}</div>
       <div class="scoreboard-title">日销售额</div>
 
       <div class="scoreboard-line scoreboard-line3"><span></span></div>
-      <div class="scoreboard-yesterday">较昨日15%</div>
+      <div class="scoreboard-yesterday">较昨日{{ ((totalList4[0]/this.cost-totalList4[1]/this.cost) * 100).toFixed(2) }}%</div>
     </li>
   </ul>
 
