@@ -157,6 +157,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void invite(TeamInviteVo teamInviteVo) {
+        System.out.println("----------");
+        System.out.println(teamInviteVo.getInviterId());
+        System.out.println("----------");
         Result<User> result = userClient.getById(Long.valueOf(teamInviteVo.getInviterId()));
         User inviter = result.getData();
         if (inviter == null) {

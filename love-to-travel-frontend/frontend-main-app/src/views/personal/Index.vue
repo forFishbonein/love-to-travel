@@ -565,7 +565,7 @@ onMounted(() => {
     <div class="button-already" @click="openAlreadyGoDialog">添加去过</div>
     <div class="button-want" @click="openToWantDialog">添加想去</div>
     <div class="avater-container">
-      <img :src="store.userInfo.url" class="avater-img" />
+      <img :src="store.userInfo?.url" class="avater-img" />
     </div>
     <div class="info-border">
       <el-descriptions :title="store.userInfo.name">
@@ -638,6 +638,7 @@ onMounted(() => {
       <el-menu-item index="/personal/myteam">队伍</el-menu-item>
       <el-menu-item index="/personal/follow">粉丝/关注</el-menu-item>
       <el-menu-item index="/personal/buy">订单</el-menu-item>
+      <el-menu-item index="/personal/setup">设置</el-menu-item>
     </el-menu>
   </div>
   <div class="main-container">
@@ -645,12 +646,16 @@ onMounted(() => {
       <div class="follower">
         <div>
           <div>
-            <router-link to="/">我的关注：{{ followeeNum }}</router-link>
+            <router-link to="/personal/follow"
+              >我的关注：{{ followeeNum }}</router-link
+            >
           </div>
         </div>
         <div>
           <div>
-            <router-link to="/">我的粉丝：{{ followerNum }}</router-link>
+            <router-link to="/personal/follow"
+              >我的粉丝：{{ followerNum }}</router-link
+            >
           </div>
         </div>
       </div>

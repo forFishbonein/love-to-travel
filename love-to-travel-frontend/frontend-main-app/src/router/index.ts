@@ -37,6 +37,7 @@ router.beforeEach((to, from, next) => {
       to.path === "/login/codeLogin"
     ) {
       //如果是从内部由路径跳转到登录页面，拦截拦截，回到首页
+      // alert("拦截了");
       next({ path: "/" });
     } else {
       //如果不是跳转到登录页面！那么获取用户信息！

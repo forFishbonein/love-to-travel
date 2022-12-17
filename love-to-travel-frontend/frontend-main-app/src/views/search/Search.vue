@@ -1,28 +1,25 @@
 <script setup lang="ts">
-import { ref, reactive, toRefs } from "vue";
-import { theNotesInfoType } from "@apis/interface/iPlan";
-import { getAllNoteList, getPageNotesInfo } from "@apis/travelService/note";
+import { ref } from "vue";
+import { getSomeInfoByKeyword } from "@/apis/travelService/search";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
-import { getPageNotesInfoByKeyword } from "@/apis/travelService/search";
-// 引入中文包
-import zhCn from "element-plus/lib/locale/lang/zh-cn";
-/* 全局根据简介查询 */
+import {
+  citysInfoType,
+  theNotesInfoType,
+  theCityScenerysInfoType,
+} from "@apis/interface/iPlan";
 const props = defineProps<{
   keyword: string;
 }>();
 const keyword = props.keyword;
-/* 分页获取数据 */
-let notesPageInfo = ref([] as theNotesInfoType[]);
-const pageParams = reactive({
-  total: 0,
-  page: 1,
-  limit: 12,
-});
-const { total, page, limit } = toRefs(pageParams);
-const requestPageNotesInfo = async () => {
+let citysInfo = ref([] as citysInfoType[]);
+let scenerysInfo = ref([] as theCityScenerysInfoType[]);
+let notesInfo = ref([] as theNotesInfoType[]);
+
+const requestSearchAllInfo = async () => {
   if (keyword) {
-    await getPageNotesInfoByKeyword(keyword, page.value, limit.value)
+    alert(keyword);
+    await getSomeInfoByKeyword(keyword)
       .then((res: any) => {
         if (res.code != 0) {
           //@ts-ignore
@@ -31,34 +28,10 @@ const requestPageNotesInfo = async () => {
             message: res.msg,
           });
         } else {
-          // alert("获取成功");
-          notesPageInfo.value = res.data.records;
-          total.value = res.data.total;
-          console.log(notesPageInfo);
-        }
-      })
-      .catch((error) => {
-        //@ts-ignore
-        ElMessage({
-          type: "error",
-          message: error.message,
-        });
-      });
-  } else {
-    await getPageNotesInfo(page.value, limit.value)
-      .then((res: any) => {
-        if (res.code != 0) {
-          //@ts-ignore
-          ElMessage({
-            type: "error",
-            message: res.msg,
-          });
-        } else {
-          // alert("获取成功");
-          // citysInfo.value = res.data.slice(0, 5);
-          notesPageInfo.value = res.data.records;
-          total.value = res.data.total;
-          console.log(notesPageInfo);
+          alert("获取成功");
+          citysInfo.value = res.data.cityList;
+          scenerysInfo.value = res.data.sceneryList;
+          notesInfo.value = res.data.noteList;
         }
       })
       .catch((error) => {
@@ -70,55 +43,11 @@ const requestPageNotesInfo = async () => {
       });
   }
 };
-requestPageNotesInfo();
-// 回调函数1：每页记录数改变时调用，size：回调参数，表示当前选中的“每页条数”
-const changePageSize = (size: number) => {
-  limit.value = size; //将页面大小改变
-  requestPageNotesInfo(); //请求新的数据
-};
+requestSearchAllInfo();
 
-// 回调函数2：改变页码时调用，page：回调参数，表示当前选中的“页码”
-const changeCurrentPage = (p: number) => {
-  page.value = p; //将当前页数改变
-  requestPageNotesInfo(); //请求新的数据
-};
-
-// let notesInfo = ref([] as theNotesInfoType[]);
-// const requestNotesInfo = async () => {
-//   await getAllNoteList()
-//     .then((res: any) => {
-//       if (res.code != 0) {
-//         //@ts-ignore
-//         ElMessage({
-//           type: "error",
-//           message: res.msg,
-//         });
-//       } else {
-//         // alert("获取成功");
-//         // citysInfo.value = res.data.slice(0, 5);
-//         notesInfo.value = res.data;
-//         console.log(notesInfo);
-//       }
-//     })
-//     .catch((error) => {
-//       //@ts-ignore
-//       ElMessage({
-//         type: "error",
-//         message: error.message,
-//       });
-//     });
-// };
-// requestNotesInfo();
 const thisPageKeyword = ref("");
-const searchTheCity = async () => {
-  total.value = 0;
-  page.value = 1;
-  limit.value = 12;
-  await getPageNotesInfoByKeyword(
-    thisPageKeyword.value,
-    page.value,
-    limit.value
-  )
+const searchTheAll = async () => {
+  await getSomeInfoByKeyword(thisPageKeyword.value)
     .then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
@@ -128,9 +57,9 @@ const searchTheCity = async () => {
         });
       } else {
         // alert("获取成功");
-        notesPageInfo.value = res.data.records;
-        total.value = res.data.total;
-        console.log(notesPageInfo);
+        citysInfo.value = res.data.cityList;
+        scenerysInfo.value = res.data.sceneryList;
+        notesInfo.value = res.data.noteList;
       }
     })
     .catch((error) => {
@@ -142,20 +71,23 @@ const searchTheCity = async () => {
     });
 };
 </script>
-<script lang="ts">
-//@ts-ignore
-(function ($) {
-  $(document).ready(function () {
-    $(".search-popup").css("transform", "translateY(-110%)");
-  });
-  //@ts-ignore
-})(jQuery);
-</script>
+
 <template>
+  <div class="page-header__bottom">
+    <div class="container">
+      <div class="page-header__bottom-inner">
+        <ul class="thm-breadcrumb list-unstyled">
+          <li><router-link to="/">首页</router-link></li>
+          <li><span>.</span></li>
+          <li class="active">搜索结果</li>
+        </ul>
+      </div>
+    </div>
+  </div>
   <div class="search-input-container">
     <form
       autocomplete="off"
-      @submit.prevent="searchTheCity()"
+      @submit.prevent="searchTheAll()"
       class="sidebar__search-form"
     >
       <input
@@ -168,13 +100,76 @@ const searchTheCity = async () => {
       </button>
     </form>
   </div>
+  <section class="destinations-one destinations-page">
+    <div class="container">
+      <div class="row masonary-layout">
+        <div class="col-xl-3 col-lg-3" v-for="(item, index) in citysInfo">
+          <div class="destinations-one__single">
+            <div class="destinations-one__img">
+              <img :src="item.url" alt="" />
+              <div class="destinations-one__content">
+                <h2 class="destinations-one__title">
+                  <router-link :to="`detail/${item.cityId}`">{{
+                    item.cityName
+                  }}</router-link>
+                </h2>
+              </div>
+              <div class="destinations-one__button">
+                <router-link :to="`detail/${item.cityId}`"
+                  >查看详情</router-link
+                >
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+  <section class="popular-tours-two">
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp margindiv"
+          data-wow-delay="100ms"
+          v-for="(item, index) in scenerysInfo"
+          :key="item.id"
+        >
+          <!--Popular Tours Two Single-->
+          <div class="popular-tours__single">
+            <div class="popular-tours__img">
+              <img :src="item.url" alt="" />
+              <div class="popular-tours__icon">
+                <router-link :to="`detail/${item.id}`">
+                  <el-icon><View /></el-icon>
+                </router-link>
+              </div>
+            </div>
+            <div class="popular-tours__content">
+              <div class="popular-tours__stars">
+                <i class="fa fa-star"></i> {{ item.score }} 评分
+              </div>
+              <h3 class="popular-tours__title">
+                <router-link :to="`detail/${item.id}`">{{
+                  item.name
+                }}</router-link>
+              </h3>
+              <p class="popular-tours__rate">
+                <span>{{ item.ticket }}</span
+                >元 / 每人
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <section class="news-one">
     <div class="container">
       <div class="row">
         <div
           class="col-xl-4 col-lg-6 col-md-6 fadeInUp"
           data-wow-delay="100ms"
-          v-for="(item, index) in notesPageInfo"
+          v-for="(item, index) in notesInfo"
           :key="item.id"
         >
           <!--News One Single-->
@@ -238,29 +233,37 @@ const searchTheCity = async () => {
           </div>
         </div>
       </div>
-      <el-config-provider :locale="zhCn">
-        <el-pagination
-          :current-page="page"
-          :total="total"
-          :page-size="limit"
-          :page-sizes="[8, 12, 20, 30, 40, 50, 100]"
-          style="padding: 30px 0; text-align: center"
-          layout="total, sizes, prev, pager, next, jumper"
-          background
-          @size-change="changePageSize"
-          @current-change="changeCurrentPage"
-          hide-on-single-page
-          pager-count="10"
-          prev-icon="Back"
-          next-icon="Right"
-          default-page-size="12"
-        />
-      </el-config-provider>
     </div>
   </section>
 </template>
 
 <style lang="scss" scoped>
+/* 搜索框部分需要的样式 */
+.destinations-one {
+  padding-top: 0px;
+}
+.news-one {
+  padding-top: 0px;
+}
+.popular-tours-two {
+  padding-top: 0px;
+}
+.search-input-container {
+  width: 100%;
+  padding: 50px 200px;
+}
+.search-page-button {
+  border-radius: 10px;
+  transition: all 0.3s linear;
+}
+.search-page-button:hover {
+  background-color: #e8604c;
+}
+.search-page-button:hover > i {
+  color: #ffffff;
+}
+
+/* note */
 .list-unstyled {
   display: flex;
   flex-wrap: wrap;
@@ -288,10 +291,6 @@ const searchTheCity = async () => {
   line-height: 2em;
   margin-right: 5px;
 }
-.el-pagination {
-  display: flex;
-  justify-content: center;
-}
 /* 修改图片那个地方的样式！ */
 .notes-img {
   width: 100%;
@@ -301,22 +300,20 @@ const searchTheCity = async () => {
   width: 350px;
   height: 300px;
 }
-/* 搜索框部分需要的样式 */
-.news-one {
-  padding-top: 0px;
+
+/* scenery */
+.scrollbar-content {
+  padding-right: 15px;
+  width: 250px;
+  height: 110px;
+  font-size: 14px;
 }
-.search-input-container {
-  width: 100%;
-  padding: 50px 200px;
-}
-.search-page-button {
-  border-radius: 10px;
-  transition: all 0.3s linear;
-}
-.search-page-button:hover {
-  background-color: #e8604c;
-}
-.search-page-button:hover > i {
-  color: #ffffff;
+.popular-tours__img {
+  width: 370px;
+  height: 280px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
 }
 </style>

@@ -65,9 +65,14 @@ export const mainStore = defineStore("main", {
         getUserInfo(this.$state.token)
           .then((res) => {
             if (res.code === 0) {
+              // console.log("]]]]]]]]]]");
+              // console.log(res.data);
+              // console.log("]]]]]]]]]]");
               this.$state.userInfo = res.data;
               // alert("调用store方法获取用户信息");
-              console.log(this.$state.userInfo);
+              // console.log("////////////");
+              // console.log(this.$state.userInfo);
+              // console.log("////////////");
               resolve(res);
             } else {
               //@ts-ignore
