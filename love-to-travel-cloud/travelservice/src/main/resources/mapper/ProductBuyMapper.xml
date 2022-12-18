@@ -35,7 +35,7 @@
     </select>
 
     <select id="getBuyInfo" resultType="com.lovetotravel.travel.entity.vo.product.ProductShowVo">
-        SELECT pb.product_id,
+        SELECT pb.product_id as id,
                pb.user_id,
                pb.create_time,
                pb.cost,
