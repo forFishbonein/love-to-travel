@@ -5,9 +5,18 @@ import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 import { keepTwoDecimal } from "@/utils/filters/number";
 import { mainStore } from "@/store/user";
 import { sceneryCommentParams } from "@/apis/travelService/tInterface";
+import {
+  sceneryCommentBody,
+  sceneryCommentsInfoType,
+} from "@/apis/interface/myInterface";
+import { getNowTime } from "@/utils/getNowTime";
+import {
+  addASceneryComment,
+  getCommentsBySceneryId,
+} from "@/apis/travelService/comment";
 const store = mainStore();
 const props = defineProps<{
-  sceneryId: number;
+  sceneryId: string;
 }>();
 // alert(props.sceneryId);
 const sceneryId = props.sceneryId;
@@ -37,22 +46,45 @@ const requestOneSceneryInfo = async () => {
 };
 requestOneSceneryInfo();
 
+const sceneryCommentsInfo = ref({} as sceneryCommentsInfoType);
+const requestSceneryCommentsInfo = async () => {
+  await getCommentsBySceneryId(sceneryId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        sceneryCommentsInfo.value = res.data;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+requestSceneryCommentsInfo();
 const commentContent = ref("");
-const addFirstComment = async () => {
+const sceneryScore = ref(4.5);
+const addSceneryCommentAndScore = async () => {
   // alert(pId);
   if (store.userInfo.id) {
-    const firstCommentParams: sceneryCommentParams = {
-      parentId: "",
-      content: firstCommentContent.value,
+    const commentParams: sceneryCommentParams = {
+      sceneryId: sceneryId,
+      content: commentContent.value,
       userId: store.userInfo.id,
-      // @ts-ignore
-      userName: store.userInfo.name,
-      noteId: noteId,
+      score: sceneryScore.value,
+      createTime: getNowTime(),
     };
-    console.log("============");
-    console.log(firstCommentParams);
-    console.log("============");
-    await addAComment(firstCommentParams)
+    // console.log("============");
+    // console.log(commentParams);
+    // console.log("============");
+    await addASceneryComment(commentParams)
       .then((res: any) => {
         if (res.code != 0) {
           //@ts-ignore
@@ -69,7 +101,7 @@ const addFirstComment = async () => {
           setTimeout(
             () =>
               //更新评论
-              getCommentsByNoteId(noteId)
+              getCommentsBySceneryId(sceneryId)
                 .then((res: any) => {
                   if (res.code != 0) {
                     //@ts-ignore
@@ -78,11 +110,7 @@ const addFirstComment = async () => {
                       message: res.msg,
                     });
                   } else {
-                    //这里必须要清空一下
-                    noteCommentsInfo.value = [] as theNoteComment[];
-                    finalCommentsArray.value = [] as tranformComments[];
-                    noteCommentsInfo.value = res.data;
-                    commentsFormat(noteCommentsInfo.value);
+                    sceneryCommentsInfo.value = res.data;
                   }
                 })
                 .catch((error) => {
@@ -263,29 +291,41 @@ const addFirstComment = async () => {
                 </div>
               </div>
             </div>
-            <div class="comment-form">
-              <h3 class="comment-form__title">发表评论</h3>
-              <div class="row">
-                <div class="col-xl-12">
-                  <div class="comment-form__input-box">
-                    <textarea
-                      name="message"
-                      placeholder="写下评论内容"
-                      v-model="commentContent"
-                    ></textarea>
-                    <button
-                      type="submit"
-                      class="thm-btn comment-form__btn"
-                      @click="addComment"
-                    >
-                      发表
-                    </button>
-                  </div>
+          </div>
+          <div class="comment-form">
+            <h3 class="comment-form__title">填写评分 & 发表评论</h3>
+            <div class="rate-row">
+              <span class="span-style-front">评分：</span>
+              <el-rate
+                v-model="sceneryScore"
+                :texts="['1分', '2分', '3分', '4分', '5分']"
+                show-text
+                allow-half
+                size="large"
+              />
+            </div>
+            <div class="row">
+              <div class="col-xl-12">
+                <div class="comment-form__input-box">
+                  <textarea
+                    name="message"
+                    placeholder="写下评论内容"
+                    v-model="commentContent"
+                    style="font-size: 16px"
+                  ></textarea>
+                  <button
+                    type="submit"
+                    class="thm-btn comment-form__btn"
+                    @click="addSceneryCommentAndScore"
+                  >
+                    确认
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
+
         <div class="col-xl-4 col-lg-5">
           <div class="destinations-details__right">
             <div
@@ -328,7 +368,7 @@ const addFirstComment = async () => {
             <div class="destinations-details__discount">
               <img :src="sceneryInfo.url" alt="" />
               <div class="destinations-details__discount-content">
-                <h3>
+                <h3 style="color: #e8604c; font-size: 22px">
                   <el-icon :color="`#e8604c`"><Star /></el-icon
                   >{{ sceneryInfo.score }}
                 </h3>
@@ -338,23 +378,37 @@ const addFirstComment = async () => {
                 </h4>
               </div>
             </div>
-            <!-- <div class="sidebar__single sidebar__category">
-              <h3 class="sidebar__title">游记评论</h3>
+            <div class="sidebar__single sidebar__category">
+              <h3 class="sidebar__title">
+                景区评分 & 评论
+                <span class="span-style-front3"
+                  >总评论数:&nbsp;{{ sceneryCommentsInfo.total }}</span
+                >
+              </h3>
               <ul class="sidebar__category-list list-unstyled">
                 <li>
                   <el-scrollbar max-height="800px" style="padding-right: 10px">
                     <div
                       :name="index"
-                      v-for="(item, index) in finalCommentsArray"
+                      v-for="(
+                        item, index
+                      ) in sceneryCommentsInfo?.sceneryCommentList"
                       :key="index"
                     >
                       <div class="comment-container">
                         <div class="comment-header">
                           <p>
-                            <router-link to="">{{ item.userName }}</router-link>
+                            <router-link :to="`/user/${item.userId}`">{{
+                              item.userName
+                            }}</router-link>
                           </p>
                           <p>
                             {{ item.createTime }}
+                          </p>
+                          <p>
+                            <span class="span-style-front2"
+                              >评分:&nbsp;{{ item.score }}</span
+                            >
                           </p>
                         </div>
                         <div class="comment-body">
@@ -365,30 +419,11 @@ const addFirstComment = async () => {
                           </el-scrollbar>
                         </div>
                       </div>
-                      <el-scrollbar max-height="400px">
-                        <ul class="second-ul">
-                          <li
-                            v-for="(i, index2) in item.son"
-                            :key="index2"
-                            class="second-item"
-                          >
-                            <p>
-                              <span style="color: #e8604c">{{
-                                i.userName
-                              }}</span
-                              ><span style="color: #909399">{{
-                                i.createTime
-                              }}</span>
-                            </p>
-                            <p>{{ i.content }}</p>
-                          </li>
-                        </ul>
-                      </el-scrollbar>
                     </div>
                   </el-scrollbar>
                 </li>
               </ul>
-            </div> -->
+            </div>
           </div>
         </div>
       </div>
@@ -396,4 +431,113 @@ const addFirstComment = async () => {
   </section>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.comment-form {
+  margin-top: 80px;
+}
+.rate-row {
+  height: 100px;
+  display: flex;
+  align-items: center;
+  // border: 1px #e8604c solid;
+  margin-bottom: 20px;
+  background-color: #faf5ee;
+  padding-left: 20px;
+  border-radius: 10px;
+}
+.span-style-front {
+  display: inline-block;
+  min-width: 50px;
+  padding: 5px;
+  padding-left: 10px;
+  height: 30px;
+  line-height: 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e8604c;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.span-style-front2 {
+  display: inline-block;
+  min-width: 65px;
+  padding-top: 2px;
+  padding-left: 5px;
+  height: 25px;
+  line-height: 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e8604c;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.sidebar__title {
+  display: flex;
+  align-items: center;
+}
+.span-style-front3 {
+  display: inline-block;
+  min-width: 95px;
+  padding-top: 2px;
+  padding-left: 5px;
+  height: 25px;
+  line-height: 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e8604c;
+  border-radius: 5px;
+  margin-left: 15px;
+}
+.comment-container {
+  .comment-header {
+    height: 80px;
+    width: 230px;
+    // width: 100%;
+    // border: 1px #e8604c solid;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: flex-start;
+    border-bottom: 1px #dcdfe6 solid;
+    margin-bottom: 10px;
+    > p {
+      margin: 0;
+      line-height: 1.5em;
+    }
+    > p:first-child {
+      a {
+        color: #e8604c;
+        font-weight: 700;
+      }
+    }
+    > p:nth-child(2) {
+      font-size: 12px;
+      color: #909399;
+    }
+    > p:nth-child(3) {
+      font-size: 14px;
+      color: #909399;
+      margin: 5px 0;
+    }
+  }
+  .comment-body {
+    // border: 1px #e8604c solid;
+    height: 60px;
+    width: 230px;
+    // display: flex;
+    // justify-content: start;
+    // align-items: center;
+    .content-main {
+      line-height: 1.5em;
+      color: #606266;
+      font-size: 16px;
+    }
+  }
+}
+.sidebar__single {
+  margin-top: 30px;
+}
+</style>

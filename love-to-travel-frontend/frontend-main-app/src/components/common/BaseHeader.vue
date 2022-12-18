@@ -278,7 +278,18 @@ const searchSomething = () => {
                       </li>
                     </ul>
                   </li>
-                  <li><router-link to="/canvasTravel">旅游脉络</router-link></li>
+                  <li class="dropdown">
+                    <router-link to="/canvasTravel">旅游脉络</router-link>
+                    <ul>
+                      <li>
+                        <router-link
+                          to="/canvasTravel"
+                          active-class="active-router"
+                          >知识图谱</router-link
+                        >
+                      </li>
+                    </ul>
+                  </li>
                 </ul>
               </div>
             </div>
@@ -400,6 +411,10 @@ const searchSomething = () => {
 .active-router {
   background-color: #e8604c;
 }
+.main-header__top-right-btn {
+  font-size: 15px !important;
+  font-family: ali-blod !important;
+}
 .main-header__top-right-btn-box {
   cursor: pointer;
 }
@@ -426,6 +441,22 @@ const searchSomething = () => {
 }
 
 .aly-index {
-  font-weight: 700;
+  font-weight: 1000 !important;
+}
+.dropdown {
+  > a {
+    font-weight: 700 !important;
+    font-size: 18px !important;
+    font-family: ali-blod;
+  }
+  > ul {
+    > li {
+      > a {
+        font-size: 16px !important;
+        font-family: ali-regular;
+        // font-weight: 600 !important;
+      }
+    }
+  }
 }
 </style>

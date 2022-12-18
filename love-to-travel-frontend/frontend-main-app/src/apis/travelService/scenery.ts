@@ -27,7 +27,7 @@ export const getPageScenerysInfo = (page: number, limit: number) => {
     loading: true, //显示加载圈
   });
 };
-export const getOneSceneryInfoById = (sceneryId: number) => {
+export const getOneSceneryInfoById = (sceneryId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/scenery/${sceneryId}`,

@@ -150,9 +150,9 @@ export default {
         plugins: [
           "AMap.Scale", //工具条，控制地图的缩放、平移等
           "AMap.ToolBar", //比例尺，显示当前地图中心的比例尺
-          "AMap.Geolocation", //定位，提供了获取用户当前准确位置、所在城市的方法
-          "AMap.HawkEye", //鹰眼，显示缩略图
-          "AMap.Weather", //获取实时天气
+          // "AMap.Geolocation", //定位，提供了获取用户当前准确位置、所在城市的方法
+          // "AMap.HawkEye", //鹰眼，显示缩略图
+          // "AMap.Weather", //获取实时天气
         ], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
       })
         .then((AMap) => {
@@ -171,11 +171,13 @@ export default {
           map.setDefaultCursor("pointer"); //使用CSS默认样式定义地图上的鼠标样式（default/pointer/move/crosshair）
           map.addControl(new AMap.Scale()); //异步同时加载多个插件
           map.addControl(new AMap.ToolBar());
-          map.addControl(new AMap.Geolocation());
-          let HawkEye = new AMap.HawkEye({
-            position: "RB", //控件停靠位置（LT/RT/LB/RB）
-          });
-          map.addControl(HawkEye);
+          /* 注释1 */
+          // map.addControl(new AMap.Geolocation());
+          // let HawkEye = new AMap.HawkEye({
+          //   position: "RB", //控件停靠位置（LT/RT/LB/RB）
+          // });
+          // map.addControl(HawkEye);
+          /* 注释1 */
           // let marker1 = new AMap.Marker({
           //   position: map.getCenter(),
           //   title: "中心点",
@@ -262,17 +264,19 @@ export default {
               console.error(e);
             });
           // 显示地图层级与中心点信息
-          function logMapinfo() {
-            let zoom = map.getZoom(); //获取当前地图级别
-            let center = map.getCenter(); //获取当前地图中心位置
-            // @ts-ignore
-            document.querySelector("#map-zoom").innerText = zoom;
-            // @ts-ignore
-            document.querySelector("#map-center").innerText = center.toString();
-          }
-          //绑定地图移动与缩放事件
-          map.on("moveend", logMapinfo);
-          map.on("zoomend", logMapinfo);
+          /* 注释2 */
+          // function logMapinfo() {
+          //   let zoom = map.getZoom(); //获取当前地图级别
+          //   let center = map.getCenter(); //获取当前地图中心位置
+          //   // @ts-ignore
+          //   document.querySelector("#map-zoom").innerText = zoom;
+          //   // @ts-ignore
+          //   document.querySelector("#map-center").innerText = center.toString();
+          // }
+          // //绑定地图移动与缩放事件
+          // map.on("moveend", logMapinfo);
+          // map.on("zoomend", logMapinfo);
+          /* 注释2 */
 
           //为地图注册mouseover事件获取鼠标放上去就显示经纬度坐标
           // map.on("mouseover", function (e) {
@@ -287,12 +291,14 @@ export default {
           //   content: `<h4>信息窗体</h4>`, //信息窗体的内容可以是任意html片段
           //   offset: new AMap.Pixel(16, -45),
           // });
-          map.on("click", function (e) {
-            // @ts-ignore
-            document.getElementById("lnglat").innerText =
-              e.lnglat.getLng() + "," + e.lnglat.getLat();
-            // infoWindow.open(map, [e.lnglat.getLng(), e.lnglat.getLat()]);
-          });
+          /* 注释3 */
+          // map.on("click", function (e) {
+          //   // @ts-ignore
+          //   document.getElementById("lnglat").innerText =
+          //     e.lnglat.getLng() + "," + e.lnglat.getLat();
+          //   // infoWindow.open(map, [e.lnglat.getLng(), e.lnglat.getLat()]);
+          // });
+          /* 注释3 */
           // infoWindow.open(map, [121.939253, 29.905078]); //填写想要窗体信息指示的坐标
         })
         .catch((e) => {

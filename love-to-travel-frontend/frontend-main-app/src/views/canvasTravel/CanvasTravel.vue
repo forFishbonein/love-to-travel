@@ -1,11 +1,14 @@
 <template>
-  <div class="container"></div>
+  <div class="container">
+
+  </div>
 </template>
 <script>
 import * as d3 from 'd3'
 
-
 export default {
+  name: "Canvas",
+
   data() {
     return {
       width: 600,
@@ -354,10 +357,26 @@ export default {
   },
 
   mounted() {
+    this.getGraphData();
     this.initGraph(this.testGraph);
   },
 
   methods: {
+    // getGraphData(){
+    //   var _this = this
+    //   this.axios.get("canvas/"+'炽金古城')
+    //       //   this.axios.get("person/all")
+    //       .then(function (response) {
+    //         console.log(response)
+    //         // _this.testGraph["nodes"] = [response.data]
+    //         // _this.initGraph(_this.testGraph)
+    //       })
+    //       .catch(function (error) {
+    //         console.log(error)
+    //       })
+    // },
+
+
     initGraph(data) {
       var _this = this
       const links = data.links.map(d => Object.create(d))
