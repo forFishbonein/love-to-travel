@@ -9,6 +9,10 @@ import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { getAllNoteList, getPageNotesInfo } from "@apis/travelService/note";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
+import { getRandomArrayElements } from "@/utils/filters/randomArray";
+import { getAllProductsInfo } from "@apis/travelService/product";
+import { productInfoType } from "@/apis/interface/myInterface";
+import { subPlansFormat } from "@/utils/filters/subPlan";
 const store = utilStore();
 const router = useRouter();
 let citysInfos = [
@@ -109,6 +113,1024 @@ let hotCityFour = ref({} as citysInfoType);
 let hotCityFive = ref({} as citysInfoType);
 /* 游记内容 */
 let notesInfo = ref([] as theNotesInfoType[]);
+/* 产品内容 */
+let productsInfo = ref([] as productInfoType[]);
+productsInfo.value = [
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965100",
+    introduction: "高级套餐",
+    name: "高级套餐4",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965105",
+    introduction: "高级套餐",
+    name: "高级套餐5",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965106",
+    introduction: "高级套餐",
+    name: "高级套餐6",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965107",
+    introduction: "高级套餐",
+    name: "高级套餐7",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965108",
+    introduction: "高级套餐",
+    name: "高级套餐8",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965109",
+    introduction: "高级套餐",
+    name: "高级套餐9",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965110",
+    introduction: "高级套餐",
+    name: "高级套餐10",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965111",
+    introduction: "高级套餐",
+    name: "高级套餐11",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965112",
+    introduction: "高级套餐",
+    name: "高级套餐12",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965371",
+    introduction: "高级套餐",
+    name: "高级套餐1",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965372",
+    introduction: "高级套餐",
+    name: "高级套餐2",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965373",
+    introduction: "高级套餐",
+    name: "高级套餐3",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965378",
+    introduction: "高级套餐",
+    name: "高级套餐",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "500",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+];
 const pageParams = reactive({
   page: 1,
   limit: 3,
@@ -163,6 +1185,27 @@ const requestCitysAndNotesInfo = async () => {
         message: error.message,
       });
     });
+  // await getAllProductsInfo()
+  //   .then((res: any) => {
+  //     if (res.code != 0) {
+  //       //@ts-ignore
+  //       ElMessage({
+  //         type: "error",
+  //         message: res.msg,
+  //       });
+  //     } else {
+  //       // alert("获取成功");
+  //       productsInfo.value = res.data.slice(0, 12);
+  //       console.log(productsInfo);
+  //     }
+  //   })
+  //   .catch((error) => {
+  //     //@ts-ignore
+  //     ElMessage({
+  //       type: "error",
+  //       message: error.message,
+  //     });
+  //   });
 };
 requestCitysAndNotesInfo();
 
@@ -206,6 +1249,26 @@ const refresh = () => {
   }
 };
 refresh();
+/* 随机文案 */
+/* 随机好评度和库存 */
+const stringArray = [
+  "每个人心中，都会有一个古镇情怀，流水江南，烟笼人家。",
+  "南风未起，念你成疾。",
+  "因为有梦，所以勇敢出发，选择出发，便只顾风雨兼程。",
+  "人生路上的相聚与别离，是我们生命里最美丽的风景。",
+  "人间烟火气，最抚凡人心。",
+  "旅行不是浪迹天涯，而是给心找一个小憩的地方。",
+  "心存阳光，必有诗和远方。",
+] as Array<string>;
+let finalStringsArray = [] as Array<string>;
+const getShuffleStrings = () => {
+  finalStringsArray = getRandomArrayElements(stringArray, 3);
+  // alert(finalMedalsArray)
+  // console.log(finaStringsArray);
+  // alert(finalMedalsArray[0][0])
+  // alert(finalMedalsArray[0][1])
+};
+getShuffleStrings();
 
 onMounted(() => {});
 </script>
@@ -224,6 +1287,41 @@ onMounted(() => {});
       $("#hiddenInput")[0].dispatchEvent(new Event("input")); //为了触发v-model的绑定
       // console.log($("#hiddenInput").val());
     });
+
+    // Popular Tour Carousel
+    if ($(".popular-tours__carousel").length) {
+      $(".popular-tours__carousel").owlCarousel({
+        loop: true,
+        margin: 30,
+        nav: false,
+        smartSpeed: 500,
+        autoHeight: false,
+        autoplay: true,
+        dots: true,
+        autoplayTimeout: 10000,
+        navText: [
+          '<span class="icon-left-arrow"></span>',
+          '<span class="icon-right-arrow"></span>',
+        ],
+        responsive: {
+          0: {
+            items: 1,
+          },
+          600: {
+            items: 1,
+          },
+          800: {
+            items: 2,
+          },
+          1024: {
+            items: 2,
+          },
+          1200: {
+            items: 4,
+          },
+        },
+      });
+    }
   });
   //@ts-ignore
 })(jQuery);
@@ -263,7 +1361,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>每个人心中,都会有一个古镇情怀，流水江南，烟笼人家。</p>
+                  <p class="ali-font-family">{{ finalStringsArray[0] }}</p>
                 </div>
               </div>
             </div>
@@ -282,7 +1380,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>南风未起，念你成疾。</p>
+                  <p class="ali-font-family">{{ finalStringsArray[1] }}</p>
                 </div>
               </div>
             </div>
@@ -301,7 +1399,7 @@ onMounted(() => {});
               <div class="row">
                 <div class="col-xl-12">
                   <h2>Fall in love with travel</h2>
-                  <p>因为有梦，所以勇敢出发，选择出发，便只顾风雨兼程。</p>
+                  <p class="ali-font-family">{{ finalStringsArray[2] }}</p>
                 </div>
               </div>
             </div>
@@ -332,7 +1430,7 @@ onMounted(() => {});
                   <div
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
-                    <label for="type">出发城市</label>
+                    <label for="type" class="ali-font-family">出发城市</label>
                     <select
                       class="selectpicker"
                       id="type"
@@ -353,7 +1451,7 @@ onMounted(() => {});
                   <div
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
-                    <label for="type2">目的城市</label>
+                    <label for="type2" class="ali-font-family">目的城市</label>
                     <select
                       class="selectpicker"
                       id="type2"
@@ -369,7 +1467,7 @@ onMounted(() => {});
                     </select>
                   </div>
                   <div class="tour-search-one__input-box">
-                    <label>出发日期</label>
+                    <label class="ali-font-family">出发日期</label>
                     <input
                       type="text"
                       placeholder="Nothing selected"
@@ -381,7 +1479,7 @@ onMounted(() => {});
                 <div class="tour-search-one__btn-wrap">
                   <button
                     @click="createPlan"
-                    class="thm-btn tour-search-one__btn"
+                    class="thm-btn tour-search-one__btn ali-font-family"
                   >
                     制定行程
                   </button>
@@ -393,17 +1491,14 @@ onMounted(() => {});
       </div>
     </div>
   </section>
-  <!--Tour Search End-->
-  <!-- {{ planInfo.fromCity }} 哈哈哈 {{ planInfo.backCity }} 呵呵呵{{
-    planInfo.goDate
-  }} -->
+
   <input type="text" id="hiddenInput" v-model="planInfo.goDate" />
   <!--Destinations One Start-->
   <section class="destinations-one">
     <div class="container">
       <div class="section-title text-center">
         <span class="section-title__tagline"> The city we yearn for</span>
-        <h2 class="section-title__title">向往的城市</h2>
+        <h2 class="section-title__title ali-font-family">向往的城市</h2>
       </div>
       <div class="row masonary-layout">
         <div class="col-xl-3 col-lg-3">
@@ -424,6 +1519,7 @@ onMounted(() => {});
                 <h2 class="destinations-one__title">
                   <router-link
                     :to="`/goTravel/city/detail/${hotCityOne.cityId}`"
+                    class="ali-font-family"
                   >
                     {{ hotCityOne.cityName }}</router-link
                   >
@@ -575,7 +1671,9 @@ onMounted(() => {});
                 <span class="section-title__tagline"
                   >Travels And Strategies</span
                 >
-                <h2 class="section-title__title">游记 & 攻略</h2>
+                <h2 class="section-title__title ali-font-family">
+                  游记 & 攻略
+                </h2>
               </div>
             </div>
           </div>
@@ -610,36 +1708,36 @@ onMounted(() => {});
                 </div>
               </div>
               <div class="news-one__content">
-                <ul class="list-unstyled news-one__meta">
-                  <li>
+                <ul class="list-unstyled news-one__meta list-unstyled2">
+                  <li style="margin-left: 0">
                     <a href="javascript:;"
                       ><el-icon size="20px"><View /></el-icon>浏览:{{
                         numberFormat(item.view)
                       }}</a
                     >
                   </li>
-                  <li>
+                  <li style="margin-left: 10px">
                     <a href="javascript:;"
                       ><el-icon size="20px"><Pointer /></el-icon>点赞:{{
                         numberFormat(item.like)
                       }}</a
                     >
                   </li>
-                  <li>
+                  <li style="margin-left: 10px">
                     <a href="javascript:;"
                       ><el-icon size="20px"><Star /></el-icon>收藏:{{
                         numberFormat(item.star)
                       }}</a
                     >
                   </li>
-                  <li>
+                  <li style="margin-left: 10px">
                     <a href="javascript:;">
                       <el-icon size="20px"><Document /></el-icon>评论:{{
                         numberFormat(item.comment)
                       }}
                     </a>
                   </li>
-                  <li>
+                  <li style="margin-left: 0">
                     <a
                       href="javascript:;"
                       style="width: 370px; justify-content: left"
@@ -661,6 +1759,63 @@ onMounted(() => {});
     </div>
   </section>
 
+  <section class="popular-tours">
+    <div class="popular-tours__container">
+      <div class="section-title text-center">
+        <span class="section-title__tagline">High Quality Products</span>
+        <h2 class="section-title__title ali-font-family">优质旅游产品</h2>
+      </div>
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="popular-tours__carousel owl-theme owl-carousel">
+            <div
+              class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp"
+              data-wow-delay="100ms"
+              v-for="(item, index) in productsInfo"
+              :key="index"
+            >
+              <div class="popular-tours__single">
+                <div class="popular-tours__img">
+                  <img :src="item.url" alt="" />
+                </div>
+                <div class="popular-tours__content">
+                  <h3 class="popular-tours__title">
+                    <router-link :to="`/buyTravel/product/detail/${item.id}`">{{
+                      item.name
+                    }}</router-link>
+                  </h3>
+                  <p class="popular-tours__rate">
+                    <span>¥{{ item.price }}</span>
+                  </p>
+                  <ul class="popular-tours__meta list-unstyled list-unstyled2">
+                    <li>
+                      <a href="javascript:;"
+                        ><el-icon style="margin-right: 10px"
+                          ><OfficeBuilding /></el-icon
+                        >途径{{ item.plan?.subPlans?.length }}城市</a
+                      >
+                    </li>
+                    <li>
+                      <a href="javascript:;"
+                        ><el-icon style="margin-right: 10px"><Clock /></el-icon
+                        >历时{{ subPlansFormat(item.plan?.subPlans) }}天</a
+                      >
+                    </li>
+                    <li>
+                      <a href="javascript:;"
+                        ><el-icon style="margin-right: 10px"><Phone /></el-icon
+                        >联系人电话:{{ item.tele }}</a
+                      >
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <!--Why Choose Start-->
   <section class="why-choose">
     <div class="why-choose__container">
@@ -685,36 +1840,37 @@ onMounted(() => {});
         ></div>
         <div class="why-choose__right-content">
           <div class="section-title text-left">
-            <span class="section-title__tagline">Our benefit lists</span>
-            <h2 class="section-title__title">为什么选择爱旅游</h2>
+            <span class="section-title__tagline">Why choose us</span>
+            <h2 class="section-title__title ali-font-family">
+              为什么选择爱旅游
+            </h2>
           </div>
           <p class="why-choose__right-text">
-            There are many variations of passages of Lorem Ipsum is simply free
-            text available in the market for you, but the majority have suffered
-            alteration in some form.
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;爱旅游是一款聚焦于构建旅游资源生态模式的新生代旅游服务产品，旨在为您打造个性化的沉浸式旅游体验。
+            您在此系统内可以实现热门城市/景点信息的获取，旅行游记的分享，旅游出行的组队，以及选购我们推出的优质旅游产品。
           </p>
           <ul class="list-unstyled why-choose__list">
             <li>
-              <div class="icon">
+              <div class="icon" style="width: 235px; height: 150px">
                 <span class="icon-travel"></span>
               </div>
               <div class="text">
-                <h4>Professional and Certified</h4>
+                <h4>出行无忧</h4>
                 <p>
-                  Lorem ipsum is simply free text dolor sit but the majority
-                  have suffered amet, consectetur notted.
+                  我们提供了具有高度自主化的行程定制服务，平台拥有海量城市/景点等数据供您参考。
+                  同时您还可以尝试进行旅游组队，找到与您志同道合的队友一起出发。
+                  最后本平台还有优质的旅游产品供您选择，让您真正做到出行无忧。
                 </p>
               </div>
             </li>
             <li>
-              <div class="icon">
+              <div class="icon" style="width: 140px; height: 120px">
                 <span class="icon-travel-map"></span>
               </div>
               <div class="text">
-                <h4>Get Instant Tour Bookings</h4>
+                <h4>游有所记</h4>
                 <p>
-                  Lorem ipsum is simply free text dolor sit but the majority
-                  have suffered amet, consectetur notted.
+                  本平台拥有强大的旅行游记社区，上万篇游记供您参考，最重要的是您可以发布自己的游记，记录美好瞬间和心得，在旅游中感悟人生。
                 </p>
               </div>
             </li>
@@ -820,11 +1976,15 @@ onMounted(() => {});
 </template>
 
 <style scoped lang="scss">
-.list-unstyled {
+.why-choose__left-bg {
+  width: auto;
+  height: 900px;
+}
+.list-unstyled2 {
   display: flex;
   flex-wrap: wrap;
   > li {
-    margin-left: 5px;
+    // margin-left: 5px;
     display: flex;
     justify-content: center;
     > a {
@@ -871,5 +2031,32 @@ onMounted(() => {});
 }
 #hiddenInput {
   display: none;
+}
+/* 产品 */
+.popular-tours {
+  padding-bottom: 120px;
+}
+.popular-tours__img {
+  width: 288px;
+  height: 201px;
+  cursor: pointer;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.popular-tours__single {
+  width: 288px;
+  height: 430px;
+}
+.popular-tours__meta {
+  flex-direction: column;
+  align-items: flex-start;
+}
+.popular-tours__meta li + li {
+  margin-left: 0;
+}
+.ali-font-family {
+  font-family: ali-regular;
 }
 </style>

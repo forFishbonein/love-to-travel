@@ -39,20 +39,22 @@ getNotesInfo();
 <template>
   <ul class="main-button">
     <li class="tour-types__single wow fadeInUp" data-wow-delay="100ms">
-      <div class="tour-types__content">
-        <div class="tour-types__icon">
-          <el-icon><EditPen /></el-icon>
+      <router-link to="/readTravel/write">
+        <div class="tour-types__content">
+          <div class="tour-types__icon">
+            <el-icon><EditPen /></el-icon>
+          </div>
+          <h4 class="tour-types__title">写游记</h4>
         </div>
-        <h4 class="tour-types__title">写游记</h4>
-      </div>
+      </router-link>
     </li>
     <li class="tour-types__single wow fadeInUp" data-wow-delay="200ms">
-      <router-link to="/"
+      <router-link to="/plan"
         ><div class="tour-types__content">
           <div class="tour-types__icon">
-            <el-icon><ChatDotRound /></el-icon>
+            <el-icon><Memo /></el-icon>
           </div>
-          <h4 class="tour-types__title">问答</h4>
+          <h4 class="tour-types__title">行程制定</h4>
         </div>
       </router-link>
     </li>
@@ -69,12 +71,14 @@ getNotesInfo();
       </div>
     </li>
     <li class="tour-types__single wow fadeInUp" data-wow-delay="400ms">
-      <div class="tour-types__content">
-        <div class="tour-types__icon">
-          <el-icon><User /></el-icon>
+      <router-link to="/groupTravel/team">
+        <div class="tour-types__content">
+          <div class="tour-types__icon">
+            <el-icon><User /></el-icon>
+          </div>
+          <h4 class="tour-types__title">找队友</h4>
         </div>
-        <h4 class="tour-types__title">找队友</h4>
-      </div>
+      </router-link>
     </li>
   </ul>
   <el-card class="box-card">
