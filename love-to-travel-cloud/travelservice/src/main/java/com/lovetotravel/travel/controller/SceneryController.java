@@ -197,8 +197,4 @@ public class SceneryController {
         return Result.success(sceneryService.getUserComment(id));
     }
 
-
-
-
-
 }

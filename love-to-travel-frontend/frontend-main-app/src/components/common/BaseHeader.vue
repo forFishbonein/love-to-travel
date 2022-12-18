@@ -248,7 +248,7 @@ const searchSomething = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <router-link to="/groupTravel/team">组旅游</router-link>
+                    <router-link to="/groupTravel/team">组队游</router-link>
                     <ul>
                       <li>
                         <router-link

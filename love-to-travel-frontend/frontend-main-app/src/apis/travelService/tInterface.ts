@@ -45,3 +45,12 @@ export interface theTeamParams {
   teamId: string;
   userId: string;
 }
+
+/* 景区评论参数 */
+export interface sceneryCommentParams {
+  sceneryId: string;
+  content: string;
+  userId: string;
+  score: number;
+  createTime: string;
+}
