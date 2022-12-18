@@ -11,6 +11,8 @@ import { mainStore } from "@/store/user";
 import "@/style.css";
 // 引入图标库
 import "@/assets/font/iconfont";
+// 引入字体
+import "@/assets/fonts/font.css";
 // 引入全局element-icon
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
 

@@ -13,6 +13,7 @@ import {
   getUserFolloweesNum,
 } from "@/apis/userService/follow";
 import emitter from "@/mitt/event";
+import { getRandomArrayElements } from "@/utils/filters/randomArray";
 emitter.on("addFoot", () => {
   openAlreadyGoDialog();
 });
@@ -563,9 +564,17 @@ const medalsArray = [
   "/static/images//medal/medal2.jpg",
   "/static/images//medal/medal3.jpg",
   "/static/images//medal/medal4.jpg",
-  "/static/images//medal/medal6.jpg",
+  "/static/images//medal/medal5.jpg",
   "/static/images//medal/medal6.jpg",
 ] as Array<string>;
+let finalMedalsArray = [] as Array<string>;
+const getShuffleMedals = () => {
+  finalMedalsArray = getRandomArrayElements(
+    medalsArray,
+    Math.floor(Math.random() * 6) + 1
+  );
+};
+getShuffleMedals();
 </script>
 
 <template>
@@ -674,12 +683,14 @@ const medalsArray = [
             <span>我的勋章</span>
           </div>
         </template>
-        <div
-          v-for="(item, index) in medalsArray"
-          :key="index"
-          class="text item media-img-container"
-        >
-          <img :src="item" />
+        <div class="all-media-container">
+          <div
+            v-for="(item, index) in finalMedalsArray"
+            :key="index"
+            class="text item media-img-container"
+          >
+            <img :src="item" />
+          </div>
         </div>
       </el-card>
       <el-card class="box-card">
@@ -770,12 +781,21 @@ const medalsArray = [
 </template>
 
 <style lang="scss" scoped>
-.media-img-container {
-  width: 30px;
-  height: 30px;
-  img {
-    width: 100%;
-    height: 100%;
+.all-media-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  .media-img-container {
+    cursor: pointer;
+    float: left;
+    width: 30px;
+    height: 40px;
+    margin: 5px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
   }
 }
 #map-container {
