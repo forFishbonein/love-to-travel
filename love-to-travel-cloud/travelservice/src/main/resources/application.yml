@@ -52,6 +52,12 @@ spring:
   data:
     mongodb:
       uri: mongodb://travelservice:W6xDFpnZb86hH7mj@47.98.138.0:27017/travelservice
+
+  neo4j:
+    uri: bolt://localhost:7687
+    authentication:
+      username: neo4j
+      password: neo4jxx
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml

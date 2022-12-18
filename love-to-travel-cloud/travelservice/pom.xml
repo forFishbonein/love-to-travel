@@ -16,7 +16,31 @@
         <java.version>11</java.version>
     </properties>
 
+
+
     <dependencies>
+<!--        &lt;!&ndash; neo4j 驱动 这个需要自己手动添加一下 &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>org.neo4j.driver</groupId>-->
+<!--            <artifactId>neo4j-java-driver</artifactId>-->
+<!--        </dependency>-->
+        <!-- neo4j 操作实体注解需要 -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-neo4j</artifactId>
+        </dependency>
+        <dependency>
+            <groupId>org.projectlombok</groupId>
+            <artifactId>lombok</artifactId>
+            <optional>true</optional>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+            <scope>test</scope>
+        </dependency>
+
+
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -44,6 +68,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-mongodb</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-data-neo4j</artifactId>
         </dependency>
 
         <dependency>
@@ -172,6 +201,11 @@
             <groupId>org.springframework.cloud</groupId>
             <artifactId>spring-cloud-openfeign-core</artifactId>
         </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-test</artifactId>
+        </dependency>
+
 
     </dependencies>
 
