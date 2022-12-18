@@ -19,7 +19,7 @@
                       alt=""
                   /></router-link>
                 </div>
-                <p class="footer-widget__about-text">欢迎光临爱旅游！</p>
+                <p class="footer-widget__about-text">欢迎光临爱旅游</p>
                 <ul class="footer-widget__about-contact list-unstyled">
                   <li>
                     <div class="icon">
@@ -57,19 +57,11 @@
               >
                 <h3 class="footer-widget__title">公司</h3>
                 <ul class="footer-widget__company-list list-unstyled">
-                  <li>
-                    <a href="javascript:;">关于我们</a>
-                  </li>
-                  <li>
-                    <router-link to="/goTravel/city">城市/景区</router-link>
-                  </li>
-                  <li><router-link to="/readTravel/note">游记</router-link></li>
-                  <li>
-                    <router-link to="/groupTravel/team">组队</router-link>
-                  </li>
-                  <li>
-                    <router-link to="/buyTravel/product">产品</router-link>
-                  </li>
+                  <li><a href="javascript:;">关于我们</a></li>
+                  <li><a href="javascript:;">游记</a></li>
+                  <li><a href="javascript:;">景区</a></li>
+                  <li><a href="javascript:;">问答</a></li>
+                  <li><a href="javascript:;">团队</a></li>
                 </ul>
               </div>
             </div>

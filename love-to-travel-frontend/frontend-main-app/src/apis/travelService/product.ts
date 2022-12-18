@@ -1,11 +1,4 @@
 import httpRequest from "@/request";
-export const getAllProductsInfo = () => {
-  return httpRequest({
-    method: "get",
-    url: "http://localhost:8082/product/",
-    loading: true, //显示加载圈
-  });
-};
 export const getPageProductsInfo = (page: number, limit: number) => {
   return httpRequest({
     method: "post",

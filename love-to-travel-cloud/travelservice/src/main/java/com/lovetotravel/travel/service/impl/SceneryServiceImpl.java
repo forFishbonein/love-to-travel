@@ -206,6 +206,9 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
         getSceneryComment.setSceneryCommentList(commentInMysql);
         getSceneryComment.setTotal(total);
         Scenery scenery = sceneryMapper.getById(id);
+        System.out.println(scenery.getScore());
+        System.out.println(scenery.getScore());
+        System.out.println(scenery.getScore());
         getSceneryComment.setAvgScore(Double.valueOf(scenery.getScore()));
         return getSceneryComment;
     }

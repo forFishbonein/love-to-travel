@@ -18,8 +18,7 @@
 # Common
 --------------------------------------------------------------*/
 :root {
-    /* --thm-font: 'DM Sans', sans-serif; */
-    --thm-font: ali-regular;
+    --thm-font: 'DM Sans', sans-serif;
     --thm-reey-font: 'reeyregular';
     --thm-gray: #787780;
     --thm-gray-rgb: 120, 119, 128;

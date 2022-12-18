@@ -9,7 +9,6 @@ import { shallowRef } from "@vue/reactivity";
 import { mainStore } from "@/store/user";
 import { useRouter } from "vue-router";
 import { getNowTime } from "@/utils/getNowTime"
-import { getRandomArrayElements } from "@/utils/filters/randomArray";
 const router = useRouter();
 const store = mainStore();
 const props = defineProps<{
@@ -181,32 +180,9 @@ const goSeeMyBuy = () => {
   successDialogVisible.value = false;
   router.push("/personal/buy");
 };
-  /* 随机好评度和库存 */
-  const numberArray = [
-    ['77%','80%'],
-    ['97%','55%'],
-    ['83%','24%'],
-    ['89%','46%'],
-    ['95%','31%'],
-    ['92%','17%'],
-  ] as Array<Array<string>>;
-  let finalMedalsArray = [] as Array<string>;
-  const getShuffleMedals = () => {
-    finalMedalsArray = getRandomArrayElements(
-      numberArray,
-      1
-    );
-    // alert(finalMedalsArray)
-    console.log(finalMedalsArray)
-    // alert(finalMedalsArray[0][0])
-    // alert(finalMedalsArray[0][1])
-  };
-  getShuffleMedals();
 onMounted(() => {
   requestOneProductInfo();
-
 });
-
 </script>
 <script lang="ts">
 //@ts-ignore
@@ -368,16 +344,16 @@ onMounted(() => {
               <div class="about-page__progress-single">
                 <h4 class="about-page__progress-title">好评度</h4>
                 <div class="bar">
-                  <div class="bar-inner count-bar" :data-percent="finalMedalsArray[0][0]">
-                    <div class="count-text">{{finalMedalsArray[0][0]}}</div>
+                  <div class="bar-inner count-bar" data-percent="77%">
+                    <div class="count-text">77%</div>
                   </div>
                 </div>
               </div>
               <div class="about-page__progress-single">
                 <h4 class="about-page__progress-title">库存剩余</h4>
                 <div class="bar marb-0">
-                  <div class="bar-inner count-bar" :data-percent="finalMedalsArray[0][1]">
-                    <div class="count-text">{{finalMedalsArray[0][1]}}</div>
+                  <div class="bar-inner count-bar" data-percent="38%">
+                    <div class="count-text">38%</div>
                   </div>
                 </div>
               </div>

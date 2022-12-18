@@ -10,7 +10,7 @@
       <div class="page-header-bg-overly"></div>
       <div class="container">
         <div class="page-header__top-inner">
-          <h2 class="ali-font-family">购旅游：旅游产品，优惠购买</h2>
+          <h2>购旅游：旅游产品，优惠购买</h2>
         </div>
       </div>
     </div>
@@ -18,8 +18,4 @@
   <router-view></router-view>
 </template>
 
-<style lang="scss" scoped>
-.ali-font-family {
-  font-family: ali-regular;
-}
-</style>
+<style lang="scss" scoped></style>
