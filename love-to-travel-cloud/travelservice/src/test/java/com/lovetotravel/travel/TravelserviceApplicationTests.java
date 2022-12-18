@@ -1,26 +1,36 @@
 package com.lovetotravel.travel;
 
+import com.lovetotravel.travel.entity.canvas.SceneryNode;
+import com.lovetotravel.travel.entity.canvas.SceneryRelation;
+import com.lovetotravel.travel.entity.canvas.SceneryRelationRepository;
+import com.lovetotravel.travel.entity.canvas.SceneryRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+
+import java.io.IOException;
+import java.util.List;
 
 
 @SpringBootTest
 class TravelserviceApplicationTests {
 
 
-//    @Autowired
-//    SceneryRepository sceneryRepository;
+    @Autowired
+    SceneryRepository sceneryRepository;
 
+    @Autowired
+    SceneryRelationRepository sceneryRelationRepository;
 
-//    @Test
-//    void contextLoads() throws IOException {
-//
-//        List<SceneryNode> all = sceneryRepository.findAll();
-//        System.out.println("all = " + all);
-//
-//        List<SceneryRelationShip> allin = sceneryRepository.getSceneryLocated();
+    @Test
+    void contextLoads() throws IOException {
+        List<SceneryNode> all = sceneryRepository.findAll();
+        System.out.println("all = " + all);
+
+//        List<SceneryRelation> allin = sceneryRelationRepository.findRelation();
 //        System.out.println("allin = " + allin);
-//
-//    }
+
+    }
 
 //    DetectController detectController;
 //
@@ -36,7 +46,8 @@ class TravelserviceApplicationTests {
 //        request.setAttribute("usrNo","81");
 //        detectController.detect(request);
 //    }
-}
+
+    }
 
 
 

@@ -11,13 +11,15 @@ import java.util.List;
 @Repository
 public interface SceneryRelationRepository extends Neo4jRepository<SceneryRelation, Long> {
 
-    @Query("MATCH p=(n:Person)-[r:Relation]->(m:Person) " +
-            "WHERE id(n)={startNode} and id(m)={endNode} and r.relation={relation}" +
-            "RETURN p")
-    List<SceneryRelation> findRelation(@Param("startNode") SceneryNode startNode,
-                                @Param("endNode") SceneryNode endNode,
-                                @Param("relation") String relation);
+//    @Query("MATCH p=(n:景区)-[r:in_area]->(m:区域) " +
+//            "WHERE id(n)={startNode} and id(m)={endNode} and r.relation={relation}" +
+//            "RETURN p")
+//    List<SceneryRelation> findRelation(@Param("startNode") SceneryNode startNode,
+//                                @Param("endNode") SceneryNode endNode,
+//                                @Param("relation") String relation);
 
-
+        @Query("MATCH p=(n:景区)-[r:in_area]->(m:区域) " +
+            "RETURN p,r,m")
+        List<SceneryRelation> findRelation();
 
 }
