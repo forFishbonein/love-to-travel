@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { getStarNotesInfoByUserId } from "@/apis/travelService/note";
 import { mainStore } from "@/store/user";
-import { theNotesInfoType } from "@apis/interface/iPlan";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
 const store = mainStore();
@@ -36,7 +36,7 @@ getStarNotesInfo();
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
-        <span>我的旅行游记</span>
+        <span>我收藏的游记</span>
         <el-button class="button" text>发游记</el-button>
       </div>
     </template>
@@ -94,12 +94,13 @@ getStarNotesInfo();
   margin-top: 30px;
   .card-item-container {
     width: 700px;
-    height: 600px;
+    height: auto;
     // border: 1px #e8604c solid;
     border: 1px #dcdfe6 solid;
     margin: 0 auto;
     display: flex;
     justify-content: space-between;
+    margin-bottom: 25px;
     .item-img {
       height: 300px;
       width: 300px;

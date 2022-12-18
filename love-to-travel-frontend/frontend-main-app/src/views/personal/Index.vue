@@ -3,7 +3,7 @@ import { ref, inject, onMounted, computed, watch } from "vue";
 // import * as echarts from "echarts";
 import chinaJson from "@/assets/json/map/china.json";
 import { getCitysInfoByName } from "@/apis/travelService/city";
-import { citysInfoType } from "@apis/interface/iPlan";
+import { citysInfoType } from "@/apis/interface/myInterface";
 import { addCityToWant } from "@/apis/travelService/want";
 import { addCityToBeen } from "@/apis/travelService/been";
 import { mainStore } from "@/store/user";
@@ -17,7 +17,7 @@ emitter.on("addFoot", () => {
   openAlreadyGoDialog();
 });
 const store = mainStore();
-const activeIndex = ref("1");
+const activeIndex = ref("/personal/center");
 const handleSelect = (key: string, keyPath: string[]) => {
   console.log(key, keyPath);
 };
@@ -565,7 +565,7 @@ onMounted(() => {
     <div class="button-already" @click="openAlreadyGoDialog">添加去过</div>
     <div class="button-want" @click="openToWantDialog">添加想去</div>
     <div class="avater-container">
-      <img :src="store.userInfo.url" class="avater-img" />
+      <img :src="store.userInfo?.url" class="avater-img" />
     </div>
     <div class="info-border">
       <el-descriptions :title="store.userInfo.name">
@@ -630,14 +630,15 @@ onMounted(() => {
       @select="handleSelect"
       router="true"
     >
-      <el-menu-item index="center">我的中心</el-menu-item>
-      <el-menu-item index="foot">足迹</el-menu-item>
-      <el-menu-item index="mynote">游记</el-menu-item>
-      <el-menu-item index="star">收藏</el-menu-item>
-      <el-menu-item index="question">问答</el-menu-item>
-      <el-menu-item index="myroute">行程</el-menu-item>
-      <el-menu-item index="team">队伍</el-menu-item>
-      <el-menu-item index="time">时光机</el-menu-item>
+      <el-menu-item index="/personal/center">我的中心</el-menu-item>
+      <el-menu-item index="/personal/foot">足迹</el-menu-item>
+      <el-menu-item index="/personal/mynote">游记</el-menu-item>
+      <el-menu-item index="/personal/star">收藏</el-menu-item>
+      <el-menu-item index="/personal/myroute">行程</el-menu-item>
+      <el-menu-item index="/personal/myteam">队伍</el-menu-item>
+      <el-menu-item index="/personal/follow">粉丝/关注</el-menu-item>
+      <el-menu-item index="/personal/buy">订单</el-menu-item>
+      <el-menu-item index="/personal/setup">设置</el-menu-item>
     </el-menu>
   </div>
   <div class="main-container">
@@ -645,12 +646,16 @@ onMounted(() => {
       <div class="follower">
         <div>
           <div>
-            <router-link to="/">我的关注：{{ followeeNum }}</router-link>
+            <router-link to="/personal/follow"
+              >我的关注：{{ followeeNum }}</router-link
+            >
           </div>
         </div>
         <div>
           <div>
-            <router-link to="/">我的粉丝：{{ followerNum }}</router-link>
+            <router-link to="/personal/follow"
+              >我的粉丝：{{ followerNum }}</router-link
+            >
           </div>
         </div>
       </div>

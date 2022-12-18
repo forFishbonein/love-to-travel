@@ -33,7 +33,7 @@
         <template #default="scope">
           <el-button link size="small" type="primary" @click="openDetailDialog(scope.row.id)">详情</el-button>
           <el-button link size="small" type="primary" @click="singleDelete(scope.row.id)">删除</el-button>
-          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">修改</el-button>
+          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">编辑</el-button>
         </template>
       </el-table-column>
     </el-table>

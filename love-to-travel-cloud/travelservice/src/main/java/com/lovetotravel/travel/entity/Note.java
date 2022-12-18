@@ -36,13 +36,13 @@ public class Note {
     @ApiModelProperty("内容")
     private String content;
 
-    public void setContent(String content) {
-        this.content = Base64.encodeUrlSafe(content);
-    }
-
-    public String getContent() {
-        return Base64.decodeStr(this.content);
-    }
+//    public void setContent(String content) {
+//        this.content = Base64.encodeUrlSafe(content);
+//    }
+//
+//    public String getContent() {
+//        return Base64.decodeStr(this.content);
+//    }
 
 //    @ApiModelProperty("评分")
 //    private String score;

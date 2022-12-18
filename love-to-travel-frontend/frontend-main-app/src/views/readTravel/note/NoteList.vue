@@ -1,11 +1,17 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
-import { theNotesInfoType } from "@apis/interface/iPlan";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { getAllNoteList, getPageNotesInfo } from "@apis/travelService/note";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
+import { getPageNotesInfoByKeyword } from "@/apis/travelService/search";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
+/* 全局根据简介查询 */
+const props = defineProps<{
+  keyword: string;
+}>();
+const keyword = props.keyword;
 /* 分页获取数据 */
 let notesPageInfo = ref([] as theNotesInfoType[]);
 const pageParams = reactive({
@@ -15,29 +21,54 @@ const pageParams = reactive({
 });
 const { total, page, limit } = toRefs(pageParams);
 const requestPageNotesInfo = async () => {
-  await getPageNotesInfo(page.value, limit.value)
-    .then((res: any) => {
-      if (res.code != 0) {
+  if (keyword) {
+    await getPageNotesInfoByKeyword(keyword, page.value, limit.value)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("获取成功");
+          notesPageInfo.value = res.data.records;
+          total.value = res.data.total;
+          console.log(notesPageInfo);
+        }
+      })
+      .catch((error) => {
         //@ts-ignore
         ElMessage({
           type: "error",
-          message: res.msg,
+          message: error.message,
         });
-      } else {
-        // alert("获取成功");
-        // citysInfo.value = res.data.slice(0, 5);
-        notesPageInfo.value = res.data.records;
-        total.value = res.data.total;
-        console.log(notesPageInfo);
-      }
-    })
-    .catch((error) => {
-      //@ts-ignore
-      ElMessage({
-        type: "error",
-        message: error.message,
       });
-    });
+  } else {
+    await getPageNotesInfo(page.value, limit.value)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("获取成功");
+          // citysInfo.value = res.data.slice(0, 5);
+          notesPageInfo.value = res.data.records;
+          total.value = res.data.total;
+          console.log(notesPageInfo);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
 };
 requestPageNotesInfo();
 // 回调函数1：每页记录数改变时调用，size：回调参数，表示当前选中的“每页条数”
@@ -78,9 +109,65 @@ const changeCurrentPage = (p: number) => {
 //     });
 // };
 // requestNotesInfo();
+const thisPageKeyword = ref("");
+const searchTheCity = async () => {
+  total.value = 0;
+  page.value = 1;
+  limit.value = 12;
+  await getPageNotesInfoByKeyword(
+    thisPageKeyword.value,
+    page.value,
+    limit.value
+  )
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert("获取成功");
+        notesPageInfo.value = res.data.records;
+        total.value = res.data.total;
+        console.log(notesPageInfo);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
 </script>
-
+<script lang="ts">
+//@ts-ignore
+(function ($) {
+  $(document).ready(function () {
+    $(".search-popup").css("transform", "translateY(-110%)");
+  });
+  //@ts-ignore
+})(jQuery);
+</script>
 <template>
+  <div class="search-input-container">
+    <form
+      autocomplete="off"
+      @submit.prevent="searchTheCity()"
+      class="sidebar__search-form"
+    >
+      <input
+        type="search"
+        placeholder="输入搜索内容"
+        v-model="thisPageKeyword"
+      />
+      <button type="submit" class="search-page-button">
+        <i class="icon-magnifying-glass"></i>
+      </button>
+    </form>
+  </div>
   <section class="news-one">
     <div class="container">
       <div class="row">
@@ -213,5 +300,23 @@ const changeCurrentPage = (p: number) => {
 .news-one__img {
   width: 350px;
   height: 300px;
+}
+/* 搜索框部分需要的样式 */
+.news-one {
+  padding-top: 0px;
+}
+.search-input-container {
+  width: 100%;
+  padding: 50px 200px;
+}
+.search-page-button {
+  border-radius: 10px;
+  transition: all 0.3s linear;
+}
+.search-page-button:hover {
+  background-color: #e8604c;
+}
+.search-page-button:hover > i {
+  color: #ffffff;
 }
 </style>

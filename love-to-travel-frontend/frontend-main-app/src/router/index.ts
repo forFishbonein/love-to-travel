@@ -37,6 +37,7 @@ router.beforeEach((to, from, next) => {
       to.path === "/login/codeLogin"
     ) {
       //如果是从内部由路径跳转到登录页面，拦截拦截，回到首页
+      // alert("拦截了");
       next({ path: "/" });
     } else {
       //如果不是跳转到登录页面！那么获取用户信息！
@@ -56,7 +57,7 @@ router.beforeEach((to, from, next) => {
         store
           .getUserInfo() // 获取用户信息
           .then((res) => {
-            alert("获取用户信息成功");
+            // alert("获取用户信息成功");
             console.log("用户信息：");
             console.log(store.userInfo);
             console.log(store.userInfo.email);

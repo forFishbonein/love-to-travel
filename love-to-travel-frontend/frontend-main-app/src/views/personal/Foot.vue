@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { getFootsByUserId } from "@/apis/travelService/foot";
 import { mainStore } from "@/store/user";
-import { wantInfoType, beenInfoType } from "@/apis/interface/iPlan";
+import { wantInfoType, beenInfoType } from "@/apis/interface/myInterface";
 let wantInfo = ref([] as wantInfoType[]);
 let beenInfo = ref([] as beenInfoType[]);
 const store = mainStore();

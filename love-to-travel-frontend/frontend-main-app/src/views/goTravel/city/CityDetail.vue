@@ -2,7 +2,10 @@
 import { ref } from "vue";
 import { getOneCityInfoById } from "@/apis/travelService/city";
 import { getSceneryListByCityId } from "@apis/travelService/scenery";
-import { citysInfoType, theCityScenerysInfoType } from "@/apis/interface/iPlan";
+import {
+  citysInfoType,
+  theCityScenerysInfoType,
+} from "@/apis/interface/myInterface";
 const props = defineProps<{
   cityId: string;
 }>();

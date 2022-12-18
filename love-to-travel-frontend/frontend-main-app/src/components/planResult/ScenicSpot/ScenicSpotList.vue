@@ -3,7 +3,10 @@ import { ref } from "vue";
 import { onMounted } from "@vue/runtime-core";
 import { getSceneryListByCityId } from "@apis/travelService/scenery";
 import { useRouter } from "vue-router";
-import { theCityScenerysInfoType, routeInfoType } from "@/apis/interface/iPlan";
+import {
+  theCityScenerysInfoType,
+  routeInfoType,
+} from "@/apis/interface/myInterface";
 import emitter from "@/mitt/event";
 const router = useRouter();
 const props = defineProps<{
@@ -55,7 +58,7 @@ let routeInfo = ref({} as routeInfoType);
 /* 添加到行程 */
 const dialogFormVisible = ref(false);
 const openSceneryToPlanDialog = (index: number) => {
-  alert("添加到行程框");
+  // alert("添加到行程框");
   const theSceneryInfo = sceneryListInfo.value[index];
   //只需要下面两项信息即可！
   routeInfo.value.originName = theSceneryInfo.name;

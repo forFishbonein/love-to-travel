@@ -55,7 +55,6 @@ import { useRouter } from "vue-router";
 import { mainStore } from "@/store/user";
 import { ref } from "vue";
 import { InfoFilled } from "@element-plus/icons-vue";
-const radio = ref("1");
 const router = useRouter();
 const store = mainStore();
 let loginFlag = ref(false);
@@ -102,6 +101,50 @@ const displayText = () => {
   loginFlag.value = true;
   return "个人中心";
 };
+
+/* 搜索功能实现 */
+const keyword = ref("");
+const searchId = ref("0");
+const searchSomething = () => {
+  if (searchId.value === "0") {
+    router.push({
+      name: "Search",
+      params: {
+        keyword: keyword.value,
+      },
+    });
+  } else if (searchId.value === "1") {
+    // alert("跳转");
+    // alert(keyword.value);
+    router.push({
+      name: "CityList",
+      params: {
+        keyword: keyword.value,
+      },
+    });
+    // router.push({
+    //   // path: "/goTravel/city/list",
+    //   name: "CityList",
+    //   query: {
+    //     keyword: keyword.value,
+    //   },
+    // });
+  } else if (searchId.value === "2") {
+    router.push({
+      name: "SceneryList",
+      params: {
+        keyword: keyword.value,
+      },
+    });
+  } else if (searchId.value === "3") {
+    router.push({
+      name: "NoteList",
+      params: {
+        keyword: keyword.value,
+      },
+    });
+  }
+};
 </script>
 <template>
   <header class="main-header clearfix">
@@ -115,7 +158,7 @@ const displayText = () => {
                   <span class="icon-phone-call"></span>
                 </div>
                 <div class="text">
-                  <a href="tel:+92-666-999-0000">+ 92 666 999 0000</a>
+                  <a href="tel:+92-666-999-0000">+ 92 666 888 0000</a>
                 </div>
               </li>
               <li>
@@ -123,7 +166,7 @@ const displayText = () => {
                   <span class="icon-at"></span>
                 </div>
                 <div class="text">
-                  <a href="1558637209@qq.com">lovetotravel@scmzu.com</a>
+                  <a href="javascript:;">lovetotravel@scmzu.com</a>
                 </div>
               </li>
             </ul>
@@ -131,10 +174,10 @@ const displayText = () => {
           <div class="main-header__top-right">
             <div class="main-header__top-right-inner">
               <div class="main-header__top-right-social">
-                <a href="#"><i class="fab fa-facebook"></i></a>
-                <a href="#"><i class="fab fa-twitter"></i></a>
-                <a href="#"><i class="fab fa-instagram"></i></a>
-                <a href="#"><i class="fab fa-dribbble"></i></a>
+                <a href="javascript:;"><i class="fab fa-facebook"></i></a>
+                <a href="javascript:;"><i class="fab fa-twitter"></i></a>
+                <a href="javascript:;"><i class="fab fa-instagram"></i></a>
+                <a href="javascript:;"><i class="fab fa-dribbble"></i></a>
               </div>
               <div class="main-header__top-right-btn-box">
                 <a
@@ -159,7 +202,7 @@ const displayText = () => {
                 /></router-link>
               </div>
               <div class="main-menu-wrapper__main-menu">
-                <a href="#" class="mobile-nav__toggler"
+                <a href="javascript:;" class="mobile-nav__toggler"
                   ><i class="fa fa-bars"></i
                 ></a>
                 <ul class="main-menu__list">
@@ -167,7 +210,7 @@ const displayText = () => {
                     <router-link to="/" class="aly-index">爱旅游</router-link>
                   </li>
                   <li class="dropdown">
-                    <a href="#">去旅游</a>
+                    <router-link to="/goTravel/city">去旅游</router-link>
                     <ul>
                       <li>
                         <router-link
@@ -186,7 +229,7 @@ const displayText = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <a href="#">阅旅游</a>
+                    <router-link to="/readTravel/note">阅旅游</router-link>
                     <ul>
                       <li>
                         <router-link
@@ -205,7 +248,7 @@ const displayText = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <a href="#">组旅游</a>
+                    <router-link to="/groupTravel/team">组旅游</router-link>
                     <ul>
                       <li>
                         <router-link
@@ -218,25 +261,30 @@ const displayText = () => {
                         <router-link
                           to="/groupTravel/create"
                           active-class="active-router"
-                          >发布组队</router-link
+                          >创建队伍</router-link
                         >
                       </li>
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <a href="#">购旅游</a>
+                    <router-link to="/buyTravel/product">购旅游</router-link>
                     <ul>
-                      <li><a href="news.html">酒店</a></li>
-                      <li><a href="news-details.html">机票</a></li>
+                      <li>
+                        <router-link
+                          to="/buyTravel/product"
+                          active-class="active-router"
+                          >旅游产品</router-link
+                        >
+                      </li>
                     </ul>
                   </li>
-                  <li><a href="#">旅游脉络</a></li>
+                  <li><router-link to="/canvasTravel">旅游脉络</router-link></li>
                 </ul>
               </div>
             </div>
             <div class="main-menu-wrapper__right">
               <a
-                href="#"
+                href="javascript:;"
                 class="main-menu__search search-toggler icon-magnifying-glass"
                 id="search-up-down"
               ></a>
@@ -249,7 +297,11 @@ const displayText = () => {
                 @confirm="confirmLogout"
               >
                 <template #reference>
-                  <a href="#" class="main-menu__user" v-if="loginFlag">
+                  <a
+                    href="javascript:;"
+                    class="main-menu__user"
+                    v-if="loginFlag"
+                  >
                     <el-icon :size="25"><SwitchButton /></el-icon>
                   </a>
                 </template>
@@ -276,7 +328,7 @@ const displayText = () => {
       ></span>
 
       <div class="logo-box">
-        <a href="index.html" aria-label="logo image"
+        <a href="javascript:;" aria-label="logo image"
           ><img src="/images/resources/logo-2.png" width="155" alt=""
         /></a>
       </div>
@@ -287,7 +339,7 @@ const displayText = () => {
       <ul class="mobile-nav__contact list-unstyled">
         <li>
           <i class="fa fa-envelope"></i>
-          <a href="mailto:needhelp@alycom">needhelp@aly.com</a>
+          <a href="javascript:;">lovetotravel@scmzu.com</a>
         </li>
         <li>
           <i class="fa fa-phone-alt"></i>
@@ -297,10 +349,10 @@ const displayText = () => {
       <!-- /.mobile-nav__contact -->
       <div class="mobile-nav__top">
         <div class="mobile-nav__social">
-          <a href="#" class="fab fa-twitter"></a>
-          <a href="#" class="fab fa-facebook-square"></a>
-          <a href="#" class="fab fa-pinterest-p"></a>
-          <a href="#" class="fab fa-instagram"></a>
+          <a href="javascript:;" class="fab fa-twitter"></a>
+          <a href="javascript:;" class="fab fa-facebook-square"></a>
+          <a href="javascript:;" class="fab fa-pinterest-p"></a>
+          <a href="javascript:;" class="fab fa-instagram"></a>
         </div>
         <!-- /.mobile-nav__social -->
       </div>
@@ -314,23 +366,23 @@ const displayText = () => {
     <div class="search-popup__overlay search-toggler"></div>
     <div id="search-border">
       <div id="radio-el">
-        <el-radio-group v-model="radio">
-          <el-radio label="1" border>全部</el-radio>
-          <el-radio label="2" border>目的地</el-radio>
+        <el-radio-group v-model="searchId">
+          <el-radio label="0" border>全部</el-radio>
+          <el-radio label="1" border>城市</el-radio>
+          <el-radio label="2" border>景区</el-radio>
           <el-radio label="3" border>游记</el-radio>
-          <el-radio label="4" border>酒店</el-radio>
-          <el-radio label="5" border>机票</el-radio>
         </el-radio-group>
       </div>
       <!-- /.search-popup__overlay -->
       <div class="search-popup__content">
-        <form action="#">
+        <form autocomplete="off" @submit.prevent="searchSomething">
           <label for="search" class="sr-only">search here</label
           ><!-- /.sr-only -->
           <input
             type="text"
             id="search"
-            placeholder="搜目的地/游记/酒店/机票"
+            placeholder="搜全部/城市/景区/游记"
+            v-model="keyword"
           />
           <button type="submit" aria-label="search submit" class="thm-btn">
             <i class="icon-magnifying-glass"></i>
@@ -346,7 +398,7 @@ const displayText = () => {
 <style lang="scss" scoped>
 // @import url(@/assets/css/tevily.css);
 .active-router {
-  background: #e8604c;
+  background-color: #e8604c;
 }
 .main-header__top-right-btn-box {
   cursor: pointer;
@@ -374,5 +426,6 @@ const displayText = () => {
 }
 
 .aly-index {
+  font-weight: 700;
 }
 </style>

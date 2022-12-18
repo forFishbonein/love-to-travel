@@ -1,19 +1,23 @@
 import Index from "@/Index.vue";
 import Home from "@/views/Home.vue";
+import Login from "@/views/Login.vue";
 
 export const routes = [
     {
         path: "/",
         name: "Index", //App中包裹Index
-        meta: {title: "首页"},
+        meta: {
+            title: "首页"
+        },
         component: Index,
-        redirect: "/home", //Index中包裹Home等组件
+        redirect: "/home", //Index中包裹Home等组件,
         children: [
             {
                 path: "/home",
                 name: "Index",
                 component: Home,
                 meta: {title: "首页"},
+
             },
             {
                 path: "/province",
@@ -40,6 +44,12 @@ export const routes = [
                 meta: {title: "用户管理"},
             },
             {
+                path: "/admin",
+                name: "Admin",
+                component: () => import("@/components/userService/Admin.vue"),
+                meta: {title: "用户管理"},
+            },
+            {
                 path: "/scenery",
                 name: "Scenery",
                 component: () => import("@/components/serviceManage/Scenery.vue"),
@@ -59,4 +69,13 @@ export const routes = [
             },
         ],
     },
+    {
+        path: "/login",
+        name: "Login", //App中包裹Index
+        meta: {
+            title: "登录"
+        },
+        component: Login,
+    }
+
 ];

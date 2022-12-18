@@ -2,7 +2,7 @@
 import { ref } from "vue";
 import { getNotesInfoByUserId } from "@/apis/travelService/note";
 import { mainStore } from "@/store/user";
-import { theNotesInfoType } from "@apis/interface/iPlan";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
 const store = mainStore();
@@ -36,7 +36,7 @@ getNotesInfo();
   <el-card class="box-card">
     <template #header>
       <div class="card-header">
-        <span>我的旅行游记</span>
+        <span>我发布的游记</span>
         <el-button class="button" text>发游记</el-button>
       </div>
     </template>

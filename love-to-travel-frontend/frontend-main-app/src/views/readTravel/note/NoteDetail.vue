@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, nextTick, computed } from "vue";
+import { ref, computed } from "vue";
 import {
   getOneNoteInfoById,
   getNotesInfoByUserId,
@@ -27,9 +27,9 @@ import {
   theNoteComment,
   tranformComments,
   secondComment,
-} from "@apis/interface/iPlan";
+} from "@/apis/interface/myInterface";
 import { UserInfo } from "@/apis/userService/uinterface";
-import { finalAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { finalAllCityPlansInfoType } from "@/apis/interface/myInterface";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
 import { strFormat } from "@/utils/filters/string";
@@ -90,7 +90,6 @@ const commentsFormat = (data: theNoteComment[]) => {
     });
   });
 };
-
 const requestOneNoteInfoAndOthers = async () => {
   await getOneNoteInfoById(noteId)
     .then((res: any) => {
@@ -248,7 +247,7 @@ const returnTheIsLikeFlag = computed(() => {
     // @ts-ignore
     // alert(commentsLikeFlagList.value[index].likeFlag + "....");
     // @ts-ignore
-    return commentsLikeFlagList.value[index].likeFlag;
+    return commentsLikeFlagList.value[index]?.likeFlag;
   };
 });
 /* axios同步请求 */
@@ -320,6 +319,7 @@ const commentLike = async (commentId: string) => {
                     });
                   } else {
                     //这里必须要清空一下
+                    // commentsLikeFlagList.value = [];
                     noteCommentsInfo.value = [] as theNoteComment[];
                     finalCommentsArray.value = [] as tranformComments[];
                     noteCommentsInfo.value = res.data;
@@ -373,8 +373,7 @@ const cancelCommentLike = async (commentId: string) => {
             message: "取消点赞成功",
           });
           setTimeout(
-            () =>
-              //更新评论
+            () => {
               getCommentsByNoteId(noteId)
                 .then((res: any) => {
                   if (res.code != 0) {
@@ -385,6 +384,7 @@ const cancelCommentLike = async (commentId: string) => {
                     });
                   } else {
                     //这里必须要清空一下
+                    // commentsLikeFlagList.value = [];
                     noteCommentsInfo.value = [] as theNoteComment[];
                     finalCommentsArray.value = [] as tranformComments[];
                     noteCommentsInfo.value = res.data;
@@ -397,7 +397,9 @@ const cancelCommentLike = async (commentId: string) => {
                     type: "error",
                     message: error.message,
                   });
-                }),
+                });
+            },
+            //更新评论
             1000
           );
         }
@@ -614,6 +616,7 @@ const noteLike = async () => {
             message: "点赞成功",
           });
           setTimeout(async () => {
+            /* 更新点赞数量 */
             await getOneNoteInfoById(noteId)
               .then((res: any) => {
                 if (res.code != 0) {
@@ -633,6 +636,7 @@ const noteLike = async () => {
                   message: error.message,
                 });
               });
+            /* 更新点赞状态 */
             await islikeTheNote(noteId, store.userInfo.id)
               .then((res: any) => {
                 if (res.code != 0) {
@@ -643,6 +647,7 @@ const noteLike = async () => {
                   });
                 } else {
                   // alert("成功");
+                  // alert(res.data);
                   noteLikeFlag.value = res.data;
                 }
               })
@@ -1027,7 +1032,9 @@ const cancelNoteStar = async () => {
               </div>
               <div class="author-one__content">
                 <h3>
-                  <router-link to="/">{{ authorInfo.name }}</router-link>
+                  <router-link :to="`/user/${authorInfo.id}`">{{
+                    authorInfo.name
+                  }}</router-link>
                 </h3>
                 <p>个性签名:{{ authorInfo.signature }}</p>
               </div>
@@ -1111,7 +1118,7 @@ const cancelNoteStar = async () => {
               <h3 class="sidebar__title">对应行程表</h3>
               <ul class="sidebar__category-list list-unstyled">
                 <li style="font-size: 16px">
-                  总预算:{{ oneUserPlansInfo.budget }}元
+                  总预算:{{ oneUserPlansInfo?.budget }}元
                 </li>
                 <li>
                   <span class="span-style text-amber">行程信息</span>
@@ -1119,24 +1126,24 @@ const cancelNoteStar = async () => {
                     <el-collapse accordion>
                       <el-collapse-item
                         :name="index"
-                        v-for="(item, index) in oneUserPlansInfo.subPlans"
+                        v-for="(item, index) in oneUserPlansInfo?.subPlans"
                         :key="index"
                       >
                         <template #title>
                           <div class="plan-note-header">
-                            {{ item.city
+                            {{ item?.city
                             }}<el-icon class="header-icon" size="16px">
                               <Place />
                             </el-icon>
                             <span style="margin-left: 10px">预算:</span
-                            >{{ item.budget }}元
+                            >{{ item?.budget }}元
                           </div>
                         </template>
                         <ul>
-                          <li v-for="(i, index2) in item.days" :key="index2">
+                          <li v-for="(i, index2) in item?.days" :key="index2">
                             第{{ index2 + 1 }}天
                             <span v-for="(k, index3) in i.route" :key="index3">
-                              {{ k.originName }}({{ k.departTime }}小时)
+                              {{ k?.originName }}({{ k?.departTime }}小时)
                               <el-icon><Right /></el-icon>
                             </span>
                             结束

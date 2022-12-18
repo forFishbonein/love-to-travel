@@ -1,11 +1,18 @@
 <script setup lang="ts">
 import { ref, reactive, toRefs } from "vue";
-import { citysInfoType } from "@apis/interface/iPlan";
+import { citysInfoType } from "@/apis/interface/myInterface";
 import { getCitysInfo, getPageCitysInfo } from "@apis/travelService/city";
+import { getPageCitysInfoByKeyword } from "@/apis/travelService/search";
 // ElConfigProvider 组件
 // import { ElConfigProvider } from "element-plus";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
+/* 全局根据简介查询 */
+const props = defineProps<{
+  keyword: string;
+}>();
+const keyword = props.keyword;
+
 /* 分页查询的实现 */
 let citysInfo = ref([] as citysInfoType[]);
 const pageParams = reactive({
@@ -14,30 +21,56 @@ const pageParams = reactive({
   limit: 12,
 });
 const { total, page, limit } = toRefs(pageParams);
+
 //得到分页数据
 const requestPageCitysInfo = async () => {
-  await getPageCitysInfo(page.value, limit.value)
-    .then((res: any) => {
-      if (res.code != 0) {
+  if (keyword) {
+    await getPageCitysInfoByKeyword(keyword, page.value, limit.value)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("获取成功");
+          citysInfo.value = res.data.records;
+          total.value = res.data.total;
+          console.log(citysInfo);
+        }
+      })
+      .catch((error) => {
         //@ts-ignore
         ElMessage({
           type: "error",
-          message: res.msg,
+          message: error.message,
         });
-      } else {
-        // alert("获取成功");
-        citysInfo.value = res.data.records;
-        total.value = res.data.total;
-        console.log(citysInfo);
-      }
-    })
-    .catch((error) => {
-      //@ts-ignore
-      ElMessage({
-        type: "error",
-        message: error.message,
       });
-    });
+  } else {
+    await getPageCitysInfo(page.value, limit.value)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          // alert("获取成功");
+          citysInfo.value = res.data.records;
+          total.value = res.data.total;
+          console.log(citysInfo);
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
 };
 requestPageCitysInfo();
 // 回调函数1：每页记录数改变时调用，size：回调参数，表示当前选中的“每页条数”
@@ -78,9 +111,65 @@ const changeCurrentPage = (p: number) => {
 //     });
 // };
 // requestCitysInfo();
+const thisPageKeyword = ref("");
+const searchTheCity = async () => {
+  total.value = 0;
+  page.value = 1;
+  limit.value = 12;
+  await getPageCitysInfoByKeyword(
+    thisPageKeyword.value,
+    page.value,
+    limit.value
+  )
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        // alert("获取成功");
+        citysInfo.value = res.data.records;
+        total.value = res.data.total;
+        console.log(citysInfo);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
 </script>
-
+<script lang="ts">
+//@ts-ignore
+(function ($) {
+  $(document).ready(function () {
+    $(".search-popup").css("transform", "translateY(-110%)");
+  });
+  //@ts-ignore
+})(jQuery);
+</script>
 <template>
+  <div class="search-input-container">
+    <form
+      autocomplete="off"
+      @submit.prevent="searchTheCity()"
+      class="sidebar__search-form"
+    >
+      <input
+        type="search"
+        placeholder="输入搜索内容"
+        v-model="thisPageKeyword"
+      />
+      <button type="submit" class="search-page-button">
+        <i class="icon-magnifying-glass"></i>
+      </button>
+    </form>
+  </div>
   <section class="destinations-one destinations-page">
     <div class="container">
       <div class="row masonary-layout">
@@ -145,5 +234,23 @@ const changeCurrentPage = (p: number) => {
     width: 100%;
     height: 100%;
   }
+}
+/* 搜索框部分需要的样式 */
+.destinations-one {
+  padding-top: 0px;
+}
+.search-input-container {
+  width: 100%;
+  padding: 50px 200px;
+}
+.search-page-button {
+  border-radius: 10px;
+  transition: all 0.3s linear;
+}
+.search-page-button:hover {
+  background-color: #e8604c;
+}
+.search-page-button:hover > i {
+  color: #ffffff;
 }
 </style>

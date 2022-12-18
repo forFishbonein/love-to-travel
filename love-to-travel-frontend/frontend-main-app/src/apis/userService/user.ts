@@ -29,3 +29,23 @@ export const getUserInfoById = (userId: string) => {
     loading: true,
   });
 };
+
+/* 修改用户信息 */
+export const modifyUserInfo = (data: any) => {
+  return httpRequest({
+    url: "http://localhost:8081/user/updateprofile",
+    method: "put",
+    data: data,
+    loading: true,
+  });
+};
+
+/* 修改密码 */
+export const modifyUserPass = (data: any) => {
+  return httpRequest({
+    url: "http://localhost:8081/user/updatepassword",
+    method: "put",
+    data: data,
+    loading: true,
+  });
+};

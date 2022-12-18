@@ -189,3 +189,68 @@ export interface beenInfoType {
   pos: Array<number>;
   url: string;
 }
+
+/* 组队 */
+export interface teamMemberInfoType {
+  email: string;
+  tele: string;
+  userId: string;
+  userName: string;
+}
+
+export interface theTeamInfoType {
+  budget: string;
+  createTime: string;
+  day: string;
+  deleted: string;
+  depart: string;
+  id: string;
+  introduction: string;
+  members: teamMemberInfoType[];
+  num: string;
+  ownerId: string;
+  place: Array<string>;
+  planId: string;
+  slogan: string;
+  teamName: string;
+  updateTime: string;
+}
+
+export interface teamModifyParams {
+  id: string;
+  planId: string;
+  teamName: string;
+  ownerId: string;
+  place: Array<string>;
+  depart: string;
+  day: string;
+  budget: string;
+  introduction: string;
+  slogan: string;
+  num: string;
+  members: teamMemberInfoType[];
+}
+
+export interface userInfoModifyType {
+  id: string;
+  name: string;
+  tele: string;
+  birthday: string;
+  post: string;
+  profession: string;
+  signature: string;
+  gender: string;
+  address: string;
+}
+
+/* 产品类型 */
+export interface productInfoType {
+  id: string;
+  introduction: string;
+  name: string;
+  plan: finalAllCityPlansInfoType;
+  price: string;
+  tele: string;
+  url: string;
+  createTime: string;
+}

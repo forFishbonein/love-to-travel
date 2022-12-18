@@ -5,6 +5,7 @@ import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
 import com.lovetotravel.travel.entity.Team;
 import com.lovetotravel.travel.entity.dto.Member;
+import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.team.*;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.result.CodeMsg;
@@ -21,6 +22,8 @@ import org.springframework.data.mongodb.core.query.Update;
 import org.springframework.stereotype.Service;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 
@@ -67,6 +70,29 @@ public class TeamServiceImpl implements TeamService {
         Query query = new Query();
         query.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("createTime")));
         return mongoTemplate.find(query, Team.class);
+    }
+
+    @Override
+    public PageVo<Team> getPage(PageVo pageVo) {
+        Integer pageSize = pageVo.getPageSize();
+        Integer pageNum = pageVo.getPageNum();
+        List<Team> list;
+        try {
+            Query query = new Query();
+            query.addCriteria(Criteria.where("deleted").is("0"));
+            long total = mongoTemplate.count(query, Team.class);
+            //默认值为5，
+            pageSize = pageSize < 0 ? 5 : pageSize;
+            query.limit(pageSize);
+            query.skip((pageNum - 1) * pageSize);
+            list = mongoTemplate.find(query, Team.class);
+            pageVo.setRecords(list);
+            pageVo.setTotal(total);
+            return pageVo;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 
     @Override
@@ -131,6 +157,9 @@ public class TeamServiceImpl implements TeamService {
 
     @Override
     public void invite(TeamInviteVo teamInviteVo) {
+        System.out.println("----------");
+        System.out.println(teamInviteVo.getInviterId());
+        System.out.println("----------");
         Result<User> result = userClient.getById(Long.valueOf(teamInviteVo.getInviterId()));
         User inviter = result.getData();
         if (inviter == null) {
@@ -149,31 +178,9 @@ public class TeamServiceImpl implements TeamService {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(teamKickVo.getTeamId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
-        Team team = mongoTemplate.findOne(query, Team.class);
-
         Update update = new Update();
-
-        if (team.getMembers() != null) {
-            Member[] members = team.getMembers();
-
-            int membersLength = members.length;
-
-            for (int i = 0; i < membersLength; i++) {
-                if (!members[i].getUserId().equals(teamKickVo.getUserId())) {
-                    update.set("members." + i + ".userId", members[i].getUserId());
-                    update.set("members." + i + ".userName", members[i].getUserName());
-                    update.set("members." + i + ".email", members[i].getEmail());
-                    update.set("members." + i + ".tele", members[i].getTele());
-                }
-            }
-        }
-
-        Date date = new Date();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
-        String currentTimeStamp = dateFormat.format(date);
-
-        update.set("updateTime", currentTimeStamp);
-        mongoTemplate.updateFirst(query, update, Team.class);
+        update.pull("members", teamKickVo.getMember());
+        mongoTemplate.updateMulti(query, update, Team.class);
 
 
     }
@@ -192,14 +199,36 @@ public class TeamServiceImpl implements TeamService {
     }
 
     @Override
+    public Boolean isJoin(TeamVo teamVo) {
+        Query query = new Query();
+        query.addCriteria(Criteria.where("id").is(teamVo.getTeamId()));
+        query.addCriteria(Criteria.where("members").elemMatch(Criteria.where("userId").is(teamVo.getUserId())));
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        Team team = mongoTemplate.findOne(query, Team.class);
+        return team != null;
+    }
+
+    @Override
     public void leave(TeamLeaveVo teamLeaveVo) {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(teamLeaveVo.getTeamId()));
+        query.addCriteria(Criteria.where("members.userId").is(teamLeaveVo.getUserId()));
         query.addCriteria(Criteria.where("deleted").is("0"));
+        Team one = mongoTemplate.findOne(query, Team.class);
+        if (one == null) {
+            return;
+        }
+        Member member = new Member();
+        Member[] members = one.getMembers();
+        if (members != null) {
+            for (Member m : members) {
+                if (m.getUserId().equals(teamLeaveVo.getUserId())) {
+                    member = m;
+                }
+            }
+        }
         Update update = new Update();
-        Document doc = new Document();
-        doc.put("userId", teamLeaveVo.getUserId());
-        update.pull("members", doc);
+        update.pull("members", member);
         mongoTemplate.updateMulti(query, update, Team.class);
     }
 

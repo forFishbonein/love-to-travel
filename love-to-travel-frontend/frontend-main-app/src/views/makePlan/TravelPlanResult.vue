@@ -8,7 +8,7 @@ import {
   everyCityPlansInfoType,
   routeInfoType,
   everyDayRoutesType,
-} from "@apis/interface/iPlan";
+} from "@/apis/interface/myInterface";
 import { getHotCitysInfo } from "@apis/travelService/city";
 import { onMounted } from "@vue/runtime-core";
 import { cityStore } from "@/store/city";
@@ -22,6 +22,8 @@ import router from "@/router";
 import { mainStore } from "@/store/user";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import AMapLoader from "@amap/amap-jsapi-loader"; // 使用加载器加载JSAPI，可以避免异步加载、重复加载等常见错误加载错误
+import { shallowRef } from "@vue/reactivity";
 const store2 = mainStore();
 const size = ref<"default" | "large" | "small">("default");
 emitter.on("addPlan", (daysPlanInfo) => {
@@ -46,7 +48,7 @@ emitter.on("addAScenery", (routeInfo) => {
   // alert("添加景区信息到行程");
   // if (oneCityDaysDisplay.value === ([] as everyDayRoutesType[])) {
   if (oneCityDaysDisplay.value.length == 0) {
-    alert("方法1:新增");
+    // alert("方法1:新增");
     //在该城市没有行程内容的情况下
     //给subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days的route数组新增一个信息
     // 这些应该都不需要，需要我们展示的就只是days的内容而已，所以把citysPlansInfo舍弃换成days即everyDayRoutesType[]
@@ -75,7 +77,7 @@ emitter.on("addAScenery", (routeInfo) => {
     console.log("+++++++");
     showFlag.value = true;
   } else {
-    alert("方法2:合并");
+    // alert("方法2:合并");
     //在该城市已经有行程内容的情况下
     //把subPlans中的一项（一个城市）即oneCityDaysDisplay.value的days合并
     //给最后一天的route里面加一项
@@ -194,7 +196,7 @@ const saveFinalPlans = async () => {
 const successDialogVisible = ref(false);
 const goSeeMyPlans = () => {
   successDialogVisible.value = false;
-  router.push("/");
+  router.push("/personal/myroute");
 };
 const backToIndex = () => {
   successDialogVisible.value = false;
@@ -317,7 +319,7 @@ const addACity = async () => {
 const deleteCity = (index: any) => {
   subPlans.value.splice(index, 1);
 };
-const activeIndex = ref(`/result/route/list/${store.searchCityId}`);
+const activeIndex = ref("/result/route/list");
 const handleSelect = (key: string, keyPath: string[]) => {
   // console.log(key, keyPath);
 };
@@ -362,7 +364,113 @@ const searchRoutes = (cityId: string, cityName: string) => {
     },
   });
 };
+/* 打开某一天的地图 */
+/* 高德地图实现 */
+const map = shallowRef(null);
+// 初始化地图方法
+function initMap(routeInfo?: routeInfoType[]) {
+  AMapLoader.load({
+    key: "c3e09b00e68a28103b9377d18f5c2101", // 申请好的Web端开发者Key，首次调用 load 时必填
+    version: "2.0", // 指定要加载的 JSAPI 的版本，缺省时默认为 1.4.15
+    plugins: [
+      "AMap.Scale", //工具条，控制地图的缩放、平移等
+      "AMap.ToolBar", //比例尺，显示当前地图中心的比例尺
+    ], // 需要使用的的插件列表，如比例尺'AMap.Scale'等
+  })
+    .then((AMap) => {
+      let map = new AMap.Map("map", {
+        //设置地图容器id
+        zoom: 8.5, //初始化地图层级
+        viewMode: "3D", //是否为3D地图模式
+        // center: [116.397436, 39.909165], //初始化地图中心点位置，北京
+        // @ts-ignore
+        center: routeInfo[0].origin, //初始化地图中心点位置，其中一个景点
+        dragEnable: true, //禁止鼠标拖拽
+        scrollWheel: true, //鼠标滚轮放大缩小
+        doubleClickZoom: true, //双击放大缩小
+        keyboardEnable: true, //键盘控制放大缩小移动旋转
+      });
+      map.setDefaultCursor("pointer"); //使用CSS默认样式定义地图上的鼠标样式（default/pointer/move/crosshair）
+      map.addControl(new AMap.Scale()); //异步同时加载多个插件
+      map.addControl(new AMap.ToolBar());
 
+      let Obj = {
+        markerList: [],
+        windowList: [],
+      };
+      if (routeInfo) {
+        // 封装一下
+        routeInfo.forEach((e: routeInfoType) => {
+          // var weather = new AMap.Weather();
+          // let info = {};
+          // //执行实时天气信息查询
+          // weather.getLive(e.toCity, function (err, data) {
+          //   console.log(err, data);
+          //   info = data;
+          // });
+          Obj.markerList.push(
+            // @ts-ignore
+            new AMap.Marker({
+              position: new AMap.LngLat(e.origin[0], e.origin[1]),
+            })
+          );
+          Obj.windowList.push(
+            // @ts-ignore
+            new AMap.InfoWindow({
+              //创建信息窗体
+              isCustom: false, //使用自定义窗体
+              anchor: "top-right", //信息窗体的三角所在位置
+              content: `<p style="color:#e8604c;margin:0">目的景区：${e.originName}</p>
+            <p style="color:#e8604c;margin:0">出发时间：${e.departTime}</p>
+            <p style="color:#e8604c;margin:0">交通工具：${e.vehicle}</p>`, //信息窗体的内容可以是任意html片段
+              offset: new AMap.Pixel(0, 0), //不需要偏移量
+            })
+          );
+        });
+
+        map.add(Obj.markerList); // 地图添加标记
+        for (let i = 0; i < Obj.markerList.length; i++) {
+          // @ts-ignore
+          Obj.markerList[i].on("click", () => {
+            // @ts-ignore
+            Obj.windowList[i].open(map, Obj.markerList[i].getPosition());
+            map.on("click", () => {
+              // @ts-ignore
+              Obj.windowList[i] && Obj.windowList[i].close();
+            });
+          });
+        }
+      }
+
+      // @ts-ignore
+      AMapLoader.load({
+        //可多次调用load
+        plugins: ["AMap.MapType"],
+      })
+        .then((AMap) => {
+          map.addControl(new AMap.MapType());
+        })
+        .catch((e) => {
+          console.error(e);
+        });
+    })
+    .catch((e) => {
+      console.log(e);
+    });
+}
+const theMapVisible = ref(false);
+// let pointArray = [] as routeInfoType[]
+const openTheMapForOneDay = (routeInfo: routeInfoType[]) => {
+  // pointArray = [] as routeInfoType[]
+  // route.forEach((e) => {
+  //   pointArray.push(e)
+  // });
+  initMap(routeInfo);
+  theMapVisible.value = true;
+};
+const backToHome = () => {
+  router.push("/");
+};
 onMounted(() => {
   initSubPlans();
   // alert(store2.userInfo.id);
@@ -374,6 +482,9 @@ onMounted(() => {
   <div class="warp">
     <div class="base-header">
       <div class="header-left">{{ store2.userInfo.name }}的行程</div>
+      <div class="header-right-back">
+        <div class="back-button" @click="backToHome">返回首页</div>
+      </div>
       <div class="header-right">
         <div class="save-button" @click="saveFinalPlans">保存行程</div>
       </div>
@@ -490,7 +601,21 @@ onMounted(() => {
               :key="index"
               class="scrollbar-middle-items"
             >
-              <div class="theDay">第{{ index + 1 }}天</div>
+              <div class="theDay">
+                第{{ index + 1 }}天
+                <el-button
+                  type="primary"
+                  size="small"
+                  style="
+                    margin-left: 10px;
+                    position: absolute;
+                    right: 10px;
+                    top: 8px;
+                  "
+                  @click="openTheMapForOneDay(item.route)"
+                  >查看该日行程地图</el-button
+                >
+              </div>
               <div v-for="(i, index2) in item.route" :key="index2">
                 <div class="item-step-content">
                   <div
@@ -593,6 +718,18 @@ onMounted(() => {
       </span>
     </template>
   </el-dialog>
+  <el-dialog v-model="theMapVisible" :show-close="false">
+    <template #header="{ close, titleId, titleClass }">
+      <div class="my-header">
+        <h4 :id="titleId" :class="titleClass">景区行程地图</h4>
+        <el-button type="danger" @click="close">
+          <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
+          关闭
+        </el-button>
+      </div>
+    </template>
+    <div id="map"></div>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
@@ -655,6 +792,40 @@ onMounted(() => {
     }
     .save-button:hover {
       background-color: #e74128;
+      color: #e0e0e0;
+    }
+  }
+  .header-right-back {
+    float: right;
+    // width: 530px;
+    width: auto;
+    height: 80px;
+    // border: 1px #e8604c solid;
+    // display: flex;
+    // align-items: center;
+    // justify-content: right;
+    position: relative;
+    .back-button {
+      position: absolute;
+      top: 20px;
+      right: 160px;
+      margin-right: 20px;
+      width: 120px;
+      height: 40px;
+      // border: 1px #e8604c solid;
+      border-radius: 5px;
+      background-color: #67c23a;
+      color: #ffffff;
+      font-size: 16px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      transition: all 0.3s linear;
+      font-weight: 700;
+    }
+    .back-button:hover {
+      background-color: #529b2e;
       color: #e0e0e0;
     }
   }
@@ -869,6 +1040,7 @@ onMounted(() => {
           font-weight: 800;
           font-size: 18px;
           letter-spacing: 0.5em;
+          position: relative;
         }
         .item-step-content {
           width: 450px;
@@ -1002,5 +1174,18 @@ onMounted(() => {
       // border: 1px #e8604c solid;
     }
   }
+}
+/* 地图 */
+#map {
+  margin: 0px;
+  width: 100%;
+  height: 550px;
+  // height: 100%;
+  padding: 0px;
+}
+.my-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
 }
 </style>

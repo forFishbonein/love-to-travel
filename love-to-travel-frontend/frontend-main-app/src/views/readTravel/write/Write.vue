@@ -4,7 +4,7 @@ import { UPLOADER } from "@/utils/uploadImg";
 import { srcPattern } from "@/utils/filters/srcPattern";
 import { mainStore } from "@/store/user";
 import { getUserAllPlansInfoByUserId } from "@/apis/travelService/plan";
-import { theGivenAllCityPlansInfoType } from "@apis/interface/iPlan";
+import { theGivenAllCityPlansInfoType } from "@/apis/interface/myInterface";
 import { publishOneNote } from "@/apis/travelService/note";
 import { noteInfoParams } from "@/apis/travelService/tInterface";
 // import { storeToRefs } from "pinia";
@@ -226,7 +226,7 @@ export default {
         <ul class="thm-breadcrumb list-unstyled">
           <li><router-link to="/">首页</router-link></li>
           <li><span>.</span></li>
-          <li><a href="#">组旅游</a></li>
+          <li><router-link to="/groupTravel/write">阅旅游</router-link></li>
           <li><span>.</span></li>
           <li class="active">发布游记</li>
         </ul>

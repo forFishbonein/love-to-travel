@@ -5,6 +5,8 @@ import Home from "@views/Home.vue";
 import GoTravel from "@views/goTravel/GoTravel.vue";
 import GroupTravel from "@views/groupTravel/GroupTravel.vue";
 import ReadTravel from "@/views/readTravel/ReadTravel.vue";
+import BuyTravel from "@/views/buyTravel/BuyTravel.vue";
+import Product from "@/views/buyTravel/product/Product.vue";
 import City from "@/views/goTravel/city/City.vue";
 import Scenery from "@/views/goTravel/scenery/Scenery.vue";
 import TravelPlan from "@/views/makePlan/TravelPlan.vue";
@@ -12,6 +14,10 @@ import TravelPlanResult from "@/views/makePlan/TravelPlanResult.vue";
 import PassLogin from "@/components/passOrCode/PassLogin.vue";
 import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 import PersonalIndex from "@/views/personal/Index.vue";
+import User from "@/views/user/User.vue";
+import Search from "@/views/search/Search.vue";
+import CanvasTravel from "@/views/canvasTravel/CanvasTravel.vue";
+
 // import Note from "@/views/readTravel/note/Note.vue";
 
 export const routes: Array<RouteRecordRaw> = [
@@ -31,7 +37,7 @@ export const routes: Array<RouteRecordRaw> = [
         name: "Index",
         // component: () => import("@/views/Home.vue"), //这个不行，会加载不出来
         component: Home,
-        meta: { title: "首页", keepAlive: true, showTab: true },
+        meta: { title: "首页", keepAlive: false, showTab: true },
       },
       {
         path: "/goTravel",
@@ -60,6 +66,17 @@ export const routes: Array<RouteRecordRaw> = [
                   title: "城市列表",
                   keepAlive: false,
                   showTab: true,
+                },
+                // beforeEnter: (to, from, next) => {
+                //   alert("要进入了");
+                //   next();
+                // },
+                //把route对象直接拆出属性
+                /* params刷新一下就没了，更好 */
+                props({ params: { keyword } }) {
+                  return {
+                    keyword,
+                  };
                 },
               },
               {
@@ -99,6 +116,11 @@ export const routes: Array<RouteRecordRaw> = [
                   title: "景区列表",
                   keepAlive: false,
                   showTab: true,
+                },
+                props({ params: { keyword } }) {
+                  return {
+                    keyword,
+                  };
                 },
               },
               {
@@ -144,6 +166,11 @@ export const routes: Array<RouteRecordRaw> = [
                   keepAlive: false,
                   showTab: true,
                 },
+                props({ params: { keyword } }) {
+                  return {
+                    keyword,
+                  };
+                },
               },
               {
                 path: "detail/:noteId",
@@ -172,6 +199,13 @@ export const routes: Array<RouteRecordRaw> = [
         ],
       },
       {
+        path: "/canvasTravel",
+        name: "CanvasTravel",
+        component: CanvasTravel,
+        meta: { title: "旅游脉络", keepAlive: false, showTab: true },
+      },
+
+      {
         path: "/groupTravel",
         name: "GroupTravel",
         component: GroupTravel,
@@ -196,22 +230,6 @@ export const routes: Array<RouteRecordRaw> = [
                   showTab: true,
                 },
               },
-              {
-                path: "detail/:noteId",
-                name: "TeamDetail",
-                component: () =>
-                  import("@/views/groupTravel/team/TeamDetail.vue"),
-                meta: {
-                  title: "队伍详情",
-                  keepAlive: false,
-                  showTab: true,
-                },
-                props(route) {
-                  return {
-                    teamId: route.params.teamId,
-                  };
-                },
-              },
             ],
           },
           {
@@ -220,6 +238,54 @@ export const routes: Array<RouteRecordRaw> = [
             component: () => import("@/views/groupTravel/create/Create.vue"),
             // component: Note,
             meta: { title: "创建队伍", keepAlive: false, showTab: true },
+          },
+        ],
+      },
+      {
+        path: "/buyTravel",
+        name: "BuyTravel",
+        component: BuyTravel,
+        meta: { title: "购旅游", keepAlive: false, showTab: true },
+        children: [
+          {
+            path: "product",
+            name: "Product",
+            component: Product,
+            meta: {
+              title: "旅游产品页",
+              keepAlive: false,
+              showTab: true,
+            },
+            redirect: "/buyTravel/product/list",
+            children: [
+              {
+                path: "list",
+                name: "ProductList",
+                component: () =>
+                  import("@/views/buyTravel/product/ProductList.vue"),
+                meta: {
+                  title: "产品列表",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "detail/:productId",
+                name: "ProductDetail",
+                component: () =>
+                  import("@/views/buyTravel/product/ProductDetail.vue"),
+                meta: {
+                  title: "产品详情",
+                  keepAlive: false,
+                  showTab: true,
+                },
+                props(route) {
+                  return {
+                    productId: route.params.productId,
+                  };
+                },
+              },
+            ],
           },
         ],
       },
@@ -280,7 +346,102 @@ export const routes: Array<RouteRecordRaw> = [
               showTab: true,
             },
           },
+          {
+            path: "myteam",
+            name: "MyTeam",
+            component: () => import("@/views/personal/myteam/MyTeam.vue"),
+            meta: {
+              title: "我的队伍",
+              keepAlive: false,
+              showTab: true,
+            },
+            redirect: "/personal/myteam/myjoin",
+            children: [
+              {
+                path: "myjoin",
+                name: "MyJoin",
+                component: () => import("@/views/personal/myteam/MyJoin.vue"),
+                // component: Note,
+                meta: {
+                  title: "我加入的队伍",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+              {
+                path: "mycreate",
+                name: "MyCreate",
+                component: () => import("@/views/personal/myteam/MyCreate.vue"),
+                // component: Note,
+                meta: {
+                  title: "我创建的队伍",
+                  keepAlive: false,
+                  showTab: true,
+                },
+              },
+            ],
+          },
+          {
+            path: "follow",
+            name: "Follow",
+            component: () => import("@/views/personal/Follow.vue"),
+            meta: {
+              title: "我的粉丝和关注",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
+            path: "buy",
+            name: "Buy",
+            component: () => import("@/views/personal/Buy.vue"),
+            meta: {
+              title: "我的订单",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
+            path: "setup",
+            name: "Setup",
+            component: () => import("@/views/personal/Setup.vue"),
+            meta: {
+              title: "设置",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
         ],
+      },
+      {
+        path: "/user/:userId",
+        name: "User",
+        component: User,
+        meta: { title: "其他用户的主页", keepAlive: false, showTab: true },
+        // beforeEnter: (to, from, next) => {
+        //   if()
+        //   next();
+        // },
+        props(route) {
+          return {
+            userId: route.params.userId,
+          };
+        },
+      },
+      {
+        path: "/search",
+        name: "Search",
+        component: Search,
+        meta: { title: "全局搜索结果页", keepAlive: false, showTab: true },
+        // beforeEnter: (to, from, next) => {
+        //   if()
+        //   next();
+        // },
+        props(route) {
+          return {
+            keyword: route.params.keyword,
+          };
+        },
       },
     ],
   },

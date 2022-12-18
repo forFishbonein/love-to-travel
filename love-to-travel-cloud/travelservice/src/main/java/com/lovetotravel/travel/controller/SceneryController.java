@@ -171,6 +171,13 @@ public class SceneryController {
         return Result.success(sceneryService.getSceneryByStr(pageVo));
     }
 
+    @ApiOperation("景区模糊查询2")
+    @PostMapping("/scenery/query2")
+    public Result<Page<Scenery>> getSceneryByStr2(@RequestBody QueryPageVo pageVo) {
+        System.out.println(pageVo);
+        return Result.success(sceneryService.getSceneryByStr2(pageVo));
+    }
+
     @ApiOperation("景区评论")
     @PostMapping("/scenery/comment")
     public Result<String> comment(@RequestBody SceneryCommentVo sceneryCommentVo) {
