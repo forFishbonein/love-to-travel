@@ -1,4 +1,3 @@
-/* 新增计划 */
 import httpRequest from "@/request";
 export const getPageProductsInfo = (page: number, limit: number) => {
   return httpRequest({
@@ -19,11 +18,17 @@ export const getOneProductInfoById = (productId: string) => {
   });
 };
 
-export const buyOneProduct = (pId: string, uId: string, pCost: string) => {
-  alert("购买");
-  console.log(pId);
-  console.log(uId);
-  console.log(pCost);
+export const buyOneProduct = (
+  pId: string,
+  uId: string,
+  pCost: string,
+  time: string
+) => {
+  // alert("购买");
+  // console.log(pId);
+  // console.log(uId);
+  // console.log(pCost);
+  // console.log(time);
   return httpRequest({
     method: "post",
     url: "http://localhost:8082/product/buy",
@@ -31,6 +36,7 @@ export const buyOneProduct = (pId: string, uId: string, pCost: string) => {
       productId: pId,
       userId: uId,
       cost: pCost,
+      createTime: time,
     },
     loading: true, //显示加载圈
   });
