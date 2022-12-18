@@ -10,7 +10,7 @@ export default {
     return {
       width: 600,
       height: 600,
-      colorList: ["red","blue","red","blue","red","blue","red","blue","red","blue","red","blue","red","blue","red"],
+      colorList: ["red", "blue", "red", "blue", "red", "blue", "red", "blue", "red", "blue", "red", "blue", "red", "blue", "red"],
       testGraph: {
         "nodes": [
           {"id": "Myriel", "group": 1},
@@ -366,15 +366,13 @@ export default {
       const simulation = d3.forceSimulation(nodes)
           .force("link", d3.forceLink(links).id(d => d.id))
           .force("charge", d3.forceManyBody())
-          .force("center", d3.forceCenter(_this.width / 2, _this.height / 2.4))
+          .force("center", d3.forceCenter(_this.width / 2, _this.height / 2))
 
       const svg = d3.select(".container").append("svg").attr("viewBox", [0, 0, _this.width, _this.height])
 
       // svg.call(d3.zoom().on("zoom",function (){
       //   svg.attr("transform", d3.event.transform)
       // }))
-
-
 
 
       const link = svg.append("g")
@@ -397,7 +395,19 @@ export default {
 
       node.append("title").text(d => d.id)
 
-      simulation.on("tick" ,()=>{
+      // const nodeNameText = g.append("g")
+      //     .selectAll("text")
+      //     .data(nodes)
+      //     .join("text")
+      //     .attr("dx", 4)
+      //     .attr("dy", 8)
+      //     .attr("class", "node-name")
+      //     .text(function (d) {
+      //       return d.id
+      //     })
+
+
+      simulation.on("tick", () => {
         link
             .attr("x1", d => d.source.x)
             .attr("y1", d => d.source.y)
@@ -407,6 +417,9 @@ export default {
         node
             .attr("cx", d => d.x)
             .attr("cy", d => d.y);
+
+        // nodeNameText
+        //     .attr("x", d => d.x).attr("y", d => d.y);
       });
 
 
@@ -440,8 +453,6 @@ export default {
           .on("end", dragended);
     }
   }
-
-
 
 
 }

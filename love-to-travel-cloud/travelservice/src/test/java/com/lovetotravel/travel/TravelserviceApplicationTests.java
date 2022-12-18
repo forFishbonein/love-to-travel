@@ -1,5 +1,9 @@
 package com.lovetotravel.travel;
 
+import com.baomidou.mybatisplus.annotation.TableId;
+import com.lovetotravel.travel.entity.canvas.SceneryRelationRepository;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 
 
@@ -7,35 +11,17 @@ import org.springframework.boot.test.context.SpringBootTest;
 class TravelserviceApplicationTests {
 
 
-//    @Autowired
-//    SceneryRepository sceneryRepository;
+
+    @Autowired
+    SceneryRelationRepository sceneryRelationRepository;
+
+    @Test
+    void testRelation() {
+//        sceneryRelationRepository.findRelation()
+    }
 
 
-//    @Test
-//    void contextLoads() throws IOException {
-//
-//        List<SceneryNode> all = sceneryRepository.findAll();
-//        System.out.println("all = " + all);
-//
-//        List<SceneryRelationShip> allin = sceneryRepository.getSceneryLocated();
-//        System.out.println("allin = " + allin);
-//
-//    }
 
-//    DetectController detectController;
-//
-//
-//    @Autowired
-//    public void setDetectController(DetectController detectController) {
-//        this.detectController = detectController;
-//    }
-//
-//    @Test
-//    void detect() {
-//        HttpServletRequest request = new MockHttpServletRequest();
-//        request.setAttribute("usrNo","81");
-//        detectController.detect(request);
-//    }
 }
 
 

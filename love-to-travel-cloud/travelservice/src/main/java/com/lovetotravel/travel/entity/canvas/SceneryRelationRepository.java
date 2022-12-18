@@ -14,7 +14,7 @@ public interface SceneryRelationRepository extends Neo4jRepository<SceneryRelati
     @Query("MATCH p=(n:Person)-[r:Relation]->(m:Person) " +
             "WHERE id(n)={startNode} and id(m)={endNode} and r.relation={relation}" +
             "RETURN p")
-    List<SceneryRelation> findRelation(@Param("startNode") SceneryNode startNode,
+    List<SceneryRelation> findAllBySceneryNode(@Param("startNode") SceneryNode startNode,
                                 @Param("endNode") SceneryNode endNode,
                                 @Param("relation") String relation);
 
