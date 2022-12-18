@@ -3,8 +3,7 @@ package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.canvas.CustomNode;
 import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
-import com.lovetotravel.travel.entity.canvas.node.DistrictNode;
-import com.lovetotravel.travel.entity.canvas.node.SceneryNode;
+import com.lovetotravel.travel.entity.canvas.node.*;
 import com.lovetotravel.travel.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -44,22 +43,52 @@ public class CanvasController {
         return Result.success(customNodes);
     }
 
-    @GetMapping("/query/{relationship}/{name}")
-    public Result<List<CustomNode>> getRelByName(@PathVariable("relationship") String rel,@PathVariable("name") String name) {
+    @GetMapping("/query/{rel}/{name}")
+    public Result<List<CustomNode>> getRelByName(@PathVariable("rel") String rel,@PathVariable("name") String name) {
+
+        System.out.println(rel);
+        System.out.println(name);
+
+
 
         SceneryNode sceneryNode = sceneryRepository.findSceneryNodeByName(name);
 
+        System.out.println(sceneryNode);
+
         List<CustomNode> customNodes = new ArrayList<>();
 
-        Set<DistrictNode> districtNodeSet = sceneryNode.getSceneryLocated();
-
-        for(DistrictNode d : districtNodeSet){
-            customNodes.add(new CustomNode(d.getName(),2, d));
+        if(rel.equals("in_area")){
+            Set<DistrictNode> districtNodeSet = sceneryNode.getSceneryLocated();
+            for(DistrictNode d : districtNodeSet){
+                customNodes.add(new CustomNode(d.getName(),2, d));
+            }
         }
+        else if(rel.equals("recommand_food")){
+            Set<FoodNote> foodNoteSet = sceneryNode.getSceneryReFood();
+            for(FoodNote d : foodNoteSet){
+                customNodes.add(new CustomNode(d.getName(),2, d));
+            }
+
+        }
+        else if(rel.equals("is_related")){
+            Set<HistoryNote> historyNoteSet = sceneryNode.getSceneryRelHistory();
+            for(HistoryNote d : historyNoteSet){
+                customNodes.add(new CustomNode(d.getName(),2, d));
+            }
+
+        }
+        else if(rel.equals("is_detail")){
+            Set<SceDetailNote> sceDetailNoteSet =  sceneryNode.getSceneryHasDet();
+            for(SceDetailNote d : sceDetailNoteSet){
+                customNodes.add(new CustomNode(d.getName(),2, d));
+            }
+
+        }
+
+
 
         return Result.success(customNodes);
     }
-
 
 
 

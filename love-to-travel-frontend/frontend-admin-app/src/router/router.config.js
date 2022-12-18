@@ -67,6 +67,12 @@ export const routes = [
                 component: () => import("@/components/statisticService/Rank.vue"),
                 meta: {title: "游记排行"},
             },
+            {
+                path: "/product",
+                name: "Product",
+                component: () => import("@/components/serviceManage/Product.vue"),
+                meta: {title: "产品管理"},
+            },
         ],
     },
     {

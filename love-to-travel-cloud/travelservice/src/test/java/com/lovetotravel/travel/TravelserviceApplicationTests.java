@@ -3,6 +3,7 @@ package com.lovetotravel.travel;
 import com.lovetotravel.travel.entity.canvas.node.SceneryNode;
 import com.lovetotravel.travel.entity.canvas.dao.SceneryRelationRepository;
 import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
+import com.lovetotravel.travel.entity.canvas.relation.SceneryRelation;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -26,8 +27,8 @@ class TravelserviceApplicationTests {
         List<SceneryNode> all = sceneryRepository.findAll();
         System.out.println("all = " + all);
 
-//        List<SceneryRelation> allin = sceneryRelationRepository.findRelation();
-//        System.out.println("allin = " + allin);
+        List<SceneryRelation> allin = sceneryRelationRepository.findRelation();
+        System.out.println("allin = " + allin);
 
     }
 

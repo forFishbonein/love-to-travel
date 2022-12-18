@@ -21,7 +21,7 @@
     </template>
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column label="游记标题" prop="title"/>
+      <el-table-column label="游记标题" prop="title" width="150"/>
       <el-table-column label="发布者" prop="userName" width="100"/>
       <el-table-column label="相关城市" prop="city" width="80"/>
       <!--      <el-table-column :show-overflow-tooltip="true" label="内容" prop="content" width="100"/>-->

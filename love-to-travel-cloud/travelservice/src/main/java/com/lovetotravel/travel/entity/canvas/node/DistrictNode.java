@@ -14,6 +14,9 @@ public class DistrictNode {
     private Long id;
     private String name;
 
+    public DistrictNode() {}
+
+
     public DistrictNode(String name) {
         this.name = name;
     }
