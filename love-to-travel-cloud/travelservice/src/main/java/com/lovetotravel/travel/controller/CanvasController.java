@@ -43,16 +43,21 @@ public class CanvasController {
         return Result.success(customNodes);
     }
 
-    @GetMapping("/query/{relationship}/{name}")
-    public Result<List<CustomNode>> getRelByName(@PathVariable("relationship") String rel,@PathVariable("name") String name) {
+    @GetMapping("/query/{rel}/{name}")
+    public Result<List<CustomNode>> getRelByName(@PathVariable("rel") String rel,@PathVariable("name") String name) {
+
+        System.out.println(rel);
+        System.out.println(name);
 
 
 
         SceneryNode sceneryNode = sceneryRepository.findSceneryNodeByName(name);
 
+        System.out.println(sceneryNode);
+
         List<CustomNode> customNodes = new ArrayList<>();
 
-        if(rel.equals("is_area")){
+        if(rel.equals("in_area")){
             Set<DistrictNode> districtNodeSet = sceneryNode.getSceneryLocated();
             for(DistrictNode d : districtNodeSet){
                 customNodes.add(new CustomNode(d.getName(),2, d));
@@ -72,7 +77,7 @@ public class CanvasController {
             }
 
         }
-        else if(rel.equals("is_detial")){
+        else if(rel.equals("is_detail")){
             Set<SceDetailNote> sceDetailNoteSet =  sceneryNode.getSceneryHasDet();
             for(SceDetailNote d : sceDetailNoteSet){
                 customNodes.add(new CustomNode(d.getName(),2, d));

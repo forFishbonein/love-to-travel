@@ -14,6 +14,8 @@ public class CityNode {
     private Long id;
     private String name;
 
+    public CityNode() {}
+
     public CityNode(String name) {
         this.name = name;
     }

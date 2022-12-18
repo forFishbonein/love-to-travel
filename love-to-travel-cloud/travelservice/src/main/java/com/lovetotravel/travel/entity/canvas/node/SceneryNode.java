@@ -56,19 +56,19 @@ public class SceneryNode implements Serializable {
     }
 
     //景区--地区
-    @Relationship(type = "in_area", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "in_area", direction = Relationship.Direction.OUTGOING)
     private Set<DistrictNode> sceneryLocated = new HashSet<>();
 
     //景区--推荐食物
-    @Relationship(type = "recommand_food", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "recommand_food", direction = Relationship.Direction.OUTGOING)
     private Set<FoodNote> sceneryReFood = new HashSet<>();
 
     //景区--历史事件
-    @Relationship(type = "is_related", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "is_related", direction = Relationship.Direction.OUTGOING)
     private Set<HistoryNote> sceneryRelHistory = new HashSet<>();
 
     //景区--特色
-    @Relationship(type = "is_detail", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "is_detail", direction = Relationship.Direction.OUTGOING)
     private Set<SceDetailNote> sceneryHasDet = new HashSet<>();
 
 }

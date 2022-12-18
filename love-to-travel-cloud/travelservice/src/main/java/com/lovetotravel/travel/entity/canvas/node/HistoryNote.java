@@ -14,6 +14,9 @@ public class HistoryNote {
     private Long id;
     private String name;
 
+    public HistoryNote() {}
+
+
     public HistoryNote(String name) {
         this.name = name;
     }
