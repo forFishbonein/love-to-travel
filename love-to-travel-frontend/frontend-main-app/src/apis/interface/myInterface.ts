@@ -254,3 +254,19 @@ export interface productInfoType {
   url: string;
   createTime: string;
 }
+
+/* 景区评论评分 */
+export interface sceneryCommentBody {
+  content: string;
+  createTime: string;
+  id: string;
+  sceneryId: string;
+  score: number;
+  userId: string;
+  userName: string;
+}
+export interface sceneryCommentsInfoType {
+  avgScore: number;
+  sceneryCommentList: sceneryCommentBody[];
+  total: number;
+}

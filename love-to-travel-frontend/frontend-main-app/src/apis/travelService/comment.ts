@@ -1,5 +1,9 @@
 import httpRequest from "@/request";
-import { commentParams } from "@/apis/travelService/tInterface";
+import {
+  commentParams,
+  sceneryCommentParams,
+} from "@/apis/travelService/tInterface";
+/* 1游记评论 */
 export const getCommentsByNoteId = (noteId: string) => {
   return httpRequest({
     method: "get",
@@ -48,6 +52,24 @@ export const addAComment = (data: commentParams) => {
     method: "post",
     data: data,
     url: "http://localhost:8082/comment",
+    // loading: true, //显示加载圈
+  });
+};
+
+/* 2景区评分评论 */
+export const getCommentsBySceneryId = (sceneryId: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/scenery/comment/${sceneryId}`,
+    // loading: true, //显示加载圈
+  });
+};
+
+export const addASceneryComment = (data: sceneryCommentParams) => {
+  return httpRequest({
+    method: "post",
+    data: data,
+    url: "http://localhost:8082/scenery/comment",
     // loading: true, //显示加载圈
   });
 };
