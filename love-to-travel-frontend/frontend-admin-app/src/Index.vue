@@ -34,7 +34,9 @@
                 <router-link to="/city">城市</router-link>
               </el-menu-item
               >
-              <el-menu-item index="2-3"><router-link to="/scenery">景区</router-link></el-menu-item>
+              <el-menu-item index="2-3">
+                <router-link to="/scenery">景区</router-link>
+              </el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="游记业务">
               <el-menu-item index="2-4">
@@ -69,7 +71,9 @@
               >
                 <router-link to="/log">登录日志</router-link>
               </el-menu-item>
-              <el-menu-item index="3-3"><router-link to="/admin">管理员</router-link></el-menu-item>
+              <el-menu-item index="3-3">
+                <router-link to="/admin">管理员</router-link>
+              </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
           <el-sub-menu index="4">
@@ -83,8 +87,12 @@
               <el-menu-item index="4-1">
                 <router-link to="/rank">游记排行</router-link>
               </el-menu-item>
-              <el-menu-item index="4-2">2</el-menu-item>
-              <el-menu-item index="4-3">3</el-menu-item>
+              <el-menu-item index="4-2">
+                <router-link to="/sales">销售统计</router-link>
+              </el-menu-item>
+              <el-menu-item index="4-3">
+                <router-link to="/rank">游记排行</router-link>
+              </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
         </el-menu>
@@ -222,8 +230,8 @@ const handleClose = (key: string, keyPath: string[]) => {
   margin: 10px;
   width: auto;
   min-height: 100vh;
-  background: rgb(240,240,240);
-  background: linear-gradient(90deg, rgba(240,240,240,1) 0%, rgba(241,241,241,1) 48%, rgba(255,255,255,1) 100%);
+  background: rgb(240, 240, 240);
+  background: linear-gradient(90deg, rgba(240, 240, 240, 1) 0%, rgba(241, 241, 241, 1) 48%, rgba(255, 255, 255, 1) 100%);
 
   box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
 }

@@ -90,7 +90,7 @@ export default {
         this.getLoadEcharts();
         window.onresize = () => {
           // 基于准备好的dom，初始化echarts实例
-          let myChart = this.$echarts.init(document.getElementById('newEcharts'));
+          let myChart = this.$echarts.init(document.getElementById('echart'));
           myChart.resize();
         };
       })
@@ -111,7 +111,7 @@ export default {
         this.getLoadEcharts();
         window.onresize = () => {
           // 基于准备好的dom，初始化echarts实例
-          let myChart = this.$echarts.init(document.getElementById('newEcharts'));
+          let myChart = this.$echarts.init(document.getElementById('echart'));
           myChart.resize();
         };
       })

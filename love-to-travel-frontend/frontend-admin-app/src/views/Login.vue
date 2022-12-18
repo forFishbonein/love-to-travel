@@ -7,10 +7,10 @@
     </div>
     <div class="right-board">
       <div style="margin-top: 90px">
-        <input class="input-box" type="text" v-model="email" placeholder="邮箱">
+        <input class="input-box" type="text" v-model="email" placeholder="hyhx@qq.com">
       </div>
       <div style="margin-top: 30px">
-        <input class="input-box" type="text" v-model="password" placeholder="密码">
+        <input class="input-box" type="password" v-model="password" placeholder="123">
       </div>
       <div class="login-button" @click="doLogin(this.email,this.password)">登录</div>
     </div>
