@@ -1,10 +1,8 @@
 package com.lovetotravel.travel;
 
-import com.lovetotravel.travel.controller.DetectController;
 import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.travelnet.entity.SceneryNode;
 import com.lovetotravel.travel.travelnet.entity.SceneryRelationShip;
-import com.lovetotravel.travel.travelnet.mapper.SceneryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -39,20 +37,20 @@ class TravelserviceApplicationTests {
 //
 //    }
 
-    DetectController detectController;
-
-
-    @Autowired
-    public void setDetectController(DetectController detectController) {
-        this.detectController = detectController;
-    }
-
-    @Test
-    void detect() {
-        HttpServletRequest request = new MockHttpServletRequest();
-        request.setAttribute("usrNo","81");
-        detectController.detect(request);
-    }
+//    DetectController detectController;
+//
+//
+//    @Autowired
+//    public void setDetectController(DetectController detectController) {
+//        this.detectController = detectController;
+//    }
+//
+//    @Test
+//    void detect() {
+//        HttpServletRequest request = new MockHttpServletRequest();
+//        request.setAttribute("usrNo","81");
+//        detectController.detect(request);
+//    }
 }
 
 

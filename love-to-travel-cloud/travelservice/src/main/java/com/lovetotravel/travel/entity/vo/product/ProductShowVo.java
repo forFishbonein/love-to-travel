@@ -14,6 +14,8 @@ public class ProductShowVo {
 
     private String introduction;
 
+    private String planId;
+
     private Plan plan;
 
     private String price;
@@ -23,5 +25,7 @@ public class ProductShowVo {
     private String url;
 
     private String createTime;
+
+    private String cost;
 
 }

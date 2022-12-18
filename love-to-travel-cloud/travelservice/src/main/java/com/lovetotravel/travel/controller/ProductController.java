@@ -17,6 +17,7 @@ import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.result.Result;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.mongodb.core.MongoTemplate;
 import org.springframework.data.mongodb.core.query.Criteria;
@@ -29,6 +30,7 @@ import java.util.List;
 @Api(tags = "旅游产品接口")
 @RestController
 @RequestMapping("/product")
+@Slf4j
 public class ProductController {
 
     final ProductMapper productMapper;
@@ -107,35 +109,50 @@ public class ProductController {
     @ApiOperation("根据用户id查询")
     @GetMapping("/user/{id}")
     public Result<List<ProductShowVo>> getByUserId(@PathVariable("id") String id) {
-        System.out.println(id);
 
-        QueryWrapper<ProductBuy> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(ProductBuy::getUserId, id);
-        List<ProductBuy> productBuyList = productBuyMapper.selectList(queryWrapper);
-
-        System.out.println("productBuyList = " + productBuyList);
-
-        List<ProductShowVo> productShowVoList = new ArrayList<>();
-
-        for (ProductBuy p : productBuyList) {
-            QueryWrapper<Product> productQueryWrapper = new QueryWrapper<>();
-            productQueryWrapper.lambda().eq(Product::getId, p.getProductId());
-            List<Product> productList = productMapper.selectList(productQueryWrapper);
-            for (Product q : productList) {
+        List<ProductShowVo> buyInfo = productBuyMapper.getBuyInfo(id);
+        for (ProductShowVo q : buyInfo) {
                 Query query = new Query();
                 query.addCriteria(Criteria.where("id").is(q.getPlanId()));
                 Plan plan = mongoTemplate.findOne(query, Plan.class);
-                ProductShowVo productShowVo = new ProductShowVo();
-                BeanUtils.copyProperties(q, productShowVo);
-                productShowVo.setPlan(plan);
-                productShowVoList.add(productShowVo);
+                q.setPlan(plan);
             }
+        return Result.success(buyInfo);
 
 
-        }
-        System.out.println(productShowVoList);
-
-            return Result.success(productShowVoList);
+//        System.out.println(id);
+//
+//        QueryWrapper<ProductBuy> queryWrapper = new QueryWrapper<>();
+//        queryWrapper.lambda().eq(ProductBuy::getUserId, id);
+//        List<ProductBuy> productBuyList = productBuyMapper.selectList(queryWrapper);
+//
+////        System.out.println("productBuyList = " + productBuyList);
+//        log.warn("productBuyList = " + productBuyList);
+//
+//        List<ProductShowVo> productShowVoList = new ArrayList<>();
+//
+//        for (ProductBuy p : productBuyList) {
+//            //根据购物记录搜索对应产品
+//            QueryWrapper<Product> productQueryWrapper = new QueryWrapper<>();
+//            productQueryWrapper.lambda().eq(Product::getId, p.getProductId());
+//            List<Product> productList = productMapper.selectList(productQueryWrapper);
+////            productBuyMapper.getBuyInfo(id);
+//            //给产品加入plan
+//            for (Product q : productList) {
+//                Query query = new Query();
+//                query.addCriteria(Criteria.where("id").is(q.getPlanId()));
+//                Plan plan = mongoTemplate.findOne(query, Plan.class);
+//                ProductShowVo productShowVo = new ProductShowVo();
+//                BeanUtils.copyProperties(q, productShowVo);
+//                productShowVo.setPlan(plan);
+//                productShowVoList.add(productShowVo);
+//            }
+//
+//
+//        }
+//        System.out.println(productShowVoList);
+//
+//        return Result.success(productShowVoList);
     }
 
 
@@ -186,7 +203,6 @@ public class ProductController {
     public Result<NewNum> getAllProductCost() {
         return Result.success(productBuyMapper.getCost());
     }
-
 
 
 }
