@@ -20,6 +20,10 @@ export const getOneProductInfoById = (productId: string) => {
 };
 
 export const buyOneProduct = (pId: string, uId: string, pCost: string) => {
+  alert("购买");
+  console.log(pId);
+  console.log(uId);
+  console.log(pCost);
   return httpRequest({
     method: "post",
     url: "http://localhost:8082/product/buy",
