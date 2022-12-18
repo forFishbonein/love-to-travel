@@ -1,3 +1,6 @@
+<template>
+  <div class="container"></div>
+</template>
 <script>
 import * as d3 from 'd3'
 
@@ -363,14 +366,21 @@ export default {
       const simulation = d3.forceSimulation(nodes)
           .force("link", d3.forceLink(links).id(d => d.id))
           .force("charge", d3.forceManyBody())
-          .force("center", d3.forceCenter(_this.width / 2, _this.height / 2))
+          .force("center", d3.forceCenter(_this.width / 2, _this.height / 2.4))
 
       const svg = d3.select(".container").append("svg").attr("viewBox", [0, 0, _this.width, _this.height])
 
+      // svg.call(d3.zoom().on("zoom",function (){
+      //   svg.attr("transform", d3.event.transform)
+      // }))
+
+
+
+
       const link = svg.append("g")
           .attr("stroke", "#999")
-          .attr("stroke-opacity", 0.6)
-          .attr("stroke-width", d => Math.sqrt(d.value))
+          .attr("stroke-width", 2)
+          .attr("stroke-width", 1)
           .selectAll("line")
           .data(links)
           .join("line");
@@ -384,10 +394,6 @@ export default {
           .join("circle")
           .attr("r", 5)
           .call(_this.drag(simulation));
-
-      function intern(value) {
-        return value !== null && typeof value === "object" ? value.valueOf() : value;
-      }
 
       node.append("title").text(d => d.id)
 
@@ -407,7 +413,7 @@ export default {
     },
 
     color(d) {
-      return this.colorList[d.group]
+      return this.colorList[0]
     },
 
     drag(simulation) {
@@ -442,10 +448,5 @@ export default {
 
 
 </script>
-<script lang="ts">
-</script>
-<template>
-  <div class="container"></div>
-</template>
 
 <style lang="scss" scoped></style>
