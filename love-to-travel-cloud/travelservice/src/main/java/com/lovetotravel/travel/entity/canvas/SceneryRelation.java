@@ -1,4 +1,4 @@
-package com.lovetotravel.travel.travelnet.entity;
+package com.lovetotravel.travel.entity.canvas;
 
 import lombok.Data;
 import org.springframework.data.neo4j.core.schema.RelationshipId;
@@ -7,8 +7,7 @@ import org.springframework.data.neo4j.core.schema.TargetNode;
 
 @Data
 @RelationshipProperties
-public class SceneryRelationShip {
-
+public class SceneryRelation {
 
     @RelationshipId
     private Long id;
@@ -21,7 +20,7 @@ public class SceneryRelationShip {
     // 参数1是目标关系实体节点 参数2是关系属性
     //    Roles 参数1：Person实体，演员的出生年和姓名；参数2：演员名字列表（考虑到一个演员可能参演多个角色）
 
-    public SceneryRelationShip(SceneryNode sceneryNode,String location) {
+    public SceneryRelation(SceneryNode sceneryNode, String location) {
         this.sceneryNode = sceneryNode;
         this.location = location;
     }
