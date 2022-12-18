@@ -557,6 +557,15 @@ onMounted(() => {
   // alert(store2.getUserFlag);
   // alert(JSON.stringify(store2.userInfo));
 });
+/* 随机勋章 */
+const medalsArray = [
+  "/static/images//medal/medal1.jpg",
+  "/static/images//medal/medal2.jpg",
+  "/static/images//medal/medal3.jpg",
+  "/static/images//medal/medal4.jpg",
+  "/static/images//medal/medal6.jpg",
+  "/static/images//medal/medal6.jpg",
+] as Array<string>;
 </script>
 
 <template>
@@ -665,8 +674,12 @@ onMounted(() => {
             <span>我的勋章</span>
           </div>
         </template>
-        <div v-for="o in 2" :key="o" class="text item">
-          {{ "List item " + o }}
+        <div
+          v-for="(item, index) in medalsArray"
+          :key="index"
+          class="text item media-img-container"
+        >
+          <img :src="item" />
         </div>
       </el-card>
       <el-card class="box-card">
@@ -757,6 +770,14 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+.media-img-container {
+  width: 30px;
+  height: 30px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
 #map-container {
   width: 100%;
   height: 600px;
