@@ -8,6 +8,7 @@ import AMapLoader from "@amap/amap-jsapi-loader"; // 使用加载器加载JSAPI�
 import { shallowRef } from "@vue/reactivity";
 import { mainStore } from "@/store/user";
 import { useRouter } from "vue-router";
+import { getNowTime } from "@/utils/getNowTime"
 const router = useRouter();
 const store = mainStore();
 const props = defineProps<{
@@ -146,7 +147,7 @@ const buyDialogVisiable = ref(false)
 const buyTheProduct = ()=>{
   buyDialogVisiable.value = false
   if(store.userInfo.id){
-    buyOneProduct(productId, store.userInfo.id, productInfo.value.price).then((res: any) => {
+    buyOneProduct(productId, store.userInfo.id, productInfo.value.price, getNowTime()).then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
         ElMessage({
