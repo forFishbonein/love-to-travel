@@ -204,7 +204,6 @@ export const routes: Array<RouteRecordRaw> = [
         component: CanvasTravel,
         meta: { title: "旅游脉络", keepAlive: false, showTab: true },
       },
-
       {
         path: "/groupTravel",
         name: "GroupTravel",
