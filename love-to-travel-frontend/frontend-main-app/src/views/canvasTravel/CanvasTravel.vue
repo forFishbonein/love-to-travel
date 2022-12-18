@@ -362,19 +362,21 @@ export default {
   },
 
   methods: {
-    getGraphData(){
-      var _this = this
-      this.axios.get("canvas/"+'炽金古城')
-          //   this.axios.get("person/all")
-          .then(function (response) {
-            console.log(response)
-            // _this.testGraph["nodes"] = [response.data]
-            // _this.initGraph(_this.testGraph)
-          })
-          .catch(function (error) {
-            console.log(error)
-          })
-    },
+    // getGraphData(){
+    //   var _this = this
+    //   this.axios.get("canvas/"+'炽金古城')
+    //       //   this.axios.get("person/all")
+    //       .then(function (response) {
+    //         console.log(response)
+    //         // _this.testGraph["nodes"] = [response.data]
+    //         // _this.initGraph(_this.testGraph)
+    //       })
+    //       .catch(function (error) {
+    //         console.log(error)
+    //       })
+    // },
+
+
     initGraph(data) {
       var _this = this
       const links = data.links.map(d => Object.create(d))
