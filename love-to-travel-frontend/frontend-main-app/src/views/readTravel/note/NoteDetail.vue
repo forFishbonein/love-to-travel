@@ -1048,6 +1048,7 @@ const cancelNoteStar = async () => {
                       name="message"
                       placeholder="写下评论内容"
                       v-model="firstCommentContent"
+                      style="font-size: 16px"
                     ></textarea>
                     <button
                       type="submit"
