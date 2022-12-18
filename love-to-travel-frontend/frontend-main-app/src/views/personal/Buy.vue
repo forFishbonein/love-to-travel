@@ -2,9 +2,9 @@
 import { ref } from "vue";
 import { searchProductsByUserId } from "@/apis/travelService/product";
 import { mainStore } from "@/store/user";
-import { productInfoType } from "@/apis/interface/myInterface";
+import { productBuyInfoType } from "@/apis/interface/myInterface";
 const store = mainStore();
-let userProductsInfo = ref([] as productInfoType[]);
+let userProductsInfo = ref([] as productBuyInfoType[]);
 const requestTheUserBuy = () => {
   searchProductsByUserId(store.userInfo.id)
     .then((res: any) => {
@@ -33,31 +33,37 @@ requestTheUserBuy();
 
 <template>
   <div class="buy-title">我购买的产品</div>
-  <div class="buy-container">
-    <el-card
-      :body-style="{ padding: '0px', width: '220px' }"
-      v-for="(item, index) in userProductsInfo"
-      :key="index"
-    >
-      <img :src="item.url" class="image" />
-      <div style="padding: 14px">
-        <span style="color: #e8604c; font-weight: 600"
-          ><router-link :to="`/buyTravel/product/detail/${item.id}`">{{
-            item.name
-          }}</router-link
-          >&nbsp;&nbsp;{{ item.price }}元</span
-        >
-        <div class="bottom">
-          <time class="time">购买时间:&nbsp;{{ item.createTime }}</time>
-          <el-button text class="button" style="padding: 5px"
-            ><router-link :to="`/buyTravel/product/detail/${item.id}`"
-              >查看详情</router-link
-            ></el-button
+  <el-scrollbar max-height="770px">
+    <div class="buy-container">
+      <el-card
+        :body-style="{ padding: '0px', width: '220px' }"
+        v-for="(item, index) in userProductsInfo"
+        :key="index"
+      >
+        <img :src="item.url" class="image" />
+        <div style="padding: 14px">
+          <router-link
+            :to="`/buyTravel/product/detail/${item.id}`"
+            style="font-weight: 600"
+            >{{ item.name }}</router-link
           >
+          <p
+            style="color: #e8604c; font-weight: 600; font-size: 15px; margin: 0"
+          >
+            花费{{ item.cost }}元
+          </p>
+          <div class="bottom">
+            <time class="time">购买时间:&nbsp;{{ item.createTime }}</time>
+            <el-button text class="button" style="padding: 5px"
+              ><router-link :to="`/buyTravel/product/detail/${item.id}`"
+                >查看详情</router-link
+              ></el-button
+            >
+          </div>
         </div>
-      </div>
-    </el-card>
-  </div>
+      </el-card>
+    </div>
+  </el-scrollbar>
 </template>
 
 <style lang="scss" scoped>
@@ -89,7 +95,7 @@ requestTheUserBuy();
 }
 .image {
   width: 220px;
-  height: 220px;
+  height: 200px;
   display: block;
 }
 .el-card {

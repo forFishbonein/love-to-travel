@@ -254,7 +254,18 @@ export interface productInfoType {
   url: string;
   createTime: string;
 }
-
+/* 用户购买的产品类型 */
+export interface productBuyInfoType {
+  id: string;
+  introduction: string;
+  name: string;
+  plan: finalAllCityPlansInfoType;
+  price: string;
+  tele: string;
+  url: string;
+  createTime: string;
+  cost: string;
+}
 /* 景区评论评分 */
 export interface sceneryCommentBody {
   content: string;
