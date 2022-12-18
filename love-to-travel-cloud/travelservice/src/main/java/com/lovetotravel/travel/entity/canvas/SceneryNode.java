@@ -1,4 +1,4 @@
-package com.lovetotravel.travel.travelnet.entity;
+package com.lovetotravel.travel.entity.canvas;
 
 import lombok.Data;
 import org.springframework.data.annotation.Id;
