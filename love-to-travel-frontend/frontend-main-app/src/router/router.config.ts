@@ -16,6 +16,8 @@ import CodeLogin from "@/components/passOrCode/CodeLogin.vue";
 import PersonalIndex from "@/views/personal/Index.vue";
 import User from "@/views/user/User.vue";
 import Search from "@/views/search/Search.vue";
+import CanvasTravel from "@/views/canvasTravel/CanvasTravel.vue";
+
 // import Note from "@/views/readTravel/note/Note.vue";
 
 export const routes: Array<RouteRecordRaw> = [
@@ -196,6 +198,13 @@ export const routes: Array<RouteRecordRaw> = [
           },
         ],
       },
+      {
+        path: "/canvasTravel",
+        name: "CanvasTravel",
+        component: CanvasTravel,
+        meta: { title: "旅游脉络", keepAlive: false, showTab: true },
+      },
+
       {
         path: "/groupTravel",
         name: "GroupTravel",

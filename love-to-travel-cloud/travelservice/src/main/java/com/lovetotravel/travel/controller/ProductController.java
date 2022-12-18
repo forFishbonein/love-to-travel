@@ -107,10 +107,13 @@ public class ProductController {
     @ApiOperation("根据用户id查询")
     @GetMapping("/user/{id}")
     public Result<List<ProductShowVo>> getByUserId(@PathVariable("id") String id) {
+        System.out.println(id);
 
         QueryWrapper<ProductBuy> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(ProductBuy::getUserId, id);
         List<ProductBuy> productBuyList = productBuyMapper.selectList(queryWrapper);
+
+        System.out.println("productBuyList = " + productBuyList);
 
         List<ProductShowVo> productShowVoList = new ArrayList<>();
 
@@ -123,13 +126,14 @@ public class ProductController {
                 query.addCriteria(Criteria.where("id").is(q.getPlanId()));
                 Plan plan = mongoTemplate.findOne(query, Plan.class);
                 ProductShowVo productShowVo = new ProductShowVo();
-                BeanUtils.copyProperties(p, productShowVo);
+                BeanUtils.copyProperties(q, productShowVo);
                 productShowVo.setPlan(plan);
                 productShowVoList.add(productShowVo);
             }
 
 
         }
+        System.out.println(productShowVoList);
 
             return Result.success(productShowVoList);
     }
