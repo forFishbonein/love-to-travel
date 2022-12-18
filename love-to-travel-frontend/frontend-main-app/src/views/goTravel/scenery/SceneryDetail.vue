@@ -81,9 +81,9 @@ const addSceneryCommentAndScore = async () => {
       score: sceneryScore.value,
       createTime: getNowTime(),
     };
-    console.log("============");
-    console.log(commentParams);
-    console.log("============");
+    // console.log("============");
+    // console.log(commentParams);
+    // console.log("============");
     await addASceneryComment(commentParams)
       .then((res: any) => {
         if (res.code != 0) {
@@ -311,6 +311,7 @@ const addSceneryCommentAndScore = async () => {
                     name="message"
                     placeholder="写下评论内容"
                     v-model="commentContent"
+                    style="font-size: 16px"
                   ></textarea>
                   <button
                     type="submit"
@@ -378,7 +379,12 @@ const addSceneryCommentAndScore = async () => {
               </div>
             </div>
             <div class="sidebar__single sidebar__category">
-              <h3 class="sidebar__title">景区评分 & 评论</h3>
+              <h3 class="sidebar__title">
+                景区评分 & 评论
+                <span class="span-style-front3"
+                  >总评论数:&nbsp;{{ sceneryCommentsInfo.total }}</span
+                >
+              </h3>
               <ul class="sidebar__category-list list-unstyled">
                 <li>
                   <el-scrollbar max-height="800px" style="padding-right: 10px">
@@ -399,7 +405,11 @@ const addSceneryCommentAndScore = async () => {
                           <p>
                             {{ item.createTime }}
                           </p>
-                          <p>评分:{{ item.score }}</p>
+                          <p>
+                            <span class="span-style-front2"
+                              >评分:&nbsp;{{ item.score }}</span
+                            >
+                          </p>
                         </div>
                         <div class="comment-body">
                           <el-scrollbar max-height="40px">
@@ -449,6 +459,38 @@ const addSceneryCommentAndScore = async () => {
   border-radius: 5px;
   margin-right: 10px;
 }
+.span-style-front2 {
+  display: inline-block;
+  min-width: 65px;
+  padding-top: 2px;
+  padding-left: 5px;
+  height: 25px;
+  line-height: 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e8604c;
+  border-radius: 5px;
+  margin-right: 10px;
+}
+.sidebar__title {
+  display: flex;
+  align-items: center;
+}
+.span-style-front3 {
+  display: inline-block;
+  min-width: 95px;
+  padding-top: 2px;
+  padding-left: 5px;
+  height: 25px;
+  line-height: 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e8604c;
+  border-radius: 5px;
+  margin-left: 15px;
+}
 .comment-container {
   .comment-header {
     height: 80px;
@@ -478,6 +520,7 @@ const addSceneryCommentAndScore = async () => {
     > p:nth-child(3) {
       font-size: 14px;
       color: #909399;
+      margin: 5px 0;
     }
   }
   .comment-body {
