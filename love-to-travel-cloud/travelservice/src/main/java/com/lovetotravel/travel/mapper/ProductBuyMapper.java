@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 import com.lovetotravel.travel.entity.Product;
 import com.lovetotravel.travel.entity.vo.NewNum;
 import com.lovetotravel.travel.entity.vo.product.ProductBuy;
+import com.lovetotravel.travel.entity.vo.product.ProductSales;
 import com.lovetotravel.travel.entity.vo.product.ProductShowVo;
 import org.apache.ibatis.annotations.Mapper;
 
@@ -20,4 +21,6 @@ public interface ProductBuyMapper extends BaseMapper<ProductBuy> {
     NewNum getCost();
 
     List<ProductShowVo> getBuyInfo(String id);
+
+    List<ProductSales> getSales();
 }

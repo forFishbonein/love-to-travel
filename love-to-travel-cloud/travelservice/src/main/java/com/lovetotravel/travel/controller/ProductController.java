@@ -8,6 +8,7 @@ import com.lovetotravel.travel.entity.Product;
 import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.NewNum;
 import com.lovetotravel.travel.entity.vo.product.ProductBuy;
+import com.lovetotravel.travel.entity.vo.product.ProductSales;
 import com.lovetotravel.travel.entity.vo.product.ProductShowVo;
 import com.lovetotravel.travel.entity.vo.product.ProductVo;
 import com.lovetotravel.travel.exception.GlobalException;
@@ -202,6 +203,19 @@ public class ProductController {
     @GetMapping("/cost/all")
     public Result<NewNum> getAllProductCost() {
         return Result.success(productBuyMapper.getCost());
+    }
+
+    @ApiOperation("获取销量")
+    @GetMapping("/sales")
+    public Result<List<ProductSales>> getSales() {
+        List<ProductSales> sales = productBuyMapper.getSales();
+
+        for (ProductSales s: sales) {
+            Product product = productMapper.selectById(s.getId());
+            s.setName(product.getName());
+        }
+
+        return Result.success(sales);
     }
 
 

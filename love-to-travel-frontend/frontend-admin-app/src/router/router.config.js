@@ -4,7 +4,7 @@ import Login from "@/views/Login.vue";
 
 export const routes = [
     {
-        path: "/",
+        path: "/index",
         name: "Index", //App中包裹Index
         meta: {
             title: "首页"
@@ -32,10 +32,22 @@ export const routes = [
                 meta: {title: "城市管理"},
             },
             {
+                path: "/scenery",
+                name: "Scenery",
+                component: () => import("@/components/serviceManage/Scenery.vue"),
+                meta: {title: "景区管理"},
+            },
+            {
                 path: "/note",
                 name: "Note",
                 component: () => import("@/components/serviceManage/note.vue"),
                 meta: {title: "游记管理"},
+            },
+            {
+                path: "/product",
+                name: "Product",
+                component: () => import("@/components/serviceManage/Product.vue"),
+                meta: {title: "产品管理"},
             },
             {
                 path: "/user",
@@ -49,12 +61,7 @@ export const routes = [
                 component: () => import("@/components/userService/Admin.vue"),
                 meta: {title: "用户管理"},
             },
-            {
-                path: "/scenery",
-                name: "Scenery",
-                component: () => import("@/components/serviceManage/Scenery.vue"),
-                meta: {title: "景区管理"},
-            },
+
             {
                 path: "/log",
                 name: "Log",
@@ -68,15 +75,16 @@ export const routes = [
                 meta: {title: "游记排行"},
             },
             {
-                path: "/product",
-                name: "Product",
-                component: () => import("@/components/serviceManage/Product.vue"),
-                meta: {title: "产品管理"},
+                path: "/sales",
+                name: "Sales",
+                component: () => import("@/components/statisticService/Sales.vue"),
+                meta: {title: "销售统计"},
             },
+
         ],
     },
     {
-        path: "/login",
+        path: "/",
         name: "Login", //App中包裹Index
         meta: {
             title: "登录"
