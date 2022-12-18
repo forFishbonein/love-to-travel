@@ -1,4 +1,4 @@
-package com.lovetotravel.travel.travelnet.entity;
+package com.lovetotravel.travel.entity.canvas.node;
 
 import lombok.Data;
 import org.springframework.data.neo4j.core.schema.GeneratedValue;
@@ -17,5 +17,9 @@ public class CityNode {
     public CityNode(String name) {
         this.name = name;
     }
+
+
+
+
 }
 

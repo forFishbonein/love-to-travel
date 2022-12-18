@@ -1,5 +1,6 @@
-package com.lovetotravel.travel.entity.canvas;
+package com.lovetotravel.travel.entity.canvas.dao;
 
+import com.lovetotravel.travel.entity.canvas.node.SceneryNode;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 

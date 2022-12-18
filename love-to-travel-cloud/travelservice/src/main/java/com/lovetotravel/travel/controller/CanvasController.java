@@ -1,7 +1,7 @@
 package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.Comment;
-import com.lovetotravel.travel.entity.canvas.SceneryRepository;
+import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
 import com.lovetotravel.travel.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;

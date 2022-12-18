@@ -1,11 +1,10 @@
-package com.lovetotravel.travel.entity.canvas;
+package com.lovetotravel.travel.entity.canvas.dao;
 
+import com.lovetotravel.travel.entity.canvas.relation.SceneryRelation;
 import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.data.neo4j.repository.query.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-import javax.management.relation.Relation;
 import java.util.List;
 
 @Repository

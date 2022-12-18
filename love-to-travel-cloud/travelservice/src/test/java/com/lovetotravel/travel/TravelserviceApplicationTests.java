@@ -1,9 +1,8 @@
 package com.lovetotravel.travel;
 
-import com.lovetotravel.travel.entity.canvas.SceneryNode;
-import com.lovetotravel.travel.entity.canvas.SceneryRelation;
-import com.lovetotravel.travel.entity.canvas.SceneryRelationRepository;
-import com.lovetotravel.travel.entity.canvas.SceneryRepository;
+import com.lovetotravel.travel.entity.canvas.node.SceneryNode;
+import com.lovetotravel.travel.entity.canvas.dao.SceneryRelationRepository;
+import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;

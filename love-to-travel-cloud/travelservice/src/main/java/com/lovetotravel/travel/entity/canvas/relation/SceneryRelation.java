@@ -1,5 +1,6 @@
-package com.lovetotravel.travel.entity.canvas;
+package com.lovetotravel.travel.entity.canvas.relation;
 
+import com.lovetotravel.travel.entity.canvas.node.SceneryNode;
 import lombok.Data;
 import org.springframework.data.neo4j.core.schema.RelationshipId;
 import org.springframework.data.neo4j.core.schema.RelationshipProperties;
