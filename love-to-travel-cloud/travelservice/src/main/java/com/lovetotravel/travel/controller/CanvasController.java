@@ -47,6 +47,8 @@ public class CanvasController {
     @GetMapping("/query/{relationship}/{name}")
     public Result<List<CustomNode>> getRelByName(@PathVariable("relationship") String rel,@PathVariable("name") String name) {
 
+
+
         SceneryNode sceneryNode = sceneryRepository.findSceneryNodeByName(name);
 
         List<CustomNode> customNodes = new ArrayList<>();
@@ -59,7 +61,6 @@ public class CanvasController {
 
         return Result.success(customNodes);
     }
-
 
 
 

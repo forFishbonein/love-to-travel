@@ -21,7 +21,7 @@ public class transferExe {
         //需要传入的参数（ps: 多个参数用空格隔开）
 //        String paras = "81";
         //调用的exe可执行文件（ps: 调用可执行文件和参数拼接必须要用空格隔开）
-        String cmd = "C:\\Users\\Lenovo\\dist\\hotCity.exe";
+        String cmd = "C:\\Users\\Lenovo\\dist\\main_simulateRequest.exe";
 
         openExe(cmd);
 
