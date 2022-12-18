@@ -30,9 +30,24 @@
     </select>
 
     <select id="getCost" resultType="com.lovetotravel.travel.entity.vo.NewNum">
-        SELECT SUM(cost) AS cost FROM product_buy
+        SELECT SUM(cost) AS cost
+        FROM product_buy
     </select>
 
+    <select id="getBuyInfo" resultType="com.lovetotravel.travel.entity.vo.product.ProductShowVo">
+        SELECT pb.product_id,
+               pb.user_id,
+               pb.create_time,
+               pb.cost,
+               p.introduction,
+               p.name,
+               p.plan_id,
+               p.tele,
+               p.url
+        FROM product_buy pb,
+             product p
+        WHERE pb.product_id = p.id AND pb.user_id = #{id}
+    </select>
 
 
 </mapper>
