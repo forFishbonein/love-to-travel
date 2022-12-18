@@ -3,6 +3,7 @@ package com.lovetotravel.travel.controller;
 
 import com.lovetotravel.travel.entity.canvas.CustomNode;
 import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
+import com.lovetotravel.travel.entity.canvas.node.DistrictNode;
 import com.lovetotravel.travel.entity.canvas.node.SceneryNode;
 import com.lovetotravel.travel.result.Result;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/canvas")
@@ -49,17 +51,13 @@ public class CanvasController {
 
         List<CustomNode> customNodes = new ArrayList<>();
 
-//        Set<Movie> movieSet = personService.getMoviesByRelationship(person,rel);
-//
-//        for(Movie movie : movieSet){
-//            customNodes.add(new CustomNode(movie.getTitle(),2, movie));
-//            //customLinks.add(new CustomLink(person.getName(),movie.getTitle(),5));
-//        }
-//
-//
-//        return Result.success(customNodes);
+        Set<DistrictNode> districtNodeSet = sceneryNode.getSceneryLocated();
 
-        return null;
+        for(DistrictNode d : districtNodeSet){
+            customNodes.add(new CustomNode(d.getName(),2, d));
+        }
+
+        return Result.success(customNodes);
     }
 
 
