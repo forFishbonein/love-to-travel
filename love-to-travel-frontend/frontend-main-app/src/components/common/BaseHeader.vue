@@ -279,7 +279,7 @@ const searchSomething = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <router-link to="/canvasTravel">旅游脉络</router-link>
+                    <router-link to="/canvasTravel">旅行脉络</router-link>
                     <ul>
                       <li>
                         <router-link

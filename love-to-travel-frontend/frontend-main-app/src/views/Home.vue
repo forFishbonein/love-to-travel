@@ -2047,7 +2047,7 @@ onMounted(() => {});
 }
 .popular-tours__single {
   width: 288px;
-  height: 430px;
+  height: 480px;
 }
 .popular-tours__meta {
   flex-direction: column;

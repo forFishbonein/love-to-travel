@@ -57,7 +57,7 @@ spring:
     uri: bolt://localhost:7687
     authentication:
       username: neo4j
-      password: neo4jxx
+      password: 123456
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml
