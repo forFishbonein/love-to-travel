@@ -1778,7 +1778,7 @@ onMounted(() => {});
                 <div class="popular-tours__img">
                   <img :src="item.url" alt="" />
                 </div>
-                <div class="popular-tours__content">
+                <div class="popular-tours__content" style="padding-bottom: 45px;">
                   <h3 class="popular-tours__title">
                     <router-link :to="`/buyTravel/product/detail/${item.id}`">{{
                       item.name
