@@ -26,6 +26,14 @@ const colorList = [
   "blue",
   "red",
 ];
+
+// const canvasData = {
+//   nodes: [],
+//   links: [],
+// };
+const nodes = ref([]);
+const links = ref([]);
+
 const getCanvasDataAndInitNode = async () => {
   await getCanvasAllInfo()
     .then((res: any) => {
@@ -45,7 +53,7 @@ const getCanvasDataAndInitNode = async () => {
             name: e.obj.name,
           });
         });
-        canvasData.nodes = notesInfo;
+        nodes.value = notesInfo;
         //   axios
         //     .get("person/all")
         //     .then(function (response) {
@@ -70,8 +78,9 @@ const getCanvasDataAndInitNode = async () => {
 };
 getCanvasDataAndInitNode();
 
-const requestNodeRelByName = (d) => {
-  console.log(d);
+const requestNodeRelByName = ($event, d) => {
+  // console.log($event);
+  // console.log(d.name); //拿到name
   getCanvasAllInfoByName(d.name)
     .then((res: any) => {
       if (res.code != 0) {
@@ -81,28 +90,53 @@ const requestNodeRelByName = (d) => {
           message: res.msg,
         });
       } else {
-        alert("获取成功");
-        // let notesInfo = [];
-        // res.data.forEach((e) => {
-        //   // @ts-ignore
-        //   notesInfo.push({
-        //     id: e.obj.id,
-        //     level: e.obj.level,
-        //     name: e.obj.name,
-        //   });
-        // });
-        // canvasData.nodes = notesInfo;
-        //   axios
-        //     .get("person/all")
-        //     .then(function (response) {
-        //       console.log(response);
-        //       testGraph["nodes"] = [response.data];
-        //       initGraph(testGraph);
-        //     })
-        //     .catch(function (error) {
-        //       console.log(error);
-        //     });
-        // }
+        // alert("获取成功");
+        console.log(res.data);
+        let linksInfo = [];
+        let e = res.data;
+        if (e.obj.sceneryHasDet.length !== 0) {
+          e.obj.sceneryHasDet.forEach((e2) => {
+            // @ts-ignore
+            linksInfo.push({
+              source: e.obj.name,
+              target: e2.name,
+              value: "景区特色",
+            });
+          });
+        }
+        if (e.obj.sceneryLocated.length !== 0) {
+          e.obj.sceneryLocated.forEach((e3) => {
+            // @ts-ignore
+            linksInfo.push({
+              source: e.obj.name,
+              target: e3.name,
+              value: "所在地区",
+            });
+          });
+        }
+        if (e.obj.sceneryReFood.length !== 0) {
+          e.obj.sceneryReFood.forEach((e4) => {
+            // @ts-ignore
+            linksInfo.push({
+              source: e.obj.name,
+              target: e4.name,
+              value: "推荐美食",
+            });
+          });
+        }
+        if (e.obj.sceneryRelHistory.length !== 0) {
+          e.obj.sceneryRelHistory.forEach((e5) => {
+            // @ts-ignore
+            linksInfo.push({
+              source: e.obj.name,
+              target: e5.name,
+              value: "相关历史",
+            });
+          });
+        }
+        links.value = linksInfo;
+        // alert("完成");
+        console.log(links.value);
       }
     })
     .catch((error) => {
@@ -112,11 +146,6 @@ const requestNodeRelByName = (d) => {
         message: error.message,
       });
     });
-};
-
-const canvasData = {
-  nodes: [],
-  links: [],
 };
 
 const initGraph = (data) => {
@@ -157,19 +186,27 @@ const initGraph = (data) => {
   /* g标签 */
   const g = svg.append("g");
 
-  const node = g
+  nodes.value = g
     .append("g")
     .attr("fill", color) //填充的颜色
     .attr("stroke", " #f3d19e") //光晕效果的颜色
     .attr("stroke-width", 2)
     .selectAll("circle")
     .data(nodes) //这个放置的顺序不能变
-    .style("pointer-events", "none")
+    // .style("pointer-events", "none")
     .join("circle")
     .attr("r", 15)
     .style("cursor", "pointer")
     // @ts-ignore
-    .on("click", requestNodeRelByName) //不能加括号，写了就相当于直接执行掉，就不是绑定了
+    // .on("click", function ($event, d) {
+    //   // console.log($event);
+    //   console.log(d.name);
+    //   // console.log(d3.select(this));
+    //   // @ts-ignore
+    //   // console.log(d3.select(this)._groups[0][0].__data__.name); //拿到节点的数据
+    //   requestNodeRelByName;
+    // }) //不能加括号，写了就相当于直接执行掉，就不是绑定了
+    .on("click", requestNodeRelByName)
     .on("mouseover", function () {
       // alert(1111);
       // @ts-ignore
@@ -204,7 +241,7 @@ const initGraph = (data) => {
     .style("font-size", "12px");
 
   /* 连线的颜色等 */
-  const link = g
+  links.value = g
     .append("g")
     .attr("stroke", "#999")
     .attr("stroke-width", 2) //粗细固定值

@@ -8,6 +8,10 @@ import {
 } from "@apis/travelService/scenery";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
+import { getRecommendScenerys } from "@/apis/py/scenery";
+import { mainStore } from "@/store/user";
+import axios from "axios";
+const store = mainStore();
 /* 全局根据简介查询 */
 const props = defineProps<{
   keyword: string;
@@ -110,6 +114,29 @@ const changeCurrentPage = (p: number) => {
 //     });
 // };
 // requestScenerysInfo();
+/* 获取推荐列表 */
+// const requertRecommendScenerInfo = () => {
+//   alert(1111);
+//   // getRecommendScenerys(store.userInfo.id)
+//   axios
+//     .get(`http://127.0.0.1:8080/sce/${store.userInfo.id}`)
+//     .then((res: any) => {
+//       console.log(res);
+//       // alert("获取成功");
+//       // scenerysPageInfo.value = res.data.records;
+//       // total.value = res.data.total;
+//       // console.log(scenerysPageInfo);
+//     })
+//     .catch((error) => {
+//       //@ts-ignore
+//       ElMessage({
+//         type: "error",
+//         message: error.message,
+//       });
+//     });
+// };
+// requertRecommendScenerInfo();
+
 const thisPageKeyword = ref("");
 const searchTheCity = async () => {
   total.value = 0;
@@ -153,6 +180,44 @@ const searchTheCity = async () => {
 })(jQuery);
 </script>
 <template>
+  <section class="popular-tours-two">
+    <div class="container">
+      <div class="row">
+        <div
+          class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp margindiv"
+          data-wow-delay="100ms"
+          v-for="(item, index) in scenerysPageInfo"
+          :key="item.id"
+        >
+          <!--Popular Tours Two Single-->
+          <div class="popular-tours__single">
+            <div class="popular-tours__img">
+              <img :src="item.url" alt="" />
+              <div class="popular-tours__icon">
+                <router-link :to="`detail/${item.id}`">
+                  <el-icon><View /></el-icon>
+                </router-link>
+              </div>
+            </div>
+            <div class="popular-tours__content">
+              <div class="popular-tours__stars">
+                <i class="fa fa-star"></i> {{ item.score }} 评分
+              </div>
+              <h3 class="popular-tours__title">
+                <router-link :to="`detail/${item.id}`">{{
+                  item.name
+                }}</router-link>
+              </h3>
+              <p class="popular-tours__rate">
+                <span>{{ item.ticket }}</span
+                >元 / 每人
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <div class="search-input-container">
     <form
       autocomplete="off"
