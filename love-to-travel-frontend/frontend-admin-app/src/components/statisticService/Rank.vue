@@ -233,8 +233,8 @@ export default {
 <template>
 
   <div id="echart" class="echarts"></div>
-  <div id="echart2" class="echarts"></div>
   <div id="echart3" class="echarts"></div>
+  <div id="echart2" class="echarts"></div>
 
 </template>
 

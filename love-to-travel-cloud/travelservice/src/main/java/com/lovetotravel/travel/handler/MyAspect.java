@@ -85,44 +85,44 @@ public class MyAspect {
         }
     }
 
-    @Pointcut("execution(public * com.lovetotravel.travel.controller.PlanController.insert(..))")
-    public void planRecord(){}
-
-    @AfterReturning(value = "planRecord()", returning = "result")
-    public void doPlanRecord(JoinPoint joinPoint, Object result) throws Throwable {
-        Object[] objs = joinPoint.getArgs();
-        HttpServletRequest request = (HttpServletRequest) objs[0];
-        String token = request.getHeader("Authorization");
-        if (token != null) {
-            User user = redisService.get(UserKey.token, token, User.class);
-            if (user != null) {
-
-                Plan plan = (Plan) objs[1];
-                Result r = (Result) result;
-                if (r.getCode() == 0) {
-                    SubPlan[] subPlan = plan.getSubPlans();
-                    if (subPlan.length > 0) {
-                        for (SubPlan s: subPlan) {
-                            Days[] days = s.getDays();
-                            if (days.length > 0) {
-                                for (Days d: days) {
-                                    Route[] routes = d.getRoute();
-                                    if (routes.length > 0) {
-                                        for (Route ro : routes) {
-                                            String sceneryName = ro.getOriginName();
-                                            UserScenery userScenery = new UserScenery();
-                                            userScenery.setUserId(user.getId().toString());
-                                            userScenery.setSceneryName(sceneryName);
-                                            userSceneryMapper.insert(userScenery);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-
-                    }
-                }
-            }
-        }
-    }
+//    @Pointcut("execution(public * com.lovetotravel.travel.controller.PlanController.insert(..))")
+//    public void planRecord(){}
+//
+//    @AfterReturning(value = "planRecord()", returning = "result")
+//    public void doPlanRecord(JoinPoint joinPoint, Object result) throws Throwable {
+//        Object[] objs = joinPoint.getArgs();
+//        HttpServletRequest request = (HttpServletRequest) objs[0];
+//        String token = request.getHeader("Authorization");
+//        if (token != null) {
+//            User user = redisService.get(UserKey.token, token, User.class);
+//            if (user != null) {
+//
+//                Plan plan = (Plan) objs[1];
+//                Result r = (Result) result;
+//                if (r.getCode() == 0) {
+//                    SubPlan[] subPlan = plan.getSubPlans();
+//                    if (subPlan.length > 0) {
+//                        for (SubPlan s: subPlan) {
+//                            Days[] days = s.getDays();
+//                            if (days.length > 0) {
+//                                for (Days d: days) {
+//                                    Route[] routes = d.getRoute();
+//                                    if (routes.length > 0) {
+//                                        for (Route ro : routes) {
+//                                            String sceneryName = ro.getOriginName();
+//                                            UserScenery userScenery = new UserScenery();
+//                                            userScenery.setUserId(user.getId().toString());
+//                                            userScenery.setSceneryName(sceneryName);
+//                                            userSceneryMapper.insert(userScenery);
+//                                        }
+//                                    }
+//                                }
+//                            }
+//                        }
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

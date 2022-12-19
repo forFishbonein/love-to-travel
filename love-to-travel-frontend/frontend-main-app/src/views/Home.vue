@@ -1261,6 +1261,7 @@ const stringArray = [
   "旅行不是浪迹天涯，而是给心找一个小憩的地方。",
   "心存阳光，必有诗和远方。",
 ] as Array<string>;
+
 let finalStringsArray = [] as Array<string>;
 const getShuffleStrings = () => {
   finalStringsArray = getRandomArrayElements(stringArray, 3);
@@ -1270,6 +1271,35 @@ const getShuffleStrings = () => {
   // alert(finalMedalsArray[0][1])
 };
 getShuffleStrings();
+
+let picArray = [
+  "三星堆",
+  "上海",
+  "九寨沟",
+  "保定",
+  "台湾",
+  "大雁塔",
+  "布达拉宫",
+  "故宫",
+  "江苏",
+  "江西",
+  "洞庭湖",
+  "湖南",
+  "福建",
+  "纳木错",
+  "西湖",
+  "贡嘎雪山",
+  "贵州",
+  "重庆",
+  "长城",
+  "香港",
+] as Array<string>;
+
+let finallyPicArray = [] as Array<string>;
+const getShufflepic = () => {
+  finallyPicArray = getRandomArrayElements(picArray, 3);
+};
+getShufflepic();
 
 onMounted(() => {});
 </script>
@@ -1352,9 +1382,7 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            style="
-              background-image: url(/images/backgrounds/main-slider-1-1.jpg);
-            "
+            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[0]+'.jpg)'}"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1371,9 +1399,7 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            style="
-              background-image: url(/images/backgrounds/main-slider-1-2.jpg);
-            "
+            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[1]+'.jpg)'}"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1390,9 +1416,7 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            style="
-              background-image: url(/images/backgrounds/main-slider-1-3.jpg);
-            "
+            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[2]+'.jpg)'}"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1783,7 +1807,7 @@ onMounted(() => {});
                 </div>
                 <div class="popular-tours__content" style="padding-bottom: 45px;">
                   <h3 class="popular-tours__title">
-                    <router-link :to="`/buyTravel/product/detail/${item.id}`">{{
+                    <router-link style="display: block; height: 60px; overflow: hidden" :to="`/buyTravel/product/detail/${item.id}`">{{
                       item.name
                     }}</router-link>
                   </h3>

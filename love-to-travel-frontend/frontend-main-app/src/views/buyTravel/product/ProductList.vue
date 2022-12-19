@@ -70,7 +70,7 @@ const changeCurrentPage = (p: number) => {
             </div>
             <div class="popular-tours__content">
               <h3 class="popular-tours__title">
-                <router-link :to="`/buyTravel/product/detail/${item.id}`">{{
+                <router-link style="display: block; height: 67px; overflow: hidden;" :to="`/buyTravel/product/detail/${item.id}`">{{
                   item.name
                 }}</router-link>
               </h3>
