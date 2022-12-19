@@ -10,6 +10,7 @@ import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.List;
 
 @Api(tags = "行程接口")
@@ -56,7 +57,7 @@ public class PlanController {
 
     @ApiOperation("新增行程")
     @PostMapping
-    public Result<String> insert(@RequestBody Plan plan) {
+    public Result<String> insert(HttpServletRequest request, @RequestBody Plan plan) {
         planService.insert(plan);
         return Result.success("新增成功");
     }
