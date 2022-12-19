@@ -1436,7 +1436,7 @@ onMounted(() => {});
                       class="selectpicker"
                       id="type"
                       v-model="planInfo.fromCity"
-
+                      placeholder="出发城市"
                     >
                       <option
                         v-for="item in citysInfos"
@@ -1458,6 +1458,7 @@ onMounted(() => {});
                       class="selectpicker"
                       id="type2"
                       v-model="planInfo.toCity"
+                      placeholder="返回城市"
                     >
                       <option
                         v-for="item in citysInfos"
@@ -1472,7 +1473,7 @@ onMounted(() => {});
                     <label class="ali-font-family">出发日期</label>
                     <input
                       type="text"
-                      placeholder="Nothing selected"
+                      placeholder="出发日期"
                       name="Nothing selected"
                       id="datepicker"
                     />
