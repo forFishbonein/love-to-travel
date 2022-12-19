@@ -115,27 +115,27 @@ const changeCurrentPage = (p: number) => {
 // };
 // requestScenerysInfo();
 /* 获取推荐列表 */
-// const requertRecommendScenerInfo = () => {
-//   alert(1111);
-//   // getRecommendScenerys(store.userInfo.id)
-//   axios
-//     .get(`http://127.0.0.1:8080/sce/${store.userInfo.id}`)
-//     .then((res: any) => {
-//       console.log(res);
-//       // alert("获取成功");
-//       // scenerysPageInfo.value = res.data.records;
-//       // total.value = res.data.total;
-//       // console.log(scenerysPageInfo);
-//     })
-//     .catch((error) => {
-//       //@ts-ignore
-//       ElMessage({
-//         type: "error",
-//         message: error.message,
-//       });
-//     });
-// };
-// requertRecommendScenerInfo();
+const requertRecommendScenerInfo = () => {
+  alert(1111);
+  // getRecommendScenerys(store.userInfo.id)
+  axios
+    .get(`http://127.0.0.1:8080/sce/${store.userInfo.id}`)
+    .then((res: any) => {
+      console.log(res);
+      // alert("获取成功");
+      // scenerysPageInfo.value = res.data.records;
+      // total.value = res.data.total;
+      // console.log(scenerysPageInfo);
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+requertRecommendScenerInfo();
 
 const thisPageKeyword = ref("");
 const searchTheCity = async () => {

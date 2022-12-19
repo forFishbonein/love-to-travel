@@ -33,10 +33,10 @@ service.interceptors.request.use(
     }
 
     // 在此处添加请求头等，如添加 token，这样登录之后每次请求都会自动带上token，实际上在apis中就不需要写token了
-    // if (store.token) {
-    //   //@ts-ignore
-    //   config.headers["Authorization"] = store.token;
-    // }
+    if (store.token) {
+      //@ts-ignore
+      config.headers["Authorization"] = store.token;
+    }
 
     return config;
   },
