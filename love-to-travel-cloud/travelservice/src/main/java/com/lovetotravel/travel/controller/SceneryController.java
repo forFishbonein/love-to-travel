@@ -55,6 +55,11 @@ public class SceneryController {
     @GetMapping("/scenery/{id}")
     public Result<Scenery> getById(HttpServletRequest request, @PathVariable("id") Long id) {
         System.out.println(id);
+        String token = request.getHeader("Authorization");
+        System.out.println("token = " + token);
+        System.out.println("token = " + token);
+        System.out.println("token = " + token);
+
         return Result.success(sceneryService.getById(id));
     }
 
