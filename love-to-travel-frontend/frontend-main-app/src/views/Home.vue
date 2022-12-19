@@ -1430,7 +1430,7 @@ onMounted(() => {});
                   <div
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
-                    <label for="type" class="ali-font-family">出发城市</label>
+                    <label for="type" class="ali-font-family">出发</label>
                     <select
                       class="selectpicker"
                       id="type"
@@ -1451,7 +1451,7 @@ onMounted(() => {});
                   <div
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
-                    <label for="type2" class="ali-font-family">目的城市</label>
+                    <label for="type2" class="ali-font-family">返回</label>
                     <select
                       class="selectpicker"
                       id="type2"
