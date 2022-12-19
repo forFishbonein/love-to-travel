@@ -13,6 +13,7 @@ import { getRandomArrayElements } from "@/utils/filters/randomArray";
 import { getAllProductsInfo } from "@apis/travelService/product";
 import { productInfoType } from "@/apis/interface/myInterface";
 import { subPlansFormat } from "@/utils/filters/subPlan";
+import locationData from "../assets/js/location"
 const store = utilStore();
 const router = useRouter();
 let citysInfos = [
@@ -1435,6 +1436,7 @@ onMounted(() => {});
                       class="selectpicker"
                       id="type"
                       v-model="planInfo.fromCity"
+
                     >
                       <option
                         v-for="item in citysInfos"
