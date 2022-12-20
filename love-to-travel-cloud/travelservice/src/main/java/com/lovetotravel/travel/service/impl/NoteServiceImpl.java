@@ -18,9 +18,11 @@ import com.lovetotravel.travel.redis.NoteKey;
 import com.lovetotravel.travel.redis.RedisService;
 import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.NoteService;
+import org.bson.Document;
 import org.springframework.beans.BeanUtils;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.mongodb.core.MongoTemplate;
+import org.springframework.data.mongodb.core.query.Collation;
 import org.springframework.data.mongodb.core.query.Criteria;
 import org.springframework.data.mongodb.core.query.Query;
 import org.springframework.data.mongodb.core.query.Update;
@@ -438,15 +440,23 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public NoteStatistic getStatistic() {
+        Document source = new Document();
+        source.put("locale", "zh");
+        source.put("numericOrdering", true);
+        Collation collation = Collation.from(source);
+
         Query queryLike = new Query();
+        queryLike.collation(collation);
         queryLike.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("like"))).limit(5);
         List<Note> likeList = mongoTemplate.find(queryLike, Note.class);
 
         Query queryStar = new Query();
+        queryStar.collation(collation);
         queryStar.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("star"))).limit(5);
         List<Note> starList = mongoTemplate.find(queryStar, Note.class);
 
         Query queryView = new Query();
+        queryView.collation(collation);
         queryView.addCriteria(Criteria.where("deleted").is("0")).with(Sort.by(Sort.Order.desc("view"))).limit(5);
         List<Note> viewList = mongoTemplate.find(queryView, Note.class);
 

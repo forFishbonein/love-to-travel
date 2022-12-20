@@ -3,8 +3,8 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="Please input"/> &nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo">产品ID查询</el-button>
+          <el-input v-model="queryStr" placeholder="请输入产品信息"/> &nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryInfo">查询</el-button>
         </div>
 
 <!--        <div class="query">-->
@@ -21,14 +21,11 @@
     </template>
     <el-table :data="tableData" style="width: 100%" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="55"/>
-      <el-table-column label="产品id" prop="id" width="150"/>
-      <el-table-column label="产品名称" prop="name" width="80"/>
-      <el-table-column label="产品简介" prop="introduction" width="100"/>
-      <el-table-column label="行程id" prop="plan_id" width="150"/>
-      <!--      <el-table-column :show-overflow-tooltip="true" label="内容" prop="content" width="100"/>-->
+      <el-table-column label="产品名称" prop="name" width="200"/>
+      <el-table-column label="产品简介" prop="introduction" /><!--      <el-table-column :show-overflow-tooltip="true" label="内容" prop="content" width="100"/>-->
       <el-table-column label="产品价格" prop="price" width="100"/>
 
-      <el-table-column fixed="right" label="Operations" prop="oppo" width="120">
+      <el-table-column fixed="right" label="操作" prop="oppo" width="120">
         <template #default="scope">
           <el-button link size="small" type="primary" @click="singleDelete(scope.row)">删除</el-button>
           <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">编辑</el-button>
