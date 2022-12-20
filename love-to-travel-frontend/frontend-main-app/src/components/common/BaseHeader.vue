@@ -207,10 +207,14 @@ const searchSomething = () => {
                 ></a>
                 <ul class="main-menu__list">
                   <li class="dropdown current">
-                    <router-link to="/" class="aly-index">爱旅游</router-link>
+                    <router-link to="/" active-class="aly-index"
+                      >爱旅游</router-link
+                    >
                   </li>
                   <li class="dropdown">
-                    <router-link to="/goTravel/city">去旅游</router-link>
+                    <router-link to="/goTravel/city" active-class="aly-index"
+                      >去旅游</router-link
+                    >
                     <ul>
                       <li>
                         <router-link
@@ -229,7 +233,9 @@ const searchSomething = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <router-link to="/readTravel/note">阅旅游</router-link>
+                    <router-link to="/readTravel/note" active-class="aly-index"
+                      >阅旅游</router-link
+                    >
                     <ul>
                       <li>
                         <router-link
@@ -248,7 +254,9 @@ const searchSomething = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <router-link to="/groupTravel/team">组队游</router-link>
+                    <router-link to="/groupTravel/team" active-class="aly-index"
+                      >组队游</router-link
+                    >
                     <ul>
                       <li>
                         <router-link
@@ -267,7 +275,11 @@ const searchSomething = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <router-link to="/buyTravel/product">购旅游</router-link>
+                    <router-link
+                      to="/buyTravel/product"
+                      active-class="aly-index"
+                      >购旅游</router-link
+                    >
                     <ul>
                       <li>
                         <router-link
@@ -279,7 +291,9 @@ const searchSomething = () => {
                     </ul>
                   </li>
                   <li class="dropdown">
-                    <router-link to="/canvasTravel">旅行脉络</router-link>
+                    <router-link to="/canvasTravel" active-class="aly-index"
+                      >旅行脉络</router-link
+                    >
                     <ul>
                       <li>
                         <router-link

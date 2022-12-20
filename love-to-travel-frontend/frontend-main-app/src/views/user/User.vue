@@ -18,6 +18,7 @@ import { getNotesInfoByUserId } from "@/apis/travelService/note";
 import { theNotesInfoType } from "@/apis/interface/myInterface";
 import { numberFormat } from "@/utils/filters/number";
 import { timeFormat } from "@/utils/filters/time";
+import { getRandomArrayElements } from "@/utils/filters/randomArray";
 const theUserInfo = ref({} as UserInfo);
 const props = defineProps<{
   userId: string;
@@ -558,7 +559,7 @@ const cancelFollowTheUser = () => {
 /* 游记 */
 const userNotesInfo = ref([] as theNotesInfoType[]);
 const getNotesInfo = async () => {
-  await getNotesInfoByUserId(store.userInfo.id)
+  await getNotesInfoByUserId(userId)
     .then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
@@ -580,6 +581,24 @@ const getNotesInfo = async () => {
     });
 };
 getNotesInfo();
+/* 随机勋章 */
+/* 随机勋章 */
+const medalsArray = [
+  "/static/images//medal/medal1.jpg",
+  "/static/images//medal/medal2.jpg",
+  "/static/images//medal/medal3.jpg",
+  "/static/images//medal/medal4.jpg",
+  "/static/images//medal/medal5.jpg",
+  "/static/images//medal/medal6.jpg",
+] as Array<string>;
+let finalMedalsArray = [] as Array<string>;
+const getShuffleMedals = () => {
+  finalMedalsArray = getRandomArrayElements(
+    medalsArray,
+    Math.floor(Math.random() * 6) + 1
+  );
+};
+getShuffleMedals();
 </script>
 
 <template>
@@ -604,7 +623,7 @@ getNotesInfo();
       <el-descriptions :title="theUserInfo.name">
         <el-descriptions-item label="访问量"
           ><span class="visit-num">{{
-            theUserInfo.visits
+            theUserInfo.visits || "-"
           }}</span></el-descriptions-item
         >
         <el-descriptions-item label="邮箱">{{
@@ -622,7 +641,8 @@ getNotesInfo();
           theUserInfo.signature
         }}</el-descriptions-item>
         <el-descriptions-item label="加入爱旅游时间">{{
-          theUserInfo.createTime
+          // @ts-ignore
+          timeFormat(theUserInfo.createTime)
         }}</el-descriptions-item>
       </el-descriptions>
     </div>
@@ -675,8 +695,14 @@ getNotesInfo();
             <span>ta的勋章</span>
           </div>
         </template>
-        <div v-for="o in 2" :key="o" class="text item">
-          {{ "List item " + o }}
+        <div class="all-media-container">
+          <div
+            v-for="(item, index) in finalMedalsArray"
+            :key="index"
+            class="text item media-img-container"
+          >
+            <img :src="item" />
+          </div>
         </div>
       </el-card>
       <el-card class="box-card">
@@ -755,6 +781,23 @@ getNotesInfo();
 </template>
 
 <style lang="scss" scoped>
+.all-media-container {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  flex-wrap: wrap;
+  .media-img-container {
+    cursor: pointer;
+    float: left;
+    width: 30px;
+    height: 40px;
+    margin: 5px;
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+}
 #map-container {
   width: 100%;
   height: 600px;
@@ -801,7 +844,7 @@ getNotesInfo();
   }
   .info-border {
     padding-top: 15px;
-    width: 800px;
+    width: 1000px;
     height: auto;
     float: left;
     margin-left: 200px;
@@ -812,7 +855,7 @@ getNotesInfo();
     }
   }
   .more-info-border {
-    width: 800px;
+    width: 1000px;
     height: auto;
     margin-left: 200px;
   }

@@ -222,11 +222,13 @@ const searchTheCity = async () => {
                   </a>
                 </li>
                 <li>
-                  <a
-                    href="javascript:;"
+                  <router-link
+                    :to="`/user/${item.userId}`"
                     style="width: 370px; justify-content: left"
                     ><i class="far fa-user-circle"></i
-                    ><span class="span-style">{{ item.userName }}</span></a
+                    ><span class="span-style">{{
+                      item.userName
+                    }}</span></router-link
                   >
                 </li>
               </ul>
@@ -314,11 +316,11 @@ const searchTheCity = async () => {
   border: 2px solid #fca38f;
   transition: ease-in-out;
 }
-.search-input-container .search:hover,.search-input-container .search:focus {
+.search-input-container .search:hover,
+.search-input-container .search:focus {
   border: 2px solid #ef7555;
   background-color: #f8f1e1;
 }
-
 
 .search-page-button {
   border-radius: 10px;

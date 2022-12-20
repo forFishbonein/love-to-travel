@@ -136,16 +136,17 @@ export default {
   font-size: 12px;
 }
 .box-card {
-  width: 150px;
+  width: 200px;
   /* display: flex;
   flex-direction: column;
   justify-content: space-between; */
+  background-color: rgba(255, 255, 255, 0.6);
 }
 .detail-panel {
   position: fixed;
   right: 3px;
   top: 150px;
-  width: 150px;
+  width: 200px;
   height: 400px;
   cursor: pointer;
   border-top-left-radius: 10px;
@@ -172,7 +173,7 @@ export default {
   display: flex;
   justify-content: center;
   align-items: center;
-  min-width: 110px;
+  min-width: 160px;
   padding: 5px;
   min-height: 20px;
   line-height: 20px;

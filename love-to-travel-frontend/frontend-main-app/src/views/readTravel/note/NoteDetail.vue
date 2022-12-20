@@ -935,9 +935,11 @@ const cancelNoteStar = async () => {
             <div class="news-details__content">
               <ul class="list-unstyled news-one__meta other-style">
                 <li>
-                  <a href="javascript:;"
+                  <router-link :to="`/user/${noteInfo.userId}`"
                     ><i class="far fa-user-circle"></i
-                    ><span class="span-style">{{ noteInfo.userName }}</span></a
+                    ><span class="span-style">{{
+                      noteInfo.userName
+                    }}</span></router-link
                   >
                 </li>
               </ul>
@@ -1176,7 +1178,7 @@ const cancelNoteStar = async () => {
                           <div class="comment-container">
                             <div class="comment-header">
                               <p>
-                                <router-link to="">{{
+                                <router-link :to="`/user/${item.userId}`">{{
                                   item.userName
                                 }}</router-link>
                               </p>
@@ -1253,9 +1255,11 @@ const cancelNoteStar = async () => {
                               class="second-item"
                             >
                               <p>
-                                <span style="color: #e8604c">{{
-                                  i.userName
-                                }}</span
+                                <router-link :to="`/user/${i.userId}`"
+                                  ><span style="color: #e8604c">{{
+                                    i.userName
+                                  }}</span></router-link
+                                >
                                 ><span style="color: #909399">{{
                                   i.createTime
                                 }}</span>
