@@ -40,4 +40,6 @@ public interface SceneryService extends IService<Scenery> {
 
     GetUserComment getUserComment(Long id);
 
+    List<Scenery> getRedommond(Long id);
+
 }

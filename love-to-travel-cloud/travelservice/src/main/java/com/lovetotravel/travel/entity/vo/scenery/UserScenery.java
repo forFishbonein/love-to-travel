@@ -9,7 +9,6 @@ public class UserScenery {
 
     private String sceneryId;
 
-    private String sceneryName;
 
     public UserScenery() {
 

@@ -2,13 +2,11 @@ package com.lovetotravel.travel.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
-import com.baomidou.mybatisplus.core.toolkit.Wrappers;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.lovetotravel.feign.clients.UserClient;
 import com.lovetotravel.feign.entity.Result;
 import com.lovetotravel.feign.entity.User;
-import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.entity.SceneryComment;
 import com.lovetotravel.travel.entity.page.PageVo;
@@ -17,6 +15,7 @@ import com.lovetotravel.travel.entity.vo.scenery.*;
 import com.lovetotravel.travel.exception.GlobalException;
 import com.lovetotravel.travel.mapper.SceneryCommentMapper;
 import com.lovetotravel.travel.mapper.SceneryMapper;
+import com.lovetotravel.travel.mapper.UserSceneryMapper;
 import com.lovetotravel.travel.result.CodeMsg;
 import com.lovetotravel.travel.service.SceneryService;
 import org.springframework.beans.BeanUtils;
@@ -24,6 +23,7 @@ import org.springframework.stereotype.Service;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
@@ -34,13 +34,16 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
     final SceneryMapper sceneryMapper;
     final SceneryCommentMapper sceneryCommentMapper;
+    final UserSceneryMapper userSceneryMapper;
     final UserClient userClient;
 
-    public SceneryServiceImpl(SceneryMapper sceneryMapper, SceneryCommentMapper sceneryCommentMapper, UserClient userClient) {
+    public SceneryServiceImpl(SceneryMapper sceneryMapper, SceneryCommentMapper sceneryCommentMapper, UserSceneryMapper userSceneryMapper, UserClient userClient) {
         this.sceneryMapper = sceneryMapper;
         this.sceneryCommentMapper = sceneryCommentMapper;
+        this.userSceneryMapper = userSceneryMapper;
         this.userClient = userClient;
     }
+
 
     @Override
     public List<Scenery> getAll() {
@@ -223,6 +226,34 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
         getUserComment.setSceneryCommentList(commentInMysql);
         getUserComment.setTotal(total);
         return getUserComment;
+    }
+
+    @Override
+    public List<Scenery> getRedommond(Long id) {
+
+        QueryWrapper<UserScenery> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(UserScenery::getUserId, id);
+        UserScenery userScenery = userSceneryMapper.selectOne(queryWrapper);
+
+        System.out.println(userScenery);
+
+        List<Scenery> sceneryList = new ArrayList<>();
+
+
+
+        if (userScenery != null) {
+            String sceneryIdList = userScenery.getSceneryId();
+            String[] result = sceneryIdList.split(",");
+            System.out.println(result);
+            for (String s: result) {
+                System.out.println(s);
+                Scenery scenery = sceneryMapper.selectById(s);
+                sceneryList.add(scenery);
+            }
+
+        }
+
+        return sceneryList;
     }
 
 }
