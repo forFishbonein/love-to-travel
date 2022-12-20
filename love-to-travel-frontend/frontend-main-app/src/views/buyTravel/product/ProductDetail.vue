@@ -362,7 +362,9 @@ onMounted(() => {
               爱旅游旨在为您提供优质的服务与旅游保障
             </p>
             <p class="about-page__text-2">
-              {{ productInfo.introduction }}
+              <el-scrollbar height="200px">
+                {{ productInfo.introduction }}
+              </el-scrollbar>
             </p>
             <div class="about-page__progress">
               <div class="about-page__progress-single">
@@ -667,7 +669,7 @@ color: #e74128;
 }
 .about-page__text-2 {
   width: 570px;
-  height: 150px;
+  height: 200px;
   border: 2px #e8604c solid;
   padding: 10px;
   border-radius: 10px;
