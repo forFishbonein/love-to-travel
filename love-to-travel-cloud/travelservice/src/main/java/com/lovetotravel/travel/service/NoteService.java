@@ -16,6 +16,8 @@ public interface NoteService {
 
     List<Note> getRelatedById(String sceneryId);
 
+    List<Note> getRelatedByNote(String id);
+
     List<Note> getByUserId(String userId);
 
     List<Note> getAll();
