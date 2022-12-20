@@ -116,10 +116,13 @@ const changeCurrentPage = (p: number) => {
 // requestScenerysInfo();
 /* 获取推荐列表 */
 const requertRecommendScenerInfo = () => {
-  alert(1111);
+  // alert(1111);
   // getRecommendScenerys(store.userInfo.id)
   axios
-    .get(`http://127.0.0.1:8080/sce/${store.userInfo.id}`)
+    .get("http://127.0.0.1:8080/sce", {
+      //GET参数
+      params: { usrNo: store.userInfo.id },
+    })
     .then((res: any) => {
       console.log(res);
       // alert("获取成功");
@@ -135,7 +138,7 @@ const requertRecommendScenerInfo = () => {
       });
     });
 };
-requertRecommendScenerInfo();
+// requertRecommendScenerInfo();
 
 const thisPageKeyword = ref("");
 const searchTheCity = async () => {
@@ -180,7 +183,7 @@ const searchTheCity = async () => {
 })(jQuery);
 </script>
 <template>
-  <section class="popular-tours-two">
+  <!-- <section class="popular-tours-two">
     <div class="container">
       <div class="row">
         <div
@@ -189,7 +192,6 @@ const searchTheCity = async () => {
           v-for="(item, index) in scenerysPageInfo"
           :key="item.id"
         >
-          <!--Popular Tours Two Single-->
           <div class="popular-tours__single">
             <div class="popular-tours__img">
               <img :src="item.url" alt="" />
@@ -217,7 +219,7 @@ const searchTheCity = async () => {
         </div>
       </div>
     </div>
-  </section>
+  </section> -->
   <div class="search-input-container">
     <form
       autocomplete="off"
