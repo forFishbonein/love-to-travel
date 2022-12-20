@@ -129,3 +129,12 @@ export const publishOneNote = (data: noteInfoParams) => {
     loading: true, //显示加载圈
   });
 };
+
+/* 删除游记 */
+export const deleteOneNote = (noteId: string) => {
+  return httpRequest({
+    method: "delete",
+    url: `http://localhost:8082/note/${noteId}`,
+    loading: true, //显示加载圈
+  });
+};

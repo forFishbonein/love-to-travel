@@ -2026,6 +2026,9 @@ onMounted(() => {});
 </template>
 
 <style scoped lang="scss">
+.news-one {
+  padding-bottom: 40px;
+}
 .why-choose__left-bg {
   width: auto;
   height: 900px;

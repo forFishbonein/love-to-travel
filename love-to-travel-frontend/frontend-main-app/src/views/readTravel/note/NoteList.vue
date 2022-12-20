@@ -222,14 +222,19 @@ const searchTheCity = async () => {
                   </a>
                 </li>
                 <li>
-                  <router-link
-                    :to="`/user/${item.userId}`"
-                    style="width: 370px; justify-content: left"
+                  <router-link :to="`/user/${item.userId}`"
                     ><i class="far fa-user-circle"></i
                     ><span class="span-style">{{
                       item.userName
                     }}</span></router-link
                   >
+                </li>
+                <li>
+                  <a href="javascript:;">
+                    <el-icon size="20px"><OfficeBuilding /></el-icon>相关城市:{{
+                      item.city
+                    }}
+                  </a>
                 </li>
               </ul>
               <h3 class="news-one__title">

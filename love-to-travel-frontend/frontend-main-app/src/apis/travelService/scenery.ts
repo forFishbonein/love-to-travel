@@ -34,3 +34,17 @@ export const getOneSceneryInfoById = (sceneryId: string) => {
     loading: true, //显示加载圈
   });
 };
+export const getRecommondSceneryByUserId = (userId: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/scenery/recommond/user/${userId}`,
+    loading: true, //显示加载圈
+  });
+};
+export const getRecommondUsersByUserId = (userId: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8081/user/scenery/recommond/${userId}`,
+    loading: true, //显示加载圈
+  });
+};

@@ -115,6 +115,9 @@ requestSceneryListInfo();
 </template>
 
 <style lang="scss" scoped>
+.destinations-details {
+  padding-top: 70px;
+}
 .tour-details-two__last-minute-content {
   margin-left: 20px;
   padding-top: 10px;
