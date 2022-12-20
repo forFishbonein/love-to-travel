@@ -1,6 +1,9 @@
 <script setup lang="ts">
 import { ref } from "vue";
-import { getOneSceneryInfoById } from "@/apis/travelService/scenery";
+import {
+  getOneSceneryInfoById,
+  getRecommondUsersByUserId,
+} from "@/apis/travelService/scenery";
 import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 import { keepTwoDecimal } from "@/utils/filters/number";
 import { mainStore } from "@/store/user";
@@ -14,6 +17,7 @@ import {
   addASceneryComment,
   getCommentsBySceneryId,
 } from "@/apis/travelService/comment";
+import { UserInfo } from "@/apis/userService/uInterface";
 const store = mainStore();
 const props = defineProps<{
   sceneryId: string;
@@ -139,6 +143,38 @@ const addSceneryCommentAndScore = async () => {
     });
   }
 };
+const theRecommondUsers = ref([] as UserInfo[]);
+let userLoginFlag = ref(false);
+const getRecommondUsers = () => {
+  if (store.userInfo.id) {
+    getRecommondUsersByUserId(store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          // ElMessage({
+          //   type: "error",
+          //   message: res.msg,
+          // });
+          // userLoginFlag.value = false;
+        } else {
+          console.log(res);
+          // alert("获取成功");
+          if (res.data.length !== 0) {
+            theRecommondUsers.value = res.data;
+            userLoginFlag.value = true;
+          }
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
+      });
+  }
+};
+getRecommondUsers();
 </script>
 <script lang="ts">
 (function ($) {
@@ -424,6 +460,41 @@ const addSceneryCommentAndScore = async () => {
                 </li>
               </ul>
             </div>
+            <div class="sidebar__single sidebar__category" v-if="userLoginFlag">
+              <h3 class="sidebar__title">
+                驴友圈
+                <span class="span-style-front3">基于推荐算法</span>
+              </h3>
+              <ul class="sidebar__category-list list-unstyled">
+                <li>
+                  <el-scrollbar max-height="400px">
+                    <div class="warp">
+                      <div class="user-card" v-for="item in theRecommondUsers">
+                        <div class="card-left">
+                          <div class="img-con">
+                            <img :src="item.url" />
+                          </div>
+                        </div>
+                        <div class="card-right">
+                          <p style="padding-left: 10px">
+                            <router-link
+                              :to="`/user/${item.id}`"
+                              style="font-size: 16px"
+                              >{{ item.name }}</router-link
+                            >
+                          </p>
+                          <p style="padding: 0 10px; margin-top: 5px">
+                            {{
+                              item.signature || "这个人很懒，什么都没有留下~"
+                            }}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </el-scrollbar>
+                </li>
+              </ul>
+            </div>
           </div>
         </div>
       </div>
@@ -432,6 +503,9 @@ const addSceneryCommentAndScore = async () => {
 </template>
 
 <style lang="scss" scoped>
+.destinations-details {
+  padding-top: 70px;
+}
 .comment-form {
   margin-top: 80px;
 }
@@ -539,5 +613,76 @@ const addSceneryCommentAndScore = async () => {
 }
 .sidebar__single {
   margin-top: 30px;
+}
+.warp {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  align-items: center;
+  // padding: 20px;
+  padding-top: 0;
+  // padding-bottom: 30px;
+  .user-card {
+    width: 230px;
+    height: 100px;
+    // border: 1px #e8604c solid;
+    background-color: #ffffff;
+    box-shadow: rgba(0, 0, 0, 0.2) 1px 1px 8px 1px;
+    border-radius: 10px;
+    padding-left: 10px;
+    margin-top: 10px;
+    // margin-right: 20px;
+    margin-bottom: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    .card-left {
+      width: 80px;
+      height: 100px;
+      //   border: 1px #e8604c solid;
+      float: left;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      .img-con {
+        width: 80px;
+        height: 80px;
+        border-radius: 80px;
+        img {
+          width: 100%;
+          height: 100%;
+          border-radius: 80px;
+        }
+      }
+    }
+    .card-right {
+      width: 150px;
+      height: 100px;
+      //   border: 1px #e8604c solid;
+      float: right;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: 10px 0;
+      p {
+        margin: 0;
+        line-height: 1.5em;
+      }
+      > p:first-child {
+        font-size: 20px;
+        font-weight: 700;
+        color: #e8604c;
+      }
+      > p:nth-child(2) {
+        width: 100%;
+        max-height: 70px;
+        overflow: hidden;
+        font-size: 14px;
+        margin-top: 10px;
+      }
+    }
+  }
 }
 </style>

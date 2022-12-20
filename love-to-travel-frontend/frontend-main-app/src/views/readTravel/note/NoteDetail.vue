@@ -20,6 +20,7 @@ import {
   starTheNote,
   isstarTheNote,
   unstarTheNote,
+  deleteOneNote,
 } from "@/apis/travelService/note";
 import { getFootsByUserId } from "@/apis/travelService/foot";
 import {
@@ -116,6 +117,7 @@ const requestOneNoteInfoAndOthers = async () => {
         message: error.message,
       });
     });
+  initDeleteButton();
   await getOneUserPlansInfoById(planId)
     .then((res: any) => {
       if (res.code != 0) {
@@ -917,6 +919,44 @@ const cancelNoteStar = async () => {
       });
   }
 };
+const belongToMeFlag = ref(false);
+const deleteConfirmDialogVisible = ref(false);
+const initDeleteButton = () => {
+  if (store.userInfo.id) {
+    if (userId === store.userInfo.id) {
+      belongToMeFlag.value = true;
+    }
+  }
+};
+const openTheDeleteConfirmDialog = () => {
+  deleteConfirmDialogVisible.value = true;
+};
+const deleteTheNote = () => {
+  deleteOneNote(noteId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        router.push("/personal/mynote");
+        //@ts-ignore
+        ElMessage({
+          type: "success",
+          message: "删除成功",
+        });
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
 </script>
 <template>
   <section class="news-details">
@@ -934,12 +974,24 @@ const cancelNoteStar = async () => {
             </div>
             <div class="news-details__content">
               <ul class="list-unstyled news-one__meta other-style">
-                <li>
+                <li style="font-size: 16px">
                   <router-link :to="`/user/${noteInfo.userId}`"
-                    ><i class="far fa-user-circle"></i
-                    ><span class="span-style">{{
-                      noteInfo.userName
-                    }}</span></router-link
+                    ><i class="far fa-user-circle"></i>发布人:<span
+                      class="span-style"
+                      style="margin-left: 5px"
+                      >{{ noteInfo.userName }}</span
+                    ></router-link
+                  >
+                </li>
+                <li style="font-size: 16px">
+                  <el-icon size="16px" :color="`#e8604c`"
+                    ><OfficeBuilding
+                  /></el-icon>
+                  相关城市:
+                  <span
+                    class="span-style"
+                    style="font-size: 14px; margin-left: 5px"
+                    >{{ noteInfo.city }}</span
                   >
                 </li>
               </ul>
@@ -1059,6 +1111,14 @@ const cancelNoteStar = async () => {
                     >
                       发表
                     </button>
+                  </div>
+                </div>
+                <div class="col-xl-12" v-if="belongToMeFlag">
+                  <div
+                    class="delete-button"
+                    @click="openTheDeleteConfirmDialog"
+                  >
+                    删除游记
                   </div>
                 </div>
               </div>
@@ -1279,9 +1339,42 @@ const cancelNoteStar = async () => {
       </div>
     </div>
   </section>
+  <el-dialog
+    v-model="deleteConfirmDialogVisible"
+    title="警告框"
+    width="30%"
+    center
+  >
+    <span> 您将要删除该游记，确定继续吗？(该操作不可逆) </span>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="deleteConfirmDialogVisible = false">取消</el-button>
+        <el-button type="primary" @click="deleteTheNote"> 确认 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
+.delete-button {
+  width: 150px;
+  height: 40px;
+  float: right;
+  background-color: #e8604c;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+}
+.delete-button:hover {
+  background-color: #e74128;
+}
+.news-details {
+  padding-top: 70px;
+}
 .other-style {
   display: flex;
   flex-wrap: wrap;
@@ -1290,6 +1383,7 @@ const cancelNoteStar = async () => {
     margin-left: 5px;
     display: flex;
     justify-content: center;
+    align-items: center;
     > a {
       display: flex;
       justify-content: center;

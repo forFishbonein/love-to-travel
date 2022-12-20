@@ -193,7 +193,7 @@ export default {
         // console.log(srcPattern(html)[0]);
         // console.log(srcPattern(html));
         // @ts-ignore
-        if (srcPattern(html) === []) {
+        if (srcPattern(html).length !== 0) {
           // @ts-ignore
           this.src = srcPattern(html)[0].url;
         }

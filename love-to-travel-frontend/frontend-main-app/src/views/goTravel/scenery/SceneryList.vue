@@ -5,12 +5,11 @@ import { getPageScenerysInfoByKeyword } from "@/apis/travelService/search";
 import {
   getAllSceneryList,
   getPageScenerysInfo,
+  getRecommondSceneryByUserId,
 } from "@apis/travelService/scenery";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
-import { getRecommendScenerys } from "@/apis/py/scenery";
 import { mainStore } from "@/store/user";
-import axios from "axios";
 const store = mainStore();
 /* 全局根据简介查询 */
 const props = defineProps<{
@@ -115,30 +114,40 @@ const changeCurrentPage = (p: number) => {
 // };
 // requestScenerysInfo();
 /* 获取推荐列表 */
-const requertRecommendScenerInfo = () => {
-  // alert(1111);
-  // getRecommendScenerys(store.userInfo.id)
-  axios
-    .get("http://127.0.0.1:8080/sce", {
-      //GET参数
-      params: { usrNo: store.userInfo.id },
-    })
-    .then((res: any) => {
-      console.log(res);
-      // alert("获取成功");
-      // scenerysPageInfo.value = res.data.records;
-      // total.value = res.data.total;
-      // console.log(scenerysPageInfo);
-    })
-    .catch((error) => {
-      //@ts-ignore
-      ElMessage({
-        type: "error",
-        message: error.message,
+let scenerysRecommendInfo = ref([] as theCityScenerysInfoType[]);
+let userLoginFlag = ref(false);
+const requertRecommendSceneryInfo = () => {
+  if (store.userInfo.id) {
+    // alert(1111);
+    // getRecommendScenerys(store.userInfo.id)
+    getRecommondSceneryByUserId(store.userInfo.id)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          // ElMessage({
+          //   type: "error",
+          //   message: res.msg,
+          // });
+          // userLoginFlag.value = false;
+        } else {
+          console.log(res);
+          // alert("获取成功");
+          if (res.data.length !== 0) {
+            scenerysRecommendInfo.value = res.data;
+            userLoginFlag.value = true;
+          }
+        }
+      })
+      .catch((error) => {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: error.message,
+        });
       });
-    });
+  }
 };
-// requertRecommendScenerInfo();
+requertRecommendSceneryInfo();
 
 const thisPageKeyword = ref("");
 const searchTheCity = async () => {
@@ -183,17 +192,22 @@ const searchTheCity = async () => {
 })(jQuery);
 </script>
 <template>
-  <!-- <section class="popular-tours-two">
+  <section class="popular-tours-two change-tours-two" v-if="userLoginFlag">
     <div class="container">
       <div class="row">
+        <div class="section-title text-left">
+          <span class="section-title__tagline">Guess you like</span>
+          <h2 class="section-title__title ali-font-family">猜你喜欢</h2>
+          <div>基于推荐算法，提供个性化推荐</div>
+        </div>
         <div
-          class="col-xl-4 col-lg-6 col-md-6 wow fadeInUp margindiv"
+          class="col-xl-4 col-lg-4 col-md-4 wow fadeInUp margindiv"
           data-wow-delay="100ms"
-          v-for="(item, index) in scenerysPageInfo"
+          v-for="(item, index) in scenerysRecommendInfo"
           :key="item.id"
         >
-          <div class="popular-tours__single">
-            <div class="popular-tours__img">
+          <div class="popular-tours__single change-size-single">
+            <div class="popular-tours__img change-size-img">
               <img :src="item.url" alt="" />
               <div class="popular-tours__icon">
                 <router-link :to="`detail/${item.id}`">
@@ -201,16 +215,16 @@ const searchTheCity = async () => {
                 </router-link>
               </div>
             </div>
-            <div class="popular-tours__content">
+            <div class="popular-tours__content change-size-content">
               <div class="popular-tours__stars">
                 <i class="fa fa-star"></i> {{ item.score }} 评分
               </div>
-              <h3 class="popular-tours__title">
+              <h3 class="popular-tours__title change-size-title">
                 <router-link :to="`detail/${item.id}`">{{
                   item.name
                 }}</router-link>
               </h3>
-              <p class="popular-tours__rate">
+              <p class="popular-tours__rate change-size-rate">
                 <span>{{ item.ticket }}</span
                 >元 / 每人
               </p>
@@ -219,7 +233,7 @@ const searchTheCity = async () => {
         </div>
       </div>
     </div>
-  </section> -->
+  </section>
   <div class="search-input-container">
     <form
       autocomplete="off"
@@ -329,12 +343,14 @@ const searchTheCity = async () => {
 .search-input-container {
   width: 100%;
   padding: 50px 200px;
+  padding-top: 25px;
 }
 .search-input-container .search {
   border: 2px solid #fca38f;
   transition: ease-in-out;
 }
-.search-input-container .search:hover,.search-input-container .search:focus {
+.search-input-container .search:hover,
+.search-input-container .search:focus {
   border: 2px solid #ef7555;
   background-color: #f8f1e1;
 }
@@ -347,5 +363,46 @@ const searchTheCity = async () => {
 }
 .search-page-button:hover > i {
   color: #ffffff;
+}
+/* 推荐列表 */
+.change-size-single {
+  width: 250px;
+  height: 300px;
+}
+.change-size-img {
+  width: 250px;
+  height: 180px;
+}
+.change-size-content {
+  border: 0;
+  width: 250px;
+  height: 120px;
+  padding: 15px;
+  padding-left: 25px;
+}
+.margindiv {
+  display: flex;
+  justify-content: center;
+}
+.change-size-title {
+  a {
+    font-size: 18px;
+  }
+  height: 30px;
+  width: 220px;
+  // overflow: scroll;
+  overflow: hidden;
+}
+.change-size-rate {
+  span {
+    font-size: 18px;
+  }
+  height: 25px;
+}
+.change-tours-two {
+  padding-bottom: 0;
+}
+.section-title {
+  margin-top: 50px;
 }
 </style>

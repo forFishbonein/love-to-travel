@@ -810,10 +810,11 @@ getShuffleMedals();
   // background-color: rgba(244, 143, 128, 0.1);
   // background-color: rgba(49,48,65, 0.1);
   // background-color: rgba(39,106,206, 0.1);
+  // background: linear-gradient(to right, #ff9569 0%, #e92758 100%);
   background: linear-gradient(
     -90deg,
-    rgba(41, 189, 217, 0.5) 0%,
-    rgba(39, 106, 206, 0.5) 100%
+    rgba(238, 83, 22, 0.3) 0%,
+    rgba(213, 62, 20, 0.6) 100%
   );
 }
 // ::v-deep .el-descriptions {
