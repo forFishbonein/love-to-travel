@@ -13,7 +13,7 @@ import { getRandomArrayElements } from "@/utils/filters/randomArray";
 import { getAllProductsInfo } from "@apis/travelService/product";
 import { productInfoType } from "@/apis/interface/myInterface";
 import { subPlansFormat } from "@/utils/filters/subPlan";
-import locationData from "../assets/js/location"
+import locationData from "../assets/js/location";
 const store = utilStore();
 const router = useRouter();
 let citysInfos = [
@@ -120,9 +120,89 @@ productsInfo.value = [
   {
     cost: "",
     createTime: "2022-12-16 17:20:24",
+    id: "100",
+    introduction:
+      "一价全含+五星酒店+体验旅拍+特色餐食+九寨连住2晚+赠成都住宿接机",
+    name: "奢玩2-5人团·九寨沟+毕棚沟+达古冰川+黄龙4日游",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "145",
+    tele: "10086",
+    url: "https://eemall.oss-cn-hangzhou.aliyuncs.com/%E4%B9%9D%E5%AF%A8%E6%B2%9F.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
     id: "1603681436596965100",
-    introduction: "高级套餐",
-    name: "高级套餐4",
+    introduction:
+      "被誉为“天下第一湾”，是个放松休闲、享受美食、体验水上项目的好地方。 ·拥有约7000米的银白色海滩，沙质细腻、海水洁净透明，可清楚观赏珊瑚，远望呈现几种不同的蓝色。 ·娱乐项目繁多，可乘坐豪华游艇出海，看海狮海豹；玩转帆船、浮潜、垂钓；背上滑翔伞翱翔蓝天。 ·冬季水温可达到20℃左右，可常年下水游泳，周边五星级豪华酒店云集，是一处理想的冬季避寒的休闲度假胜地。",
+    name: "三亚亚龙湾热带天堂森林公园门票 可选网红玻璃海景栈道·索桥·丛林飞跃·雨林飞漂项目",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -191,172 +271,17 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "266",
     tele: "10086",
-    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
-  },
-  {
-    cost: "",
-    createTime: "2022-12-16 17:20:24",
-    id: "1603681436596965105",
-    introduction: "高级套餐",
-    name: "高级套餐5",
-    plan: {
-      budget: "5000",
-      createTime: "2022-12-16 11:51:34",
-      deleted: "0",
-      depart: "2022-12-13",
-      end: "北京市",
-      id: "639beb46c0bc772c3cb5884b",
-      start: "呼伦贝尔市",
-      subPlans: [
-        {
-          budget: "",
-          city: "北京市",
-          cityId: "110000",
-          dayLength: 2,
-          days: [
-            {
-              route: [
-                {
-                  departTime: 2,
-                  origin: [115.904081, 40.544177],
-                  originName: "玉渡山景区",
-                  vehicle: "步行",
-                },
-                {
-                  departTime: 2,
-                  origin: [115.904081, 40.544177],
-                  originName: "玉渡山景区",
-                  vehicle: "步行",
-                },
-                {
-                  departTime: 2,
-                  origin: [116.404177, 39.909652],
-                  originName: "天安门广场",
-                  vehicle: "3",
-                },
-                {
-                  departTime: 2,
-                  origin: [116.278749, 40.004869],
-                  originName: "颐和园",
-                  vehicle: "3",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          budget: "",
-          city: "秦皇岛市",
-          cityId: "130300",
-          dayLength: 3,
-          days: [
-            {
-              route: [
-                {
-                  departTime: 2,
-                  origin: [119.446926, 39.792502],
-                  originName: "南戴河仙螺岛",
-                  vehicle: "3",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      updateTime: "2022-12-16 11:51:34",
-      userId: "1",
-    },
-    planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
-    tele: "10086",
-    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
-  },
-  {
-    cost: "",
-    createTime: "2022-12-16 17:20:24",
-    id: "1603681436596965106",
-    introduction: "高级套餐",
-    name: "高级套餐6",
-    plan: {
-      budget: "5000",
-      createTime: "2022-12-16 11:51:34",
-      deleted: "0",
-      depart: "2022-12-13",
-      end: "北京市",
-      id: "639beb46c0bc772c3cb5884b",
-      start: "呼伦贝尔市",
-      subPlans: [
-        {
-          budget: "",
-          city: "北京市",
-          cityId: "110000",
-          dayLength: 2,
-          days: [
-            {
-              route: [
-                {
-                  departTime: 2,
-                  origin: [115.904081, 40.544177],
-                  originName: "玉渡山景区",
-                  vehicle: "步行",
-                },
-                {
-                  departTime: 2,
-                  origin: [115.904081, 40.544177],
-                  originName: "玉渡山景区",
-                  vehicle: "步行",
-                },
-                {
-                  departTime: 2,
-                  origin: [116.404177, 39.909652],
-                  originName: "天安门广场",
-                  vehicle: "3",
-                },
-                {
-                  departTime: 2,
-                  origin: [116.278749, 40.004869],
-                  originName: "颐和园",
-                  vehicle: "3",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          budget: "",
-          city: "秦皇岛市",
-          cityId: "130300",
-          dayLength: 3,
-          days: [
-            {
-              route: [
-                {
-                  departTime: 2,
-                  origin: [119.446926, 39.792502],
-                  originName: "南戴河仙螺岛",
-                  vehicle: "3",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      updateTime: "2022-12-16 11:51:34",
-      userId: "1",
-    },
-    planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
-    tele: "10086",
-    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+    url: "https://sales.mafengwo.net/mfs/s16/M00/23/CD/CoUBUl8X93qAUKXnAEFECqWo7Is96.jpeg?imageMogr2%2Fthumbnail%2F%21440x260r%2Fgravity%2FCenter%2Fcrop%2F%21440x260%2Fquality%2F100",
   },
   {
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965107",
-    introduction: "高级套餐",
-    name: "高级套餐7",
+    introduction:
+      "本线路为散客拼团，在承诺服务内容和标准不变的前提下，可能会与其他旅行社的客人合并用车，共同游玩。如您提交订单，则视为接受旅行社拼团后统一安排行程。",
+    name: "西藏林芝5日游 观景酒店·无人机航拍·布宫旅拍 西藏林芝+来古冰川+巴松措+雅鲁藏布大峡谷+然乌湖+林芝波密+西藏拉萨+拉萨出发",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -425,7 +350,7 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "107",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -433,8 +358,9 @@ productsInfo.value = [
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965108",
-    introduction: "高级套餐",
-    name: "高级套餐8",
+    introduction:
+      "湖面海拔4718米，西藏第二大湖泊，也是中国第三大的咸水湖。它是西藏的“三大圣湖”之一，我们会沿着纳木措湖边公路一路前行，前往纳木措湖北岸的景点“圣象天门”景区。",
+    name: "西藏珠峰大本营5日游 可选无人机航拍/拉萨市旅拍 纳木措圣象天门+羊湖+奇林峡+扎西半岛+卡若拉冰川+58冰川+西藏拉萨出发",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -503,7 +429,7 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "345",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -511,8 +437,9 @@ productsInfo.value = [
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965109",
-    introduction: "高级套餐",
-    name: "高级套餐9",
+    introduction:
+      "如出现不可抗力因素，如国家疫情防控政策通知：当地不能出行，到三亚被隔离，或者海南景区、酒店等已停业，疫情状况已不能接待游客;出示相关通知或者证明申请，是否能退以酒店回复为准。以上情况免服务费。",
+    name: "三亚亚特兰蒂斯酒店1-3晚套餐",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -581,85 +508,7 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
-    tele: "10086",
-    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
-  },
-  {
-    cost: "",
-    createTime: "2022-12-16 17:20:24",
-    id: "1603681436596965110",
-    introduction: "高级套餐",
-    name: "高级套餐10",
-    plan: {
-      budget: "5000",
-      createTime: "2022-12-16 11:51:34",
-      deleted: "0",
-      depart: "2022-12-13",
-      end: "北京市",
-      id: "639beb46c0bc772c3cb5884b",
-      start: "呼伦贝尔市",
-      subPlans: [
-        {
-          budget: "",
-          city: "北京市",
-          cityId: "110000",
-          dayLength: 2,
-          days: [
-            {
-              route: [
-                {
-                  departTime: 2,
-                  origin: [115.904081, 40.544177],
-                  originName: "玉渡山景区",
-                  vehicle: "步行",
-                },
-                {
-                  departTime: 2,
-                  origin: [115.904081, 40.544177],
-                  originName: "玉渡山景区",
-                  vehicle: "步行",
-                },
-                {
-                  departTime: 2,
-                  origin: [116.404177, 39.909652],
-                  originName: "天安门广场",
-                  vehicle: "3",
-                },
-                {
-                  departTime: 2,
-                  origin: [116.278749, 40.004869],
-                  originName: "颐和园",
-                  vehicle: "3",
-                },
-              ],
-            },
-          ],
-        },
-        {
-          budget: "",
-          city: "秦皇岛市",
-          cityId: "130300",
-          dayLength: 3,
-          days: [
-            {
-              route: [
-                {
-                  departTime: 2,
-                  origin: [119.446926, 39.792502],
-                  originName: "南戴河仙螺岛",
-                  vehicle: "3",
-                },
-              ],
-            },
-          ],
-        },
-      ],
-      updateTime: "2022-12-16 11:51:34",
-      userId: "1",
-    },
-    planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "218",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -667,8 +516,9 @@ productsInfo.value = [
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965111",
-    introduction: "高级套餐",
-    name: "高级套餐11",
+    introduction:
+      "早上可以睡个懒觉，然后自行用餐，今天上午我们将给大家半日的自由活动时间。驴友们可根据时间自行安排。你可以在【香格里拉古城】感受迷人的香格里拉文化，转动转经筒为自己和家人朋友祈福。也可自费去体验藏族传统文化特色浓郁的【唐卡绘画】，也可选择去参观有着“小布达拉宫”之称的【松赞林寺】，感受云南地区最大的藏传佛教寺院。中午12点集合返回丽江。",
+    name: "云南丽江香格里拉梅里雪山雨崩徒步6日游",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -737,7 +587,7 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "199",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -745,8 +595,9 @@ productsInfo.value = [
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965112",
-    introduction: "高级套餐",
-    name: "高级套餐12",
+    introduction:
+      "支付完成后商家最晚会在9个工作小时内（9:00-18:00）确认是否预定成功\r\n\r\n超时未确认系统将自动退款，预计1-7个工作日退还到支付账户\r\n\r\n本商品无需出团通知书/确认单，预定成功后即可出行",
+    name: "珠海御温泉度假村",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -815,7 +666,7 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "198",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -823,8 +674,9 @@ productsInfo.value = [
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965371",
-    introduction: "高级套餐",
-    name: "高级套餐1",
+    introduction:
+      "为了您人身、财产的安全，请您避免在公开场合暴露贵重物品及大量现金。",
+    name: "珠海长隆海洋王国度假区企鹅酒店2天1晚/3天2晚度假套餐",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -893,7 +745,7 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "92",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -901,8 +753,9 @@ productsInfo.value = [
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965372",
-    introduction: "高级套餐",
-    name: "高级套餐2",
+    introduction:
+      "1.精选住宿：特色客栈/古北之光/水镇大酒店任您选择，古香古色让您流连忘返\r\n2.安排合理：合理的时间安排，舒适的游览线路，日游夜游一次玩个够\r\n3.保证成团：拍下即默认安排，助您出行无忧\r\n4.真纯玩团：我们保证只玩古北水镇，游遍水镇的每个角落，深度自由活动\r\n\r\n5.出行必要：应北京文旅局要求，疫情期间户外旅行可接待范围①低风险地区②健康宝+行程码正常③72小时内",
+    name: "♥北方水镇♥古北水镇纯玩2日游",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -971,7 +824,7 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "2099",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -979,8 +832,8 @@ productsInfo.value = [
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965373",
-    introduction: "高级套餐",
-    name: "高级套餐3",
+    introduction: "出发时间：9:00\r\n集合地点为：故宫东华门集合",
+    name: "北京故宫博物院4-6小时全景一日游",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -1049,7 +902,7 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "1058",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -1057,8 +910,9 @@ productsInfo.value = [
     cost: "",
     createTime: "2022-12-16 17:20:24",
     id: "1603681436596965378",
-    introduction: "高级套餐",
-    name: "高级套餐",
+    introduction:
+      "穿上古风汉服，在苍茫大漠，圆你江湖梦\r\n辽阔黄沙，蓝天白云，随手就是一张网红级大片\r\n也可以自愿自费体验巴基赛车、ATV/UTV、赛车服穿搭拍照等深度好玩的沙漠项目\r\n日落来临时，感受“长河落日圆”的壮丽～",
+    name: "内蒙古库布齐沙漠2日游",
     plan: {
       budget: "5000",
       createTime: "2022-12-16 11:51:34",
@@ -1127,7 +981,165 @@ productsInfo.value = [
       userId: "1",
     },
     planId: "639beb46c0bc772c3cb5884b",
-    price: "500",
+    price: "2599",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965380",
+    introduction:
+      "车辆所需费用：车辆燃油费、停车费、高速费、车辆使用费、进城费、拥堵费。",
+    name: "南京至扬州 包车2日游",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "489",
+    tele: "10086",
+    url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
+  },
+  {
+    cost: "",
+    createTime: "2022-12-16 17:20:24",
+    id: "1603681436596965383",
+    introduction:
+      "杭州出发：8:50杭州新东方大厦（集合）杭州主城区上门接，具体范围咨询客服",
+    name: "嘉兴乌镇+西塘古镇纯玩一日游",
+    plan: {
+      budget: "5000",
+      createTime: "2022-12-16 11:51:34",
+      deleted: "0",
+      depart: "2022-12-13",
+      end: "北京市",
+      id: "639beb46c0bc772c3cb5884b",
+      start: "呼伦贝尔市",
+      subPlans: [
+        {
+          budget: "",
+          city: "北京市",
+          cityId: "110000",
+          dayLength: 2,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [115.904081, 40.544177],
+                  originName: "玉渡山景区",
+                  vehicle: "步行",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.404177, 39.909652],
+                  originName: "天安门广场",
+                  vehicle: "3",
+                },
+                {
+                  departTime: 2,
+                  origin: [116.278749, 40.004869],
+                  originName: "颐和园",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+        {
+          budget: "",
+          city: "秦皇岛市",
+          cityId: "130300",
+          dayLength: 3,
+          days: [
+            {
+              route: [
+                {
+                  departTime: 2,
+                  origin: [119.446926, 39.792502],
+                  originName: "南戴河仙螺岛",
+                  vehicle: "3",
+                },
+              ],
+            },
+          ],
+        },
+      ],
+      updateTime: "2022-12-16 11:51:34",
+      userId: "1",
+    },
+    planId: "639beb46c0bc772c3cb5884b",
+    price: "889",
     tele: "10086",
     url: "https://img1.qunarzz.com/travel/poi/201405/15/31897e5ea444843eddb12cfb.jpg_r_480x360x95_f8287a40.jpg",
   },
@@ -1382,7 +1394,9 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[0]+'.jpg)'}"
+            :style="{
+              backgroundImage: 'url(/images/bg/' + finallyPicArray[0] + '.jpg)',
+            }"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1399,7 +1413,9 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[1]+'.jpg)'}"
+            :style="{
+              backgroundImage: 'url(/images/bg/' + finallyPicArray[1] + '.jpg)',
+            }"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1416,7 +1432,9 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[2]+'.jpg)'}"
+            :style="{
+              backgroundImage: 'url(/images/bg/' + finallyPicArray[2] + '.jpg)',
+            }"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1805,11 +1823,16 @@ onMounted(() => {});
                 <div class="popular-tours__img">
                   <img :src="item.url" alt="" />
                 </div>
-                <div class="popular-tours__content" style="padding-bottom: 45px;">
+                <div
+                  class="popular-tours__content"
+                  style="padding-bottom: 45px"
+                >
                   <h3 class="popular-tours__title">
-                    <router-link style="display: block; height: 60px; overflow: hidden" :to="`/buyTravel/product/detail/${item.id}`">{{
-                      item.name
-                    }}</router-link>
+                    <router-link
+                      style="display: block; height: 60px; overflow: hidden"
+                      :to="`/buyTravel/product/detail/${item.id}`"
+                      >{{ item.name }}</router-link
+                    >
                   </h3>
                   <p class="popular-tours__rate">
                     <span>¥{{ item.price }}</span>
@@ -2074,7 +2097,8 @@ onMounted(() => {});
 }
 .popular-tours__single {
   width: 288px;
-  height: 480px;
+  height: 510px;
+  border-radius: 10px;
 }
 .popular-tours__meta {
   flex-direction: column;

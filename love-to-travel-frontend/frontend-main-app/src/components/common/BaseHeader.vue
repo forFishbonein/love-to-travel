@@ -99,7 +99,7 @@ const displayText = () => {
     return "登录 / 注册";
   }
   loginFlag.value = true;
-  return store.userInfo.name+"的空间";
+  return store.userInfo.name + "的空间";
 };
 
 /* 搜索功能实现 */
@@ -446,7 +446,7 @@ const searchSomething = () => {
   font-size: 18px !important;
 }
 .active-router {
-  color: #e8604c !important;
+  // color: #e8604c !important;
   font-weight: bold !important;
   font-size: 18px !important;
 }
@@ -461,8 +461,11 @@ const searchSomething = () => {
     > li {
       > a {
         font-size: 16px !important;
-        font-family: ali-regular;
+        font-family: ali-regular !important;
         // font-weight: 600 !important;
+      }
+      > a:hover {
+        color: #ffffff;
       }
     }
   }
