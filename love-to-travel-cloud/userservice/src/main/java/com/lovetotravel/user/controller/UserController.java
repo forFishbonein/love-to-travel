@@ -99,6 +99,11 @@ public class UserController {
         return Result.success(userService.getAllNum());
     }
 
+    @ApiOperation("景区详情页，根据景区推荐用户")
+    @GetMapping("/scenery/recommond/{id}")
+    public Result<List<User>> getUserRedommond(@PathVariable("id") String id) {
+        return Result.success(userService.getUserRedommond(id));
+    }
 
 
 }

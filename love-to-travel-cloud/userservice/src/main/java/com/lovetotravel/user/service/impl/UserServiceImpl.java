@@ -10,6 +10,7 @@ import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.*;
 import com.lovetotravel.user.exception.GlobalException;
 import com.lovetotravel.user.mapper.LogMapper;
+import com.lovetotravel.user.mapper.SceneryUserMapper;
 import com.lovetotravel.user.mapper.UserMapper;
 import com.lovetotravel.user.redis.CodeKey;
 import com.lovetotravel.user.redis.FollowKey;
@@ -25,6 +26,7 @@ import org.springframework.util.DigestUtils;
 import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletResponse;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -38,11 +40,13 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     final UserMapper userMapper;
     final RedisService redisService;
     final LogMapper logMapper;
+    final SceneryUserMapper sceneryUserMapper;
 
-    public UserServiceImpl(UserMapper userMapper, RedisService redisService, LogMapper logMapper) {
+    public UserServiceImpl(UserMapper userMapper, RedisService redisService, LogMapper logMapper, SceneryUserMapper sceneryUserMapper) {
         this.userMapper = userMapper;
         this.redisService = redisService;
         this.logMapper = logMapper;
+        this.sceneryUserMapper = sceneryUserMapper;
     }
 
 
@@ -432,4 +436,35 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
     public Integer getAllLog() {
         return logMapper.selectCount(null);
     }
+
+    @Override
+    public List<User> getUserRedommond(String id) {
+
+        QueryWrapper<SceneryUser> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(SceneryUser::getSceneryId, id);
+        SceneryUser sceneryUser = sceneryUserMapper.selectOne(queryWrapper);
+
+        System.out.println(sceneryUser);
+
+        List<User> userList = new ArrayList<>();
+
+
+
+        if (sceneryUser != null || !sceneryUser.equals("")) {
+            String userIdList = sceneryUser.getUserId();
+            String[] result = userIdList.split(",");
+            System.out.println(result);
+            for (String s: result) {
+                System.out.println(s);
+                User user = userMapper.selectById(s);
+                userList.add(user);
+            }
+
+        }
+
+        return userList;
+
+    }
+
+
 }

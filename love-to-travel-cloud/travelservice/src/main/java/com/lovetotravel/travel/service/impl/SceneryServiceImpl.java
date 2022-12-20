@@ -229,7 +229,7 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
     }
 
     @Override
-    public List<Scenery> getRedommond(Long id) {
+    public List<Scenery> getSceneryRedommond(Long id) {
 
         QueryWrapper<UserScenery> queryWrapper = new QueryWrapper<>();
         queryWrapper.lambda().eq(UserScenery::getUserId, id);

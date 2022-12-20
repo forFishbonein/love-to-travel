@@ -202,13 +202,10 @@ public class SceneryController {
         return Result.success(sceneryService.getUserComment(id));
     }
 
-
     @ApiOperation("景区列表页，根据用户推荐景区")
     @GetMapping("/scenery/recommond/user/{id}")
-    public Result<List<Scenery>> getRedommond(@PathVariable("id") Long id) {
-        return Result.success(sceneryService.getRedommond(id));
+    public Result<List<Scenery>> getSceneryRedommond(@PathVariable("id") Long id) {
+        return Result.success(sceneryService.getSceneryRedommond(id));
     }
-
-
 
 }
