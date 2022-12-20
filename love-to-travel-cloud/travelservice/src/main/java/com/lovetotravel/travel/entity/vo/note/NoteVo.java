@@ -24,4 +24,10 @@ public class NoteVo {
     @ApiModelProperty("内容")
     private String content;
 
+    @ApiModelProperty("城市")
+    private String city;
+
+    @ApiModelProperty("标签")
+    private String[] trip;
+
 }
