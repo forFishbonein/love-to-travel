@@ -550,7 +550,7 @@ onMounted(() => {
     </div>
   </section>
 
-  <el-dialog v-model="theMapVisible" :show-close="false">
+  <el-dialog v-model="theMapVisible" :show-close="false" align-center>
       <template #header="{ close, titleId, titleClass }">
         <div class="my-header">
           <h4 :id="titleId" :class="titleClass">景区行程地图</h4>

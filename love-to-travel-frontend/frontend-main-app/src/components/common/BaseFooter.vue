@@ -1,4 +1,7 @@
-<script setup lang="ts"></script>
+<script setup lang="ts">
+import { ref } from "vue";
+const theAboutUsVisible = ref(false);
+</script>
 
 <template>
   <!--Site Footer One Start-->
@@ -58,7 +61,9 @@
                 <h3 class="footer-widget__title">公司</h3>
                 <ul class="footer-widget__company-list list-unstyled">
                   <li>
-                    <a href="javascript:;">关于我们</a>
+                    <a href="javascript:;" @click="theAboutUsVisible = true"
+                      >关于我们</a
+                    >
                   </li>
                   <li>
                     <router-link to="/goTravel/city">城市/景区</router-link>
@@ -136,10 +141,10 @@
             <div class="site-footer__bottom-inner">
               <div class="site-footer__bottom-left">
                 <div class="footer-widget__social">
-                  <a href="#"><i class="fab fa-twitter"></i></a>
-                  <a href="#"><i class="fab fa-facebook"></i></a>
-                  <a href="#"><i class="fab fa-pinterest-p"></i></a>
-                  <a href="#"><i class="fab fa-instagram"></i></a>
+                  <a href="javascript:;"><i class="fab fa-twitter"></i></a>
+                  <a href="javascript:;"><i class="fab fa-facebook"></i></a>
+                  <a href="javascript:;"><i class="fab fa-pinterest-p"></i></a>
+                  <a href="javascript:;"><i class="fab fa-instagram"></i></a>
                 </div>
               </div>
               <div class="site-footer__bottom-right">
@@ -163,6 +168,181 @@
     </div>
   </footer>
   <!--Site Footer One End-->
+  <el-dialog v-model="theAboutUsVisible" :show-close="false" align-center>
+    <template #header="{ close, titleId, titleClass }">
+      <div class="my-header">
+        <h4 :id="titleId" :class="titleClass">爱旅游团队成员</h4>
+        <el-button type="danger" @click="close">
+          <el-icon class="el-icon--left"><CircleCloseFilled /></el-icon>
+          关闭
+        </el-button>
+      </div>
+    </template>
+    <el-scrollbar>
+      <div class="container about-container">
+        <div class="row-about-container">
+          <div
+            class="col-xl-3 col-lg-6 col-md-6 wow fadeInLeft"
+            data-wow-delay="0ms"
+            data-wow-duration="1000ms"
+          >
+            <!--Team One Single-->
+            <div class="team-one__single">
+              <div class="team-one__img">
+                <img src="/images/team/team-1-1.jpg" alt="" />
+              </div>
+              <div class="team-one__content">
+                <h4 class="team-one__name">田忆孝</h4>
+                <p class="team-one__title">数据分析工程师</p>
+                <div class="team-one__social">
+                  <a href="javascript:;"><i class="fab fa-facebook"></i></a>
+                  <a href="javascript:;"><i class="fab fa-twitter"></i></a>
+                  <a href="javascript:;"><i class="fab fa-instagram"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-xl-3 col-lg-6 col-md-6 wow fadeInLeft"
+            data-wow-delay="100ms"
+            data-wow-duration="1000ms"
+          >
+            <!--Team One Single-->
+            <div class="team-one__single">
+              <div class="team-one__img">
+                <img src="/images/team/team-1-2.jpg" alt="" />
+              </div>
+              <div class="team-one__content">
+                <h4 class="team-one__name">郝文海</h4>
+                <p class="team-one__title">前端开发工程师</p>
+                <div class="team-one__social">
+                  <a href="javascript:;"><i class="fab fa-facebook"></i></a>
+                  <a href="javascript:;"><i class="fab fa-twitter"></i></a>
+                  <a href="javascript:;"><i class="fab fa-instagram"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-xl-3 col-lg-6 col-md-6 wow fadeInRight"
+            data-wow-delay="0ms"
+            data-wow-duration="1000ms"
+          >
+            <!--Team One Single-->
+            <div class="team-one__single">
+              <div class="team-one__img">
+                <img src="/images/team/team-1-3.jpg" alt="" />
+              </div>
+              <div class="team-one__content">
+                <h4 class="team-one__name">肖红娇</h4>
+                <p class="team-one__title">全能项目经理</p>
+                <div class="team-one__social">
+                  <a href="javascript:;"><i class="fab fa-facebook"></i></a>
+                  <a href="javascript:;"><i class="fab fa-twitter"></i></a>
+                  <a href="javascript:;"><i class="fab fa-instagram"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-xl-3 col-lg-6 col-md-6 wow fadeInRight"
+            data-wow-delay="100ms"
+            data-wow-duration="1000ms"
+          >
+            <!--Team One Single-->
+            <div class="team-one__single">
+              <div class="team-one__img">
+                <img src="/images/team/team-1-4.jpg" alt="" />
+              </div>
+              <div class="team-one__content">
+                <h4 class="team-one__name">何宇航</h4>
+                <p class="team-one__title">后端开发工程师</p>
+                <div class="team-one__social">
+                  <a href="javascript:;"><i class="fab fa-facebook"></i></a>
+                  <a href="javascript:;"><i class="fab fa-twitter"></i></a>
+                  <a href="javascript:;"><i class="fab fa-instagram"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div
+            class="col-xl-3 col-lg-6 col-md-6 wow fadeInRight"
+            data-wow-delay="100ms"
+            data-wow-duration="1000ms"
+          >
+            <!--Team One Single-->
+            <div class="team-one__single">
+              <div class="team-one__img">
+                <img src="/images/team/team-1-1.jpg" alt="" />
+              </div>
+              <div class="team-one__content">
+                <h4 class="team-one__name">崔娜</h4>
+                <p class="team-one__title">数据库工程师</p>
+                <div class="team-one__social">
+                  <a href="javascript:;"><i class="fab fa-facebook"></i></a>
+                  <a href="javascript:;"><i class="fab fa-twitter"></i></a>
+                  <a href="javascript:;"><i class="fab fa-instagram"></i></a>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </el-scrollbar>
+  </el-dialog>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.my-header {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+.about-container {
+  width: 1500px;
+  height: 480px;
+}
+.team-one__single {
+  width: 245px;
+  height: 442px;
+  // border: 1px #e8604c solid;
+  border-radius: 10px;
+  padding-bottom: 10px;
+  margin-top: 20px;
+  box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
+}
+.team-one__img {
+  width: 245px;
+  height: 283px;
+  img {
+    width: 100%;
+    height: 100%;
+  }
+}
+.team-one__name {
+  cursor: pointer;
+}
+.team-one__title {
+  margin-top: 10px;
+  font-size: 16px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.team-one__content {
+  width: 225px;
+}
+.row-about-container {
+  width: 100%;
+  height: auto;
+  display: flex;
+}
+// ::v-deep .el-dialog__body {
+//   width: 1100px;
+//   // height: 600px;
+// }
+// ::v-deep .el-dialog.is-align-center {
+//   // width: 1100px;
+//   // height: 600px;
+//   margin: 0 !important;
+// }
+</style>

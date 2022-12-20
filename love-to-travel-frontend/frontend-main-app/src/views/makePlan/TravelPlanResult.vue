@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, reactive, toRef } from "vue";
+import { ref, reactive, toRef, computed } from "vue";
 import { Place, MapLocation, InfoFilled } from "@element-plus/icons-vue";
 import {
   wantCityType,
@@ -24,6 +24,7 @@ import { mainStore } from "@/store/user";
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import AMapLoader from "@amap/amap-jsapi-loader"; // 使用加载器加载JSAPI，可以避免异步加载、重复加载等常见错误加载错误
 import { shallowRef } from "@vue/reactivity";
+import locationData from "@/assets/js/location";
 const store2 = mainStore();
 const size = ref<"default" | "large" | "small">("default");
 emitter.on("addPlan", (daysPlanInfo) => {
@@ -263,58 +264,122 @@ const openCityDialog = (flag: number = 0, index: number = 0) => {
   theFlag = flag;
   theIndex = index;
   dialogFormVisible.value = true;
-  requestCitysInfo();
+  // requestCitysInfo();
   // console.log(theFlag);
   // console.log(theIndex);
 };
-let aCityInfo = {} as citysInfoType;
-const aCityName = ref("");
-const assignACityInfo = (item: citysInfoType) => {
-  aCityInfo = item;
+
+// let aCityInfo = {} as citysInfoType;
+const provinces = ref([]);
+const initProvinceData = () => {
+  for (let code in locationData) {
+    let item = locationData[code];
+    provinces.value.push(
+      // @ts-ignore
+      Object.assign(item, {
+        label: item.name,
+        code: item.code,
+      })
+    );
+  }
 };
+initProvinceData();
+const citys = ref([]);
+const selectProvince = ref(null);
+const selectCity = ref(null);
+const selectCityId = ref(null);
+const proviceHandle = (value) => {
+  // console.log(value);
+  const city = [];
+  for (let code in value.cities) {
+    let item = value.cities[code];
+    city.push(
+      // @ts-ignore
+      Object.assign(item, {
+        label: item.name,
+        code: item.code,
+      })
+    );
+  }
+  citys.value = city;
+  selectProvince.value = value.name;
+  selectCity.value = null;
+};
+const cityHandle = (value) => {
+  selectCity.value = value.name;
+  selectCityId.value = value.code;
+  console.log("----------");
+  console.log(selectCityId.value);
+  console.log("------------");
+};
+const address = computed(() => {
+  return (
+    (selectProvince.value ? selectProvince.value : "") +
+    (selectCity.value ? "，" + selectCity.value : "")
+  );
+});
+// id: ""
+// const aCityName = ref("");
+// const assignACityInfo = (item: citysInfoType) => {
+//   aCityInfo = item;
+// };
 const addACity = async () => {
-  let weather2 = "";
-  await axios
-    .get(
-      `https://restapi.amap.com/v3/weather/weatherInfo?city=${aCityInfo.cityId}&key=73a9f4e1b08fd89992856d6ae4075f9b`
-    )
-    .then((res) => {
-      weather2 = res.data.lives[0].weather;
-    });
-  if (theFlag === 0) {
-    //在最后添加
-    subPlans.value.push({
-      city: aCityInfo.cityName,
-      cityId: aCityInfo.cityId,
-      dayLength: null,
-      days: [],
-      budget: "",
-      weather: weather2,
-    });
-  } else if (theFlag === 1) {
-    //在前面插入
-    subPlans.value.splice(theIndex, 0, {
-      city: aCityInfo.cityName,
-      cityId: aCityInfo.cityId,
-      dayLength: null,
-      days: [],
-      budget: "",
-      weather: weather2,
-    });
-  } else if (theFlag === 2) {
-    //在后面插入
-    subPlans.value.splice(theIndex + 1, 0, {
-      city: aCityInfo.cityName,
-      cityId: aCityInfo.cityId,
-      dayLength: null,
-      days: [],
-      budget: "",
-      weather: weather2,
+  if (selectCity.value && selectCityId.value) {
+    let weather2 = "";
+    await axios
+      .get(
+        `https://restapi.amap.com/v3/weather/weatherInfo?city=${selectCityId.value}&key=73a9f4e1b08fd89992856d6ae4075f9b`
+      )
+      .then((res) => {
+        weather2 = res.data.lives[0].weather;
+      });
+    if (theFlag === 0) {
+      //在最后添加
+      subPlans.value.push({
+        // @ts-ignore
+        city: selectCity.value,
+        // @ts-ignore
+        cityId: selectCityId.value,
+        dayLength: null,
+        days: [],
+        budget: "",
+        weather: weather2,
+      });
+    } else if (theFlag === 1) {
+      //在前面插入
+      subPlans.value.splice(theIndex, 0, {
+        // @ts-ignore
+        city: selectCity.value,
+        // @ts-ignore
+        cityId: selectCityId.value,
+        dayLength: null,
+        days: [],
+        budget: "",
+        weather: weather2,
+      });
+    } else if (theFlag === 2) {
+      //在后面插入
+      subPlans.value.splice(theIndex + 1, 0, {
+        // @ts-ignore
+        city: selectCity.value,
+        // @ts-ignore
+        cityId: selectCityId.value,
+        dayLength: null,
+        days: [],
+        budget: "",
+        weather: weather2,
+      });
+    }
+    theFlag = 0;
+    theIndex = 0;
+    dialogFormVisible.value = false;
+  } else {
+    // @ts-ignore
+    ElMessage({
+      type: "error",
+      message: "请将信息选择完整",
     });
   }
-  theFlag = 0;
-  theIndex = 0;
-  dialogFormVisible.value = false;
 };
 const deleteCity = (index: any) => {
   subPlans.value.splice(index, 1);
@@ -589,7 +654,7 @@ onMounted(() => {
       </div>
       <div class="body-middle">
         <div class="middle-header">
-          <p>{{ goTheDate }}</p>
+          <!-- <p>{{ goTheDate || "" }}</p> -->
           <p>
             <span>{{ searchCityName }}</span>
           </p>
@@ -682,8 +747,8 @@ onMounted(() => {
       </div>
     </div>
   </div>
-  <el-dialog v-model="dialogFormVisible" title="添加一个城市">
-    <el-form>
+  <el-dialog v-model="dialogFormVisible" title="城市选择器">
+    <!-- <el-form>
       <el-form-item label="热门城市" label-width="140px">
         <el-select v-model="aCityName" placeholder="选择一个城市">
           <el-option
@@ -695,7 +760,53 @@ onMounted(() => {
           />
         </el-select>
       </el-form-item>
-    </el-form>
+    </el-form> -->
+    <div class="city-select-machine">
+      <el-select class="m-2" placeholder="请选择省份" v-model="selectProvince">
+        <el-option
+          v-for="item in provinces"
+          :key="
+            // @ts-ignore
+            item.code
+          "
+          :value="
+            // @ts-ignore
+            item.name
+          "
+          :label="
+            // @ts-ignore
+            item.name
+          "
+          @click="proviceHandle(item)"
+        />
+      </el-select>
+      <el-select
+        class="m-2"
+        placeholder="请选择城市"
+        v-model="selectCity"
+        v-if="citys.length > 0"
+      >
+        <el-option
+          v-for="item in citys"
+          :key="
+            // @ts-ignore
+            item.code
+          "
+          :value="
+            // @ts-ignore
+            item.name
+          "
+          :label="
+            // @ts-ignore
+            item.name
+          "
+          @click="cityHandle(item)"
+        />
+      </el-select>
+    </div>
+    <div v-if="address" class="result-select-address">
+      您选择的是：<span class="text-select">{{ address }}</span>
+    </div>
     <template #footer>
       <span class="dialog-footer">
         <el-button @click="dialogFormVisible = false">取消</el-button>
@@ -718,7 +829,7 @@ onMounted(() => {
       </span>
     </template>
   </el-dialog>
-  <el-dialog v-model="theMapVisible" :show-close="false">
+  <el-dialog v-model="theMapVisible" :show-close="false" align-center>
     <template #header="{ close, titleId, titleClass }">
       <div class="my-header">
         <h4 :id="titleId" :class="titleClass">景区行程地图</h4>
@@ -1187,5 +1298,24 @@ onMounted(() => {
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+.city-select-machine {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: start;
+  padding-left: 75px;
+}
+.result-select-address {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 20px;
+  .text-select {
+    color: #e8604c;
+  }
 }
 </style>
