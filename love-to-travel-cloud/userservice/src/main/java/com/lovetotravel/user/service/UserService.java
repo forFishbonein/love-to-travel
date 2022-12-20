@@ -61,4 +61,6 @@ public interface UserService extends IService<User> {
 
     Integer getAllLog();
 
+    List<User> getUserRedommond(String id);
+
 }

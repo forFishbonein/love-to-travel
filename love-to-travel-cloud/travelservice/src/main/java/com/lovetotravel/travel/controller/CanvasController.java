@@ -20,8 +20,11 @@ import java.util.Set;
 public class CanvasController {
 
 
-    @Autowired
-    SceneryRepository sceneryRepository;
+    final SceneryRepository sceneryRepository;
+
+    public CanvasController(SceneryRepository sceneryRepository) {
+        this.sceneryRepository = sceneryRepository;
+    }
 
     @GetMapping("/{name}")
     public Result<CustomNode> getByName(@PathVariable("name") String name) {
@@ -45,11 +48,6 @@ public class CanvasController {
 
     @GetMapping("/query/{rel}/{name}")
     public Result<List<CustomNode>> getRelByName(@PathVariable("rel") String rel,@PathVariable("name") String name) {
-
-        System.out.println(rel);
-        System.out.println(name);
-
-
 
         SceneryNode sceneryNode = sceneryRepository.findSceneryNodeByName(name);
 
@@ -84,8 +82,6 @@ public class CanvasController {
             }
 
         }
-
-
 
         return Result.success(customNodes);
     }
