@@ -50,8 +50,7 @@ export default {
           trigger: 'item'
         },
         legend: {
-          top: '5%',
-          left: 'center'
+          top: 20,
         },
         series: [
           {
@@ -59,6 +58,7 @@ export default {
             type: 'pie',
             radius: ['40%', '70%'],
             avoidLabelOverlap: false,
+            center: ['50%', '60%'],
             itemStyle: {
               borderRadius: 10,
               borderColor: '#fff',
@@ -71,7 +71,7 @@ export default {
             emphasis: {
               label: {
                 show: true,
-                fontSize: 40,
+                fontSize: 20,
                 fontWeight: 'bold'
               }
             },
@@ -173,7 +173,7 @@ export default {
   padding: 16px;
   box-sizing: border-box;
   width: 600px;
-  height: 550px;
+  height: 600px;
   background-color: #fff;
   box-shadow: rgba(0, 0, 0, 0.1) 0px 4px 12px;
 }
