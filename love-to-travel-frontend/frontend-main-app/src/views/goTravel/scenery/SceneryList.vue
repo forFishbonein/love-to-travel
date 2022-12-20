@@ -228,6 +228,7 @@ const searchTheCity = async () => {
     >
       <input
         type="search"
+        class="search"
         placeholder="输入搜索内容"
         v-model="thisPageKeyword"
       />
@@ -328,6 +329,14 @@ const searchTheCity = async () => {
 .search-input-container {
   width: 100%;
   padding: 50px 200px;
+}
+.search-input-container .search {
+  border: 2px solid #fca38f;
+  transition: ease-in-out;
+}
+.search-input-container .search:hover,.search-input-container .search:focus {
+  border: 2px solid #ef7555;
+  background-color: #f8f1e1;
 }
 .search-page-button {
   border-radius: 10px;

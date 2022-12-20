@@ -99,7 +99,7 @@ const displayText = () => {
     return "登录 / 注册";
   }
   loginFlag.value = true;
-  return "个人中心";
+  return store.userInfo.name+"的空间";
 };
 
 /* 搜索功能实现 */
@@ -441,8 +441,16 @@ const searchSomething = () => {
 }
 
 .aly-index {
-  font-weight: 1000 !important;
+  color: #e8604c !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
 }
+.active-router {
+  color: #e8604c !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+}
+
 .dropdown {
   > a {
     font-weight: 700 !important;

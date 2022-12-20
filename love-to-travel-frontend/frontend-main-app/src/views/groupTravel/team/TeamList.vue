@@ -274,7 +274,7 @@ const openSeeThePlanDialog = async(planId: string)=>{
               <el-tag
                 v-for="(i, index2) in item.place"
                 :key="index2"
-                type="info"
+                type="warning"
                 class="mx-1"
                 effect="dark"
                 round
@@ -451,10 +451,14 @@ const openSeeThePlanDialog = async(planId: string)=>{
   display: flex;
   justify-content: center;
   margin-bottom: 20px;
+  width: 1200px;
+
   .tours-list__content {
+    width: 100%;
     border-left: 1px solid #ece8e0;
     border-radius: 8px;
     padding-bottom: 20px;
+    box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
     .tours-list__text {
       padding: 10px 0;
       display: flex;
@@ -473,16 +477,14 @@ const openSeeThePlanDialog = async(planId: string)=>{
 }
 .span-style {
   display: inline-block;
-  width: auto;
+  min-width: 44px;
   max-width: 100px;
   overflow: hidden;
   height: 1.5em;
   color: #ffffff;
   background-color: #e8604c;
   border-radius: 5px;
-  padding: 0 5px;
-  line-height: 2em;
-  margin-right: 5px;
+  padding: 0 4px;
   font-size: 16px;
   line-height: 1.5em;
   margin-right: 10px;

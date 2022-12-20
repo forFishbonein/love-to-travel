@@ -376,11 +376,11 @@ const initEcharts = (scatterDataWant, scatterDataBeen) => {
                 },
                 {
                   offset: 0.8,
-                  color: "rgba(14,245,209,0.2)",
+                  color: "rgba(42,144,205,0.54)",
                 },
                 {
                   offset: 1,
-                  color: "rgba(14,245,209,1)",
+                  color: "rgb(7,24,189)",
                 },
               ],
               // 圆点圈的显示
@@ -423,11 +423,11 @@ const initEcharts = (scatterDataWant, scatterDataBeen) => {
                 },
                 {
                   offset: 0.8,
-                  color: "rgba(244, 143, 128, 0.3)",
+                  color: "rgba(57,246,169,0.3)",
                 },
                 {
                   offset: 1,
-                  color: "rgba(231,65,40)",
+                  color: "rgb(5,232,113)",
                 },
               ],
               // 圆点圈的显示
@@ -475,21 +475,21 @@ const initEcharts = (scatterDataWant, scatterDataBeen) => {
               colorStops: [
                 {
                   offset: 0.26,
-                  color: "rgba(16,27,63,1)", // 0% 处的颜色
+                  color: "rgb(245,220,200)", // 0% 处的颜色
                 },
                 {
                   offset: 1,
-                  color: "rgba(21,73,121,1)", // 100% 处的颜色
+                  color: "rgb(252,184,148)", // 100% 处的颜色
                 },
               ],
               global: false, // 缺省为 false
             },
 
-            borderColor: "rgba(0,243,255,0.4)",
+            borderColor: "rgb(229,159,105)",
             borderWidth: 2.5,
           },
           emphasis: {
-            areaColor: "rgb(16,27,63)",
+            areaColor: "rgb(232, 96, 76)",
             label: {
               color: "#fff",
             },

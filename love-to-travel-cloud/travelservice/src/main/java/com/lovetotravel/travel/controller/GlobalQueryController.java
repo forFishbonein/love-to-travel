@@ -42,7 +42,7 @@ public class GlobalQueryController {
         QueryPageVo pageVo = new QueryPageVo();
         pageVo.setQueryStr(queryStr);
         pageVo.setPageNum(1);
-        pageVo.setPageSize(5);
+        pageVo.setPageSize(6);
         //游记
         QueryPageVo<Note> noteQueryPageVo = noteService.fuzzyQuery(pageVo);
         List<Note> noteList = noteQueryPageVo.getRecords();

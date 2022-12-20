@@ -239,19 +239,19 @@ export default {
   </div>
   <ul class="scoreboard">
     <li>
-      <div class="scoreboard-number">{{ totalList[6] }}</div>
+      <div class="scoreboard-number">{{ totalList[0] }}</div>
       <div class="scoreboard-title">今日新增用户</div>
 
       <div class="scoreboard-line scoreboard-line1"><span></span></div>
-      <div class="scoreboard-yesterday">较昨日{{ ((totalList[6]/this.userNum-totalList[5]/this.userNum) * 100).toFixed(2) }}%</div>
+      <div class="scoreboard-yesterday">较昨日{{ ((totalList[0]/this.userNum-totalList[1]/this.userNum) * 100).toFixed(2) }}%</div>
     </li>
 
     <li>
-      <div class="scoreboard-number">{{ totalList2[6] }}</div>
+      <div class="scoreboard-number">{{ totalList2[0] }}</div>
       <div class="scoreboard-title">今日访问</div>
 
       <div class="scoreboard-line scoreboard-line2"><span></span></div>
-      <div class="scoreboard-yesterday">较昨日{{ ((totalList2[6]/this.logNum-totalList2[5]/this.logNum) * 100).toFixed(2) }}%</div>
+      <div class="scoreboard-yesterday">较昨日{{ ((totalList2[0]/this.logNum-totalList2[1]/this.logNum) * 100).toFixed(2) }}%</div>
     </li>
     <li>
       <div class="scoreboard-number">{{ totalList3[0] }}</div>

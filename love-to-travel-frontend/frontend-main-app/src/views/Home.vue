@@ -13,6 +13,7 @@ import { getRandomArrayElements } from "@/utils/filters/randomArray";
 import { getAllProductsInfo } from "@apis/travelService/product";
 import { productInfoType } from "@/apis/interface/myInterface";
 import { subPlansFormat } from "@/utils/filters/subPlan";
+import locationData from "../assets/js/location"
 const store = utilStore();
 const router = useRouter();
 let citysInfos = [
@@ -1260,6 +1261,7 @@ const stringArray = [
   "旅行不是浪迹天涯，而是给心找一个小憩的地方。",
   "心存阳光，必有诗和远方。",
 ] as Array<string>;
+
 let finalStringsArray = [] as Array<string>;
 const getShuffleStrings = () => {
   finalStringsArray = getRandomArrayElements(stringArray, 3);
@@ -1269,6 +1271,35 @@ const getShuffleStrings = () => {
   // alert(finalMedalsArray[0][1])
 };
 getShuffleStrings();
+
+let picArray = [
+  "三星堆",
+  "上海",
+  "九寨沟",
+  "保定",
+  "台湾",
+  "大雁塔",
+  "布达拉宫",
+  "故宫",
+  "江苏",
+  "江西",
+  "洞庭湖",
+  "湖南",
+  "福建",
+  "纳木错",
+  "西湖",
+  "贡嘎雪山",
+  "贵州",
+  "重庆",
+  "长城",
+  "香港",
+] as Array<string>;
+
+let finallyPicArray = [] as Array<string>;
+const getShufflepic = () => {
+  finallyPicArray = getRandomArrayElements(picArray, 3);
+};
+getShufflepic();
 
 onMounted(() => {});
 </script>
@@ -1351,9 +1382,7 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            style="
-              background-image: url(/images/backgrounds/main-slider-1-1.jpg);
-            "
+            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[0]+'.jpg)'}"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1370,9 +1399,7 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            style="
-              background-image: url(/images/backgrounds/main-slider-1-2.jpg);
-            "
+            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[1]+'.jpg)'}"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1389,9 +1416,7 @@ onMounted(() => {});
         <div class="swiper-slide">
           <div
             class="image-layer"
-            style="
-              background-image: url(/images/backgrounds/main-slider-1-3.jpg);
-            "
+            :style="{backgroundImage:'url(/images/bg/'+finallyPicArray[2]+'.jpg)'}"
           ></div>
           <div class="image-layer-overlay"></div>
           <div class="container">
@@ -1430,11 +1455,12 @@ onMounted(() => {});
                   <div
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
-                    <label for="type" class="ali-font-family">出发城市</label>
+                    <label for="type" class="ali-font-family">出发</label>
                     <select
                       class="selectpicker"
                       id="type"
                       v-model="planInfo.fromCity"
+                      placeholder="出发城市"
                     >
                       <option
                         v-for="item in citysInfos"
@@ -1451,11 +1477,12 @@ onMounted(() => {});
                   <div
                     class="tour-search-one__input-box tour-search-one__input-box-last"
                   >
-                    <label for="type2" class="ali-font-family">目的城市</label>
+                    <label for="type2" class="ali-font-family">返回</label>
                     <select
                       class="selectpicker"
                       id="type2"
                       v-model="planInfo.toCity"
+                      placeholder="返回城市"
                     >
                       <option
                         v-for="item in citysInfos"
@@ -1470,7 +1497,7 @@ onMounted(() => {});
                     <label class="ali-font-family">出发日期</label>
                     <input
                       type="text"
-                      placeholder="Nothing selected"
+                      placeholder="出发日期"
                       name="Nothing selected"
                       id="datepicker"
                     />
@@ -1778,9 +1805,9 @@ onMounted(() => {});
                 <div class="popular-tours__img">
                   <img :src="item.url" alt="" />
                 </div>
-                <div class="popular-tours__content">
+                <div class="popular-tours__content" style="padding-bottom: 45px;">
                   <h3 class="popular-tours__title">
-                    <router-link :to="`/buyTravel/product/detail/${item.id}`">{{
+                    <router-link style="display: block; height: 60px; overflow: hidden" :to="`/buyTravel/product/detail/${item.id}`">{{
                       item.name
                     }}</router-link>
                   </h3>
