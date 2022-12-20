@@ -44,6 +44,13 @@ public class NoteController {
         return Result.success(noteService.getRelatedById(sceneryId));
     }
 
+
+    @ApiOperation("游记的相关游记推荐")
+    @PostMapping("/related/note/{id}")
+    public Result<List<Note>> getRelatedByNote(@PathVariable("id") String id) {
+        return Result.success(noteService.getRelatedByNote(id));
+    }
+
     @ApiOperation("根据用户id查询游记")
     @GetMapping("/user/{id}")
     public Result<List<Note>> getByUserId(@PathVariable("id") String id) {
@@ -149,5 +156,8 @@ public class NoteController {
     public Result<NoteStatistic> getStatistic() {
         return Result.success(noteService.getStatistic());
     }
+
+
+
 
 }

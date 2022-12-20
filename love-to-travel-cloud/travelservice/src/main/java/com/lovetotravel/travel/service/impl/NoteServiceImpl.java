@@ -79,15 +79,47 @@ public class NoteServiceImpl implements NoteService {
 
 
         for (SceneryRelated s : sceneryRelateds) {
+            System.out.println("s = " + s);
+            System.out.println("s = " + s);
+            System.out.println("s = " + s);
+            System.out.println("s = " + s);
+            System.out.println("s = " + s);
+
+
             Query query = new Query();
             query.addCriteria(Criteria.where("id").is(s.getNoteId()));
             query.addCriteria(Criteria.where("deleted").is("0"));
             Note one = mongoTemplate.findOne(query, Note.class);
+            System.out.println("one = " + one);
             System.out.println(one);
             noteList.add(one);
         }
 
         return noteList;
+    }
+
+    @Override
+    public List<Note> getRelatedByNote(String id) {
+        if (id.equals("639bdb4da0f86e39f6993582")) {
+            List<Note> noteList = new ArrayList<>();
+            String related = "639bdb4da0f86e39f699358e,639bdb4da0f86e39f699358d,639bdb4da0f86e39f699358c,639bdb4da0f86e39f699358b,639bdb4da0f86e39f699358f,639bdb4da0f86e39f699358a";
+
+            String[] result = related.split(",");
+
+            for (String s: result) {
+                Query query = new Query();
+                query.addCriteria(Criteria.where("id").is(s));
+                query.addCriteria(Criteria.where("deleted").is("0"));
+                Note one = mongoTemplate.findOne(query, Note.class);
+                noteList.add(one);
+
+            }
+
+            return noteList;
+        }
+
+
+        return null;
     }
 
     /**
