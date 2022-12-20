@@ -25,6 +25,9 @@ export default defineConfig({
   server: {
     //启动的ip
     host: "0.0.0.0",
+    // hmr:{
+    //   overlay:false
+    // }
   },
   resolve: {
     alias: {
@@ -51,6 +54,7 @@ export default defineConfig({
       },
     },
   },
+
   define: {
     __APP_INFO__: JSON.stringify(__APP_INFO__),
   },

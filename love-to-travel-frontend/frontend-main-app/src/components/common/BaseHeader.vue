@@ -227,7 +227,7 @@ const searchSomething = () => {
                         <router-link
                           to="/goTravel/scenery"
                           active-class="active-router"
-                          >景点</router-link
+                          >景区</router-link
                         >
                       </li>
                     </ul>

@@ -138,3 +138,12 @@ export const deleteOneNote = (noteId: string) => {
     loading: true, //显示加载圈
   });
 };
+
+/* 游记的相关游记 */
+export const getRelatedOtherNotes = (noteId: string) => {
+  return httpRequest({
+    method: "post",
+    url: `http://localhost:8082/note/related/note/${noteId}`,
+    loading: true, //显示加载圈
+  });
+};

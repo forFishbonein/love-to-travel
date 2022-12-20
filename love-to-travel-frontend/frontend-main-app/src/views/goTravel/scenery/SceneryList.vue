@@ -234,6 +234,9 @@ const searchTheCity = async () => {
       </div>
     </div>
   </section>
+  <div class="tips-container" v-else>
+    提示：登录后将展示您的专属个性化景点推荐
+  </div>
   <div class="search-input-container">
     <form
       autocomplete="off"
@@ -404,5 +407,13 @@ const searchTheCity = async () => {
 }
 .section-title {
   margin-top: 50px;
+}
+
+.tips-container {
+  width: 100%;
+  height: 40px;
+  margin-top: 20px;
+  padding-left: 50px;
+  // border: 1px #e8604c solid;
 }
 </style>

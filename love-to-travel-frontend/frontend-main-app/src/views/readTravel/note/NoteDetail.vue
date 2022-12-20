@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import {
   getOneNoteInfoById,
   getNotesInfoByUserId,
@@ -21,6 +21,7 @@ import {
   isstarTheNote,
   unstarTheNote,
   deleteOneNote,
+  getRelatedOtherNotes,
 } from "@/apis/travelService/note";
 import { getFootsByUserId } from "@/apis/travelService/foot";
 import {
@@ -957,6 +958,31 @@ const deleteTheNote = () => {
       });
     });
 };
+const relatedNotesInfo = ref([] as theNotesInfoType[]);
+const requestRelatedOtherNotes = () => {
+  getRelatedOtherNotes(noteId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        relatedNotesInfo.value = res.data;
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+onMounted(() => {
+  requestRelatedOtherNotes();
+});
 </script>
 <template>
   <section class="news-details">
@@ -1158,18 +1184,18 @@ const deleteTheNote = () => {
                 class="sidebar__post-list list-unstyled"
                 v-for="item in otherNotesInfo"
               >
-                <li>
+                <li style="margin-bottom: 15px">
                   <div class="sidebar__post-image">
                     <img :src="item.url" alt="" />
                   </div>
                   <div class="sidebar__post-content">
                     <h3>
-                      <a href="#" class="sidebar__post-content_meta"
+                      <a href="javascript:;" class="sidebar__post-content_meta"
                         ><el-icon size="20px"><Pointer /></el-icon>点赞:{{
                           numberFormat(item.like)
                         }}</a
                       >
-                      <router-link :to="`${item.id}`">{{
+                      <router-link :to="`${item.id}`" style="font-size: 16px">{{
                         strFormat(item.title, 30)
                       }}</router-link>
                     </h3>
@@ -1339,6 +1365,89 @@ const deleteTheNote = () => {
       </div>
     </div>
   </section>
+  <section class="news-one">
+    <div class="container">
+      <div class="row">
+        <div class="section-title text-left">
+          <span class="section-title__tagline">Related travel notes </span>
+          <h2 class="section-title__title ali-font-family">其他相关游记</h2>
+        </div>
+        <div
+          class="col-xl-4 col-lg-6 col-md-6 fadeInUp"
+          data-wow-delay="100ms"
+          v-for="(item, index) in relatedNotesInfo"
+          :key="item.id"
+        >
+          <!--News One Single-->
+          <div class="news-one__single">
+            <div class="news-one__img">
+              <img :src="item.url" alt="" class="notes-img" />
+              <router-link :to="`detail/${item.id}`">
+                <span class="news-one__plus"></span>
+              </router-link>
+              <div class="news-one__date">
+                <p>
+                  <span>{{ timeFormat(item.createTime) }}</span>
+                </p>
+              </div>
+            </div>
+            <div class="news-one__content">
+              <ul class="list-unstyled2 news-one__meta">
+                <li>
+                  <a href="javascript:;"
+                    ><el-icon size="20px"><View /></el-icon>浏览:{{
+                      numberFormat(item.view)
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;"
+                    ><el-icon size="20px"><Pointer /></el-icon>点赞:{{
+                      numberFormat(item.like)
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;"
+                    ><el-icon size="20px"><Star /></el-icon>收藏:{{
+                      numberFormat(item.star)
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;">
+                    <el-icon size="20px"><Document /></el-icon>评论:{{
+                      numberFormat(item.comment)
+                    }}
+                  </a>
+                </li>
+                <li>
+                  <router-link :to="`/user/${item.userId}`"
+                    ><i class="far fa-user-circle"></i
+                    ><span class="span-style">{{
+                      item.userName
+                    }}</span></router-link
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;">
+                    <el-icon size="20px"><OfficeBuilding /></el-icon>相关城市:{{
+                      item.city
+                    }}
+                  </a>
+                </li>
+              </ul>
+              <h3 class="news-one__title">
+                <router-link :to="`detail/${item.id}`">{{
+                  item.title
+                }}</router-link>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
   <el-dialog
     v-model="deleteConfirmDialogVisible"
     title="警告框"
@@ -1356,6 +1465,36 @@ const deleteTheNote = () => {
 </template>
 
 <style lang="scss" scoped>
+/* 相关游记开始 */
+.news-details {
+  padding-bottom: 50px;
+}
+.news-one {
+  padding-top: 0px;
+}
+.list-unstyled2 {
+  display: flex;
+  flex-wrap: wrap;
+  > li {
+    margin-left: 5px;
+    display: flex;
+    justify-content: center;
+    > a {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+  }
+}
+.notes-img {
+  width: 100%;
+  height: 100%;
+}
+.news-one__img {
+  width: 350px;
+  height: 300px;
+}
+/* 相关游记结束 */
 .delete-button {
   width: 150px;
   height: 40px;
@@ -1530,5 +1669,14 @@ const deleteTheNote = () => {
 }
 .content-body-note {
   border: 1px #dcdfe6 solid;
+}
+.sidebar__post-image {
+  width: 60px;
+  height: 65px;
+  img {
+    display: block;
+    width: 60px;
+    height: 65px;
+  }
 }
 </style>
