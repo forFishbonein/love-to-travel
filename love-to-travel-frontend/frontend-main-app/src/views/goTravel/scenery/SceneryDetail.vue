@@ -3,6 +3,7 @@ import { ref } from "vue";
 import {
   getOneSceneryInfoById,
   getRecommondUsersByUserId,
+  getRecommondNotesBySceneryId,
 } from "@/apis/travelService/scenery";
 import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 import { keepTwoDecimal } from "@/utils/filters/number";
@@ -18,6 +19,7 @@ import {
   getCommentsBySceneryId,
 } from "@/apis/travelService/comment";
 import { UserInfo } from "@/apis/userService/uInterface";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 const store = mainStore();
 const props = defineProps<{
   sceneryId: string;
@@ -175,6 +177,34 @@ const getRecommondUsers = () => {
   }
 };
 getRecommondUsers();
+let notesRelatedInfo = ref([] as theNotesInfoType[]);
+const requestRelatedNotes = () => {
+  getRecommondNotesBySceneryId(sceneryId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        // ElMessage({
+        //   type: "error",
+        //   message: res.msg,
+        // });
+        // userLoginFlag.value = false;
+      } else {
+        // console.log(res);
+        // alert("获取成功");
+        if (res.data.length !== 0) {
+          notesRelatedInfo.value = res.data.slice(0, 3);
+        }
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
+requestRelatedNotes();
 </script>
 <script lang="ts">
 (function ($) {
@@ -369,34 +399,29 @@ getRecommondUsers();
             >
               <h3 class="tour-details-two__sidebar-title">相关游记</h3>
               <ul class="tour-details-two__last-minute-list list-unstyled">
-                <li>
+                <li v-for="item in notesRelatedInfo">
                   <div class="tour-details-two__last-minute-image">
-                    <img src="/images/resources/td-img-1.jpg" alt="" />
+                    <img :src="item.url" alt="" />
                   </div>
                   <div class="tour-details-two__last-minute-content">
-                    <h6>$380</h6>
-                    <h5>Africa 2 Days Tour</h5>
-                    <p>Los Angeles</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="tour-details-two__last-minute-image">
-                    <img src="/images/resources/td-img-2.jpg" alt="" />
-                  </div>
-                  <div class="tour-details-two__last-minute-content">
-                    <h6>$380</h6>
-                    <h5>Africa 2 Days Tour</h5>
-                    <p>Los Angeles</p>
-                  </div>
-                </li>
-                <li>
-                  <div class="tour-details-two__last-minute-image">
-                    <img src="/images/resources/td-img-3.jpg" alt="" />
-                  </div>
-                  <div class="tour-details-two__last-minute-content">
-                    <h6>$380</h6>
-                    <h5>Africa 2 Days Tour</h5>
-                    <p>Los Angeles</p>
+                    <el-scrollbar max-height="74px">
+                      <span class="one-span"
+                        ><span class="span-style">点赞量:</span
+                        >{{ item.like }}</span
+                      >
+                      <span class="two-span"
+                        ><router-link
+                          :to="`/readTravel/note/detail/${item.id}`"
+                          >{{ item.title }}</router-link
+                        ></span
+                      >
+                      <span class="three-span"
+                        ><span class="span-style">作者:</span
+                        ><router-link :to="`/user/${item.userId}`">{{
+                          item.userName
+                        }}</router-link>
+                      </span>
+                    </el-scrollbar>
                   </div>
                 </li>
               </ul>
@@ -683,6 +708,79 @@ getRecommondUsers();
         margin-top: 10px;
       }
     }
+  }
+}
+.tour-details-two__last-minute-image {
+  width: 60px;
+  height: 65px;
+}
+// .destinations-details__overview-list {
+//   li {
+//     width: 268px;
+//     height: 100px;
+//   }
+// }
+.tour-details-two__last-minute-content {
+  width: 188px;
+  height: 74px;
+  // overflow: scroll;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  .one-span {
+    width: 188px;
+    height: 24px;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1.5em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .two-span {
+    width: 188px;
+    min-height: 25px;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1.5em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+  .three-span {
+    width: 188px;
+    height: 25px;
+    display: flex;
+    align-items: center;
+    display: inline-block;
+    font-size: 14px;
+    line-height: 1.5em;
+    margin: 0;
+    display: flex;
+    align-items: center;
+    margin-bottom: 5px;
+  }
+}
+.span-style {
+  display: inline-block;
+  width: auto;
+  max-width: 100px;
+  overflow: hidden;
+  height: 25px;
+  color: #ffffff;
+  background-color: #e8604c;
+  border-radius: 5px;
+  padding: 0 5px;
+  line-height: 2em;
+  margin-right: 5px !important;
+  line-height: 25px;
+}
+.list-unstyled {
+  li {
+    display: flex;
+    align-items: center;
   }
 }
 </style>

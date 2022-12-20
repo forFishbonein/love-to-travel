@@ -48,3 +48,12 @@ export const getRecommondUsersByUserId = (userId: string) => {
     loading: true, //显示加载圈
   });
 };
+
+/* 根据景区id查询相关游记 */
+export const getRecommondNotesBySceneryId = (sceneryId: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/note/related/${sceneryId}`,
+    loading: true, //显示加载圈
+  });
+};
