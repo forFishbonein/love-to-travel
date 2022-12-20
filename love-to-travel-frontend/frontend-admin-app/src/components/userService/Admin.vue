@@ -6,6 +6,10 @@
           <el-input v-model="queryStr" placeholder="请输入邮箱"/>&nbsp;&nbsp;
           <el-button class="button" round type="primary" @click="queryInfo">查询</el-button>
         </div>
+        <div>
+          <el-button class="button" round type="success" @click="openAddDialog">添加</el-button>
+        </div>
+
       </div>
     </template>
 
