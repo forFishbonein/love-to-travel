@@ -14,6 +14,7 @@ import {
 } from "@/apis/userService/follow";
 import emitter from "@/mitt/event";
 import { getRandomArrayElements } from "@/utils/filters/randomArray";
+import { timeFormat } from "@/utils/filters/time";
 emitter.on("addFoot", () => {
   openAlreadyGoDialog();
 });
@@ -607,7 +608,8 @@ getShuffleMedals();
           store.userInfo.signature
         }}</el-descriptions-item>
         <el-descriptions-item label="加入爱旅游时间">{{
-          store.userInfo.createTime
+          // @ts-ignore
+          timeFormat(store.userInfo.createTime)
         }}</el-descriptions-item>
       </el-descriptions>
     </div>
@@ -814,6 +816,9 @@ getShuffleMedals();
     rgba(39, 106, 206, 0.5) 100%
   );
 }
+// ::v-deep .el-descriptions {
+//   width: 900px;
+// }
 .personal-info-container {
   width: 100%;
   min-height: 150px;
@@ -831,7 +836,7 @@ getShuffleMedals();
   flex-direction: column;
   .info-border {
     padding-top: 15px;
-    width: 800px;
+    width: 1000px;
     height: auto;
     float: left;
     margin-left: 200px;
@@ -842,7 +847,7 @@ getShuffleMedals();
     }
   }
   .more-info-border {
-    width: 800px;
+    width: 1000px;
     height: auto;
     margin-left: 200px;
   }

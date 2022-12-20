@@ -2099,6 +2099,7 @@ onMounted(() => {});
   width: 288px;
   height: 510px;
   border-radius: 10px;
+  margin-bottom: 10px;
 }
 .popular-tours__meta {
   flex-direction: column;
@@ -2109,5 +2110,8 @@ onMounted(() => {});
 }
 .ali-font-family {
   font-family: ali-regular;
+}
+.popular-tours__content {
+  border: 0;
 }
 </style>

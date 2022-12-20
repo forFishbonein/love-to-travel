@@ -29,7 +29,9 @@
               <h2>准备好发表自己的游记了吗？</h2>
             </div>
             <div class="book-now__right">
-              <a href="#" class="thm-btn book-now__btn">发游记</a>
+              <router-link to="/readTravel/write" class="thm-btn book-now__btn"
+                >发游记</router-link
+              >
             </div>
           </div>
         </div>

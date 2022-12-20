@@ -854,13 +854,13 @@ onMounted(() => {});
 // }
 #canvas-container {
   // margin-top: 100px;
-  width: 1050px;
+  width: 1200px;
   height: 700px;
   background-color: #f7f2ea;
   // display: flex;
   // justify-content: center;
-  margin: 20px 0;
-  margin-left: 35px;
+  margin: 20px auto;
+  // margin-left: 35px;
   border-radius: 10px;
   box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
 }

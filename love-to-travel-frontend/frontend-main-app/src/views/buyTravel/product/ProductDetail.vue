@@ -145,6 +145,18 @@ const openTheMapForOneDay = (routeInfo:routeInfoType[])=>{
   theMapVisible.value=true
 }
 const buyDialogVisiable = ref(false)
+const buyProductOpenDialog = ()=>{
+  if(store.userInfo.id){
+
+    buyDialogVisiable.value = true
+  }else{
+    //@ts-ignore
+    ElMessage({
+      type: "error",
+      message: "请先登录！"
+    });
+  }
+}
 const buyTheProduct = ()=>{
   buyDialogVisiable.value = false
   if(store.userInfo.id){
@@ -530,7 +542,7 @@ onMounted(() => {
               <h2>这是你的心动产品吗？</h2>
             </div>
             <div class="book-now__right">
-              <a href="javascript:;" class="thm-btn book-now__btn" @click="buyDialogVisiable = true">点击购买</a>
+              <a href="javascript:;" class="thm-btn book-now__btn" @click="buyProductOpenDialog">点击购买</a>
             </div>
           </div>
         </div>
