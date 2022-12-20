@@ -445,6 +445,12 @@ const searchSomething = () => {
   font-weight: bold !important;
   font-size: 18px !important;
 }
+.active-router {
+  color: #e8604c !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+}
+
 .dropdown {
   > a {
     font-weight: 700 !important;
