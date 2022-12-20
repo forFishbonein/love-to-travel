@@ -8,8 +8,9 @@ import { theGivenAllCityPlansInfoType } from "@/apis/interface/myInterface";
 import { publishOneNote } from "@/apis/travelService/note";
 import { noteInfoParams } from "@/apis/travelService/tInterface";
 // import { storeToRefs } from "pinia";
-import { ref } from "vue";
+import { nextTick, ref } from "vue";
 import { useRouter } from "vue-router";
+import { ElInput } from "element-plus";
 export default {
   data() {
     return {
@@ -49,6 +50,32 @@ export default {
     },
   },
   setup() {
+    /* tag对应的代码 */
+
+    const inputValue = ref("");
+    const noteTips = ref([] as Array<string>);
+    const inputVisible = ref(false);
+    const InputRef = ref<InstanceType<typeof ElInput>>();
+
+    const handleClose = (tag: string) => {
+      noteTips.value.splice(noteTips.value.indexOf(tag), 1);
+    };
+
+    const showInput = () => {
+      inputVisible.value = true;
+      nextTick(() => {
+        InputRef.value!.input!.focus();
+      });
+    };
+
+    const handleInputConfirm = () => {
+      if (inputValue.value) {
+        noteTips.value.push(inputValue.value);
+      }
+      inputVisible.value = false;
+      inputValue.value = "";
+    };
+    /* 结束 */
     const store = mainStore();
     const router = useRouter();
     const userInfo = ref(store.userInfo);
@@ -101,7 +128,7 @@ export default {
     requestMyPlansInfo();
     const planId = ref("");
     const noteTitle = ref("");
-
+    const noteCity = ref("");
     let noteInfo = {} as noteInfoParams;
     const publishTheNote = async (src: string, info_: any) => {
       if (info_ !== null && info_ !== "") {
@@ -111,6 +138,8 @@ export default {
         noteInfo.title = noteTitle.value;
         noteInfo.planId = planId.value;
         noteInfo.userId = store.userInfo.id;
+        noteInfo.city = noteCity.value;
+        noteInfo.trip = noteTips.value;
         console.log(noteInfo);
         await publishOneNote(noteInfo)
           .then((res: any) => {
@@ -158,6 +187,13 @@ export default {
       successDialogVisible,
       goSeeMyNotes,
       continuePublish,
+      noteCity,
+      noteTips,
+      handleClose,
+      showInput,
+      handleInputConfirm,
+      inputValue,
+      inputVisible,
     };
   },
   methods: {
@@ -260,7 +296,7 @@ export default {
     </div>
   </div>
   <div class="select-plan-container">
-    <div class="select-title">选择该游记对应的行程</div>
+    <div class="select-title">选择该游记对应的您的行程</div>
     <el-radio-group v-model="planId">
       <el-radio :label="item.planId" v-for="(item, index) in userPlansOption"
         ><el-popover
@@ -276,6 +312,50 @@ export default {
         </el-popover></el-radio
       >
     </el-radio-group>
+  </div>
+  <div class="select-plan-container">
+    <div class="select-title">填写该游记对应的城市</div>
+    <el-input
+      v-model="noteCity"
+      class="w-50 m-2"
+      placeholder="请输入内容(将会展示为城市标签)"
+    >
+      <template #suffix>
+        <el-icon class="el-input__icon"><OfficeBuilding /></el-icon>
+      </template>
+    </el-input>
+  </div>
+  <div class="select-plan-container2">
+    <div class="select-title2">添加对应的标签</div>
+    <div class="tag-container-el">
+      <el-tag
+        v-for="tag in noteTips"
+        :key="tag"
+        class="mx-1"
+        closable
+        :disable-transitions="false"
+        @close="handleClose(tag)"
+      >
+        {{ tag }}
+      </el-tag>
+      <el-input
+        v-if="inputVisible"
+        ref="InputRef"
+        v-model="inputValue"
+        class="ml-1 w-20"
+        size="small"
+        @keyup.enter="handleInputConfirm"
+        @blur="handleInputConfirm"
+      />
+      <el-button
+        v-else
+        class="button-new-tag ml-1"
+        size="small"
+        @click="showInput"
+      >
+        + 添加标签
+      </el-button>
+    </div>
   </div>
   <div class="publish-border">
     <div class="publish-button" @click="publishTheNote(src, info_)">
@@ -434,6 +514,36 @@ input:-ms-input-placeholder {
     padding-left: 125px;
     color: #e74128;
     font-weight: 700;
+  }
+}
+.select-plan-container2 {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 20px;
+  margin-bottom: 40px;
+  .select-title2 {
+    width: 100%;
+    height: auto;
+    padding: 10px 0;
+    display: flex;
+    justify-content: start;
+    padding-left: 125px;
+    color: #e74128;
+    font-weight: 700;
+  }
+  .tag-container-el {
+    width: 100%;
+    height: auto;
+    display: flex;
+    justify-content: start;
+    padding-left: 270px;
+    .el-input {
+      width: 80px;
+    }
   }
 }
 .publish-border {

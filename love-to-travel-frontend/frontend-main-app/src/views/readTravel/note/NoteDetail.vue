@@ -1020,6 +1020,15 @@ onMounted(() => {
                     >{{ noteInfo.city }}</span
                   >
                 </li>
+                <li style="font-size: 16px">
+                  <el-icon size="16px" :color="`#e8604c`"><Calendar /></el-icon>
+                  发布时间:
+                  <span
+                    class="span-style"
+                    style="font-size: 14px; margin-left: 5px"
+                    >{{ noteInfo.createTime }}</span
+                  >
+                </li>
               </ul>
               <h3 class="news-details__title">
                 {{ noteInfo.title }}
@@ -1499,7 +1508,7 @@ onMounted(() => {
   width: 150px;
   height: 40px;
   float: right;
-  background-color: #e8604c;
+  background-color: #e6a23c;
   border-radius: 20px;
   display: flex;
   justify-content: center;
@@ -1509,7 +1518,7 @@ onMounted(() => {
   font-weight: 700;
 }
 .delete-button:hover {
-  background-color: #e74128;
+  background-color: #b88230;
 }
 .news-details {
   padding-top: 70px;

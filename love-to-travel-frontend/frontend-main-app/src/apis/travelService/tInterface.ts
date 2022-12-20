@@ -16,6 +16,8 @@ export interface noteInfoParams {
   url: string;
   title: string;
   content: string;
+  city: string;
+  trip: Array<string>;
 }
 
 export interface teamInfoParams {
