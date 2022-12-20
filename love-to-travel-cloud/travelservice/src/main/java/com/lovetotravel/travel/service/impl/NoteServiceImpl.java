@@ -247,6 +247,8 @@ public class NoteServiceImpl implements NoteService {
                 .set("url", noteVo.getUrl())
                 .set("plan", noteVo.getPlanId())
                 .set("content", noteVo.getContent())
+                .set("trip", noteVo.getTrip())
+                .set("city", noteVo.getCity())
                 .set("updateTime", currentTimeStamp);
         mongoTemplate.updateFirst(query, update, Note.class);
     }
