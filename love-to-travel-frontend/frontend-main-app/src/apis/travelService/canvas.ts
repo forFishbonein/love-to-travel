@@ -8,7 +8,7 @@ export const getCanvasAllInfo = () => {
 };
 
 export const getCanvasAllInfoByName = (name: string) => {
-  alert(name);
+  // alert(name);
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/canvas/${name}`,
