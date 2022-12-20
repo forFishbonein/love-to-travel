@@ -79,10 +79,18 @@ public class NoteServiceImpl implements NoteService {
 
 
         for (SceneryRelated s : sceneryRelateds) {
+            System.out.println("s = " + s);
+            System.out.println("s = " + s);
+            System.out.println("s = " + s);
+            System.out.println("s = " + s);
+            System.out.println("s = " + s);
+
+
             Query query = new Query();
             query.addCriteria(Criteria.where("id").is(s.getNoteId()));
             query.addCriteria(Criteria.where("deleted").is("0"));
             Note one = mongoTemplate.findOne(query, Note.class);
+            System.out.println("one = " + one);
             System.out.println(one);
             noteList.add(one);
         }

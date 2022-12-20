@@ -241,7 +241,7 @@ public class SceneryServiceImpl extends ServiceImpl<SceneryMapper, Scenery> impl
 
 
 
-        if (userScenery != null) {
+        if (userScenery != null || !userScenery.equals("")) {
             String sceneryIdList = userScenery.getSceneryId();
             String[] result = sceneryIdList.split(",");
             System.out.println(result);
