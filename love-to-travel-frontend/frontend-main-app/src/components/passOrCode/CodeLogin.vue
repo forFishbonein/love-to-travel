@@ -88,19 +88,39 @@ const codeLogin = () => {
 .passWord {
   position: relative;
 }
+// .getCode {
+//   margin-top: 15px;
+//   width: 100px;
+//   height: 30px;
+//   background-color: #e0e0e0;
+//   // float: right;
+//   position: absolute;
+
+//   right: 190px;
+//   line-height: 30px;
+//   border-radius: 10px;
+//   border: 0;
+//   cursor: pointer;
+// }
 .getCode {
-  margin-top: 15px;
   width: 100px;
-  height: 30px;
-  background-color: #e0e0e0;
+  height: 26px;
+  background-color: #ffffff;
+  // float: right;
+  // right: 190px;
+  line-height: 22px;
+  margin-top: 15px;
+  border-radius: 10px;
+  cursor: pointer;
+  color: #d4af7a;
+  font-size: 14px;
+  border: 2px solid transparent;
   // float: right;
   position: absolute;
-
   right: 190px;
-  line-height: 30px;
-  border-radius: 10px;
-  border: 0;
-  cursor: pointer;
+}
+.getCode:hover {
+  border-color: #d4af7a;
 }
 .forgetPass {
   position: absolute;
