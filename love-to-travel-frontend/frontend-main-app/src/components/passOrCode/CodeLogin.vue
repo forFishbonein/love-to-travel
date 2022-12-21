@@ -11,7 +11,7 @@ import {
   InterValObj,
   setRemainTime,
   getCode,
-} from "@/utils/getCode";
+} from "@/utils/getCode2";
 
 import { useRouter } from "vue-router";
 
@@ -28,41 +28,49 @@ const codeData: codeLoginInfo = reactive({
 });
 const { email2, code } = toRefs(codeData);
 const codeLogin = () => {
-  store
-    .codeLogin({
-      email: codeData.email2,
-      code: codeData.code,
-    })
-    .then((res: any) => {
-      console.log(res.code != 0);
-      if (res.code != 0) {
+  if (email2.value !== "" && code.value !== "") {
+    store
+      .codeLogin({
+        email: codeData.email2,
+        code: codeData.code,
+      })
+      .then((res: any) => {
+        console.log(res.code != 0);
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          //@ts-ignore
+          // @ts-ignore
+          ElMessage({
+            type: "success",
+            message: "爱宝儿，欢迎你加入爱旅游的大家庭~",
+          });
+          router.replace("/");
+        }
+      })
+      .catch((error) => {
         //@ts-ignore
         ElMessage({
           type: "error",
-          message: res.msg,
+          message: error.message,
         });
-      } else {
-        //@ts-ignore
-        // @ts-ignore
-        ElMessage({
-          type: "success",
-          message: "爱宝儿，欢迎你加入爱旅游的大家庭~",
-        });
-        router.replace("/");
-      }
-    })
-    .catch((error) => {
-      //@ts-ignore
-      ElMessage({
-        type: "error",
-        message: error.message,
       });
+  } else {
+    // @ts-ignore
+    ElMessage({
+      type: "warning",
+      message: "请先将信息填写完整哦~",
     });
+  }
 };
 </script>
 
 <template>
-  <h2>欢迎回来</h2>
+  <h2 style="color: #303133">欢迎回来</h2>
   <label>
     <span>邮箱</span>
     <input type="email" v-model="email2" />
@@ -78,7 +86,7 @@ const codeLogin = () => {
     @click="getCode(codeData.email2)"
   />
   <p class="forgot-pass">
-    <a href="javascript:" class="forgetPass">忘记密码？</a>
+    <a href="javascript:;" class="forgetPass">忘记密码？</a>
   </p>
   <button type="button" class="submit" @click="codeLogin">登 录</button>
 </template>
@@ -103,6 +111,7 @@ const codeLogin = () => {
 //   cursor: pointer;
 // }
 .getCode {
+  margin-top: 15px;
   width: 100px;
   height: 26px;
   background-color: #ffffff;
@@ -112,15 +121,18 @@ const codeLogin = () => {
   margin-top: 15px;
   border-radius: 10px;
   cursor: pointer;
-  color: #d4af7a;
+  color: #909399;
   font-size: 14px;
   border: 2px solid transparent;
   // float: right;
   position: absolute;
   right: 190px;
+  transition: all 0.3s linear;
 }
 .getCode:hover {
-  border-color: #d4af7a;
+  // border-color: #e8604c;
+  background-color: #e8604c;
+  color: #ffffff;
 }
 .forgetPass {
   position: absolute;

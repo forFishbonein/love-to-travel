@@ -8,7 +8,9 @@ const setRemainTime = () => {
     console.log("停止");
     window.clearInterval(InterValObj);
     a.disabled = false;
-    a.style.backgroundColor = "#e0e0e0";
+    a.style.color = "#ffffff";
+    a.style.backgroundColor = "#e8604c";
+    a.style.width = "120px";
     a.setAttribute("value", "重新发送验证码");
   } else {
     curCount--;
@@ -27,7 +29,9 @@ const getCode = (email: string) => {
   //@ts-ignore
   a = document.getElementsByClassName("getCode")[0];
   a.disabled = true;
-  a.style.backgroundColor = "#f5f5f5";
+  a.style.backgroundColor = "#f48f80";
+  a.style.color = "#ffffff";
+  a.style.width = "150px";
   //@ts-ignore
   postCode({ email: email })
     .then((res) => {

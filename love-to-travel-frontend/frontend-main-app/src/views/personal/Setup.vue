@@ -113,7 +113,7 @@ const modifyTheUserPassword = () => {
         //@ts-ignore
         ElMessage({
           type: "success",
-          message: "修改成功，请重新登录！",
+          message: "修改成功，请重新登录~",
         });
         store.logout();
         setTimeout(() => {
