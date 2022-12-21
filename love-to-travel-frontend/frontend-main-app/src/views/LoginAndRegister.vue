@@ -12,8 +12,19 @@ import {
 } from "@/utils/getCode2";
 import { Input } from "postcss";
 import { useRouter } from "vue-router";
-import { hasScopeRef } from "@vue/compiler-core";
 import { imageStore } from "@/store/image";
+// import zhCn from "element-plus/lib/locale/lang/zh-cn";
+// import en from "element-plus/lib/locale/lang/en";
+import { useI18n } from "vue-i18n";
+import i18n from "@/locales";
+import { useDark, useToggle } from "@vueuse/core";
+const { locale } = useI18n();
+
+/* 暗黑模式 */
+const isDark = useDark();
+const toggleDark = useToggle(isDark);
+
+// i18n.global.t("menus.home");
 
 const router = useRouter();
 const store = mainStore();
@@ -79,8 +90,8 @@ const register = () => {
         } else {
           // @ts-ignore
           ElMessage({
-            type: "warning",
-            message: "欢迎回来，亲爱的爱宝儿~",
+            type: "success",
+            message: i18n.global.t("other.welcomeToJoin"),
           });
           router.replace("/");
         }
@@ -96,7 +107,7 @@ const register = () => {
     // @ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先将信息填写完整哦~",
+      message: i18n.global.t("other.pleaseOver"),
     });
   }
 };
@@ -145,6 +156,21 @@ const selectBackGround = () => {
   location.reload();
 };
 
+/* 切换语言：i18n */
+type localType = "zhCn" | "en";
+// const local = ref<localType>("zhCn");
+// const localLanguage = computed(() => {
+//   switch (local.value) {
+//     case "en":
+//       return en;
+//     case "zhCn":
+//       return zhCn;
+//   }
+// });
+const changeLanguage = (type: localType): void => {
+  // local.value = type;
+  locale.value = type; //只有在methods这才能拿到this，setup里面拿不到
+};
 onMounted(() => {
   loginOrRegister();
 });
@@ -160,11 +186,37 @@ onMounted(() => {
 </script>
 
 <template>
+  <div class="lang-selecter">
+    <el-dropdown @command="changeLanguage">
+      <el-button type="primary">
+        {{ $t("main.change") }}<i class="el-icon-arrow-down el-icon--right" />
+      </el-button>
+      <template #dropdown>
+        <el-dropdown-menu>
+          <el-dropdown-item command="zhCn">
+            {{ $t("language.chinese") }}
+          </el-dropdown-item>
+          <el-dropdown-item command="en">
+            {{ $t("language.english") }}
+          </el-dropdown-item>
+        </el-dropdown-menu>
+      </template>
+    </el-dropdown>
+  </div>
+  <div class="model-selecter">
+    <span
+      @click.stop="toggleDark()"
+      style="cursor: pointer"
+      class="font-black-style"
+      >暗黑模式</span
+    >
+    <el-switch size="small" v-model="isDark" style="margin-left: 10px" />
+  </div>
   <div class="img-selecter">
     <el-select
       v-model="selectBackName"
       class="m-2"
-      placeholder="请选择背景图片"
+      :placeholder="$t('main.pleaseSelect')"
     >
       <el-option
         v-for="item in imgNameList"
@@ -181,51 +233,63 @@ onMounted(() => {
         <!-- router所在地 -->
         <router-view />
         <button type="button" class="fb-btn" @click="changeLogin">
-          使用 <span>{{ flag === false ? "验证码" : "密码" }}</span> 登录
+          {{ $t("main.use") }}
+          <span>{{
+            flag === false ? $t("main.code") : $t("main.password")
+          }}</span>
+          {{ $t("buttons.login") }}
         </button>
       </div>
       <div class="sub-cont">
         <div class="img">
           <div class="img__text m--up">
-            <h2 style="color: #ffffff !important">还未注册？</h2>
-            <p>立即注册，成为爱宝儿！</p>
+            <h2 style="color: #ffffff !important">
+              {{ $t("messages.notRegister") }}
+            </h2>
+            <p>{{ $t("messages.register") }}</p>
           </div>
           <div class="img__text m--in">
-            <h2 style="color: #ffffff !important">已有帐号？</h2>
-            <p>有帐号就登录吧，好久不见了！</p>
+            <h2 style="color: #ffffff !important">
+              {{ $t("messages.haveAccount") }}
+            </h2>
+            <p>{{ $t("messages.login") }}</p>
           </div>
           <div class="img__btn">
-            <span class="m--up" style="font-weight: 700">注 册</span>
-            <span class="m--in" style="font-weight: 700">登 录</span>
+            <span class="m--up" style="font-weight: 700">{{
+              $t("buttons.register")
+            }}</span>
+            <span class="m--in" style="font-weight: 700">{{
+              $t("buttons.login")
+            }}</span>
           </div>
         </div>
         <div class="form sign-up">
-          <h2>立即注册</h2>
+          <h2 class="font-white-style">{{ $t("titles.nowRegister") }}</h2>
           <label>
-            <span>用户名</span>
+            <span>{{ $t("loginForm.user") }}</span>
             <input type="text" v-model="name" />
           </label>
           <label>
-            <span>密码</span>
+            <span>{{ $t("main.password") }}</span>
             <input type="password" v-model="password" />
           </label>
           <label>
-            <span>邮箱</span>
+            <span>{{ $t("loginForm.email") }}</span>
             <input type="email" v-model="email3" />
           </label>
           <label>
-            <span>验证码</span>
+            <span>{{ $t("main.code") }}</span>
             <input type="text" class="passWord" v-model="code2" />
           </label>
           <input
             type="button"
-            value="获取验证码"
+            :value="$t('main.getcode')"
             class="getCode"
             @click="getCode(registerData.email3)"
           />
 
           <button type="button" class="submit register" @click="register">
-            注册
+            {{ $t("buttons.register") }}
           </button>
         </div>
       </div>
@@ -274,12 +338,46 @@ onMounted(() => {
 .register {
   margin-top: 60px;
 }
+
 .img-selecter {
   width: 160px;
   height: 40px;
   position: fixed;
-  top: 20px;
-  right: 20px;
+  top: 25px;
+  left: 20px;
+
+  // .el-select {
+  //   // background-color: #e8604c;
+  //   border: 1px #e8604c solid;
+  //   border-radius: ;
+  // }
+}
+.model-selecter {
+  width: 150px;
+  height: 80px;
+  position: fixed;
+  top: 100px;
+  left: 25px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  // flex-direction: column;
+  color: #ffffff;
+  font-size: 16px;
+}
+.lang-selecter {
+  width: 140px;
+  height: 30px;
+  position: fixed;
+  top: 80px;
+  left: 30px;
+  .el-dropdown {
+    width: 140px;
+    height: 30px;
+    .el-button {
+      border: 2px #e8604c solid;
+    }
+  }
 }
 .el-select-dropdown__item {
   display: flex;

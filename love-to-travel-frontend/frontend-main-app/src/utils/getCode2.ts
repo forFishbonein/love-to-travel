@@ -1,4 +1,5 @@
 import { postCode } from "@/apis/userService/register";
+import i18n from "@/locales";
 let a: HTMLInputElement = document.createElement("input");
 let count = 30;
 let curCount = 0;
@@ -11,10 +12,11 @@ const setRemainTime = () => {
     a.style.color = "#ffffff";
     a.style.backgroundColor = "#e8604c";
     a.style.width = "120px";
-    a.setAttribute("value", "重新发送验证码");
+    a.setAttribute("value", i18n.global.t("other.getCodeRe"));
+    i18n.global.t("menus.home");
   } else {
     curCount--;
-    a.setAttribute("value", curCount + "秒后可重新发送");
+    a.setAttribute("value", curCount + " " + i18n.global.t("other.wait"));
   }
 };
 const getCode = (email: string) => {
@@ -22,7 +24,7 @@ const getCode = (email: string) => {
     //@ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先将信息填写完整哦~",
+      message: i18n.global.t("other.pleaseOver"),
     });
     return;
   }
@@ -39,7 +41,7 @@ const getCode = (email: string) => {
         //@ts-ignore
         ElMessage({
           type: "success",
-          message: "验证码已发送",
+          message: i18n.global.t("other.hasSend"),
         });
       }
     })

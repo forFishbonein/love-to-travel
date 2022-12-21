@@ -1,0 +1,35 @@
+html.dark {
+  .content {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  .sub-cont {
+    background-color: rgba(0, 0, 0, 0.6);
+  }
+  button {
+    color: rgba(0, 0, 0, 0.6);
+  }
+  .submit {
+    background: #606266;
+  }
+  .submit:hover {
+    background: #909399;
+  }
+
+  .fb-btn {
+    border: 2px solid #606266;
+    color: #909399;
+  }
+  .font-white-style {
+    color: #ffffff;
+  }
+  .font-black-style {
+    color: #000000;
+  }
+  #login-warp {
+    background: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)),
+      url("@/assets/images/shanghai.jpg");
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+    background-size: cover;
+  }
+}

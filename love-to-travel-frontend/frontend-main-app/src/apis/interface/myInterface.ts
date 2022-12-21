@@ -265,7 +265,7 @@ export interface productBuyInfoType {
   url: string;
   createTime: string;
   cost: string;
-  status: number;
+  status: string;
 }
 /* 景区评论评分 */
 export interface sceneryCommentBody {

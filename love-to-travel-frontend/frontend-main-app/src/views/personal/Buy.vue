@@ -51,8 +51,8 @@ requestTheUserBuy();
             style="color: #e8604c; font-weight: 600; font-size: 15px; margin: 0"
           >
             花费{{ item.cost }}元
-            <span style="color: #303133"
-              >状态:{{ item.status === 0 ? "未使用" : "已使用" }}</span
+            <span style="color: #303133; margin-left: 10px"
+              >状态:{{ item.status === "0" ? "未使用" : "已使用" }}</span
             >
           </p>
           <div class="bottom">

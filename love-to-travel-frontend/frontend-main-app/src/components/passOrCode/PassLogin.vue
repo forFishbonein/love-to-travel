@@ -5,7 +5,7 @@
 import { mainStore } from "@/store/user";
 import { reactive, toRefs } from "vue";
 import { useRouter } from "vue-router";
-
+import i18n from "@/locales";
 const router = useRouter();
 
 interface passLoginInfo {
@@ -34,7 +34,7 @@ const passLogin = () => {
           //@ts-ignore
           ElMessage({
             type: "success",
-            message: "欢迎回来，亲爱的爱宝儿~",
+            message: i18n.global.t("other.welcomeToBack"),
           });
           router.replace("/");
         }
@@ -50,28 +50,32 @@ const passLogin = () => {
     // @ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先将信息填写完整哦~",
+      message: i18n.global.t("other.pleaseOver"),
     });
   }
 };
 </script>
 
 <template>
-  <h2 style="color: #303133">欢迎回来</h2>
+  <h2 class="font-white-style">{{ $t("titles.welcome") }}</h2>
   <label>
-    <span>邮箱</span>
+    <span>{{ $t("loginForm.email") }}</span>
     <input type="email" v-model="email" style="background-color: Transparent" />
   </label>
   <label>
-    <span>密码</span>
+    <span>{{ $t("main.code") }}</span>
     <input
       type="password"
       v-model="password"
       style="background-color: Transparent"
     />
   </label>
-  <p class="forgot-pass"><a href="javascript:;">忘记密码？</a></p>
-  <button type="button" class="submit" @click="passLogin">登 录</button>
+  <p class="forgot-pass">
+    <a href="javascript:;">{{ $t("messages.forgetPass") }}</a>
+  </p>
+  <button type="button" class="submit" @click="passLogin">
+    {{ $t("buttons.login") }}
+  </button>
 </template>
 
 <style lang="scss" scoped>
