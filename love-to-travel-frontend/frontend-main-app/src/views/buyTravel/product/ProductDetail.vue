@@ -586,7 +586,7 @@ onMounted(() => {
     draggable
     show-close="false"
   >
-    <span>恭喜您，产品购买成功！</span>
+    <span>恭喜爱宝儿，产品购买成功！</span>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="goSeeMyBuy">

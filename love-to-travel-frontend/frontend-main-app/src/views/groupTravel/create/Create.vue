@@ -305,7 +305,7 @@ const continuePublish = () => {
     draggable
     show-close="false"
   >
-    <span>恭喜您，队伍创建成功！</span>
+    <span>恭喜爱宝儿，队伍创建成功！</span>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="goSeeMyNotes">

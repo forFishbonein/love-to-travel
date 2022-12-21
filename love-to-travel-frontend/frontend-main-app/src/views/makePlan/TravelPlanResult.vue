@@ -822,7 +822,7 @@ onMounted(() => {
     draggable
     show-close="false"
   >
-    <span>我们已将您的自定义行程进行保存，点击下方可以进行查看。</span>
+    <span>爱宝儿，我们已将你的自定义行程进行保存，点击下方可以进行查看~</span>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="goSeeMyPlans"> 查看行程 </el-button>
