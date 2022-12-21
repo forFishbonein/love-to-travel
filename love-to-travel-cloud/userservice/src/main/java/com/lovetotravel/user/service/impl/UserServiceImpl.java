@@ -8,6 +8,8 @@ import com.lovetotravel.user.entity.Log;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.*;
+import com.lovetotravel.user.entity.vo.user.UpdateHeadVo;
+import com.lovetotravel.user.entity.vo.user.UpdatePasswordVo;
 import com.lovetotravel.user.exception.GlobalException;
 import com.lovetotravel.user.mapper.LogMapper;
 import com.lovetotravel.user.mapper.SceneryUserMapper;
@@ -231,6 +233,26 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userMapper.update(userInMysql, queryWrapper);
         //更新缓存：先删除再插入
         redisService.delete(UserKey.getById, "" + user.getId());
+    }
+
+    @Override
+    public void updateHead(UpdateHeadVo updateHeadVo) {
+
+        QueryWrapper<User> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(User::getId, updateHeadVo.getId());
+        User userInMysql = getOne(queryWrapper);
+        if (userInMysql == null) {
+            throw new GlobalException(CodeMsg.USER_NOT_EXIST);
+        }
+        userInMysql.setUrl(updateHeadVo.getUrl());
+        Date date = new Date();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        userInMysql.setUpdateTime(dateFormat.format(date));
+        userMapper.update(userInMysql, queryWrapper);
+        //更新缓存：先删除再插入
+        redisService.delete(UserKey.getById, "" + updateHeadVo.getId());
+
+
     }
 
     @Override

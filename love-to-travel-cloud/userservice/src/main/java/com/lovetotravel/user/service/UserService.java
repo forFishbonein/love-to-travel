@@ -6,6 +6,8 @@ import com.lovetotravel.user.entity.Log;
 import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.*;
+import com.lovetotravel.user.entity.vo.user.UpdateHeadVo;
+import com.lovetotravel.user.entity.vo.user.UpdatePasswordVo;
 
 import javax.servlet.http.HttpServletResponse;
 import java.util.List;
@@ -36,6 +38,8 @@ public interface UserService extends IService<User> {
     void updatePassword(UpdatePasswordVo updatePasswordVo);
 
     void updateProfile(User user);
+
+    void updateHead(UpdateHeadVo updateHeadVo);
 
     void addFollower(FollowerVo followerVo);
 

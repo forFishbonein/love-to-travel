@@ -5,7 +5,8 @@ import com.lovetotravel.user.entity.PageVo;
 import com.lovetotravel.user.entity.User;
 import com.lovetotravel.user.entity.vo.NewNum;
 import com.lovetotravel.user.entity.vo.RegisterVo;
-import com.lovetotravel.user.entity.vo.UpdatePasswordVo;
+import com.lovetotravel.user.entity.vo.user.UpdateHeadVo;
+import com.lovetotravel.user.entity.vo.user.UpdatePasswordVo;
 import com.lovetotravel.user.result.Result;
 import com.lovetotravel.user.service.UserService;
 import io.swagger.annotations.Api;
@@ -75,8 +76,15 @@ public class UserController {
 
     @ApiOperation("更改个人信息")
     @PutMapping("/updateprofile")
-    public Result<String> updatePassword(@RequestBody User user) {
+    public Result<String> updateProfile(@RequestBody User user) {
         userService.updateProfile(user);
+        return Result.success("修改成功");
+    }
+
+    @ApiOperation("更改头像")
+    @PutMapping("/updatehead")
+    public Result<String> updateHead(@RequestBody UpdateHeadVo updateHeadVo) {
+        userService.updateHead(updateHeadVo);
         return Result.success("修改成功");
     }
 
