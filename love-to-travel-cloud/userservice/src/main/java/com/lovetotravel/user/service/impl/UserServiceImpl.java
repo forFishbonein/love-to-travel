@@ -251,8 +251,6 @@ public class UserServiceImpl extends ServiceImpl<UserMapper, User> implements Us
         userMapper.update(userInMysql, queryWrapper);
         //更新缓存：先删除再插入
         redisService.delete(UserKey.getById, "" + updateHeadVo.getId());
-
-
     }
 
     @Override

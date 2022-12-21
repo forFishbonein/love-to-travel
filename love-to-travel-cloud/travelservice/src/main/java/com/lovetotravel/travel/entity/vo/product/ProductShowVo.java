@@ -24,6 +24,8 @@ public class ProductShowVo {
 
     private String url;
 
+    private String status;
+
     private String createTime;
 
     private String cost;
