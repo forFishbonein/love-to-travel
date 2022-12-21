@@ -189,9 +189,9 @@ const saveFinalPlans = async () => {
     //@ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先登录！",
+      message: "爱宝儿，登录后才能保存行程哦~",
     });
-    router.push("/login");
+    // router.push("/login");
   }
 };
 const successDialogVisible = ref(false);
@@ -232,30 +232,30 @@ const initSubPlans = () => {
   }
 };
 const dialogFormVisible = ref(false);
-let citysInfo = ref([] as citysInfoType[]);
-const requestCitysInfo = async () => {
-  await getHotCitysInfo()
-    .then((res: any) => {
-      if (res.code != 0) {
-        //@ts-ignore
-        ElMessage({
-          type: "error",
-          message: res.msg,
-        });
-      } else {
-        // citysInfo.value = res.data.slice(0, 10);
-        citysInfo.value = res.data;
-        // console.log(citysInfo);
-      }
-    })
-    .catch((error) => {
-      //@ts-ignore
-      ElMessage({
-        type: "error",
-        message: error.message,
-      });
-    });
-};
+// let citysInfo = ref([] as citysInfoType[]);
+// const requestCitysInfo = async () => {
+//   await getHotCitysInfo()
+//     .then((res: any) => {
+//       if (res.code != 0) {
+//         //@ts-ignore
+//         ElMessage({
+//           type: "error",
+//           message: res.msg,
+//         });
+//       } else {
+//         // citysInfo.value = res.data.slice(0, 10);
+//         citysInfo.value = res.data;
+//         // console.log(citysInfo);
+//       }
+//     })
+//     .catch((error) => {
+//       //@ts-ignore
+//       ElMessage({
+//         type: "error",
+//         message: error.message,
+//       });
+//     });
+// };
 
 //定义全局变量
 let theFlag = 0; //为了标志添加：在之前添加/在之后添加
@@ -270,6 +270,7 @@ const openCityDialog = (flag: number = 0, index: number = 0) => {
 };
 
 // let aCityInfo = {} as citysInfoType;
+/* 城市选择器 */
 const provinces = ref([]);
 const initProvinceData = () => {
   for (let code in locationData) {

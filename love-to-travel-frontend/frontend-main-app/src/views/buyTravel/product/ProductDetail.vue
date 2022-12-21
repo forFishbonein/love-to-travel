@@ -152,8 +152,8 @@ const buyProductOpenDialog = ()=>{
   }else{
     //@ts-ignore
     ElMessage({
-      type: "error",
-      message: "请先登录！"
+      type: "success",
+      message: "爱宝儿，登录后才能购买产品哦~"
     });
   }
 }
@@ -182,8 +182,8 @@ const buyTheProduct = ()=>{
   }else{
       //@ts-ignore
       ElMessage({
-    type: "error",
-    message: "请先登录！",
+    type: "warning",
+    message: "爱宝儿，登录后才能购买产品哦~",
   });
   }
 

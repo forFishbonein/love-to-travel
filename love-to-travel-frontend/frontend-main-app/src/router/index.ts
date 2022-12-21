@@ -72,7 +72,7 @@ router.beforeEach((to, from, next) => {
             //@ts-ignore
             ElMessage({
               type: "warning",
-              message: "登录已过期",
+              message: "爱宝儿，你的登录已过期~",
             });
             store.getUserFlag = false;
             // setFlag(false);
@@ -92,7 +92,7 @@ router.beforeEach((to, from, next) => {
       //@ts-ignore
       ElMessage({
         type: "warning",
-        message: "未登录",
+        message: "爱宝儿，登录后才能打开新天地哦~",
       });
       //@ts-ignore //不知道会不会出错
       router.push(-1);

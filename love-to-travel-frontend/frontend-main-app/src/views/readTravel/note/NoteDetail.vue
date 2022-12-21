@@ -352,7 +352,7 @@ const commentLike = async (commentId: string) => {
     //@ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先登录！",
+      message: "爱宝儿，登录后才能点赞哦~",
     });
   }
 };
@@ -495,7 +495,7 @@ const addSecondComment = async (pId: string) => {
     //@ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先登录！",
+      message: "爱宝儿，登录后才能评论哦~",
     });
   }
 };
@@ -570,7 +570,7 @@ const addFirstComment = async () => {
     //@ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先登录！",
+      message: "爱宝儿，登录后才能评论哦~",
     });
   }
 };
@@ -675,7 +675,7 @@ const noteLike = async () => {
     //@ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先登录！",
+      message: "爱宝儿，登录后才能点赞哦~",
     });
   }
 };
@@ -847,7 +847,7 @@ const noteStar = async () => {
     //@ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先登录！",
+      message: "爱宝儿，登录后才能收藏哦~",
     });
   }
 };

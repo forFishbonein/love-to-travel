@@ -33,7 +33,7 @@ const passLogin = () => {
         //@ts-ignore
         ElMessage({
           type: "success",
-          message: "登录成功",
+          message: "欢迎回来，亲爱的爱宝儿~",
         });
         router.replace("/");
       }

@@ -131,40 +131,48 @@ export default {
     const noteCity = ref("");
     let noteInfo = {} as noteInfoParams;
     const publishTheNote = async (src: string, info_: any) => {
-      if (info_ !== null && info_ !== "") {
-        // alert("11111");
-        noteInfo.content = info_;
-        noteInfo.url = src;
-        noteInfo.title = noteTitle.value;
-        noteInfo.planId = planId.value;
-        noteInfo.userId = store.userInfo.id;
-        noteInfo.city = noteCity.value;
-        noteInfo.trip = noteTips.value;
-        console.log(noteInfo);
-        await publishOneNote(noteInfo)
-          .then((res: any) => {
-            if (res.code != 0) {
+      if (store.userInfo.id) {
+        if (info_ !== null && info_ !== "" && noteTitle.value !== "") {
+          // alert("11111");
+          noteInfo.content = info_;
+          noteInfo.url = src;
+          noteInfo.title = noteTitle.value;
+          noteInfo.planId = planId.value;
+          noteInfo.userId = store.userInfo.id;
+          noteInfo.city = noteCity.value;
+          noteInfo.trip = noteTips.value;
+          console.log(noteInfo);
+          await publishOneNote(noteInfo)
+            .then((res: any) => {
+              if (res.code != 0) {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: res.msg,
+                });
+              } else {
+                successDialogVisible.value = true;
+              }
+            })
+            .catch((error) => {
               //@ts-ignore
               ElMessage({
                 type: "error",
-                message: res.msg,
+                message: error.message,
               });
-            } else {
-              successDialogVisible.value = true;
-            }
-          })
-          .catch((error) => {
-            //@ts-ignore
-            ElMessage({
-              type: "error",
-              message: error.message,
             });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "warn",
+            message: "爱宝儿，标题和内容必须输入哦~",
           });
+        }
       } else {
         //@ts-ignore
         ElMessage({
-          type: "warn",
-          message: "请先输入内容！",
+          type: "warning",
+          message: "爱宝儿，登录后才能发布游记哦~",
         });
       }
     };

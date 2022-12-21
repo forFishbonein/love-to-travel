@@ -1467,7 +1467,11 @@ onMounted(() => {});
       <div class="row">
         <div class="col-xl-12">
           <div class="tour-search-box">
-            <form class="tour-search-one" action="tour-sidebar.html">
+            <form
+              class="tour-search-one"
+              autocomplete="off"
+              @submit.prevent="createPlan"
+            >
               <div class="tour-search-one__inner">
                 <div class="tour-search-one__inputs">
                   <div
@@ -1522,10 +1526,7 @@ onMounted(() => {});
                   </div>
                 </div>
                 <div class="tour-search-one__btn-wrap">
-                  <button
-                    @click="createPlan"
-                    class="thm-btn tour-search-one__btn ali-font-family"
-                  >
+                  <button class="thm-btn tour-search-one__btn ali-font-family">
                     制定行程
                   </button>
                 </div>

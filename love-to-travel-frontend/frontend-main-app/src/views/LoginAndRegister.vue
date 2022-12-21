@@ -69,10 +69,10 @@ const register = () => {
           message: res.msg,
         });
       } else {
-        //@ts-ignore
+        // @ts-ignore
         ElMessage({
-          type: "success",
-          message: "注册成功",
+          type: "warning",
+          message: "欢迎回来，亲爱的爱宝儿~",
         });
         router.replace("/");
       }
