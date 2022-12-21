@@ -15,8 +15,10 @@ import {
 import emitter from "@/mitt/event";
 import { getRandomArrayElements } from "@/utils/filters/randomArray";
 import { timeFormat } from "@/utils/filters/time";
-import type { UploadProps, UploadUserFile } from "element-plus";
 import { client } from "@/utils/oss";
+import { updateUserAvater } from "@/apis/userService/user";
+import { useRouter } from "vue-router";
+const router = useRouter();
 emitter.on("addFoot", () => {
   openAlreadyGoDialog();
 });
@@ -580,20 +582,7 @@ const getShuffleMedals = () => {
 getShuffleMedals();
 
 /* 更换头像 */
-// const fileList = ref<UploadUserFile[]>([
-//   {
-//     name: "element-plus-logo.svg",
-//     url: "https://element-plus.org/images/element-plus-logo.svg",
-//   },
-//   {
-//     name: "element-plus-logo2.svg",
-//     url: "https://element-plus.org/images/element-plus-logo.svg",
-//   },
-// ]);
-
-const handlePreview: UploadProps["onPreview"] = (uploadFile) => {
-  console.log(uploadFile);
-};
+let avaterUrl = "";
 const httpRequest = (e) => {
   // console.log(e)
   let file = e.file; // 文件信息
@@ -613,8 +602,9 @@ const httpRequest = (e) => {
   const times = new Date().getTime();
   console.log(times);
   client.put(`${times}.png`, file);
-  let avaterUrl =
+  avaterUrl =
     "http://noteimg123.oss-cn-hangzhou.aliyuncs.com/" + times + ".png";
+  uploadAvater();
   // setTimeout(() => {
   //   client.list().then((res) => {
   //     console.log(res);
@@ -627,17 +617,33 @@ const httpRequest = (e) => {
   // }, 1000);
 };
 const uploadAvater = () => {
-  alert(11111);
-  // avaterUrl;
-  // axios
-  //   .get("http://127.0.0.1:5000/", {
-  //     params: {
-  //       usrNo: store.userInfo.id,
-  //     },
-  //   })
-  //   .then((res) => {
-  //     console.log(res);
-  //   });
+  updateUserAvater(store.userInfo.id, avaterUrl)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        //@ts-ignore
+        ElMessage({
+          type: "success",
+          message: "修改成功，请重新登录~",
+        });
+        store.logout();
+        setTimeout(() => {
+          router.replace("/login");
+        }, 1000);
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
 };
 </script>
 
@@ -657,7 +663,6 @@ const uploadAvater = () => {
         accept=".png,.jpg"
         :show-file-list="false"
         :http-request="httpRequest"
-        :on-preview="handlePreview"
         :limit="1"
       >
         <el-button type="primary">更换头像</el-button>

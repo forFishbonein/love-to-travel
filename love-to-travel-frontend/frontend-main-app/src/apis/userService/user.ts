@@ -49,3 +49,16 @@ export const modifyUserPass = (data: any) => {
     loading: true,
   });
 };
+
+/* 更新头像 */
+export const updateUserAvater = (userId: string, imgUrl: string) => {
+  return httpRequest({
+    url: "http://localhost:8081/user/updatehead",
+    method: "put",
+    data: {
+      id: userId,
+      url: imgUrl,
+    },
+    loading: true,
+  });
+};
