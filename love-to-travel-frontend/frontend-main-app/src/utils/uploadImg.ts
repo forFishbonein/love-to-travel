@@ -126,7 +126,7 @@ var UPLOADER = (editor) => {
         if (info.status == 200) {
           var file_type = file.type;
           var is_image = file_type.indexOf("image");
-          var is_video = file_type.indexOf("video");
+          // var is_video = file_type.indexOf("video");
           if (is_image > -1) {
             // alert(is_image);
             editor.cmd.do(

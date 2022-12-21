@@ -15,6 +15,8 @@ import {
 import emitter from "@/mitt/event";
 import { getRandomArrayElements } from "@/utils/filters/randomArray";
 import { timeFormat } from "@/utils/filters/time";
+import type { UploadProps, UploadUserFile } from "element-plus";
+import { client } from "@/utils/oss";
 emitter.on("addFoot", () => {
   openAlreadyGoDialog();
 });
@@ -576,6 +578,67 @@ const getShuffleMedals = () => {
   );
 };
 getShuffleMedals();
+
+/* 更换头像 */
+// const fileList = ref<UploadUserFile[]>([
+//   {
+//     name: "element-plus-logo.svg",
+//     url: "https://element-plus.org/images/element-plus-logo.svg",
+//   },
+//   {
+//     name: "element-plus-logo2.svg",
+//     url: "https://element-plus.org/images/element-plus-logo.svg",
+//   },
+// ]);
+
+const handlePreview: UploadProps["onPreview"] = (uploadFile) => {
+  console.log(uploadFile);
+};
+const httpRequest = (e) => {
+  // console.log(e)
+  let file = e.file; // 文件信息
+  if (!file) {
+    return false;
+  } else if (!/\.(png|jpg)$/.test(file.name.toLowerCase())) {
+    // 格式根据自己需求定义
+    //@ts-ignore
+    ElMessage({
+      type: "error",
+      message: "上传格式不正确，请上传png或者jpg格式",
+    });
+    return false;
+  }
+  let filename = file.name;
+  console.log(filename);
+  const times = new Date().getTime();
+  console.log(times);
+  client.put(`${times}.png`, file);
+  let avaterUrl =
+    "http://noteimg123.oss-cn-hangzhou.aliyuncs.com/" + times + ".png";
+  // setTimeout(() => {
+  //   client.list().then((res) => {
+  //     console.log(res);
+  //     res.objects.forEach((e) => {
+  //       if (e.name === times + ".png") {
+  //         alert(e.name);
+  //       }
+  //     });
+  //   });
+  // }, 1000);
+};
+const uploadAvater = () => {
+  alert(11111);
+  // avaterUrl;
+  // axios
+  //   .get("http://127.0.0.1:5000/", {
+  //     params: {
+  //       usrNo: store.userInfo.id,
+  //     },
+  //   })
+  //   .then((res) => {
+  //     console.log(res);
+  //   });
+};
 </script>
 
 <template>
@@ -585,6 +648,20 @@ getShuffleMedals();
     <div class="button-want" @click="openToWantDialog">添加想去</div>
     <div class="avater-container">
       <img :src="store.userInfo?.url" class="avater-img" />
+    </div>
+    <div class="change-avater">
+      <el-upload
+        class="upload-demo"
+        action=""
+        multiple
+        accept=".png,.jpg"
+        :show-file-list="false"
+        :http-request="httpRequest"
+        :on-preview="handlePreview"
+        :limit="1"
+      >
+        <el-button type="primary">更换头像</el-button>
+      </el-upload>
     </div>
     <div class="info-border">
       <el-descriptions :title="store.userInfo.name">
@@ -1087,5 +1164,16 @@ getShuffleMedals();
       }
     }
   }
+}
+/* 更改头像 */
+.change-avater {
+  width: 100px;
+  height: 50px;
+  position: absolute;
+  top: 90px;
+  // border: 1px #e8604c solid;
+  margin-left: 55px;
+  display: flex;
+  justify-content: center;
 }
 </style>
