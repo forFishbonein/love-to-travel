@@ -1,9 +1,10 @@
 package com.lovetotravel.travel.entity.canvas.node;
 
 import lombok.Data;
-import org.springframework.data.neo4j.core.schema.GeneratedValue;
-import org.springframework.data.neo4j.core.schema.Id;
-import org.springframework.data.neo4j.core.schema.Node;
+import org.springframework.data.neo4j.core.schema.*;
+
+import java.util.HashSet;
+import java.util.Set;
 
 
 @Node("城市")
@@ -12,6 +13,8 @@ public class CityNode {
     @Id
     @GeneratedValue
     private Long id;
+
+    @Property
     private String name;
 
     public CityNode() {}
@@ -20,8 +23,9 @@ public class CityNode {
         this.name = name;
     }
 
-
-
+    //城市--景区
+    @Relationship(type = "sceln", direction = Relationship.Direction.INCOMING)
+    private Set<SceneryNode> scenery = new HashSet<>();
 
 }
 
