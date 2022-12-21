@@ -39,6 +39,7 @@
                pb.user_id,
                pb.create_time,
                pb.cost,
+               pb.status,
                p.introduction,
                p.name,
                p.plan_id,
