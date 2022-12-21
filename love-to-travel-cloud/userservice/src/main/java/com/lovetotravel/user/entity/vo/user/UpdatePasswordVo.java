@@ -1,4 +1,4 @@
-package com.lovetotravel.user.entity.vo;
+package com.lovetotravel.user.entity.vo.user;
 
 import lombok.Data;
 
