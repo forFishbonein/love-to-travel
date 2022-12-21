@@ -13,4 +13,6 @@ public class ProductVo {
 
     private String price;
 
+    private String url;
+
 }

@@ -5,6 +5,8 @@ import lombok.Data;
 @Data
 public class ProductBuy {
 
+    private String id;
+
     private String productId;
 
     private String userId;
@@ -12,5 +14,7 @@ public class ProductBuy {
     private String createTime;
 
     private String cost;
+
+    private String status;
 
 }

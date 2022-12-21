@@ -3,6 +3,7 @@ package com.lovetotravel.travel.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.OrderItem;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
+import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.Product;
 import com.lovetotravel.travel.entity.page.PageVo;
@@ -119,43 +120,7 @@ public class ProductController {
                 q.setPlan(plan);
             }
         return Result.success(buyInfo);
-
-
-//        System.out.println(id);
-//
-//        QueryWrapper<ProductBuy> queryWrapper = new QueryWrapper<>();
-//        queryWrapper.lambda().eq(ProductBuy::getUserId, id);
-//        List<ProductBuy> productBuyList = productBuyMapper.selectList(queryWrapper);
-//
-////        System.out.println("productBuyList = " + productBuyList);
-//        log.warn("productBuyList = " + productBuyList);
-//
-//        List<ProductShowVo> productShowVoList = new ArrayList<>();
-//
-//        for (ProductBuy p : productBuyList) {
-//            //根据购物记录搜索对应产品
-//            QueryWrapper<Product> productQueryWrapper = new QueryWrapper<>();
-//            productQueryWrapper.lambda().eq(Product::getId, p.getProductId());
-//            List<Product> productList = productMapper.selectList(productQueryWrapper);
-////            productBuyMapper.getBuyInfo(id);
-//            //给产品加入plan
-//            for (Product q : productList) {
-//                Query query = new Query();
-//                query.addCriteria(Criteria.where("id").is(q.getPlanId()));
-//                Plan plan = mongoTemplate.findOne(query, Plan.class);
-//                ProductShowVo productShowVo = new ProductShowVo();
-//                BeanUtils.copyProperties(q, productShowVo);
-//                productShowVo.setPlan(plan);
-//                productShowVoList.add(productShowVo);
-//            }
-//
-//
-//        }
-//        System.out.println(productShowVoList);
-//
-//        return Result.success(productShowVoList);
     }
-
 
     @ApiOperation("新增产品")
     @PostMapping
@@ -165,6 +130,20 @@ public class ProductController {
         System.out.println(product);
         productMapper.insert(product);
         return Result.success("新增成功");
+    }
+
+    @ApiOperation("使用产品")
+    @PostMapping("/use/{id}")
+    public Result<String> use(@PathVariable("id") String id) {
+        QueryWrapper<ProductBuy> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ProductBuy::getId, id);
+        ProductBuy productBuy = productBuyMapper.selectOne(queryWrapper);
+        if (productBuy.getStatus().equals("0")) {
+            productBuy.setStatus("1");
+            productBuyMapper.update(productBuy,queryWrapper);
+            return Result.success("使用成功");
+        }
+        return Result.success("使用失败");
     }
 
     @ApiOperation("购买产品")
@@ -184,20 +163,17 @@ public class ProductController {
         return Result.success(productBuyMapper.getNewProductNum());
     }
 
-
     @ApiOperation("获取订单总数")
     @GetMapping("/all")
     public Result<Integer> getAllProductBuy() {
         return Result.success(productBuyMapper.selectCount(null));
     }
 
-
     @ApiOperation("7天销售额统计")
     @GetMapping("/cost/new")
     public Result<List<NewNum>> getNewProductCost() {
         return Result.success(productBuyMapper.getNewProductBuyNum());
     }
-
 
     @ApiOperation("获取总销售额")
     @GetMapping("/cost/all")
@@ -214,9 +190,12 @@ public class ProductController {
             Product product = productMapper.selectById(s.getId());
             s.setName(product.getName());
         }
-
         return Result.success(sales);
     }
 
 
+
+
 }
+
+

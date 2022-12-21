@@ -144,7 +144,8 @@ export default {
             },
             data: [
               this.sales[4].value,this.sales[3].value,this.sales[2].value,this.sales[1].value,this.sales[0].value,
-            ]
+            ],
+            smooth:{}
           }
         ]
       };
