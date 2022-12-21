@@ -167,7 +167,7 @@ const joinTheTeam = async (teamId: string) => {
     //@ts-ignore
     ElMessage({
       type: "warning",
-      message: "请先登录！",
+      message: "爱宝儿，登录后才能加入队伍哦~",
     });
   }
 };

@@ -76,6 +76,165 @@ export default {
       inputValue.value = "";
     };
     /* 结束 */
+    /* 复选框标签 */
+    const defaultTags = ref([
+      {
+        flag: false,
+        value: "骑行",
+      },
+      {
+        flag: false,
+        value: "滑雪",
+      },
+      {
+        flag: false,
+        value: "国庆",
+      },
+      {
+        flag: false,
+        value: "春节",
+      },
+      {
+        flag: false,
+        value: "中秋节",
+      },
+      {
+        flag: false,
+        value: "穷游",
+      },
+      {
+        flag: false,
+        value: "环游",
+      },
+      {
+        flag: false,
+        value: "赏秋",
+      },
+      {
+        flag: false,
+        value: "万圣节",
+      },
+      {
+        flag: false,
+        value: "清明",
+      },
+      {
+        flag: false,
+        value: "摄影",
+      },
+      {
+        flag: false,
+        value: "深度游",
+      },
+      {
+        flag: false,
+        value: "寒假",
+      },
+      {
+        flag: false,
+        value: "潜水",
+      },
+      {
+        flag: false,
+        value: "购物",
+      },
+      {
+        flag: false,
+        value: "端午",
+      },
+      {
+        flag: false,
+        value: "漫游",
+      },
+      {
+        flag: false,
+        value: "踏春",
+      },
+      {
+        flag: false,
+        value: "蜜月",
+      },
+      {
+        flag: false,
+        value: "人文",
+      },
+      {
+        flag: false,
+        value: "婚纱",
+      },
+      {
+        flag: false,
+        value: "毕业游",
+      },
+      {
+        flag: false,
+        value: "赏樱",
+      },
+      {
+        flag: false,
+        value: "暑假",
+      },
+      {
+        flag: false,
+        value: "海滨海岛",
+      },
+      {
+        flag: false,
+        value: "短途周末",
+      },
+      {
+        flag: false,
+        value: "徒步",
+      },
+      {
+        flag: false,
+        value: "探险",
+      },
+      {
+        flag: false,
+        value: "赏枫",
+      },
+      {
+        flag: false,
+        value: "自驾",
+      },
+      {
+        flag: false,
+        value: "冬季",
+      },
+      {
+        flag: false,
+        value: "美食",
+      },
+      {
+        flag: false,
+        value: "登山",
+      },
+      {
+        flag: false,
+        value: "温泉",
+      },
+      {
+        flag: false,
+        value: "五一",
+      },
+      {
+        flag: false,
+        value: "跨年",
+      },
+      {
+        flag: false,
+        value: "圣诞",
+      },
+      {
+        flag: false,
+        value: "游轮",
+      },
+      {
+        flag: false,
+        value: "夏季",
+      },
+    ]);
     const store = mainStore();
     const router = useRouter();
     const userInfo = ref(store.userInfo);
@@ -131,40 +290,53 @@ export default {
     const noteCity = ref("");
     let noteInfo = {} as noteInfoParams;
     const publishTheNote = async (src: string, info_: any) => {
-      if (info_ !== null && info_ !== "") {
-        // alert("11111");
-        noteInfo.content = info_;
-        noteInfo.url = src;
-        noteInfo.title = noteTitle.value;
-        noteInfo.planId = planId.value;
-        noteInfo.userId = store.userInfo.id;
-        noteInfo.city = noteCity.value;
-        noteInfo.trip = noteTips.value;
-        console.log(noteInfo);
-        await publishOneNote(noteInfo)
-          .then((res: any) => {
-            if (res.code != 0) {
+      if (store.userInfo.id) {
+        if (info_ !== null && info_ !== "" && noteTitle.value !== "") {
+          defaultTags.value.forEach((e) => {
+            if (e.flag === true) {
+              noteTips.value.push(e.value);
+            }
+          });
+          // alert("11111");
+          noteInfo.content = info_;
+          noteInfo.url = src;
+          noteInfo.title = noteTitle.value;
+          noteInfo.planId = planId.value;
+          noteInfo.userId = store.userInfo.id;
+          noteInfo.city = noteCity.value;
+          noteInfo.trip = noteTips.value;
+          console.log(noteInfo);
+          await publishOneNote(noteInfo)
+            .then((res: any) => {
+              if (res.code != 0) {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: res.msg,
+                });
+              } else {
+                successDialogVisible.value = true;
+              }
+            })
+            .catch((error) => {
               //@ts-ignore
               ElMessage({
                 type: "error",
-                message: res.msg,
+                message: error.message,
               });
-            } else {
-              successDialogVisible.value = true;
-            }
-          })
-          .catch((error) => {
-            //@ts-ignore
-            ElMessage({
-              type: "error",
-              message: error.message,
             });
+        } else {
+          //@ts-ignore
+          ElMessage({
+            type: "warn",
+            message: "爱宝儿，标题和内容必须输入哦~",
           });
+        }
       } else {
         //@ts-ignore
         ElMessage({
-          type: "warn",
-          message: "请先输入内容！",
+          type: "warning",
+          message: "爱宝儿，登录后才能发布游记哦~",
         });
       }
     };
@@ -194,6 +366,7 @@ export default {
       handleInputConfirm,
       inputValue,
       inputVisible,
+      defaultTags,
     };
   },
   methods: {
@@ -326,12 +499,20 @@ export default {
     </el-input>
   </div>
   <div class="select-plan-container2">
-    <div class="select-title2">添加对应的标签</div>
+    <div class="select-title2">选择系统推荐的标签</div>
+    <div class="tag-container-el2">
+      <el-checkbox
+        v-model="item.flag"
+        :label="item.value"
+        border
+        v-for="item in defaultTags"
+      />
+    </div>
+    <div class="select-title2">添加自定义的标签</div>
     <div class="tag-container-el">
       <el-tag
         v-for="tag in noteTips"
         :key="tag"
-        class="mx-1"
         closable
         :disable-transitions="false"
         @close="handleClose(tag)"
@@ -343,16 +524,10 @@ export default {
         ref="InputRef"
         v-model="inputValue"
         class="ml-1 w-20"
-        size="small"
         @keyup.enter="handleInputConfirm"
         @blur="handleInputConfirm"
       />
-      <el-button
-        v-else
-        class="button-new-tag ml-1"
-        size="small"
-        @click="showInput"
-      >
+      <el-button v-else class="button-new-tag ml-1" @click="showInput">
         + 添加标签
       </el-button>
     </div>
@@ -369,7 +544,7 @@ export default {
     draggable
     show-close="false"
   >
-    <span>恭喜您，游记发布成功！</span>
+    <span>恭喜爱宝儿，游记发布成功！</span>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="goSeeMyNotes">
@@ -541,9 +716,26 @@ input:-ms-input-placeholder {
     display: flex;
     justify-content: start;
     padding-left: 270px;
-    .el-input {
-      width: 80px;
+    .el-tag {
+      width: 98px;
+      height: 32px;
+      margin-right: 20px;
     }
+    .el-input {
+      width: 98px;
+    }
+  }
+}
+.tag-container-el2 {
+  width: 100%;
+  height: auto;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: start;
+  padding-left: 270px;
+  .el-checkbox {
+    width: 103px;
+    margin-bottom: 10px;
   }
 }
 .publish-border {

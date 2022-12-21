@@ -18,7 +18,7 @@ let notesInfo = ref([] as theNotesInfoType[]);
 
 const requestSearchAllInfo = async () => {
   if (keyword) {
-    alert(keyword);
+    // alert(keyword);
     await getSomeInfoByKeyword(keyword)
       .then((res: any) => {
         if (res.code != 0) {
@@ -28,7 +28,7 @@ const requestSearchAllInfo = async () => {
             message: res.msg,
           });
         } else {
-          alert("获取成功");
+          // alert("获取成功");
           citysInfo.value = res.data.cityList;
           scenerysInfo.value = res.data.sceneryList;
           notesInfo.value = res.data.noteList;

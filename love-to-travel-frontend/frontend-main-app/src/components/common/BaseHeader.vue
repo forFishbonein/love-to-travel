@@ -99,7 +99,7 @@ const displayText = () => {
     return "登录 / 注册";
   }
   loginFlag.value = true;
-  return store.userInfo.name + "的空间";
+  return store.userInfo.name + "的窝儿";
 };
 
 /* 搜索功能实现 */

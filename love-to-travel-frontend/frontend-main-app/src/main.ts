@@ -15,7 +15,6 @@ import "@/assets/fonts/font.css";
 import "@/assets/font/iconfont";
 // 引入全局element-icon
 import * as ElementPlusIconsVue from "@element-plus/icons-vue";
-
 //创建实例
 const setupAll = async () => {
   const app = createApp(App);

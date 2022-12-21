@@ -194,7 +194,12 @@ export const routes: Array<RouteRecordRaw> = [
             path: "write",
             name: "Write",
             component: () => import("@/views/readTravel/write/Write.vue"),
-            meta: { title: " 写游记", keepAlive: false, showTab: true },
+            meta: {
+              title: " 写游记",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
           },
         ],
       },
@@ -236,7 +241,12 @@ export const routes: Array<RouteRecordRaw> = [
             name: "Create",
             component: () => import("@/views/groupTravel/create/Create.vue"),
             // component: Note,
-            meta: { title: "创建队伍", keepAlive: false, showTab: true },
+            meta: {
+              title: "创建队伍",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
           },
         ],
       },
@@ -292,7 +302,12 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/personal",
         name: "Personal",
         component: PersonalIndex,
-        meta: { title: "个人中心", keepAlive: false, showTab: true },
+        meta: {
+          title: "个人中心",
+          keepAlive: false,
+          showTab: true,
+          requireLogin: true,
+        },
         redirect: "/personal/center",
         children: [
           {
@@ -303,6 +318,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "首页",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
           },
           {
@@ -313,6 +329,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "足迹",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
           },
           {
@@ -323,6 +340,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "游记",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
           },
           {
@@ -333,6 +351,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "我收藏的游记",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
           },
           {
@@ -343,6 +362,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "我的行程",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
           },
           {
@@ -353,6 +373,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "我的队伍",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
             redirect: "/personal/myteam/myjoin",
             children: [
@@ -365,6 +386,7 @@ export const routes: Array<RouteRecordRaw> = [
                   title: "我加入的队伍",
                   keepAlive: false,
                   showTab: true,
+                  requireLogin: true,
                 },
               },
               {
@@ -376,6 +398,7 @@ export const routes: Array<RouteRecordRaw> = [
                   title: "我创建的队伍",
                   keepAlive: false,
                   showTab: true,
+                  requireLogin: true,
                 },
               },
             ],
@@ -388,6 +411,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "我的粉丝和关注",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
           },
           {
@@ -398,6 +422,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "我的订单",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
           },
           {
@@ -408,6 +433,7 @@ export const routes: Array<RouteRecordRaw> = [
               title: "设置",
               keepAlive: false,
               showTab: true,
+              requireLogin: true,
             },
           },
         ],
@@ -479,6 +505,7 @@ export const routes: Array<RouteRecordRaw> = [
       title: "行程制定地图页",
       keepAlive: false,
       showTab: true,
+      requireLogin: true,
     },
     //把route对象直接拆出属性
     props({ params: { fromCity, toCity, goDate } }) {
@@ -497,6 +524,7 @@ export const routes: Array<RouteRecordRaw> = [
       title: "行程制定结果页",
       keepAlive: false,
       showTab: true,
+      requireLogin: true,
     },
     // redirect: "/result/route/list", //这里不能重定向，否则下面传的props就没了
     // 把route对象直接拆出属性
@@ -522,7 +550,12 @@ export const routes: Array<RouteRecordRaw> = [
             name: "RouteList",
             component: () =>
               import("@/components/planResult/Route/RouteList.vue"),
-            meta: { title: "路线列表", keepAlive: false, showTab: true },
+            meta: {
+              title: "路线列表",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
             beforeEnter: (to, from, next) => {
               // 路由独享守卫
               // alert(99999);
@@ -539,7 +572,12 @@ export const routes: Array<RouteRecordRaw> = [
             name: "RouteDetail",
             component: () =>
               import("@/components/planResult/Route/RouteDetail.vue"),
-            meta: { title: "路线详情", keepAlive: false, showTab: true },
+            meta: {
+              title: "路线详情",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
             props(route) {
               return {
                 routeDetailInfoString: route.params.routeDetailInfo,
@@ -553,7 +591,12 @@ export const routes: Array<RouteRecordRaw> = [
         name: "ScenicSpot",
         component: () =>
           import("@/components/planResult/ScenicSpot/ScenicSpot.vue"),
-        meta: { title: "景区", keepAlive: false, showTab: true },
+        meta: {
+          title: "景区",
+          keepAlive: false,
+          showTab: true,
+          requireLogin: true,
+        },
         // redirect: "/result/route/detail",
         children: [
           {
@@ -561,7 +604,12 @@ export const routes: Array<RouteRecordRaw> = [
             name: "ScenicSpotList",
             component: () =>
               import("@/components/planResult/ScenicSpot/ScenicSpotList.vue"),
-            meta: { title: "景区列表", keepAlive: false, showTab: true },
+            meta: {
+              title: "景区列表",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
             props(route) {
               return {
                 id: route.params.searchCityId,
@@ -573,7 +621,12 @@ export const routes: Array<RouteRecordRaw> = [
             name: "ScenicSpotDetail",
             component: () =>
               import("@/components/planResult/ScenicSpot/ScenicSpotDetail.vue"),
-            meta: { title: "景区详情", keepAlive: false, showTab: true },
+            meta: {
+              title: "景区详情",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
             props(route) {
               return {
                 sceneryDetailInfoString: route.params.sceneryDetailInfo,

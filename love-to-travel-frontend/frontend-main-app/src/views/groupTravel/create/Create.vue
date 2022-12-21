@@ -115,25 +115,33 @@ const {
 } = toRefs(createTeamInfo);
 
 const createTheTeam = () => {
-  createOneTeam(createTeamInfo)
-    .then((res: any) => {
-      if (res.code != 0) {
+  if (store.userInfo.id) {
+    createOneTeam(createTeamInfo)
+      .then((res: any) => {
+        if (res.code != 0) {
+          //@ts-ignore
+          ElMessage({
+            type: "error",
+            message: res.msg,
+          });
+        } else {
+          successDialogVisible.value = true;
+        }
+      })
+      .catch((error) => {
         //@ts-ignore
         ElMessage({
           type: "error",
-          message: res.msg,
+          message: error.message,
         });
-      } else {
-        successDialogVisible.value = true;
-      }
-    })
-    .catch((error) => {
-      //@ts-ignore
-      ElMessage({
-        type: "error",
-        message: error.message,
       });
+  } else {
+    //@ts-ignore
+    ElMessage({
+      type: "warning",
+      message: "爱宝儿，登录后才能创建队伍哦~",
     });
+  }
 };
 const successDialogVisible = ref(false);
 const goSeeMyNotes = () => {
@@ -297,7 +305,7 @@ const continuePublish = () => {
     draggable
     show-close="false"
   >
-    <span>恭喜您，队伍创建成功！</span>
+    <span>恭喜爱宝儿，队伍创建成功！</span>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="goSeeMyNotes">

@@ -6,7 +6,7 @@ const color = ref("#e8604c");
 import AMapLoader from "@amap/amap-jsapi-loader"; // 使用加载器加载JSAPI，可以避免异步加载、重复加载等常见错误加载错误
 import { shallowRef } from "@vue/reactivity";
 import { onMounted } from "@vue/runtime-core";
-import { ref, reactive, toRefs } from "vue";
+import { ref, reactive, toRefs, computed, watch } from "vue";
 import { useRouter, useRoute } from "vue-router";
 import {
   wantCityWithLalType,
@@ -17,6 +17,7 @@ import { getCitysInfo } from "@apis/travelService/city";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { timeFormat } from "@/utils/filters/time";
+import locationData from "@/assets/js/location";
 export default {
   props: ["fromCity", "toCity", "goDate"],
   // 简单功能的实现
@@ -92,18 +93,108 @@ export default {
         console.log(planCityInfo);
       }
     };
+
     // 管理右边的数据
     const addToWant = (index: number) => {
       initMap(planCityInfo.wantCitys); //往上面放，因为这个慢
       planCityInfo.wantCitys.push({
         id: citysInfo.value[index].cityId,
         toCity: citysInfo.value[index].cityName,
-        days: null,
+        // days: null,
+        days: 3,
         lng: citysInfo.value[index].lng,
         lat: citysInfo.value[index].lat,
       });
       console.log(planCityInfo);
     };
+    /* 城市选择器 */
+    const dialogFormVisible = ref(false);
+    const openCitySelectDialog = () => {
+      dialogFormVisible.value = true;
+    };
+    const provinces = ref([]);
+    const initProvinceData = () => {
+      for (let code in locationData) {
+        let item = locationData[code];
+        provinces.value.push(
+          // @ts-ignore
+          Object.assign(item, {
+            label: item.name,
+            code: item.code,
+          })
+        );
+      }
+    };
+    initProvinceData();
+    const citys = ref([]);
+    const selectProvince = ref(null);
+    const selectCity = ref(null);
+    const selectCityId = ref(null);
+    const proviceHandle = (value) => {
+      // console.log(value);
+      const city = [];
+      for (let code in value.cities) {
+        let item = value.cities[code];
+        city.push(
+          // @ts-ignore
+          Object.assign(item, {
+            label: item.name,
+            code: item.code,
+          })
+        );
+      }
+      citys.value = city;
+      selectProvince.value = value.name;
+      selectCity.value = null;
+    };
+    const cityHandle = (value) => {
+      selectCity.value = value.name;
+      selectCityId.value = value.code;
+      console.log("----------");
+      console.log(selectCityId.value);
+      console.log("------------");
+    };
+    const address = computed(() => {
+      return (
+        (selectProvince.value ? selectProvince.value : "") +
+        (selectCity.value ? "，" + selectCity.value : "")
+      );
+    });
+    /* 利用城市选择器添加数据 */
+    const addToWantByPicker = () => {
+      if (selectCity.value && selectCityId.value) {
+        let theLng = "";
+        let theLat = "";
+        citysInfo.value.forEach((e) => {
+          if (selectCity.value === e.cityName) {
+            theLng = e.lng;
+            theLat = e.lat;
+            return;
+          }
+        });
+        initMap(planCityInfo.wantCitys); //往上面放，因为这个慢
+        planCityInfo.wantCitys.push({
+          // @ts-ignore
+          id: selectCityId.value,
+          // @ts-ignore
+          toCity: selectCity.value,
+          // days: null,
+          days: 3,
+          lng: theLng,
+          lat: theLat,
+        });
+        console.log(planCityInfo);
+        dialogFormVisible.value = false;
+      } else {
+        // @ts-ignore
+        ElMessage({
+          type: "error",
+          message: "请将信息选择完整",
+        });
+      }
+    };
+
+    /* 删除city */
     const deleteTheCity = (index: number) => {
       initMap(planCityInfo.wantCitys);
       console.log(planCityInfo.wantCitys);
@@ -306,6 +397,53 @@ export default {
         });
     }
 
+    /* 实现搜索功能 */
+    const onSearchFlag = ref(false);
+    const notOnSearchFlag = ref(true);
+    const keyword = ref("");
+    // let timer = null;
+    const searchResultcitysInfo = ref([] as citysInfoType[]);
+    watch(keyword, (newValue, oldValue) => {
+      // alert(newValue);
+      searchResultcitysInfo.value = [] as citysInfoType[];
+      notOnSearchFlag.value = false;
+      onSearchFlag.value = true;
+      // if (timer) {
+      //   clearTimeout(timer);
+      // }
+      if (!newValue) {
+        //如果新的值为空的，即清空了
+        searchResultcitysInfo.value = [] as citysInfoType[];
+        onSearchFlag.value = false;
+        notOnSearchFlag.value = true;
+        return;
+      }
+      citysInfo.value.forEach((e) => {
+        if (e.cityName.indexOf(newValue) !== -1) {
+          //!==-1那就说明包含
+          searchResultcitysInfo.value.push(e);
+        }
+      });
+      // @ts-ignore
+      // timer = setTimeout(async () => {
+
+      // }, 100);
+    });
+    const addToWant2 = (index: number) => {
+      initMap(planCityInfo.wantCitys); //往上面放，因为这个慢
+      planCityInfo.wantCitys.push({
+        id: searchResultcitysInfo.value[index].cityId,
+        toCity: searchResultcitysInfo.value[index].cityName,
+        // days: null,
+        days: 3,
+        lng: searchResultcitysInfo.value[index].lng,
+        lat: searchResultcitysInfo.value[index].lat,
+      });
+      console.log(planCityInfo);
+    };
+    const backToHome = () => {
+      router.push("/");
+    };
     onMounted(() => {
       initWantCityInfo();
       requestCitysInfo();
@@ -328,16 +466,38 @@ export default {
       ...toRefs(planCityInfo),
       size,
       zhCn,
+      openCitySelectDialog,
+      dialogFormVisible,
+      provinces,
+      citys,
+      selectProvince,
+      selectCity,
+      proviceHandle,
+      cityHandle,
+      address,
+      addToWantByPicker,
+      onSearchFlag,
+      keyword,
+      searchResultcitysInfo,
+      addToWant2,
+      notOnSearchFlag,
+      backToHome,
     };
   },
 };
 </script>
 <template>
   <div id="map"></div>
+  <div class="back-button" @click="backToHome">
+    <el-icon><Back /></el-icon>
+  </div>
   <div class="main">
     <div class="main-left">
       <div class="left-title">
         <p>选择目的地</p>
+        <div class="city-picker-button" @click="openCitySelectDialog">
+          城市选择器
+        </div>
       </div>
       <div class="left-body">
         <div class="search">
@@ -346,9 +506,40 @@ export default {
               <Search />
             </el-icon>
           </div>
-          <input type="text" class="input-search" />
+          <input type="text" class="input-search" v-model="keyword" />
         </div>
-        <div class="items">
+        <div class="items" v-show="onSearchFlag">
+          <el-scrollbar height="460px">
+            <div
+              v-for="(item, index) in searchResultcitysInfo"
+              :key="index"
+              class="scrollbar-item"
+            >
+              <div><img :src="item.url" /></div>
+              <div>
+                <div class="title-city">
+                  <p>
+                    <a>{{ item.cityName }}</a>
+                  </p>
+                  <p>{{ item.cityEname.toUpperCase() }}</p>
+                </div>
+                <div class="content-city">
+                  <el-scrollbar max-height="40px" style="padding-right: 10px">
+                    {{ item.introduction }}
+                  </el-scrollbar>
+                </div>
+              </div>
+              <div>
+                <div class="button-city">
+                  <el-icon @click="addToWant2(index)"
+                    ><Plus :size="30" :color="color"
+                  /></el-icon>
+                </div>
+              </div>
+            </div>
+          </el-scrollbar>
+        </div>
+        <div class="items" v-show="notOnSearchFlag">
           <el-scrollbar height="460px">
             <div
               v-for="(item, index) in citysInfo"
@@ -501,6 +692,60 @@ export default {
       </div>
     </template>
   </el-dialog>
+  <el-dialog v-model="dialogFormVisible" title="城市选择器">
+    <div class="city-select-machine">
+      <el-select class="m-2" placeholder="请选择省份" v-model="selectProvince">
+        <el-option
+          v-for="item in provinces"
+          :key="
+            // @ts-ignore
+            item.code
+          "
+          :value="
+            // @ts-ignore
+            item.name
+          "
+          :label="
+            // @ts-ignore
+            item.name
+          "
+          @click="proviceHandle(item)"
+        />
+      </el-select>
+      <el-select
+        class="m-2"
+        placeholder="请选择城市"
+        v-model="selectCity"
+        v-if="citys.length > 0"
+      >
+        <el-option
+          v-for="item in citys"
+          :key="
+            // @ts-ignore
+            item.code
+          "
+          :value="
+            // @ts-ignore
+            item.name
+          "
+          :label="
+            // @ts-ignore
+            item.name
+          "
+          @click="cityHandle(item)"
+        />
+      </el-select>
+    </div>
+    <div v-if="address" class="result-select-address">
+      您选择的是：<span class="text-select">{{ address }}</span>
+    </div>
+    <template #footer>
+      <span class="dialog-footer">
+        <el-button @click="dialogFormVisible = false">取消</el-button>
+        <el-button type="primary" @click="addToWantByPicker"> 确认 </el-button>
+      </span>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>
@@ -585,7 +830,7 @@ export default {
       border: 1px #e8604c solid;
       display: flex;
       justify-content: center;
-      align-content: center;
+      align-items: center;
       p {
         display: flex;
         align-items: center;
@@ -595,6 +840,21 @@ export default {
         // margin-top: 8px;
         // margin-left: 20px;
         margin: 0;
+      }
+      .city-picker-button {
+        width: 100px;
+        height: 30px;
+        float: left;
+        background-color: #ffffff;
+        margin-left: 20px;
+        font-size: 16px;
+        font-weight: 700;
+        color: #e8604c;
+        border-radius: 5px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
       }
     }
     .left-body {
@@ -905,5 +1165,45 @@ export default {
     }
   }
 }
+.city-select-machine {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: start;
+  padding-left: 75px;
+}
+.result-select-address {
+  width: 100%;
+  height: auto;
+  display: flex;
+  justify-content: center;
+  font-size: 16px;
+  font-weight: 700;
+  margin-top: 20px;
+  .text-select {
+    color: #e8604c;
+  }
+}
+.back-button {
+  position: fixed;
+  bottom: 90px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
+  // border: 1px #e8604c solid;
+  border-radius: 30px;
+  background-color: #4ec483;
+  color: #ffffff;
+  font-size: 16px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  transition: all 0.3s linear;
+  font-weight: 700;
+}
+.back-button:hover {
+  background-color: rgba(78, 196, 131, 0.8);
+  color: #e0e0e0;
+}
 </style>
-<!-- const color2 = ref("#379E65"); -->

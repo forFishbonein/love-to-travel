@@ -650,7 +650,7 @@ getShuffleMedals();
       @select="handleSelect"
       router="true"
     >
-      <el-menu-item index="/personal/center">我的中心</el-menu-item>
+      <el-menu-item index="/personal/center">爱窝儿</el-menu-item>
       <el-menu-item index="/personal/foot">足迹</el-menu-item>
       <el-menu-item index="/personal/mynote">游记</el-menu-item>
       <el-menu-item index="/personal/star">收藏</el-menu-item>

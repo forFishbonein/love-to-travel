@@ -43,9 +43,10 @@ const codeLogin = () => {
         });
       } else {
         //@ts-ignore
+        // @ts-ignore
         ElMessage({
           type: "success",
-          message: "登录成功",
+          message: "爱宝儿，欢迎你加入爱旅游的大家庭~",
         });
         router.replace("/");
       }
