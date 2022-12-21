@@ -9,7 +9,7 @@ public interface CityResponsitory extends Neo4jRepository<CityNode, Long> {
 
     CityNode findSceneryNodeById(Long id);
 
-    CityNode findSceneryNodeByName(String name);
+    CityNode findCityNodeByName(String name);
 
 
 }
