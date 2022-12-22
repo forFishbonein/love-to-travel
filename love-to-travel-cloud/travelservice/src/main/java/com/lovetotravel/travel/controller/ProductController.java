@@ -173,7 +173,7 @@ public class ProductController {
         productBuy.setPaystate("0");
 
         productBuyMapper.insert(productBuy);
-        return Result.success("购买成功");
+        return Result.success(randomId.toString());
     }
 
     @GetMapping("/isbuy/{id}")
