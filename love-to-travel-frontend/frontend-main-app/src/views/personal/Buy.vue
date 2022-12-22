@@ -4,7 +4,8 @@ import { searchProductsByUserId } from "@/apis/travelService/product";
 import { mainStore } from "@/store/user";
 import { productBuyInfoType } from "@/apis/interface/myInterface";
 const store = mainStore();
-let userProductsInfo = ref([] as productBuyInfoType[]);
+let userProductsInfoNotPay = ref([] as productBuyInfoType[]);
+let userProductsInfoHasPay = ref([] as productBuyInfoType[]);
 const requestTheUserBuy = () => {
   searchProductsByUserId(store.userInfo.id)
     .then((res: any) => {
@@ -16,8 +17,13 @@ const requestTheUserBuy = () => {
         });
       } else {
         // alert("得到数据了2！");
-        userProductsInfo.value = res.data;
-        console.log(userProductsInfo.value);
+        res.data.forEach((e: productBuyInfoType) => {
+          if (e.paystate === "0") {
+            userProductsInfoNotPay.value.push(e);
+          } else if (e.paystate === "1") {
+            userProductsInfoHasPay.value.push(e);
+          }
+        });
       }
     })
     .catch((error) => {
@@ -34,38 +40,83 @@ requestTheUserBuy();
 <template>
   <div class="buy-title">我购买的产品</div>
   <el-scrollbar max-height="770px">
-    <div class="buy-container">
-      <el-card
-        :body-style="{ padding: '0px', width: '220px' }"
-        v-for="(item, index) in userProductsInfo"
-        :key="index"
-      >
-        <img :src="item.url" class="image" />
-        <div style="padding: 14px">
-          <router-link
-            :to="`/buyTravel/product/detail/${item.id}`"
-            style="font-weight: 600"
-            >{{ item.name }}</router-link
+    <el-tabs type="border-card">
+      <el-tab-pane label="未支付">
+        <div class="buy-container">
+          <el-card
+            :body-style="{ padding: '0px', width: '220px' }"
+            v-for="(item, index) in userProductsInfoNotPay"
+            :key="index"
           >
-          <p
-            style="color: #e8604c; font-weight: 600; font-size: 15px; margin: 0"
-          >
-            花费{{ item.cost }}元
-            <span style="color: #303133; margin-left: 10px"
-              >状态:{{ item.status === "0" ? "未使用" : "已使用" }}</span
-            >
-          </p>
-          <div class="bottom">
-            <time class="time">购买时间:&nbsp;{{ item.createTime }}</time>
-            <el-button text class="button" style="padding: 5px"
-              ><router-link :to="`/buyTravel/product/detail/${item.id}`"
-                >查看详情</router-link
-              ></el-button
-            >
-          </div>
+            <img :src="item.url" class="image" />
+            <div style="padding: 14px">
+              <router-link
+                :to="`/buyTravel/product/detail/${item.id}`"
+                style="font-weight: 600"
+                >{{ item.name }}</router-link
+              >
+              <p
+                style="
+                  color: #e8604c;
+                  font-weight: 600;
+                  font-size: 15px;
+                  margin: 0;
+                "
+              >
+                花费{{ item.cost }}元 点击支付
+              </p>
+              <div class="bottom">
+                <time class="time">购买时间:&nbsp;{{ item.payTime }}</time>
+                <el-button text class="button" style="padding: 5px"
+                  ><router-link :to="`/buyTravel/product/detail/${item.id}`"
+                    >查看详情</router-link
+                  ></el-button
+                >
+              </div>
+            </div>
+          </el-card>
         </div>
-      </el-card>
-    </div>
+      </el-tab-pane>
+      <el-tab-pane label="已支付">
+        <div class="buy-container">
+          <el-card
+            :body-style="{ padding: '0px', width: '220px' }"
+            v-for="(item, index) in userProductsInfoHasPay"
+            :key="index"
+          >
+            <img :src="item.url" class="image" />
+            <div style="padding: 14px">
+              <router-link
+                :to="`/buyTravel/product/detail/${item.id}`"
+                style="font-weight: 600"
+                >{{ item.name }}</router-link
+              >
+              <p
+                style="
+                  color: #e8604c;
+                  font-weight: 600;
+                  font-size: 15px;
+                  margin: 0;
+                "
+              >
+                花费{{ item.cost }}元
+                <span style="color: #303133; margin-left: 10px"
+                  >状态:{{ item.status === "0" ? "未使用" : "已使用" }}</span
+                >
+              </p>
+              <div class="bottom">
+                <time class="time">购买时间:&nbsp;{{ item.payTime }}</time>
+                <el-button text class="button" style="padding: 5px"
+                  ><router-link :to="`/buyTravel/product/detail/${item.id}`"
+                    >查看详情</router-link
+                  ></el-button
+                >
+              </div>
+            </div>
+          </el-card>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </el-scrollbar>
 </template>
 

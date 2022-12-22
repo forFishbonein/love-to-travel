@@ -43,7 +43,7 @@ export const buyOneProduct = (
       productId: pId,
       userId: uId,
       cost: pCost,
-      createTime: time,
+      payTime: time,
     },
     loading: true, //显示加载圈
   });
@@ -56,6 +56,15 @@ export const searchProductsByUserId = (userId: string) => {
     data: {
       id: userId,
     },
+    loading: true, //显示加载圈
+  });
+};
+
+/* 查询是否支付成功 */
+export const searchProductIsBuy = (orderId: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/product/isbuy/${orderId}`,
     loading: true, //显示加载圈
   });
 };
