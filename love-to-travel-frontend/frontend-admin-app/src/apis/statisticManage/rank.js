@@ -11,7 +11,7 @@ export const getStatistic = () => {
 export const getSales = () => {
     return httpRequest({
         method: "get",
-        url: "http://localhost:8082/product/sales",
+        url: "http://localhost:8082/product/orders",
         loading: true, //显示加载圈
     });
 };
