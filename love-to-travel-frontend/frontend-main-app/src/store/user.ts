@@ -5,13 +5,16 @@ import { UserInfo } from "@/apis/userService/uInterface";
 import { passLogin, codeLogin, logout } from "@/apis/userService/login";
 import { register } from "@/apis/userService/register";
 import { getUserInfo } from "@/apis/userService/user";
-
+import { recommendStore } from "@/store/recommend";
+import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
+import pinia from "@/store";
 export interface UserState {
   userInfo: UserInfo;
   token: string;
   getUserFlag: boolean;
   // pinia: string;
 }
+// const rstore = recommendStore(pinia);
 export const mainStore = defineStore("main", {
   persist: {
     key: "main",
@@ -114,6 +117,8 @@ export const mainStore = defineStore("main", {
           this.$state.userInfo = {} as UserInfo; //清空对象
           // setFlag(false);
           this.$state.getUserFlag = false;
+          // rstore.getRecommendFlag = false;
+          // rstore.recommendscenerys = [] as theCityScenerysInfoType[];
           // removeToken();
           this.$state.token = "";
           // this.helloPinia = "";
@@ -135,6 +140,8 @@ export const mainStore = defineStore("main", {
               this.$state.token = ""; //重置token
               // removeToken();
               this.$state.getUserFlag = false; //改变用户信息标志变量
+              // rstore.getRecommendFlag = false;
+              // rstore.recommendscenerys = [] as theCityScenerysInfoType[];
               // setFlag(false);
               resolve(res);
             }

@@ -9,7 +9,7 @@ import { store } from "@/main";
 
 const service = axios.create({
   // baseURL: config.baseApi, // 所有的请求地址前缀部分
-  timeout: 10000, // 请求超时时间毫秒
+  timeout: 60000, // 请求超时时间毫秒
   // withCredentials: true, // 异步请求携带cookie
   headers: {
     // 设置后端需要的传参类型
@@ -141,7 +141,7 @@ service.interceptors.response.use(
       if (error.message == "Network Error") {
         error.message == "网络异常，请检查后重试！";
       }
-      error.message = "连接到服务器失败，请联系管理员qq：1558637209";
+      error.message = "爱宝儿，网络出了点小差错，请稍后再试~";
     }
     Message({
       type: "warning",

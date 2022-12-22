@@ -55,8 +55,11 @@ import { useRouter } from "vue-router";
 import { mainStore } from "@/store/user";
 import { ref } from "vue";
 import { InfoFilled } from "@element-plus/icons-vue";
+import { recommendStore } from "@/store/recommend";
+import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 const router = useRouter();
 const store = mainStore();
+const rstore = recommendStore();
 let loginFlag = ref(false);
 const toLoginOrOwnCenter = () => {
   if (store.token === "") {
@@ -82,6 +85,8 @@ const confirmLogout = () => {
           message: "已退出登录",
         });
         router.replace({ path: "/" });
+        rstore.getRecommendFlag = false;
+        rstore.recommendscenerys = [] as theCityScenerysInfoType[];
         location.reload(); //必须要刷新一下，否则不能显示最新的内容
       }
     })

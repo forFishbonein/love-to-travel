@@ -6,7 +6,7 @@ export const imageStore = defineStore("image", {
   getters: {},
   actions: {},
   persist: {
-    key: "city",
+    key: "image",
     storage: window.localStorage,
   },
 });

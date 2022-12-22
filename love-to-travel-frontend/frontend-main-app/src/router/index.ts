@@ -7,6 +7,9 @@ import {
 //router中使用pinia：
 // import pinia from "@/store"; // 实际上这个pinia是createPinia()，这里必须传入，因为router获取不到全局的pinia
 import { mainStore } from "@/store/user";
+import { recommendStore } from "@/store/recommend";
+import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
+import { UserInfo } from "@/apis/userService/uInterface";
 // import { getToken } from "@/store/util/token";
 // import { getFlag, setFlag } from "@/store/util/flag";
 // const store = mainStore(pinia); //不需要
@@ -29,6 +32,7 @@ const router = createRouter({
 // 4. 配置路由守卫
 router.beforeEach((to, from, next) => {
   const store = mainStore(); //移动到了路由守卫里面，否则persist不生效
+  const rstore = recommendStore();
   // 如果本地存在token
   if (store.token !== "") {
     if (
@@ -56,7 +60,7 @@ router.beforeEach((to, from, next) => {
         // alert("获取用户信息");
         store
           .getUserInfo() // 获取用户信息
-          .then((res) => {
+          .then(async (res) => {
             // alert("获取用户信息成功");
             console.log("用户信息：");
             console.log(store.userInfo);
@@ -65,6 +69,27 @@ router.beforeEach((to, from, next) => {
             // console.log(store.userInfo.email.length);
             // alert("跳转");
             store.getUserFlag = true;
+            // if (
+            //   //@ts-ignore
+            //   rstore.getRecommendFlag === false
+            // ) {
+            //   alert("获取推荐内容！");
+            //   await rstore
+            //     .getRecommendSceneryFromPy(store.userInfo.id) // 获得推荐景区
+            //     .then((res) => {
+            //       alert("得到了");
+            //       console.log("推荐景区：");
+            //       console.log(rstore.recommendscenerys);
+            //       rstore.getRecommendFlag = true;
+            //       // next();
+            //     })
+            //     .catch(() => {
+            //       rstore.getRecommendFlag = false;
+            //       rstore.recommendscenerys = [] as theCityScenerysInfoType[];
+            //       console.log("推荐景区：");
+            //       // next();
+            //     });
+            // }
             // setFlag(true);
             next();
           })
@@ -75,6 +100,7 @@ router.beforeEach((to, from, next) => {
               message: "爱宝儿，你的登录已过期~",
             });
             store.getUserFlag = false;
+            store.userInfo = {} as UserInfo;
             // setFlag(false);
             next();
           });
@@ -88,6 +114,7 @@ router.beforeEach((to, from, next) => {
     //如果本地不存在token //但如果是要去到需要登录的页面
     if (to.matched.some((r) => r.meta.requireLogin)) {
       store.getUserFlag = false;
+      rstore.getRecommendFlag = false;
       // setFlag(false);
       //@ts-ignore
       ElMessage({
