@@ -60,7 +60,12 @@ const passLogin = () => {
   <h2 class="font-white-style">{{ $t("titles.welcome") }}</h2>
   <label>
     <span>{{ $t("loginForm.email") }}</span>
-    <input type="email" v-model="email" style="background-color: Transparent" />
+    <input
+      type="email"
+      v-model="email"
+      style="background-color: Transparent"
+      required
+    />
   </label>
   <label>
     <span>{{ $t("main.code") }}</span>
@@ -68,6 +73,7 @@ const passLogin = () => {
       type="password"
       v-model="password"
       style="background-color: Transparent"
+      required
     />
   </label>
   <p class="forgot-pass">

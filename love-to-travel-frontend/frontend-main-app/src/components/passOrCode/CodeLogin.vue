@@ -73,11 +73,11 @@ const codeLogin = () => {
   <h2 class="font-white-style">{{ $t("titles.welcome") }}</h2>
   <label>
     <span>{{ $t("loginForm.email") }}</span>
-    <input type="email" v-model="email2" />
+    <input type="email" v-model="email2" required />
   </label>
   <label>
     <span>{{ $t("main.code") }}</span>
-    <input type="text" class="passWord" v-model="code" />
+    <input type="text" class="passWord" v-model="code" required />
   </label>
   <input
     type="button"
