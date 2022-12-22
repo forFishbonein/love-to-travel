@@ -22,5 +22,7 @@ public interface ProductBuyMapper extends BaseMapper<ProductBuy> {
 
     List<ProductShowVo> getBuyInfo(String id);
 
+    List<ProductSales> getOrder();
+
     List<ProductSales> getSales();
 }

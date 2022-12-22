@@ -28,6 +28,10 @@ public class ProductShowVo {
 
     private String createTime;
 
+    private String payTime;
+
+    private String paystate;
+
     private String cost;
 
 }

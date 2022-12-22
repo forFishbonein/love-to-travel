@@ -212,6 +212,18 @@ public class ProductController {
         return Result.success(productBuyMapper.getCost());
     }
 
+    @ApiOperation("获取下单量")
+    @GetMapping("/orders")
+    public Result<List<ProductSales>> getOrder() {
+        List<ProductSales> sales = productBuyMapper.getOrder();
+
+        for (ProductSales s: sales) {
+            Product product = productMapper.selectById(s.getId());
+            s.setName(product.getName());
+        }
+        return Result.success(sales);
+    }
+
     @ApiOperation("获取销量")
     @GetMapping("/sales")
     public Result<List<ProductSales>> getSales() {
