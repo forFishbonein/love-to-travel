@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 
 @Api(tags = "旅游产品接口")
 @RestController
@@ -153,6 +154,25 @@ public class ProductController {
         if (product == null) {
             throw new GlobalException(CodeMsg.PRODUCT_NOT_EXIST);
         }
+
+
+        Integer randomId = new Random().nextInt(999999);//生成随机数，最大为999999
+        if (randomId < 100000) {
+            randomId = randomId + 100000;//保证随机数为6位数字
+        }
+        QueryWrapper<ProductBuy> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ProductBuy::getId, randomId);
+        ProductBuy productBuyInMysql = productBuyMapper.selectOne(queryWrapper);
+        if (productBuyInMysql != null) {
+            randomId = new Random().nextInt(999999);//生成随机数，最大为999999
+            if (randomId < 100000) {
+                randomId = randomId + 100000;//保证随机数为6位数字
+            }
+        }
+        productBuy.setId(randomId.toString());
+
+
+
         productBuyMapper.insert(productBuy);
         return Result.success("购买成功");
     }
