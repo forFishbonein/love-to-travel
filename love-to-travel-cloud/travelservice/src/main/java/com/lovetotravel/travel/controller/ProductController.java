@@ -176,6 +176,18 @@ public class ProductController {
         return Result.success("购买成功");
     }
 
+    @GetMapping("/isbuy/{id}")
+    public Result<Boolean> isBuy(@PathVariable("id") String id) {
+        QueryWrapper<ProductBuy> queryWrapper = new QueryWrapper<>();
+        queryWrapper.lambda().eq(ProductBuy::getId, id);
+        ProductBuy productBuyInMysql = productBuyMapper.selectOne(queryWrapper);
+        if (productBuyInMysql.getPaystate().equals("1")) {
+            return Result.success(true);
+        }
+        return Result.success(false);
+    }
+
+
     @ApiOperation("7天订单统计")
     @GetMapping("/new")
     public Result<List<NewNum>> getNewProductNum() {
