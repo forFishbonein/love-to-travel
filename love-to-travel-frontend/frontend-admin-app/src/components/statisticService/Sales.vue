@@ -1,5 +1,6 @@
 <script>
 import {getSales} from '@/apis/statisticManage/rank.js'
+import theme from '@/apis/statisticManage/theme.json'
 
 export default {
   data() {
@@ -27,7 +28,7 @@ export default {
       this.getLoadEcharts();
       window.onresize = () => {
         // 基于准备好的dom，初始化echarts实例
-        let myChart = this.$echarts.init(document.getElementById('echart'));
+        let myChart = this.$echarts.init(document.getElementById('echart'), theme);
         myChart.resize();
       };
 
@@ -38,9 +39,7 @@ export default {
 
 
     getLoadEcharts() {
-      var myChart = this.$echarts.init(
-          document.getElementById("echart")
-      );
+      var myChart = this.$echarts.init(document.getElementById("echart"), theme);
       var option = {
         title: {
           text: '产品销售统计前5',
@@ -78,7 +77,7 @@ export default {
             labelLine: {
               show: false
             },
-            data: this.sales
+            data: [this.sales[0],this.sales[1],this.sales[2],this.sales[3],this.sales[4]]
           }
         ]
       };
@@ -86,7 +85,7 @@ export default {
 
 
       var myChart2 = this.$echarts.init(
-          document.getElementById("echart2")
+          document.getElementById("echart2"),theme
       );
       var option2 = {
         title: {
