@@ -1355,7 +1355,8 @@ onMounted(() => {
                                     i.userName
                                   }}</span></router-link
                                 >
-                                ><span style="color: #909399">{{
+                                &nbsp;
+                                <span style="color: #909399">{{
                                   i.createTime
                                 }}</span>
                               </p>

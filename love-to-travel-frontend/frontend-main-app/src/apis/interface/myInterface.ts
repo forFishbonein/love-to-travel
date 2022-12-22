@@ -257,7 +257,7 @@ export interface productInfoType {
 /* 用户购买的产品类型 */
 export interface productBuyInfoType {
   id: string;
-  orderId: string;
+  productId: string;
   introduction: string;
   name: string;
   plan: finalAllCityPlansInfoType;

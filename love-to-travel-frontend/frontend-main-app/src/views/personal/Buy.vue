@@ -51,7 +51,7 @@ requestTheUserBuy();
             <img :src="item.url" class="image" />
             <div style="padding: 14px">
               <router-link
-                :to="`/buyTravel/product/detail/${item.id}`"
+                :to="`/buyTravel/product/detail/${item.productId}`"
                 style="font-weight: 600"
                 >{{ item.name }}</router-link
               >
@@ -61,12 +61,14 @@ requestTheUserBuy();
                   font-weight: 600;
                   font-size: 15px;
                   margin: 0;
+                  display: flex;
+                  align-items: center;
                 "
               >
                 花费{{ item.cost }}元
                 <a
                   class="to-pay-button"
-                  :href="`http://localhost:8082/alipay/pay?id=${item.orderId}&cost=${item.cost}`"
+                  :href="`http://localhost:8082/alipay/pay?id=${item.id}&cost=${item.cost}`"
                   target="_blank"
                   >点击支付</a
                 >
@@ -74,7 +76,8 @@ requestTheUserBuy();
               <div class="bottom">
                 <time class="time">购买时间:&nbsp;{{ item.createTime }}</time>
                 <el-button text class="button" style="padding: 5px"
-                  ><router-link :to="`/buyTravel/product/detail/${item.id}`"
+                  ><router-link
+                    :to="`/buyTravel/product/detail/${item.productId}`"
                     >查看详情</router-link
                   ></el-button
                 >
@@ -93,7 +96,7 @@ requestTheUserBuy();
             <img :src="item.url" class="image" />
             <div style="padding: 14px">
               <router-link
-                :to="`/buyTravel/product/detail/${item.id}`"
+                :to="`/buyTravel/product/detail/${item.productId}`"
                 style="font-weight: 600"
                 >{{ item.name }}</router-link
               >
@@ -113,7 +116,8 @@ requestTheUserBuy();
               <div class="bottom">
                 <time class="time">购买时间:&nbsp;{{ item.createTime }}</time>
                 <el-button text class="button" style="padding: 5px"
-                  ><router-link :to="`/buyTravel/product/detail/${item.id}`"
+                  ><router-link
+                    :to="`/buyTravel/product/detail/${item.productId}`"
                     >查看详情</router-link
                   ></el-button
                 >
@@ -171,9 +175,10 @@ requestTheUserBuy();
   flex-wrap: wrap;
 }
 .to-pay-button {
-  width: 120px;
-  height: 30px;
+  width: 70px;
+  height: 25px;
   display: flex;
+  float: right;
   justify-content: center;
   align-items: center;
   background-color: #e8604c;
@@ -182,5 +187,6 @@ requestTheUserBuy();
   margin-left: 10px;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 15px;
 }
 </style>

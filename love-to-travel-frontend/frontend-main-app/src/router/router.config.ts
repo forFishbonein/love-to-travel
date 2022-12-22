@@ -144,6 +144,16 @@ export const routes: Array<RouteRecordRaw> = [
         ],
       },
       {
+        path: "/goTravel/question",
+        name: "Question",
+        component: () => import("@/views/goTravel/Question.vue"),
+        meta: {
+          title: "智能问答",
+          keepAlive: false,
+          showTab: true,
+        },
+      },
+      {
         path: "/readTravel",
         name: "ReadTravel",
         component: ReadTravel,

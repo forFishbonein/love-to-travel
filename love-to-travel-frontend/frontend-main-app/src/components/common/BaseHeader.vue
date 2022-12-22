@@ -39,10 +39,28 @@
       if ($(".scroll-to-top").length) {
         var strickyScrollPos = 100;
         if ($(window).scrollTop() > strickyScrollPos) {
+          $(".main-menu__user").html(`  <svg style="width: 1.1m;
+                              height: 1.1em;
+                              vertical-align: -0.15em;
+                              fill: currentColor;
+                              overflow: hidden;
+                              color: #313041;" class="icon-header" aria-hidden="true">
+                      <use xlink:href="#icon-fanhuijiantou-copy"></use>
+                    </svg>`);
           $(".scroll-to-top").fadeIn(500);
           //@ts-ignore
         } else if ($(this).scrollTop() <= strickyScrollPos) {
           $(".scroll-to-top").fadeOut(500);
+          $(".main-menu__user").html(
+            `       <svg style="width: 1.1m;
+                        height: 1.1em;
+                        vertical-align: -0.15em;
+                        fill: currentColor;
+                        overflow: hidden;
+                        color: #313041;" class="icon-header" aria-hidden="true">
+                      <use xlink:href="#icon-guanji"></use>
+                    </svg>`
+          );
         }
       }
     });
@@ -57,6 +75,7 @@ import { ref } from "vue";
 import { InfoFilled } from "@element-plus/icons-vue";
 import { recommendStore } from "@/store/recommend";
 import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
+import { SwitchButton, Top } from "@element-plus/icons-vue";
 const router = useRouter();
 const store = mainStore();
 const rstore = recommendStore();
@@ -225,14 +244,21 @@ const searchSomething = () => {
                         <router-link
                           to="/goTravel/city"
                           active-class="active-router"
-                          >城市</router-link
+                          >旅游城市</router-link
                         >
                       </li>
                       <li>
                         <router-link
                           to="/goTravel/scenery"
                           active-class="active-router"
-                          >景区</router-link
+                          >旅游景区</router-link
+                        >
+                      </li>
+                      <li>
+                        <router-link
+                          to="/goTravel/question"
+                          active-class="active-router"
+                          >智能问答</router-link
                         >
                       </li>
                     </ul>
@@ -253,7 +279,7 @@ const searchSomething = () => {
                         <router-link
                           to="/readTravel/write"
                           active-class="active-router"
-                          >发游记</router-link
+                          >发布游记</router-link
                         >
                       </li>
                     </ul>
@@ -327,12 +353,11 @@ const searchSomething = () => {
                 @confirm="confirmLogout"
               >
                 <template #reference>
-                  <a
-                    href="javascript:;"
-                    class="main-menu__user"
-                    v-if="loginFlag"
-                  >
-                    <el-icon :size="25"><SwitchButton /></el-icon>
+                  <a href="#" class="main-menu__user" v-if="loginFlag">
+                    <svg class="icon-header" aria-hidden="true">
+                      <use xlink:href="#icon-guanji"></use>
+                    </svg>
+                    <!-- <el-icon :size="25"><SwitchButton /></el-icon> -->
                   </a>
                 </template>
               </el-popconfirm>
@@ -488,5 +513,18 @@ const searchSomething = () => {
       }
     }
   }
+}
+
+/* 上面图标 */
+.icon-header {
+  width: 1.1m;
+  height: 1.1em;
+  vertical-align: -0.15em;
+  fill: currentColor;
+  overflow: hidden;
+  color: #313041;
+}
+.icon-header:hover {
+  color: #ffffff !important;
 }
 </style>
