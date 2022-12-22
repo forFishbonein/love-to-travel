@@ -63,10 +63,16 @@ requestTheUserBuy();
                   margin: 0;
                 "
               >
-                花费{{ item.cost }}元 点击支付
+                花费{{ item.cost }}元
+                <a
+                  class="to-pay-button"
+                  :href="`http://localhost:8082/alipay/pay?id=${item.orderId}&cost=${item.cost}`"
+                  target="_blank"
+                  >点击支付</a
+                >
               </p>
               <div class="bottom">
-                <time class="time">购买时间:&nbsp;{{ item.payTime }}</time>
+                <time class="time">购买时间:&nbsp;{{ item.createTime }}</time>
                 <el-button text class="button" style="padding: 5px"
                   ><router-link :to="`/buyTravel/product/detail/${item.id}`"
                     >查看详情</router-link
@@ -105,7 +111,7 @@ requestTheUserBuy();
                 >
               </p>
               <div class="bottom">
-                <time class="time">购买时间:&nbsp;{{ item.payTime }}</time>
+                <time class="time">购买时间:&nbsp;{{ item.createTime }}</time>
                 <el-button text class="button" style="padding: 5px"
                   ><router-link :to="`/buyTravel/product/detail/${item.id}`"
                     >查看详情</router-link
@@ -163,5 +169,18 @@ requestTheUserBuy();
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+}
+.to-pay-button {
+  width: 120px;
+  height: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #e8604c;
+  color: #ffffff;
+  font-weight: 700;
+  margin-left: 10px;
+  border-radius: 5px;
+  cursor: pointer;
 }
 </style>
