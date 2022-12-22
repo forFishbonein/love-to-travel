@@ -49,9 +49,12 @@
              product p
         WHERE pb.product_id = p.id AND pb.user_id = #{id}
     </select>
-    <select id="getSales" resultType="com.lovetotravel.travel.entity.vo.product.ProductSales">
+    <select id="getOrder" resultType="com.lovetotravel.travel.entity.vo.product.ProductSales">
         SELECT product_id as id, count(*) as value FROM product_buy GROUP BY product_id ORDER BY value DESC
     </select>
+
+    <select id="getSales" resultType="com.lovetotravel.travel.entity.vo.product.ProductSales">
+        SELECT product_id as id, count(*) as value FROM product_buy WHERE paystate=1 GROUP BY product_id ORDER BY value DESC     </select>
 
 
 </mapper>
