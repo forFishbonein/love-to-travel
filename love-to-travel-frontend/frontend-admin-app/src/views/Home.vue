@@ -107,7 +107,6 @@ export default {
           }
         }
         console.log(this.totalList4)
-
         this.getLoadEcharts();
         window.onresize = () => {
           // 基于准备好的dom，初始化echarts实例
@@ -133,6 +132,7 @@ export default {
       await getAllProductCost().then((response) => {
         this.cost = response.data.cost
         console.log(response)
+
 
       })
 
@@ -235,7 +235,7 @@ export default {
 </script>
 <template>
   <div class="top">
-    <p>欢迎您：<span>{{ this.$route.query.email }}</span></p>
+    <p>欢迎您：<span>管理员</span></p>
   </div>
   <ul class="scoreboard">
     <li>
