@@ -264,15 +264,10 @@ onMounted(() => {
         </div>
         <div class="form sign-up">
           <h2 class="font-white-style">{{ $t("titles.nowRegister") }}</h2>
+          <!-- <form> -->
           <label>
             <span>{{ $t("loginForm.user") }}</span>
-            <input
-              type="text"
-              v-model="name"
-              id="username"
-              required
-              pattern="^[\u4e00-\u9fa5a-zA-Z0-9]{6,12}$"
-            />
+            <input type="text" v-model="name" required />
           </label>
           <label>
             <span>{{ $t("main.password") }}</span>
@@ -295,6 +290,7 @@ onMounted(() => {
           <button type="button" class="submit register" @click="register">
             {{ $t("buttons.register") }}
           </button>
+          <!-- </form> -->
         </div>
       </div>
     </div>
