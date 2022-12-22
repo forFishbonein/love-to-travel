@@ -15,6 +15,8 @@ public class ProductBuy {
 
     private String status;
 
+    private String paystate;
+
     private String createTime;
 
     private String payTime;

@@ -155,7 +155,6 @@ public class ProductController {
             throw new GlobalException(CodeMsg.PRODUCT_NOT_EXIST);
         }
 
-
         Integer randomId = new Random().nextInt(999999);//生成随机数，最大为999999
         if (randomId < 100000) {
             randomId = randomId + 100000;//保证随机数为6位数字
@@ -170,8 +169,8 @@ public class ProductController {
             }
         }
         productBuy.setId(randomId.toString());
-
-
+        productBuy.setStatus("0");
+        productBuy.setPaystate("0");
 
         productBuyMapper.insert(productBuy);
         return Result.success("购买成功");

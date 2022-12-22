@@ -65,7 +65,7 @@ public class AliPayController {
                 queryWrapper.lambda().eq(ProductBuy::getId, tradeNo);
                 ProductBuy productBuy = productBuyMapper.selectOne(queryWrapper);
                 if (productBuy != null) {
-                    productBuy.setStatus("1");
+                    productBuy.setPaystate("1");
                     productBuy.setPayTime(gmtPayment);
                     productBuyMapper.update(productBuy, queryWrapper);
                 }
