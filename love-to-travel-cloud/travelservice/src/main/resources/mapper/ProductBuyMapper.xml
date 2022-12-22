@@ -10,6 +10,7 @@
             create_time
             > date_sub(now()
             , interval 7 day)
+          AND paystate=1
         GROUP BY DATE_FORMAT(create_time, "%Y-%m-%d")
         ORDER BY create_time
                 DESC
@@ -24,7 +25,7 @@
             create_time
             > date_sub(now()
             , interval 7 day)
-        AND paystate=1
+          AND paystate=1
         GROUP BY DATE_FORMAT(create_time, "%Y-%m-%d")
         ORDER BY create_time
                 DESC
@@ -33,11 +34,12 @@
     <select id="getCost" resultType="com.lovetotravel.travel.entity.vo.NewNum">
         SELECT SUM(cost) AS cost
         FROM product_buy
-        WHERE paystate=1
+        WHERE paystate = 1
     </select>
 
     <select id="getBuyInfo" resultType="com.lovetotravel.travel.entity.vo.product.ProductShowVo">
-        SELECT pb.product_id as id,
+        SELECT pb.id,
+               pb.product_id,
                pb.user_id,
                pb.create_time,
                pb.pay_time,
@@ -51,14 +53,23 @@
                p.url
         FROM product_buy pb,
              product p
-        WHERE pb.product_id = p.id AND pb.user_id = #{id}
+        WHERE pb.product_id = p.id
+          AND pb.user_id = #{id}
     </select>
     <select id="getOrder" resultType="com.lovetotravel.travel.entity.vo.product.ProductSales">
-        SELECT product_id as id, count(*) as value FROM product_buy GROUP BY product_id ORDER BY value DESC
+        SELECT product_id as id, count(*) as value
+        FROM product_buy
+        GROUP BY product_id
+        ORDER BY value DESC
     </select>
 
     <select id="getSales" resultType="com.lovetotravel.travel.entity.vo.product.ProductSales">
-        SELECT product_id as id, count(*) as value FROM product_buy WHERE paystate=1 GROUP BY product_id ORDER BY value DESC     </select>
+        SELECT product_id as id, count(*) as value
+        FROM product_buy
+        WHERE paystate=1
+        GROUP BY product_id
+        ORDER BY value DESC
+    </select>
 
 
 </mapper>

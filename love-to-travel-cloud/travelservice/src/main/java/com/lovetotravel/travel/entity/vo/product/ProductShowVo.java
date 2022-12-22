@@ -10,6 +10,8 @@ public class ProductShowVo {
     @Id
     private String id;
 
+    private String productId;
+
     private String name;
 
     private String introduction;
