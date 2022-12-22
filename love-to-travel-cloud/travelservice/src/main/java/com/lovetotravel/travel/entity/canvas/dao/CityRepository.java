@@ -7,9 +7,10 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface CityRepository extends Neo4jRepository<CityNode, Long> {
 
-    CityNode findSceneryNodeById(Long id);
+    CityNode findCityNodeById(Long id);
 
     CityNode findCityNodeByName(String name);
+
 
 
 }

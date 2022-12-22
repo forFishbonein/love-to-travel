@@ -58,6 +58,7 @@ spring:
     authentication:
       username: neo4j
       password: 123456
+
 mybatis:
   mapper-locations:
     - classpath:dao/*.xml

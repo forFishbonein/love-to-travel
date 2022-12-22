@@ -17,9 +17,7 @@ import java.util.Set;
 @Data
 public class SceneryNode implements Serializable {
 
-    //景区节点属性
     @Id
-    //id
     @GeneratedValue
     private Long id;
 

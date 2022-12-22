@@ -11,6 +11,7 @@ import java.util.Set;
 @Node("城市")
 @Data
 public class CityNode implements Serializable {
+
     @Id
     @GeneratedValue
     private Long id;

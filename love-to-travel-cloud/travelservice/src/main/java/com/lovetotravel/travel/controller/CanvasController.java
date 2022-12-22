@@ -20,14 +20,13 @@ import java.util.Set;
 public class CanvasController {
 
 
-    final SceneryRepository sceneryRepository;
     final CityRepository cityRepository;
+    final SceneryRepository sceneryRepository;
 
-    public CanvasController(SceneryRepository sceneryRepository, CityRepository cityRepository) {
-        this.sceneryRepository = sceneryRepository;
+    public CanvasController(CityRepository cityRepository, SceneryRepository sceneryRepository) {
         this.cityRepository = cityRepository;
+        this.sceneryRepository = sceneryRepository;
     }
-
 
     @GetMapping("/{name}")
     public Result<CustomNode> getByName(@PathVariable("name") String name) {
@@ -36,6 +35,30 @@ public class CanvasController {
 
         return Result.success(new CustomNode(sceneryNode.getName(), 1, sceneryNode));
     }
+
+    @GetMapping("/city/{name}")
+    public Result<List<CustomNode>> getRelByCityName(@PathVariable("name") String name) {
+
+        System.out.println(name);
+
+        CityNode cityNode = cityRepository.findCityNodeByName(name);
+
+        System.out.println(cityNode);
+
+        List<CustomNode> customNodes = new ArrayList<>();
+
+
+        Set<SceneryNode> sceneryNodeSet = cityNode.getScenery();
+        for (SceneryNode s : sceneryNodeSet) {
+            customNodes.add(new CustomNode(s.getName(), 2, s));
+        }
+
+
+        return Result.success(customNodes);
+    }
+
+
+
 
     @GetMapping("city/{name}")
     public Result<CustomNode> getCityByName(@PathVariable("name") String name) {
@@ -100,26 +123,6 @@ public class CanvasController {
         return Result.success(customNodes);
     }
 
-    @GetMapping("/city/{name}")
-    public Result<List<CustomNode>> getRelByCityName(@PathVariable("name") String name) {
-
-        System.out.println(name);
-
-        CityNode cityNode = cityRepository.findCityNodeByName(name);
-
-        System.out.println(cityNode);
-
-        List<CustomNode> customNodes = new ArrayList<>();
-
-
-        Set<SceneryNode> sceneryNodeSet = cityNode.getScenery();
-        for (SceneryNode s : sceneryNodeSet) {
-            customNodes.add(new CustomNode(s.getName(), 2, s));
-        }
-
-
-        return Result.success(customNodes);
-    }
 
 
 }
