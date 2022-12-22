@@ -17,9 +17,7 @@ import java.util.Set;
 @Data
 public class SceneryNode implements Serializable {
 
-    //景区节点属性
     @Id
-    //id
     @GeneratedValue
     private Long id;
 
@@ -70,6 +68,7 @@ public class SceneryNode implements Serializable {
     //景区--特色
     @Relationship(type = "is_detail", direction = Relationship.Direction.OUTGOING)
     private Set<SceDetailNote> sceneryHasDet = new HashSet<>();
+
 
 }
 

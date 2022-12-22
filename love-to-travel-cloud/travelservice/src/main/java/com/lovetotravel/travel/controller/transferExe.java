@@ -19,11 +19,12 @@ public class transferExe {
 
     public static void main(String[] args) {
         //需要传入的参数（ps: 多个参数用空格隔开）
-//        String paras = "81";
+        String paras = "81";
         //调用的exe可执行文件（ps: 调用可执行文件和参数拼接必须要用空格隔开）
 //        String cmd = "C:\\Users\\Lenovo\\dist\\main_simulateRequest.exe";
 
-        String cmd = "C:\\Users\\Lenovo\\dist\\hotnote.exe";
+        String cmd = String.format("C:\\Users\\Lenovo\\dist\\tensorflowRecommendation.exe %s"+paras);
+        System.out.println(cmd);
         openExe(cmd);
 
     }
@@ -35,9 +36,10 @@ public class transferExe {
         try {
             //执行exe  cmd可以为字符串(exe存放路径)也可为数组，调用exe时需要传入参数时，可以传数组调用(参数有顺序要求)
             Process p = Runtime.getRuntime().exec(cmd);
+            p.waitFor();
             String line = null;
             //获得子进程的输入流。
-            br = new BufferedReader(new InputStreamReader(p.getInputStream()));
+            br = new BufferedReader(new InputStreamReader(p.getInputStream(), "GB2312"));
             //获得子进程的错误流。
             brError = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             while ((line = br.readLine()) != null  || (line = brError.readLine()) != null) {

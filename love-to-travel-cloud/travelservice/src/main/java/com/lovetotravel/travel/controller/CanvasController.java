@@ -1,8 +1,9 @@
 package com.lovetotravel.travel.controller;
 
 
+import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.canvas.CustomNode;
-import com.lovetotravel.travel.entity.canvas.dao.CityResponsitory;
+import com.lovetotravel.travel.entity.canvas.dao.CityRepository;
 import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
 import com.lovetotravel.travel.entity.canvas.node.*;
 import com.lovetotravel.travel.result.Result;
@@ -20,12 +21,12 @@ import java.util.Set;
 public class CanvasController {
 
 
+    final CityRepository cityRepository;
     final SceneryRepository sceneryRepository;
-    final CityResponsitory cityResponsitory;
 
-    public CanvasController(SceneryRepository sceneryRepository, CityResponsitory cityResponsitory) {
+    public CanvasController(CityRepository cityRepository, SceneryRepository sceneryRepository) {
+        this.cityRepository = cityRepository;
         this.sceneryRepository = sceneryRepository;
-        this.cityResponsitory = cityResponsitory;
     }
 
     @GetMapping("/{name}")
@@ -35,6 +36,40 @@ public class CanvasController {
 
         return Result.success(new CustomNode(sceneryNode.getName(), 1, sceneryNode));
     }
+
+    @GetMapping("/city/{name}")
+    public Result<List<CustomNode>> getRelByCityName(@PathVariable("name") String name) {
+
+        System.out.println(name);
+
+        CityNode cityNode = cityRepository.findCityNodeByName(name);
+
+        System.out.println(cityNode);
+
+        List<CustomNode> customNodes = new ArrayList<>();
+
+
+        Set<SceneryNode> sceneryNodeSet = cityNode.getScenery();
+        for (SceneryNode s : sceneryNodeSet) {
+            customNodes.add(new CustomNode(s.getName(), 2, s));
+        }
+
+
+        return Result.success(customNodes);
+    }
+
+    @GetMapping("/city")
+    public Result<List<CustomNode>> getAllCity() {
+
+        List<CityNode> all = cityRepository.findAll();
+
+        List<CustomNode> customNodes = new ArrayList<>();
+        for (CityNode c : all) {
+            customNodes.add(new CustomNode(c.getName(), 1, c));
+        }
+        return Result.success(customNodes);
+    }
+
 
     @GetMapping
     public Result<List<CustomNode>> getAll() {
@@ -85,24 +120,6 @@ public class CanvasController {
         return Result.success(customNodes);
     }
 
-    @GetMapping("/query/city/{name}")
-    public Result<List<CustomNode>> getRelByCityName(@PathVariable("name") String name) {
-
-        CityNode cityNode = cityResponsitory.findCityNodeByName(name);
-
-        System.out.println(cityNode);
-
-        List<CustomNode> customNodes = new ArrayList<>();
-
-
-        Set<SceneryNode> sceneryNodeSet = cityNode.getScenery();
-        for (SceneryNode s : sceneryNodeSet) {
-            customNodes.add(new CustomNode(s.getName(), 2, s));
-        }
-
-
-        return Result.success(customNodes);
-    }
 
 
 }

@@ -5,11 +5,12 @@ import org.springframework.data.neo4j.repository.Neo4jRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface CityResponsitory extends Neo4jRepository<CityNode, Long> {
+public interface CityRepository extends Neo4jRepository<CityNode, Long> {
 
-    CityNode findSceneryNodeById(Long id);
+    CityNode findCityNodeById(Long id);
 
     CityNode findCityNodeByName(String name);
+
 
 
 }
