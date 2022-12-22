@@ -2,7 +2,7 @@ package com.lovetotravel.travel.controller;
 
 
 import com.lovetotravel.travel.entity.canvas.CustomNode;
-import com.lovetotravel.travel.entity.canvas.dao.CityResponsitory;
+import com.lovetotravel.travel.entity.canvas.dao.CityRepository;
 import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
 import com.lovetotravel.travel.entity.canvas.node.*;
 import com.lovetotravel.travel.result.Result;
@@ -21,12 +21,13 @@ public class CanvasController {
 
 
     final SceneryRepository sceneryRepository;
-    final CityResponsitory cityResponsitory;
+    final CityRepository cityRepository;
 
-    public CanvasController(SceneryRepository sceneryRepository, CityResponsitory cityResponsitory) {
+    public CanvasController(SceneryRepository sceneryRepository, CityRepository cityRepository) {
         this.sceneryRepository = sceneryRepository;
-        this.cityResponsitory = cityResponsitory;
+        this.cityRepository = cityRepository;
     }
+
 
     @GetMapping("/{name}")
     public Result<CustomNode> getByName(@PathVariable("name") String name) {
@@ -34,6 +35,14 @@ public class CanvasController {
         SceneryNode sceneryNode = sceneryRepository.findSceneryNodeByName(name);
 
         return Result.success(new CustomNode(sceneryNode.getName(), 1, sceneryNode));
+    }
+
+    @GetMapping("city/{name}")
+    public Result<CustomNode> getCityByName(@PathVariable("name") String name) {
+
+        CityNode cityNode = cityRepository.findCityNodeByName(name);
+
+        return Result.success(new CustomNode(cityNode.getName(), 1, cityNode));
     }
 
     @GetMapping
@@ -91,12 +100,12 @@ public class CanvasController {
         return Result.success(customNodes);
     }
 
-    @GetMapping("/query/city/{name}")
+    @GetMapping("/city/{name}")
     public Result<List<CustomNode>> getRelByCityName(@PathVariable("name") String name) {
 
         System.out.println(name);
 
-        CityNode cityNode = cityResponsitory.findCityNodeByName(name);
+        CityNode cityNode = cityRepository.findCityNodeByName(name);
 
         System.out.println(cityNode);
 
