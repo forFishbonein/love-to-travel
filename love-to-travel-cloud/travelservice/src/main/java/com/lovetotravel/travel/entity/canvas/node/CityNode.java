@@ -27,5 +27,7 @@ public class CityNode {
     @Relationship(type = "sceln", direction = Relationship.Direction.INCOMING)
     private Set<SceneryNode> scenery = new HashSet<>();
 
+
+
 }
 

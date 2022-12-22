@@ -10,6 +10,11 @@ import {
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { mainStore } from "@/store/user";
+
+
+import axios from 'axios';
+import qs from "qs";
+
 const store = mainStore();
 /* 全局根据简介查询 */
 const props = defineProps<{
@@ -120,6 +125,16 @@ const requertRecommendSceneryInfo = () => {
   if (store.userInfo.id) {
     // alert(1111);
     // getRecommendScenerys(store.userInfo.id)
+
+
+    // var data = {}
+    axios
+        .get("http://localhost:8080/sd/"+store.userInfo.id,).then((res) => {
+          console.log(res);
+        });
+
+
+
     getRecommondSceneryByUserId(store.userInfo.id)
       .then((res: any) => {
         if (res.code != 0) {

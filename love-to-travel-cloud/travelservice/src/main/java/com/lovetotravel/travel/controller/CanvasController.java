@@ -80,6 +80,12 @@ public class CanvasController {
                 customNodes.add(new CustomNode(d.getName(), 2, d));
             }
 
+        } else if (rel.equals("sceln")) {
+            Set<CityNode> cityNodeSet = sceneryNode.getCity();
+            for (CityNode c : cityNodeSet) {
+                customNodes.add(new CustomNode(c.getName(), 2,c));
+            }
+
         }
 
         return Result.success(customNodes);
@@ -87,6 +93,8 @@ public class CanvasController {
 
     @GetMapping("/query/city/{name}")
     public Result<List<CustomNode>> getRelByCityName(@PathVariable("name") String name) {
+
+        System.out.println(name);
 
         CityNode cityNode = cityResponsitory.findCityNodeByName(name);
 
