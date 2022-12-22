@@ -60,13 +60,13 @@ public class CanvasController {
 
 
 
-    @GetMapping("city/{name}")
-    public Result<CustomNode> getCityByName(@PathVariable("name") String name) {
-
-        CityNode cityNode = cityRepository.findCityNodeByName(name);
-
-        return Result.success(new CustomNode(cityNode.getName(), 1, cityNode));
-    }
+//    @GetMapping("city/{name}")
+//    public Result<CustomNode> getCityByName(@PathVariable("name") String name) {
+//
+//        CityNode cityNode = cityRepository.findCityNodeByName(name);
+//
+//        return Result.success(new CustomNode(cityNode.getName(), 1, cityNode));
+//    }
 
     @GetMapping
     public Result<List<CustomNode>> getAll() {
@@ -110,12 +110,6 @@ public class CanvasController {
             Set<SceDetailNote> sceDetailNoteSet = sceneryNode.getSceneryHasDet();
             for (SceDetailNote d : sceDetailNoteSet) {
                 customNodes.add(new CustomNode(d.getName(), 2, d));
-            }
-
-        } else if (rel.equals("sceln")) {
-            Set<CityNode> cityNodeSet = sceneryNode.getCity();
-            for (CityNode c : cityNodeSet) {
-                customNodes.add(new CustomNode(c.getName(), 2,c));
             }
 
         }

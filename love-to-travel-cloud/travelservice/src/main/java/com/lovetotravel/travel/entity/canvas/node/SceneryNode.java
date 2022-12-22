@@ -69,9 +69,6 @@ public class SceneryNode implements Serializable {
     @Relationship(type = "is_detail", direction = Relationship.Direction.OUTGOING)
     private Set<SceDetailNote> sceneryHasDet = new HashSet<>();
 
-    //城市--景区
-    @Relationship(type = "sceln", direction = Relationship.Direction.OUTGOING)
-    private Set<CityNode> city = new HashSet<>();
 
 }
 

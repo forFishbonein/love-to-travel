@@ -26,7 +26,7 @@ public class CityNode implements Serializable {
     }
 
     //城市--景区
-    @Relationship(type = "sceln", direction = Relationship.Direction.INCOMING)
+    @Relationship(type = "sceIn", direction = Relationship.Direction.INCOMING)
     private Set<SceneryNode> scenery = new HashSet<>();
 
 
