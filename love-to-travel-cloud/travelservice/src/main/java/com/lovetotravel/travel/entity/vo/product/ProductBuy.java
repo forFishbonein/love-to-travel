@@ -11,10 +11,13 @@ public class ProductBuy {
 
     private String userId;
 
-    private String createTime;
-
     private String cost;
 
     private String status;
 
+    private String paystate;
+
+    private String createTime;
+
+    private String payTime;
 }
