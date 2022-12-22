@@ -1,12 +1,12 @@
 import { defineStore } from "pinia";
-export const imageStore = defineStore("image", {
+export const canvasStore = defineStore("canvas", {
   state: () => ({
-    imageNameUrl: "shanghai",
+    modelFlag: false,
   }),
   getters: {},
   actions: {},
   persist: {
-    key: "image",
+    key: "canvas",
     storage: window.localStorage,
   },
 });

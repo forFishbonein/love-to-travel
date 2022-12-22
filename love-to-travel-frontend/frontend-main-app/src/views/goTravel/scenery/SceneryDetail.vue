@@ -648,6 +648,8 @@ requestRelatedNotes();
   align-items: center;
   // padding: 20px;
   padding-top: 0;
+  padding-left: 10px;
+  padding-right: 20px;
   // padding-bottom: 30px;
   .user-card {
     width: 230px;
@@ -781,6 +783,7 @@ requestRelatedNotes();
   li {
     display: flex;
     align-items: center;
+    // padding: 0 20px;
   }
 }
 </style>

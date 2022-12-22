@@ -13,9 +13,13 @@ import { getRandomArrayElements } from "@/utils/filters/randomArray";
 import { getAllProductsInfo } from "@apis/travelService/product";
 import { productInfoType } from "@/apis/interface/myInterface";
 import { subPlansFormat } from "@/utils/filters/subPlan";
-import locationData from "../assets/js/location";
+import { recommendStore } from "@/store/recommend";
+import { mainStore } from "@/store/user";
+import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 const store = utilStore();
 const router = useRouter();
+const ustore = mainStore();
+const rstore = recommendStore();
 let citysInfos = [
   {
     cityEname: "beijing",
@@ -1312,7 +1316,44 @@ const getShufflepic = () => {
   finallyPicArray = getRandomArrayElements(picArray, 3);
 };
 getShufflepic();
-
+/* 第一次进入 */
+const requertRecommendSceneryInfo = () => {
+  if (ustore.userInfo.id && !store.refreshFlag) {
+    //如果已经刷新过了(刷新过了标志还是false)但是还没获取推荐内容
+    if (
+      //@ts-ignore
+      rstore.getRecommendFlag === false
+    ) {
+      // alert("获取推荐内容！");
+      rstore
+        .getRecommendSceneryFromPy(ustore.userInfo.id) // 获得推荐景区
+        .then((res) => {
+          // alert("得到了");
+          console.log("推荐景区：");
+          console.log(rstore.recommendscenerys);
+          rstore.getRecommendFlag = true;
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "爱宝儿，已为你推荐景区~",
+          });
+          // alert(rstore.getRecommendFlag);
+          // scenerysRecommendInfo.value = rstore.recommendscenerys;
+          // userLoginFlag.value = true;
+        })
+        .catch(() => {
+          //@ts-ignore
+          // ElMessage({
+          //   type: "warning",
+          //   message: "爱宝儿，你的登录已过期~",
+          // });
+          rstore.getRecommendFlag = false;
+          rstore.recommendscenerys = [] as theCityScenerysInfoType[];
+        });
+    }
+  }
+};
+requertRecommendSceneryInfo();
 onMounted(() => {});
 </script>
 <script lang="ts">

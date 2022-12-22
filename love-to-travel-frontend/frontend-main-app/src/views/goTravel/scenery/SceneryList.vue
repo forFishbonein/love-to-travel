@@ -7,15 +7,13 @@ import {
   getPageScenerysInfo,
   getRecommondSceneryByUserId,
 } from "@apis/travelService/scenery";
+import { getRecommendScenerysList } from "@/apis/py/scenery";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { mainStore } from "@/store/user";
-
-
-import axios from 'axios';
-import qs from "qs";
-
+import { recommendStore } from "@/store/recommend";
 const store = mainStore();
+const rstore = recommendStore();
 /* 全局根据简介查询 */
 const props = defineProps<{
   keyword: string;
@@ -120,50 +118,106 @@ const changeCurrentPage = (p: number) => {
 // requestScenerysInfo();
 /* 获取推荐列表 */
 let scenerysRecommendInfo = ref([] as theCityScenerysInfoType[]);
-let userLoginFlag = ref(false);
+let recommendFlag = ref(0); //未登录
+// if (store.userInfo.id) {
+//   // alert(1111);
+//   // getRecommendScenerys(store.userInfo.id)
+//   getRecommondSceneryByUserId(store.userInfo.id)
+//     .then((res: any) => {
+//       if (res.code != 0) {
+//         //@ts-ignore
+//         // ElMessage({
+//         //   type: "error",
+//         //   message: res.msg,
+//         // });
+//         // userLoginFlag.value = false;
+//       } else {
+//         console.log(res);
+//         // alert("获取成功");
+//         if (res.data.length !== 0) {
+//           scenerysRecommendInfo.value = res.data;
+//           userLoginFlag.value = true;
+//         }
+//       }
+//     })
+//     .catch((error) => {
+//       //@ts-ignore
+//       ElMessage({
+//         type: "error",
+//         message: error.message,
+//       });
+//     });
+// }
+/* 第一次进入 */
+/* 第二层保障 */
 const requertRecommendSceneryInfo = () => {
   if (store.userInfo.id) {
-    // alert(1111);
-    // getRecommendScenerys(store.userInfo.id)
-
-
-    // var data = {}
-    axios
-        .get("http://localhost:8080/sd/"+store.userInfo.id,).then((res) => {
-          console.log(res);
-        });
-
-
-
-    getRecommondSceneryByUserId(store.userInfo.id)
-      .then((res: any) => {
-        if (res.code != 0) {
+    if (
+      //@ts-ignore
+      rstore.getRecommendFlag === false
+    ) {
+      // alert("获取推荐内容！");
+      rstore
+        .getRecommendSceneryFromPy(store.userInfo.id) // 获得推荐景区
+        .then((res) => {
+          // alert("得到了");
+          console.log("推荐景区：");
+          console.log(rstore.recommendscenerys);
+          rstore.getRecommendFlag = true;
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "爱宝儿，已为你推荐景区~",
+          });
+          // alert(rstore.getRecommendFlag);
+          // scenerysRecommendInfo.value = rstore.recommendscenerys;
+          // userLoginFlag.value = true;
+        })
+        .catch(() => {
           //@ts-ignore
           // ElMessage({
-          //   type: "error",
-          //   message: res.msg,
+          //   type: "warning",
+          //   message: "爱宝儿，你的登录已过期~",
           // });
-          // userLoginFlag.value = false;
-        } else {
-          console.log(res);
-          // alert("获取成功");
-          if (res.data.length !== 0) {
-            scenerysRecommendInfo.value = res.data;
-            userLoginFlag.value = true;
-          }
-        }
-      })
-      .catch((error) => {
-        //@ts-ignore
-        ElMessage({
-          type: "error",
-          message: error.message,
+          rstore.getRecommendFlag = false;
+          rstore.recommendscenerys = [] as theCityScenerysInfoType[];
         });
-      });
+    }
   }
 };
 requertRecommendSceneryInfo();
-
+/* 下一次进入 */
+const initRecommendScenery = () => {
+  if (store.userInfo.id) {
+    recommendFlag.value = 1; //已登录未获取到
+    if (rstore.recommendscenerys.length !== 0) {
+      scenerysRecommendInfo.value = rstore.recommendscenerys;
+      recommendFlag.value = 2; //已登录已获取到
+    }
+  }
+};
+initRecommendScenery();
+/* python获取实时推荐 */
+// const getRecommendSceneryFromPy = () => {
+//   getRecommendScenerysList(store.userInfo.id)
+//     .then((res: any) => {
+//       console.log(res.data);
+//       alert("获取成功");
+//       // if (res.data.length !== 0) {
+//       //   scenerysRecommendInfo.value = res.data;
+//       //   userLoginFlag.value = true;
+//       // }
+//     })
+//     .catch((error) => {
+//       //@ts-ignore
+//       ElMessage({
+//         type: "error",
+//         message: error.message,
+//       });
+//     });
+// };
+// getRecommendSceneryFromPy();
+/* 搜索景区 */
 const thisPageKeyword = ref("");
 const searchTheCity = async () => {
   total.value = 0;
@@ -207,7 +261,10 @@ const searchTheCity = async () => {
 })(jQuery);
 </script>
 <template>
-  <section class="popular-tours-two change-tours-two" v-if="userLoginFlag">
+  <section
+    class="popular-tours-two change-tours-two"
+    v-show="recommendFlag === 2"
+  >
     <div class="container">
       <div class="row">
         <div class="section-title text-left">
@@ -249,8 +306,11 @@ const searchTheCity = async () => {
       </div>
     </div>
   </section>
-  <div class="tips-container" v-else>
-    提示：登录后将展示您的专属个性化景点推荐
+  <div class="tips-container" v-show="recommendFlag === 0">
+    提示：登录后将展示您的专属个性化景点推荐~
+  </div>
+  <div class="tips-container" v-show="recommendFlag === 1">
+    提示：推荐计算正在进行中，请稍等~
   </div>
   <div class="search-input-container">
     <form

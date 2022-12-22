@@ -1,22 +1,35 @@
 import httpRequest from "@/request";
-export const getCanvasAllInfo = () => {
+export const getCanvasAllScenerysInfo = () => {
   return httpRequest({
     method: "get",
     url: "http://localhost:8082/canvas/",
     // loading: true, //显示加载圈
   });
 };
-
-export const getCanvasAllInfoByName = (name: string) => {
-  // alert(name);
+export const getCanvasAllCitysInfo = () => {
   return httpRequest({
     method: "get",
-    url: `http://localhost:8082/canvas/${name}`,
+    url: "http://localhost:8082/canvas/city",
+    // loading: true, //显示加载圈
+  });
+};
+export const getCanvasOneCityInfoByName = (cityName: string) => {
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/canvas/city/${cityName}`,
+    // loading: true, //显示加载圈
+  });
+};
+export const getCanvasOneSceneryInfoByName = (sceneryName: string) => {
+  // alert(sceneryName);
+  return httpRequest({
+    method: "get",
+    url: `http://localhost:8082/canvas/${sceneryName}`,
     // loading: true, //显示加载圈
   });
 };
 
-export const getCanvasAllInfoByNameAndRelation = (
+export const getCanvasOneSceneryInfoByNameAndRelation = (
   rel: string,
   name: string
 ) => {

@@ -26,19 +26,7 @@
           </tr>
         </tbody>
       </table>
-      <div class="switch-container">
-        <el-switch
-          v-model="switchFlag"
-          class="ml-2"
-          inline-prompt
-          style="--el-switch-on-color: #e8604c; --el-switch-off-color: #909399"
-          active-text="完整展示全部关系"
-          inactive-text="只展示节点"
-          @change="changeTheModel"
-        />
-      </div>
-
-      <el-form ref="form" label-width="0px" v-show="ifShow">
+      <el-form ref="form" label-width="0px">
         <el-form-item>
           <el-select
             v-model="currentType"
@@ -68,15 +56,13 @@ import { getCanvasOneSceneryInfoByNameAndRelation } from "@/apis/travelService/c
 import { canvasStore } from "@/store/canvas";
 const cstore = canvasStore();
 export default {
-  name: "DetailPanel",
+  name: "SceneryPanel",
   data() {
     return {
-      ifShow: false,
       currentNode: {},
       currentType: "", //最终选择的
       relationshipTypes: ["景区特色", "所在地区", "推荐美食", "相关历史"],
       urls: ["is_detail", "in_area", "recommand_food", "is_related"],
-      switchFlag: cstore.modelFlag,
     };
   },
   methods: {
@@ -123,15 +109,6 @@ export default {
           });
       }
       console.log(this.currentType);
-    },
-    changeTheModel() {
-      if (cstore.modelFlag === false) {
-        cstore.modelFlag = true;
-        this.$emit("changeModel");
-      } else {
-        cstore.modelFlag = false;
-        this.$emit("changeModel");
-      }
     },
   },
 };

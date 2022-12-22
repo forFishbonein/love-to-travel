@@ -207,7 +207,50 @@ export const routes: Array<RouteRecordRaw> = [
         path: "/canvasTravel",
         name: "CanvasTravel",
         component: CanvasTravel,
-        meta: { title: "旅游脉络", keepAlive: false, showTab: true },
+        meta: { title: "知识图谱", keepAlive: false, showTab: true },
+        redirect: "/canvasTravel/all",
+        children: [
+          {
+            path: "all",
+            name: "CanvasList",
+            component: () => import("@/views/canvasTravel/CanvasList.vue"),
+            meta: {
+              title: "所有城市",
+              keepAlive: false,
+              showTab: true,
+            },
+          },
+          {
+            path: "detail/:cityName",
+            name: "CanvasDetail",
+            component: () => import("@/views/canvasTravel/CanvasDetail.vue"),
+            meta: {
+              title: "每个城市的知识图谱",
+              keepAlive: false,
+              showTab: true,
+            },
+            props(route) {
+              return {
+                cityName: route.params.cityName,
+              };
+            },
+          },
+          {
+            path: "scenery/:sceneryName",
+            name: "CanvasScenery",
+            component: () => import("@/views/canvasTravel/CanvasScenery.vue"),
+            meta: {
+              title: "每个景区的知识图谱",
+              keepAlive: false,
+              showTab: true,
+            },
+            props(route) {
+              return {
+                sceneryName: route.params.sceneryName,
+              };
+            },
+          },
+        ],
       },
       {
         path: "/groupTravel",
