@@ -1,6 +1,7 @@
 package com.lovetotravel.travel.controller;
 
 
+import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.canvas.CustomNode;
 import com.lovetotravel.travel.entity.canvas.dao.CityRepository;
 import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
@@ -57,16 +58,18 @@ public class CanvasController {
         return Result.success(customNodes);
     }
 
+    @GetMapping("/city")
+    public Result<List<CustomNode>> getAllCity() {
 
+        List<CityNode> all = cityRepository.findAll();
 
+        List<CustomNode> customNodes = new ArrayList<>();
+        for (CityNode c : all) {
+            customNodes.add(new CustomNode(c.getName(), 1, c));
+        }
+        return Result.success(customNodes);
+    }
 
-//    @GetMapping("city/{name}")
-//    public Result<CustomNode> getCityByName(@PathVariable("name") String name) {
-//
-//        CityNode cityNode = cityRepository.findCityNodeByName(name);
-//
-//        return Result.success(new CustomNode(cityNode.getName(), 1, cityNode));
-//    }
 
     @GetMapping
     public Result<List<CustomNode>> getAll() {
