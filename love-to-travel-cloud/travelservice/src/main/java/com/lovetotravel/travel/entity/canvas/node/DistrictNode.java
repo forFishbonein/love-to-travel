@@ -5,10 +5,12 @@ import org.springframework.data.neo4j.core.schema.GeneratedValue;
 import org.springframework.data.neo4j.core.schema.Id;
 import org.springframework.data.neo4j.core.schema.Node;
 
+import java.io.Serializable;
+
 
 @Node("区域")
 @Data
-public class DistrictNode {
+public class DistrictNode implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
