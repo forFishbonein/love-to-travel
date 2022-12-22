@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { ref, onMounted } from "vue";
-import { getOneProductInfoById,buyOneProduct } from "@apis/travelService/product";
+import { getOneProductInfoById,buyOneProduct,searchProductIsBuy } from "@apis/travelService/product";
 import { productInfoType ,routeInfoType} from "@/apis/interface/myInterface";
 import { subPlansFormat } from "@/utils/filters/subPlan";
 import { timeFormat } from "@/utils/filters/time";
@@ -145,22 +145,10 @@ const openTheMapForOneDay = (routeInfo:routeInfoType[])=>{
   theMapVisible.value=true
 }
 const buyDialogVisiable = ref(false)
-const buyProductOpenDialog = ()=>{
+const orderId = ref("")
+const buyProductAndOpenDialog = async ()=>{
   if(store.userInfo.id){
-
-    buyDialogVisiable.value = true
-  }else{
-    //@ts-ignore
-    ElMessage({
-      type: "success",
-      message: "爱宝儿，登录后才能购买产品哦~"
-    });
-  }
-}
-const buyTheProduct = ()=>{
-  buyDialogVisiable.value = false
-  if(store.userInfo.id){
-    buyOneProduct(productId, store.userInfo.id, productInfo.value.price, getNowTime()).then((res: any) => {
+    await buyOneProduct(productId, store.userInfo.id, productInfo.value.price, getNowTime()).then((res: any) => {
       if (res.code != 0) {
         //@ts-ignore
         ElMessage({
@@ -168,7 +156,8 @@ const buyTheProduct = ()=>{
           message: res.msg,
         });
       } else {
-        successDialogVisible.value = true
+        orderId.value = res.data
+        buyDialogVisiable.value = true
       }
     })
     .catch((error) => {
@@ -178,17 +167,56 @@ const buyTheProduct = ()=>{
         message: error.message,
       });
     });
-
   }else{
+    //@ts-ignore
+    ElMessage({
+      type: "success",
+      message: "爱宝儿，登录后才能购买产品哦~"
+    });
+  }
+}
+const isBuyFlag = ref(false)
+const successDialogVisible = ref(false);
+
+const isBuyTheProduct = ()=>{
+  if(store.userInfo.id){
+  searchProductIsBuy(orderId.value).then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        isBuyFlag.value = res.data
+        if(isBuyFlag.value === true){
+          buyDialogVisiable.value = false
+          successDialogVisible.value = true
+        }else{
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: "爱宝儿还没有支付，请再确认一下~",
+            });
+        }
+      }
+    })
+  .catch((error) => {
+    //@ts-ignore
+    ElMessage({
+      type: "error",
+      message: error.message,
+    });
+  });
+    }else{
       //@ts-ignore
       ElMessage({
-    type: "warning",
-    message: "爱宝儿，登录后才能购买产品哦~",
-  });
-  }
-
+        type: "success",
+        message: "爱宝儿，登录后才能购买产品哦~"
+      });
+    }
 }
-const successDialogVisible = ref(false);
+
 const goSeeMyBuy = () => {
   successDialogVisible.value = false;
   router.push("/personal/buy");
@@ -542,7 +570,7 @@ onMounted(() => {
               <h2>这是你的心动产品吗？</h2>
             </div>
             <div class="book-now__right">
-              <a href="javascript:;" class="thm-btn book-now__btn" @click="buyProductOpenDialog">点击购买</a>
+              <a href="javascript:;" class="thm-btn book-now__btn" @click="buyProductAndOpenDialog">点击购买</a>
             </div>
           </div>
         </div>
@@ -565,16 +593,19 @@ onMounted(() => {
 
     <el-dialog v-model="buyDialogVisiable" title="支付框">
       <div class="img-qrcode">
-        <div class="img">
-          <img src="/static/images/QRcode.png"/>
+        <div class="pay-text">
+          爱宝儿，订单已创建成功，请尽快完成支付哦~
         </div>
-
+        <div class="pay-container">
+          请选择支付方式：
+          <a class="to-pay-button" :href="`http://localhost:8082/alipay/pay?id=${orderId}&cost=${productInfo.price}`" target="_blank">支付宝</a>
+        </div>
       </div>
       <template #footer>
         <span class="dialog-footer">
           <el-button @click="buyDialogVisiable = false">取消支付</el-button>
-          <el-button type="primary" @click="buyTheProduct">
-            支付完成
+          <el-button type="primary" @click="isBuyTheProduct">
+            已支付
           </el-button>
         </span>
       </template>
@@ -601,22 +632,55 @@ onMounted(() => {
 </template>
 
 <style lang="scss" scoped>
+/* 支付样式 */
 .img-qrcode{
   width: 100%;
-  height: 400px;
+  height: 170px;
   display: flex;
-  justify-content: center;
-  .img{
-    width: 300px;
-  height: 400px;
-  border: 1px #CDD0D6 solid;
-    img{
-    width: 100%;
-    height: 100%;
-  }
-  }
+  flex-direction: column;
+  justify-content: space-between;
 
+  // .img{
+  //   width: 300px;
+  // height: 400px;
+  // border: 1px #CDD0D6 solid;
+  //   img{
+  //   width: 100%;
+  //   height: 100%;
+  // }
+  // }
+  .pay-text{
+    width: 100%;
+    height: 50px;
+    padding-left: 20px;
+  }
+  .pay-container{
+  width: 100%;
+  height: 120px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  .to-pay-button{
+    width: 120px;
+    height: 30px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #e8604c;
+    color: #ffffff;
+    font-weight: 700;
+    margin-left: 10px;
+    border-radius: 5px;
+    cursor:pointer
+  }
+  .to-pay-button:hover{
+    background-color: #e74128;
+  }
 }
+}
+
+
+
 #map {
   margin: 0px;
   width: 100%;

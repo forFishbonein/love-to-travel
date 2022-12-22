@@ -207,6 +207,7 @@ const openTheMapForOneDay = (routeInfo: routeInfoType[]) => {
 <style lang="scss" scoped>
 .sidebar__single {
   margin: 20px;
+  border: 2px #e8604c dashed;
 }
 /* 地图 */
 #map {

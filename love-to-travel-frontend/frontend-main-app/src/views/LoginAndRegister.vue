@@ -184,7 +184,6 @@ onMounted(() => {
     }" */
 /* :style="{ backgroundImage: 'url(' + background + ')' } */
 </script>
-
 <template>
   <div class="lang-selecter">
     <el-dropdown @command="changeLanguage">
@@ -265,21 +264,22 @@ onMounted(() => {
         </div>
         <div class="form sign-up">
           <h2 class="font-white-style">{{ $t("titles.nowRegister") }}</h2>
+          <!-- <form> -->
           <label>
             <span>{{ $t("loginForm.user") }}</span>
-            <input type="text" v-model="name" />
+            <input type="text" v-model="name" required />
           </label>
           <label>
             <span>{{ $t("main.password") }}</span>
-            <input type="password" v-model="password" />
+            <input type="password" v-model="password" required />
           </label>
           <label>
             <span>{{ $t("loginForm.email") }}</span>
-            <input type="email" v-model="email3" />
+            <input type="email" v-model="email3" required />
           </label>
           <label>
             <span>{{ $t("main.code") }}</span>
-            <input type="text" class="passWord" v-model="code2" />
+            <input type="text" class="passWord" v-model="code2" required />
           </label>
           <input
             type="button"
@@ -287,10 +287,10 @@ onMounted(() => {
             class="getCode"
             @click="getCode(registerData.email3)"
           />
-
           <button type="button" class="submit register" @click="register">
             {{ $t("buttons.register") }}
           </button>
+          <!-- </form> -->
         </div>
       </div>
     </div>
