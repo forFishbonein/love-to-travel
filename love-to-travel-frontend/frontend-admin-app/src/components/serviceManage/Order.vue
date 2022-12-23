@@ -26,7 +26,7 @@
       <el-table-column label="金额" prop="cost" width="100"/>
       <el-table-column label="支付状态" prop="paystate" width="150">
         <template #default="scope">
-               {{ scope.row.status == 1 ? '已支付' : '未支付' }}
+               {{ scope.row.paystate == 1 ? '已支付' : '未支付' }}
              </template>
       </el-table-column>
       <el-table-column label="支付时间" prop="payTime" width="180"/>
