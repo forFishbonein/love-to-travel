@@ -76,7 +76,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <el-scrollbar max-height="350px">
+  <el-scrollbar max-height="480px">
     <div
       v-for="(item, index) in routeListInfo"
       :key="index"
