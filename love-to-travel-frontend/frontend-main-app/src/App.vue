@@ -20,6 +20,6 @@ console.log("---环境变量----", import.meta.env);
 }
 #nprogress .bar {
   background-color: #e8604c !important;
-  border: 2px #e8604c solid;
+  border: 1px #e8604c solid;
 }
 </style>

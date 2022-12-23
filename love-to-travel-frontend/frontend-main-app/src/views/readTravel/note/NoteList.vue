@@ -169,7 +169,7 @@ const searchTheCity = async () => {
       </button>
     </form>
   </div>
-  <section class="news-one">
+  <section class="news-one" style="padding: 30px">
     <div class="container">
       <div class="row">
         <div
@@ -264,6 +264,90 @@ const searchTheCity = async () => {
           default-page-size="12"
         />
       </el-config-provider>
+    </div>
+  </section>
+  <section class="news-one">
+    <div class="container">
+      <div class="row">
+        <div class="section-title text-left">
+          <span class="section-title__tagline">Real time recommendation</span>
+          <h2 class="section-title__title ali-font-family">实时推荐</h2>
+          <div>基于您的浏览数据进行实时推荐</div>
+        </div>
+        <div
+          class="col-xl-4 col-lg-6 col-md-6 fadeInUp"
+          data-wow-delay="100ms"
+          v-for="(item, index) in notesPageInfo"
+          :key="item.id"
+        >
+          <!--News One Single-->
+          <div class="news-one__single">
+            <div class="news-one__img">
+              <img :src="item.url" alt="" class="notes-img" />
+              <router-link :to="`detail/${item.id}`">
+                <span class="news-one__plus"></span>
+              </router-link>
+              <div class="news-one__date">
+                <p>
+                  <span>{{ timeFormat(item.createTime) }}</span>
+                </p>
+              </div>
+            </div>
+            <div class="news-one__content">
+              <ul class="list-unstyled news-one__meta">
+                <li>
+                  <a href="javascript:;"
+                    ><el-icon size="20px"><View /></el-icon>浏览:{{
+                      numberFormat(item.view)
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;"
+                    ><el-icon size="20px"><Pointer /></el-icon>点赞:{{
+                      numberFormat(item.like)
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;"
+                    ><el-icon size="20px"><Star /></el-icon>收藏:{{
+                      numberFormat(item.star)
+                    }}</a
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;">
+                    <el-icon size="20px"><Document /></el-icon>评论:{{
+                      numberFormat(item.comment)
+                    }}
+                  </a>
+                </li>
+                <li>
+                  <router-link :to="`/user/${item.userId}`"
+                    ><i class="far fa-user-circle"></i
+                    ><span class="span-style">{{
+                      item.userName
+                    }}</span></router-link
+                  >
+                </li>
+                <li>
+                  <a href="javascript:;">
+                    <el-icon size="20px"><OfficeBuilding /></el-icon>相关城市:{{
+                      item.city
+                    }}
+                  </a>
+                </li>
+              </ul>
+              <h3 class="news-one__title">
+                <router-link :to="`detail/${item.id}`">{{
+                  item.title
+                }}</router-link>
+              </h3>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>

@@ -959,6 +959,7 @@ const deleteTheNote = () => {
     });
 };
 const relatedNotesInfo = ref([] as theNotesInfoType[]);
+const haveRelatedNoteflag = ref(false);
 const requestRelatedOtherNotes = () => {
   getRelatedOtherNotes(noteId)
     .then((res: any) => {
@@ -970,6 +971,9 @@ const requestRelatedOtherNotes = () => {
         });
       } else {
         relatedNotesInfo.value = res.data;
+        if (res.data !== null && res.data.length > 0) {
+          haveRelatedNoteflag.value = true;
+        }
       }
     })
     .catch((error) => {
@@ -1375,7 +1379,7 @@ onMounted(() => {
       </div>
     </div>
   </section>
-  <section class="news-one">
+  <section class="news-one" v-show="haveRelatedNoteflag">
     <div class="container">
       <div class="row">
         <div class="section-title text-left">
@@ -1392,7 +1396,7 @@ onMounted(() => {
           <div class="news-one__single">
             <div class="news-one__img">
               <img :src="item.url" alt="" class="notes-img" />
-              <router-link :to="`detail/${item.id}`">
+              <router-link :to="`/readTravel/note/detail/${item.id}`">
                 <span class="news-one__plus"></span>
               </router-link>
               <div class="news-one__date">
@@ -1448,7 +1452,7 @@ onMounted(() => {
                 </li>
               </ul>
               <h3 class="news-one__title">
-                <router-link :to="`detail/${item.id}`">{{
+                <router-link :to="`/readTravel/note/detail/${item.id}`">{{
                   item.title
                 }}</router-link>
               </h3>
