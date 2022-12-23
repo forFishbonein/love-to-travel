@@ -245,6 +245,18 @@ public class ProductController {
         return Result.success(sales);
     }
 
+    @ApiOperation("获取销量")
+    @GetMapping("/use")
+    public Result<List<ProductSales>> getUse() {
+        List<ProductSales> sales = productBuyMapper.getUse();
+
+        for (ProductSales s: sales) {
+            Product product = productMapper.selectById(s.getId());
+            s.setName(product.getName());
+        }
+        return Result.success(sales);
+    }
+
 
 
 
