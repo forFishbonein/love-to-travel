@@ -260,7 +260,7 @@ const initRealTimeScenerysList = () => {
           location.reload();
         })
         .catch(() => {
-          tstore.getRealTimeFlag = false;
+          tstore.getRealTimeFlag = true; //即使失败了也要改成true，这样才能重新获取列表
           tstore.realTimeRecommendscenerys = [] as theCityScenerysInfoType[];
         });
     }

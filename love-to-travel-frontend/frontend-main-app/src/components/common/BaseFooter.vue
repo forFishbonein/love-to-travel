@@ -155,7 +155,7 @@ const theAboutUsVisible = ref(false);
               </div>
               <div class="site-footer__bottom-left-arrow">
                 <a
-                  href="javascript:;"
+                  href="#"
                   data-target="html"
                   class="scroll-to-target scroll-to-top"
                   ><span class="icon-right-arrow"></span

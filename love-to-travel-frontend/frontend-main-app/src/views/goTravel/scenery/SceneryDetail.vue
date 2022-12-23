@@ -236,7 +236,7 @@ const initBrowseList = () => {
         });
       })
       .catch(() => {
-        tstore.getRealTimeFlag = false;
+        tstore.getRealTimeFlag = true; //即使失败了也要改成true
         tstore.realTimeRecommendscenerys = [] as theCityScenerysInfoType[];
       });
   }
@@ -403,7 +403,6 @@ initBrowseList();
                 v-model="sceneryScore"
                 :texts="['1分', '2分', '3分', '4分', '5分']"
                 show-text
-                allow-half
                 size="large"
               />
             </div>
@@ -525,7 +524,7 @@ initBrowseList();
             <div class="sidebar__single sidebar__category" v-if="userLoginFlag">
               <h3 class="sidebar__title">
                 驴友圈
-                <span class="span-style-front3">基于推荐算法</span>
+                <span class="span-style-front4">活跃用户</span>
               </h3>
               <ul class="sidebar__category-list list-unstyled">
                 <li>
@@ -616,6 +615,20 @@ initBrowseList();
 .span-style-front3 {
   display: inline-block;
   min-width: 95px;
+  padding-top: 2px;
+  padding-left: 5px;
+  height: 25px;
+  line-height: 20px;
+  color: #ffffff;
+  font-size: 14px;
+  font-weight: 600;
+  background-color: #e8604c;
+  border-radius: 5px;
+  margin-left: 15px;
+}
+.span-style-front4 {
+  display: inline-block;
+  min-width: 65px;
   padding-top: 2px;
   padding-left: 5px;
   height: 25px;

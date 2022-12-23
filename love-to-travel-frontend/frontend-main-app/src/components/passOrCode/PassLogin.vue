@@ -68,7 +68,7 @@ const passLogin = () => {
     />
   </label>
   <label>
-    <span>{{ $t("main.code") }}</span>
+    <span>{{ $t("main.password") }}</span>
     <input
       type="password"
       v-model="password"

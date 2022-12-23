@@ -266,7 +266,7 @@ const searchTheCity = async () => {
       </el-config-provider>
     </div>
   </section>
-  <section class="news-one">
+  <section class="news-one" style="padding: 30px">
     <div class="container">
       <div class="row">
         <div class="section-title text-left">

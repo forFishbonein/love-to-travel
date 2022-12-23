@@ -111,7 +111,7 @@ getNotesInfo();
             </div>
           </div>
           <div class="content-right">
-            <div>
+            <div style="padding-left: 10px">
               <el-icon size="16px"><View /></el-icon>浏览:{{
                 numberFormat(item.view)
               }}
