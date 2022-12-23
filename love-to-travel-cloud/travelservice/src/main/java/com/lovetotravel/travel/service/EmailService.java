@@ -65,7 +65,7 @@ public class EmailService {
 
         String content = "亲爱的";
 
-        if (user.getName() != null) {
+        if (user.getName() != null || !user.getName().equals("")) {
             content = content + user.getName();
 
         } else {
