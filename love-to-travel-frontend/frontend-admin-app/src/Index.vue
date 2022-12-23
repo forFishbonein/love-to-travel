@@ -93,9 +93,6 @@
               <el-menu-item index="4-2">
                 <router-link to="/sales">销售统计</router-link>
               </el-menu-item>
-              <el-menu-item index="4-3">
-                <router-link to="/rank">游记排行</router-link>
-              </el-menu-item>
             </el-menu-item-group>
           </el-sub-menu>
         </el-menu>
