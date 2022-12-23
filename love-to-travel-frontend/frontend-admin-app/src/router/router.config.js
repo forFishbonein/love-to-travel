@@ -50,6 +50,12 @@ export const routes = [
                 meta: {title: "产品管理"},
             },
             {
+                path: "/order",
+                name: "Order",
+                component: () => import("@/components/serviceManage/Order.vue"),
+                meta: {title: "订单管理"},
+            },
+            {
                 path: "/user",
                 name: "User",
                 component: () => import("@/components/userService/User.vue"),

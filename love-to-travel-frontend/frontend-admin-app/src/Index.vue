@@ -44,8 +44,11 @@
               </el-menu-item>
             </el-menu-item-group>
             <el-menu-item-group title="产品业务">
-              <el-menu-item index="2-4">
+              <el-menu-item index="2-5">
                 <router-link to="/product">产品</router-link>
+              </el-menu-item>
+              <el-menu-item index="2-6">
+                <router-link to="/order">订单</router-link>
               </el-menu-item>
             </el-menu-item-group>
             <!-- <el-sub-menu index="2-5">
