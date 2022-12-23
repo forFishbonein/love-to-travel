@@ -71,5 +71,14 @@
         ORDER BY value DESC
     </select>
 
+    <select id="getUse" resultType="com.lovetotravel.travel.entity.vo.product.ProductSales">
+        SELECT product_id as id, count(*) as value
+        FROM product_buy
+        WHERE paystate=1
+        AND status=1
+        GROUP BY product_id
+        ORDER BY value DESC
+    </select>
+
 
 </mapper>

@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.lovetotravel.travel.entity.City;
 import com.lovetotravel.travel.entity.Plan;
 import com.lovetotravel.travel.entity.Product;
+import com.lovetotravel.travel.entity.Province;
 import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.vo.NewNum;
 import com.lovetotravel.travel.entity.vo.product.ProductBuy;
@@ -123,6 +124,14 @@ public class ProductController {
         return Result.success(buyInfo);
     }
 
+    @ApiOperation("获取所有订单")
+    @PostMapping("/page/order")
+    public Result<Page<ProductBuy>> getAllOrder(@RequestBody PageVo pageVo) {
+        Page<ProductBuy> page = Page.of(pageVo.getPageNum(), pageVo.getPageSize());
+        Page<ProductBuy> productBuyPage = productBuyMapper.selectPage(page, null);
+        return Result.success(productBuyPage);
+    }
+
     @ApiOperation("新增产品")
     @PostMapping
     public Result<String> insert(@RequestBody ProductVo productVo) {
@@ -228,6 +237,18 @@ public class ProductController {
     @GetMapping("/sales")
     public Result<List<ProductSales>> getSales() {
         List<ProductSales> sales = productBuyMapper.getSales();
+
+        for (ProductSales s: sales) {
+            Product product = productMapper.selectById(s.getId());
+            s.setName(product.getName());
+        }
+        return Result.success(sales);
+    }
+
+    @ApiOperation("获取销量")
+    @GetMapping("/use")
+    public Result<List<ProductSales>> getUse() {
+        List<ProductSales> sales = productBuyMapper.getUse();
 
         for (ProductSales s: sales) {
             Product product = productMapper.selectById(s.getId());
