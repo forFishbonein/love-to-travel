@@ -293,6 +293,15 @@ export default {
         title: {
           text: '7日下单统计'
         },
+        tooltip: {
+          trigger: 'axis',
+          axisPointer: {
+            type: 'cross',
+            label: {
+              backgroundColor: '#6a7985'
+            }
+          }
+        },
         xAxis: {
           type: 'category',
           data: [this.dateList[6], this.dateList[5], this.dateList[4], this.dateList[3], this.dateList[2], this.dateList[1], this.dateList[0]]
