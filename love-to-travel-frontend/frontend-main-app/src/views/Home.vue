@@ -1335,7 +1335,7 @@ const requertRecommendSceneryInfo = () => {
           //@ts-ignore
           ElMessage({
             type: "success",
-            message: "爱宝儿，已为你推荐景区~",
+            message: "爱宝儿，已为你推荐专属景区~",
           });
           // alert(rstore.getRecommendFlag);
           // scenerysRecommendInfo.value = rstore.recommendscenerys;

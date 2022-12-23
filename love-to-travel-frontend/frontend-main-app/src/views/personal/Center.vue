@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
 import { getNotesInfoByUserId } from "@/apis/travelService/note";
 import { mainStore } from "@/store/user";
 import { theNotesInfoType } from "@/apis/interface/myInterface";
@@ -34,7 +34,34 @@ const getNotesInfo = async () => {
     });
 };
 getNotesInfo();
+onMounted(() => {
+  window.onbeforeunload = function () {
+    var scrollPos;
+    if (typeof window.pageYOffset != "undefined") {
+      scrollPos = window.pageYOffset;
+    } else if (
+      typeof document.compatMode != "undefined" &&
+      document.compatMode != "BackCompat"
+    ) {
+      scrollPos = document.documentElement.scrollTop;
+    } else if (typeof document.body != "undefined") {
+      scrollPos = document.body.scrollTop;
+    }
+    document.cookie = "scrollTop=" + scrollPos; //存储滚动条位置到cookies中
+  };
+
+  window.onload = function () {
+    if (document.cookie.match(/scrollTop=([^;]+)(;|$)/) != null) {
+      var arr = document.cookie.match(/scrollTop=([^;]+)(;|$)/); //cookies中不为空，则读取滚动条位置
+      // @ts-ignore
+      document.documentElement.scrollTop = parseInt(arr[1]);
+      // @ts-ignore
+      document.body.scrollTop = parseInt(arr[1]);
+    }
+  };
+});
 </script>
+<script lang="ts"></script>
 
 <template>
   <ul class="main-button">

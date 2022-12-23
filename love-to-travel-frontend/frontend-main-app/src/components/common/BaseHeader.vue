@@ -75,7 +75,8 @@ import { ref } from "vue";
 import { InfoFilled } from "@element-plus/icons-vue";
 import { recommendStore } from "@/store/recommend";
 import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
-import { SwitchButton, Top } from "@element-plus/icons-vue";
+import { realtimeStore } from "@/store/realTime";
+const tstore = realtimeStore();
 const router = useRouter();
 const store = mainStore();
 const rstore = recommendStore();
@@ -106,6 +107,8 @@ const confirmLogout = () => {
         router.replace({ path: "/" });
         rstore.getRecommendFlag = false;
         rstore.recommendscenerys = [] as theCityScenerysInfoType[];
+        tstore.getRealTimeFlag = false; //重置所有状态
+        tstore.realTimeRecommendscenerys = [] as theCityScenerysInfoType[];
         location.reload(); //必须要刷新一下，否则不能显示最新的内容
       }
     })
