@@ -40,5 +40,6 @@ export default {
     hasSend: "验证码已发送~",
     welcomeToJoin: "爱宝儿，欢迎你加入爱旅游的大家庭~",
     welcomeToBack: "欢迎回来，亲爱的爱宝儿~",
+    emailwarning: "请输入正确的邮箱格式~",
   },
 };

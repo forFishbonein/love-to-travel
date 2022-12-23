@@ -17,6 +17,7 @@ import PersonalIndex from "@/views/personal/Index.vue";
 import User from "@/views/user/User.vue";
 import Search from "@/views/search/Search.vue";
 import CanvasTravel from "@/views/canvasTravel/CanvasTravel.vue";
+import NotFound from "@/views/error/NotFound.vue";
 
 // import Note from "@/views/readTravel/note/Note.vue";
 
@@ -689,5 +690,14 @@ export const routes: Array<RouteRecordRaw> = [
         ],
       },
     ],
+  },
+  {
+    path: "/404",
+    name: "notFound",
+    component: NotFound,
+  },
+  {
+    path: "/:pathMatch(.*)*", // 此处需特别注意置于最底部
+    redirect: "/404",
   },
 ];

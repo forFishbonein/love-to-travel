@@ -5,7 +5,7 @@ export const getAllNoteList = () => {
   return httpRequest({
     method: "get",
     url: "http://localhost:8082/note",
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 export const getPageNotesInfo = (page: number, limit: number) => {
@@ -16,14 +16,14 @@ export const getPageNotesInfo = (page: number, limit: number) => {
       pageSize: limit,
     },
     url: "http://localhost:8082/note/page",
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 export const getOneNoteInfoById = (noteId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/note/${noteId}`,
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 /* 根据用户id获取游记 */
@@ -31,7 +31,7 @@ export const getNotesInfoByUserId = (userId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/note/user/${userId}`,
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 
@@ -114,7 +114,7 @@ export const getStarNotesInfoByUserId = (userId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/note/star/${userId}`,
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 
@@ -126,7 +126,7 @@ export const publishOneNote = (data: noteInfoParams) => {
     method: "post",
     url: "http://localhost:8082/note/",
     data: data,
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 
@@ -135,7 +135,7 @@ export const deleteOneNote = (noteId: string) => {
   return httpRequest({
     method: "delete",
     url: `http://localhost:8082/note/${noteId}`,
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 
@@ -144,6 +144,6 @@ export const getRelatedOtherNotes = (noteId: string) => {
   return httpRequest({
     method: "post",
     url: `http://localhost:8082/note/related/note/${noteId}`,
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };

@@ -26,7 +26,7 @@ export const getUserInfoById = (userId: string) => {
   return httpRequest({
     url: `http://localhost:8081/user/${userId}`,
     method: "get",
-    loading: true,
+    // loading: true,
   });
 };
 
@@ -36,7 +36,7 @@ export const modifyUserInfo = (data: any) => {
     url: "http://localhost:8081/user/updateprofile",
     method: "put",
     data: data,
-    loading: true,
+    // loading: true,
   });
 };
 
@@ -46,7 +46,7 @@ export const modifyUserPass = (data: any) => {
     url: "http://localhost:8081/user/updatepassword",
     method: "put",
     data: data,
-    loading: true,
+    // loading: true,
   });
 };
 
@@ -59,6 +59,6 @@ export const updateUserAvater = (userId: string, imgUrl: string) => {
       id: userId,
       url: imgUrl,
     },
-    loading: true,
+    // loading: true,
   });
 };

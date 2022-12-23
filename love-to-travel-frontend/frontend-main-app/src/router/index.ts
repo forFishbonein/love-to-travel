@@ -10,6 +10,9 @@ import { mainStore } from "@/store/user";
 import { recommendStore } from "@/store/recommend";
 import { theCityScenerysInfoType } from "@/apis/interface/myInterface";
 import { UserInfo } from "@/apis/userService/uInterface";
+// router/index.ts
+import NProgress from "nprogress";
+import "nprogress/nprogress.css";
 // import { getToken } from "@/store/util/token";
 // import { getFlag, setFlag } from "@/store/util/flag";
 // const store = mainStore(pinia); //不需要
@@ -29,8 +32,17 @@ const router = createRouter({
   scrollBehavior: () => ({ left: 0, top: 0 }),
 });
 
+NProgress.configure({
+  easing: "ease", // 动画方式
+  speed: 500, // 递增进度条的速度
+  showSpinner: false, // 是否显示加载 icon
+  trickleSpeed: 200, // 自动递增间隔
+  minimum: 0.3, // 初始化时的最小百分比
+});
+
 // 4. 配置路由守卫
 router.beforeEach((to, from, next) => {
+  NProgress.start();
   const store = mainStore(); //移动到了路由守卫里面，否则persist不生效
   const rstore = recommendStore();
   // 如果本地存在token
@@ -130,7 +142,9 @@ router.beforeEach((to, from, next) => {
   }
 });
 
-router.afterEach((to, from, next) => {});
+router.afterEach((to, from, next) => {
+  NProgress.done();
+});
 
 // 5. 导出router
 export default router;

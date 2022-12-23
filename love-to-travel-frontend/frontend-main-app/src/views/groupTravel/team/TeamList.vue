@@ -96,7 +96,7 @@ const teamisJoin = (teamId: string) => {
           });
         } else {
           // alert("请求完成");
-          console.log(res.data)
+          // console.log(res.data)
           teamsJoinFlagList.value.forEach((e) => {
             // @ts-ignore
             if (teamId === e.id) {

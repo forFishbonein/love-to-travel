@@ -20,6 +20,8 @@
     "element-plus": "^2.2.25",
     "jquery": "^3.6.1",
     "mitt": "^3.0.0",
+    "nprogress": "^0.2.0",
+    "parallax-js": "^3.1.0",
     "pinia": "^2.0.27",
     "pinia-plugin-persistedstate": "^3.0.1",
     "vue": "^3.2.41",
@@ -29,6 +31,7 @@
   "devDependencies": {
     "@types/d3": "^7.4.0",
     "@types/node": "^18.11.9",
+    "@types/nprogress": "^0.2.0",
     "@vitejs/plugin-vue": "^3.2.0",
     "sass": "^1.26.5",
     "sass-loader": "^8.0.2",

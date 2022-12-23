@@ -20,6 +20,8 @@ import {
 } from "@/apis/travelService/comment";
 import { UserInfo } from "@/apis/userService/uInterface";
 import { theNotesInfoType } from "@/apis/interface/myInterface";
+import { realtimeStore } from "@/store/realTime";
+const tstore = realtimeStore();
 const store = mainStore();
 const props = defineProps<{
   sceneryId: string;
@@ -205,6 +207,41 @@ const requestRelatedNotes = () => {
     });
 };
 requestRelatedNotes();
+
+const initBrowseList = () => {
+  if (tstore.browseList.length < 3) {
+    if (tstore.browseList.indexOf(sceneryId) === -1) {
+      tstore.browseList.push(sceneryId);
+    }
+  } else {
+    // let bowerInfo = "";
+    // tstore.browseList.forEach((e) => {
+    //   bowerInfo = bowerInfo + e + ",";
+    // });
+    tstore
+      .getRealTimeRecommendSceneryFromPy(
+        tstore.browseList[0],
+        tstore.browseList[1],
+        tstore.browseList[2]
+      ) // 获得推荐景区
+      .then((res) => {
+        // alert("得到了");
+        console.log("实时推荐：");
+        console.log(tstore.realTimeRecommendscenerys);
+        tstore.getRealTimeFlag = true;
+        // @ts-ignore
+        ElMessage({
+          type: "success",
+          message: "爱宝儿，已为你实时推荐景区~",
+        });
+      })
+      .catch(() => {
+        tstore.getRealTimeFlag = false;
+        tstore.realTimeRecommendscenerys = [] as theCityScenerysInfoType[];
+      });
+  }
+};
+initBrowseList();
 </script>
 <script lang="ts">
 (function ($) {

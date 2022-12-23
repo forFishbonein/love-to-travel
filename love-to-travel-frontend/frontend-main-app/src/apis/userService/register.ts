@@ -15,6 +15,6 @@ export const register = (registerData: registerInfo) => {
     data: registerData,
     method: "post",
     url: "http://localhost:8081/user/register",
-    loading: true,
+    // loading: true,
   });
 };

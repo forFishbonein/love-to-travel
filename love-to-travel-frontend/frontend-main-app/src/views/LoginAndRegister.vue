@@ -64,7 +64,8 @@ const registerData: registerInfo = reactive({
   password: "",
 });
 const { name, email3, code2, password } = toRefs(registerData);
-
+const reg =
+  /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
 const register = () => {
   if (
     name.value !== "" &&
@@ -72,37 +73,45 @@ const register = () => {
     code2.value !== "" &&
     password.value !== ""
   ) {
-    store
-      .register({
-        name: registerData.name,
-        email: registerData.email3,
-        code: registerData.code2,
-        password: registerData.password,
-      })
-      .then((res: any) => {
-        console.log(res.code != 0);
-        if (res.code != 0) {
+    if (reg.test(email3.value)) {
+      store
+        .register({
+          name: registerData.name,
+          email: registerData.email3,
+          code: registerData.code2,
+          password: registerData.password,
+        })
+        .then((res: any) => {
+          console.log(res.code != 0);
+          if (res.code != 0) {
+            //@ts-ignore
+            ElMessage({
+              type: "error",
+              message: res.msg,
+            });
+          } else {
+            // @ts-ignore
+            ElMessage({
+              type: "success",
+              message: i18n.global.t("other.welcomeToJoin"),
+            });
+            router.replace("/");
+          }
+        })
+        .catch((error) => {
           //@ts-ignore
           ElMessage({
             type: "error",
-            message: res.msg,
+            message: error.message,
           });
-        } else {
-          // @ts-ignore
-          ElMessage({
-            type: "success",
-            message: i18n.global.t("other.welcomeToJoin"),
-          });
-          router.replace("/");
-        }
-      })
-      .catch((error) => {
-        //@ts-ignore
-        ElMessage({
-          type: "error",
-          message: error.message,
         });
+    } else {
+      // @ts-ignore
+      ElMessage({
+        type: "warning",
+        message: i18n.global.t("other.emailwarning"),
       });
+    }
   } else {
     // @ts-ignore
     ElMessage({
@@ -173,7 +182,64 @@ const changeLanguage = (type: localType): void => {
 };
 onMounted(() => {
   loginOrRegister();
+  var text = document.getElementById("password");
+  var r = document.getElementById("r");
+  var z = document.getElementById("z");
+  var q = document.getElementById("q");
+  // @ts-ignore
+  text.onkeyup = function () {
+    var reg = [];
+    // @ts-ignore
+    reg[0] = /[^a-zA-Z0-9]/g; //特殊
+    // @ts-ignore
+    reg[1] = /[a-zA-Z]/g; //字母
+    // @ts-ignore
+    reg[2] = /[0-9]/g; //数字
+    // @ts-ignore
+    var str = text.value;
+    var len = str.length;
+    var sec = 0; //密码强度
+    if (len >= 6) {
+      for (var i = 0; i < reg.length; i++) {
+        if (str.match(reg[i])) {
+          sec++;
+        }
+      }
+    }
+    if (sec == 0) {
+      // @ts-ignore
+      r.style.backgroundColor = "white";
+      // @ts-ignore
+      z.style.backgroundColor = "white";
+      // @ts-ignore
+      q.style.backgroundColor = "white";
+    } else if (sec == 1) {
+      // @ts-ignore
+      r.style.backgroundColor = "#e8604c";
+      // @ts-ignore
+      z.style.backgroundColor = "white";
+      // @ts-ignore
+      q.style.backgroundColor = "white";
+    } else if (sec == 2) {
+      // @ts-ignore
+      r.style.backgroundColor = "#E6A23C";
+      // @ts-ignore
+      z.style.backgroundColor = "#E6A23C";
+      // @ts-ignore
+      q.style.backgroundColor = "white";
+    } else if (sec == 3) {
+      // @ts-ignore
+      r.style.backgroundColor = "#67C23A";
+      // @ts-ignore
+      z.style.backgroundColor = "#67C23A";
+      // @ts-ignore
+      q.style.backgroundColor = "#67C23A";
+    }
+  };
 });
+const backToHome = () => {
+  router.push("/");
+};
 /*
 或者：
     :style="{
@@ -226,6 +292,9 @@ onMounted(() => {
       />
     </el-select>
   </div>
+  <div class="back-index" @click="backToHome">
+    <a href="javascript:;">回到首页</a>
+  </div>
   <div id="login-warp">
     <div class="content">
       <div class="form sign-in">
@@ -271,7 +340,19 @@ onMounted(() => {
           </label>
           <label>
             <span>{{ $t("main.password") }}</span>
-            <input type="password" v-model="password" required />
+            <input
+              type="password"
+              v-model="password"
+              id="password"
+              maxlength="16"
+              required
+            />
+            <div id="qiangdu">
+              密码强度:
+              <span id="r">弱</span>
+              <span id="z">中</span>
+              <span id="q">强</span>
+            </div>
           </label>
           <label>
             <span>{{ $t("loginForm.email") }}</span>
@@ -299,6 +380,45 @@ onMounted(() => {
 
 <style scoped lang="scss">
 @import url(@/assets/css/login.css);
+#password {
+  position: relative;
+}
+#qiangdu {
+  width: 170px;
+  // border: 1px #e8604c solid;
+  height: auto;
+  margin-top: 4px;
+  position: absolute;
+  bottom: 10px;
+  right: 10px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #303133;
+  // font-weight: 700;
+  > span:first-child {
+    margin-left: 10px;
+    border-right: 0;
+  }
+  > span:nth-child(2) {
+    border-right: 0;
+  }
+  span {
+    border: 1px #d4d7de solid;
+    font-weight: 700;
+    float: right;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 10px;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    color: #303133;
+  }
+}
+
 #login-warp {
   width: 100%;
   height: 100%;
@@ -378,6 +498,38 @@ onMounted(() => {
       border: 2px #e8604c solid;
     }
   }
+}
+.back-index {
+  width: 100px;
+  height: 30px;
+  position: fixed;
+  top: 30px;
+  right: 30px;
+  // border: 1px #e8604c solid;
+  border-radius: 20px;
+  background-color: rgba(255, 255, 255, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #606266;
+  font-size: 15px;
+  font-weight: 700;
+  transition: 0.4s cubic-bezier(1, -2.02, 0.38, 2.05);
+  animation: tittlemove3 alternate infinite 1.5s ease-in-out;
+  cursor: pointer;
+}
+@keyframes tittlemove3 {
+  0% {
+  }
+  50% {
+    transform: translateY(-2px);
+  }
+  100% {
+    transform: translateY(2px);
+  }
+}
+.back-index:hover {
+  transform: scale(1.08);
 }
 .el-select-dropdown__item {
   display: flex;

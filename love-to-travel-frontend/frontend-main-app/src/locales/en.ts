@@ -41,5 +41,6 @@ export default {
     welcomeToJoin:
       "Arbor, welcome to join the big family that loves traveling~",
     welcomeToBack: "Welcome back, dear Arbor~",
+    emailwarning: "Please enter the correct email format~",
   },
 };

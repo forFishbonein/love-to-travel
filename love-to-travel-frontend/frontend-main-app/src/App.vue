@@ -18,4 +18,8 @@ console.log("---环境变量----", import.meta.env);
   overflow: hidden;
   color: #e8604c;
 }
+#nprogress .bar {
+  background-color: #e8604c !important;
+  border: 2px #e8604c solid;
+}
 </style>

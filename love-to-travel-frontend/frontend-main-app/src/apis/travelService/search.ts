@@ -12,7 +12,7 @@ export const getPageCitysInfoByKeyword = (
       pageSize: limit,
     },
     url: "http://localhost:8082/city/query",
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 
@@ -29,7 +29,7 @@ export const getPageScenerysInfoByKeyword = (
       pageSize: limit,
     },
     url: "http://localhost:8082/scenery/query",
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 
@@ -46,7 +46,7 @@ export const getPageNotesInfoByKeyword = (
       pageSize: limit,
     },
     url: "http://localhost:8082/note/query",
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
 
@@ -56,6 +56,6 @@ export const getSomeInfoByKeyword = (queryStr: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/query/${queryStr}`,
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };

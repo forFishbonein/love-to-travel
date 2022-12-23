@@ -99,6 +99,38 @@ ul {
     margin-bottom: 0;
 }
 
+/*此为笔者网站较为个性化的鼠标指针样式，可结合个人需要自行修改*/
+body {
+    cursor: url(./cursor/Breeze/Arrow.cur), default;
+}
+
+select {
+    cursor: url(./cursor/Breeze/Hand.cur), pointer;
+}
+
+button,
+a:hover {
+    cursor: url(./cursor/Breeze/Hand2.cur), pointer;
+}
+
+input {
+    cursor: url(./cursor/Breeze/Help.cur), text;
+}
+
+textarea,
+input:focus {
+    cursor: url(./cursor/Breeze/IBeam.cur), text;
+}
+
+code {
+    cursor: url(./cursor/Breeze/Handwriting.cur), default;
+}
+
+pre>code {
+    cursor: url(./cursor/Breeze/Copy.cur), default;
+}
+
+
 ::placeholder {
     color: inherit;
     opacity: 1;

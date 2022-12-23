@@ -7,11 +7,12 @@ import {
   getPageScenerysInfo,
   getRecommondSceneryByUserId,
 } from "@apis/travelService/scenery";
-import { getRecommendScenerysList } from "@/apis/py/scenery";
 // 引入中文包
 import zhCn from "element-plus/lib/locale/lang/zh-cn";
 import { mainStore } from "@/store/user";
 import { recommendStore } from "@/store/recommend";
+import { realtimeStore } from "@/store/realTime";
+const tstore = realtimeStore();
 const store = mainStore();
 const rstore = recommendStore();
 /* 全局根据简介查询 */
@@ -197,7 +198,7 @@ const initRecommendScenery = () => {
   }
 };
 initRecommendScenery();
-/* python获取实时推荐 */
+/* python获取用户个性化推荐（fromdb） */
 // const getRecommendSceneryFromPy = () => {
 //   getRecommendScenerysList(store.userInfo.id)
 //     .then((res: any) => {
@@ -217,6 +218,59 @@ initRecommendScenery();
 //     });
 // };
 // getRecommendSceneryFromPy();
+/* 实时推荐 */
+const getRealTimeFlagThisPlag = ref(false);
+let realTimeRecommendScenerysList = ref([] as theCityScenerysInfoType[]);
+// @ts-ignore
+!(function () {
+  if (tstore.realTimeRecommendscenerys.length !== 0) {
+    getRealTimeFlagThisPlag.value = true;
+    realTimeRecommendScenerysList.value = tstore.realTimeRecommendscenerys;
+  } else {
+    getRealTimeFlagThisPlag.value = false;
+  }
+})();
+
+const initRealTimeScenerysList = () => {
+  if (
+    //@ts-ignore
+    tstore.getRealTimeFlag === false
+  ) {
+    if (tstore.browseList.length === 3) {
+      // let bowerInfo = "";
+      // tstore.browseList.forEach((e) => {
+      //   bowerInfo = bowerInfo + e + ",";
+      // });
+      tstore
+        .getRealTimeRecommendSceneryFromPy(
+          tstore.browseList[0],
+          tstore.browseList[1],
+          tstore.browseList[2]
+        ) // 获得推荐景区
+        .then((res) => {
+          // alert("得到了");
+          realTimeRecommendScenerysList.value =
+            tstore.realTimeRecommendscenerys;
+          tstore.getRealTimeFlag = true;
+          //@ts-ignore
+          ElMessage({
+            type: "success",
+            message: "爱宝儿，已为你实时推荐景区~",
+          });
+          location.reload();
+        })
+        .catch(() => {
+          tstore.getRealTimeFlag = false;
+          tstore.realTimeRecommendscenerys = [] as theCityScenerysInfoType[];
+        });
+    }
+  } else {
+    //清空重新记录浏览数据
+    tstore.browseList = [];
+    tstore.getRealTimeFlag = false;
+  }
+};
+initRealTimeScenerysList();
 /* 搜索景区 */
 const thisPageKeyword = ref("");
 const searchTheCity = async () => {
@@ -329,7 +383,7 @@ const searchTheCity = async () => {
       </button>
     </form>
   </div>
-  <section class="popular-tours-two">
+  <section class="popular-tours-two" style="padding-bottom: 0px">
     <div class="container">
       <div class="row">
         <div
@@ -391,6 +445,52 @@ const searchTheCity = async () => {
           default-page-size="12"
         />
       </el-config-provider>
+    </div>
+  </section>
+  <section
+    class="popular-tours-two change-tours-two"
+    v-show="getRealTimeFlagThisPlag"
+    style="padding-bottom: 20px"
+  >
+    <div class="container">
+      <div class="row">
+        <div class="section-title text-left">
+          <span class="section-title__tagline">Real time recommendation</span>
+          <h2 class="section-title__title ali-font-family">实时推荐</h2>
+          <div>基于您的浏览数据进行实时推荐</div>
+        </div>
+        <div
+          class="col-xl-4 col-lg-4 col-md-4 wow fadeInUp margindiv"
+          data-wow-delay="100ms"
+          v-for="(item, index) in realTimeRecommendScenerysList"
+          :key="item.id"
+        >
+          <div class="popular-tours__single change-size-single">
+            <div class="popular-tours__img change-size-img">
+              <img :src="item.url" alt="" />
+              <div class="popular-tours__icon">
+                <router-link :to="`detail/${item.id}`">
+                  <el-icon><View /></el-icon>
+                </router-link>
+              </div>
+            </div>
+            <div class="popular-tours__content change-size-content">
+              <div class="popular-tours__stars">
+                <i class="fa fa-star"></i> {{ item.score }} 评分
+              </div>
+              <h3 class="popular-tours__title change-size-title">
+                <router-link :to="`detail/${item.id}`">{{
+                  item.name
+                }}</router-link>
+              </h3>
+              <p class="popular-tours__rate change-size-rate">
+                <span>{{ item.ticket }}</span
+                >元 / 每人
+              </p>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   </section>
 </template>

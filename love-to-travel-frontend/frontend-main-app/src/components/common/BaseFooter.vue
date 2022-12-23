@@ -189,7 +189,7 @@ const theAboutUsVisible = ref(false);
             <!--Team One Single-->
             <div class="team-one__single">
               <div class="team-one__img">
-                <img src="/images/team/team-1-1.jpg" alt="" />
+                <img src="/images/team/tian.jpg" alt="" />
               </div>
               <div class="team-one__content">
                 <h4 class="team-one__name">田忆孝</h4>
@@ -210,7 +210,7 @@ const theAboutUsVisible = ref(false);
             <!--Team One Single-->
             <div class="team-one__single">
               <div class="team-one__img">
-                <img src="/images/team/team-1-2.jpg" alt="" />
+                <img src="/images/team/hao.jpg" alt="" />
               </div>
               <div class="team-one__content">
                 <h4 class="team-one__name">郝文海</h4>
@@ -231,7 +231,7 @@ const theAboutUsVisible = ref(false);
             <!--Team One Single-->
             <div class="team-one__single">
               <div class="team-one__img">
-                <img src="/images/team/team-1-3.jpg" alt="" />
+                <img src="/images/team/xiao.png" alt="" />
               </div>
               <div class="team-one__content">
                 <h4 class="team-one__name">肖红娇</h4>
@@ -252,7 +252,7 @@ const theAboutUsVisible = ref(false);
             <!--Team One Single-->
             <div class="team-one__single">
               <div class="team-one__img">
-                <img src="/images/team/team-1-4.jpg" alt="" />
+                <img src="/images/team/he.jpg" alt="" />
               </div>
               <div class="team-one__content">
                 <h4 class="team-one__name">何宇航</h4>
@@ -273,7 +273,7 @@ const theAboutUsVisible = ref(false);
             <!--Team One Single-->
             <div class="team-one__single">
               <div class="team-one__img">
-                <img src="/images/team/team-1-1.jpg" alt="" />
+                <img src="/images/team/cui.jpg" alt="" />
               </div>
               <div class="team-one__content">
                 <h4 class="team-one__name">崔娜</h4>
@@ -304,7 +304,7 @@ const theAboutUsVisible = ref(false);
 }
 .team-one__single {
   width: 245px;
-  height: 442px;
+  height: 459px;
   // border: 1px #e8604c solid;
   border-radius: 10px;
   padding-bottom: 10px;
@@ -313,7 +313,7 @@ const theAboutUsVisible = ref(false);
 }
 .team-one__img {
   width: 245px;
-  height: 283px;
+  height: 300px;
   img {
     width: 100%;
     height: 100%;

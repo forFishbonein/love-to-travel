@@ -5,6 +5,6 @@ export const addCityToBeen = (data: any) => {
     method: "post",
     url: "http://localhost:8082/foot/been",
     data: data,
-    loading: true, //显示加载圈
+    // loading: true, //显示加载圈
   });
 };
