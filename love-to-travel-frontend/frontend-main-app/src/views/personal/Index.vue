@@ -646,7 +646,6 @@ const uploadAvater = () => {
     });
 };
 </script>
-
 <template>
   <div id="map-container"></div>
   <div class="personal-info-container">
