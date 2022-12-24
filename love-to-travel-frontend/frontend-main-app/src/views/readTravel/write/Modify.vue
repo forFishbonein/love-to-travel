@@ -5,12 +5,13 @@ import { srcPattern } from "@/utils/filters/srcPattern";
 import { mainStore } from "@/store/user";
 import { getUserAllPlansInfoByUserId } from "@/apis/travelService/plan";
 import { theGivenAllCityPlansInfoType } from "@/apis/interface/myInterface";
-import { publishOneNote } from "@/apis/travelService/note";
-import { noteInfoParams } from "@/apis/travelService/tInterface";
+import { modifyOneNote } from "@/apis/travelService/note";
+import { noteInfoParams2 } from "@/apis/travelService/tInterface";
 // import { storeToRefs } from "pinia";
 import { nextTick, ref } from "vue";
 import { useRouter } from "vue-router";
 import { ElInput } from "element-plus";
+import { theNotesInfoType } from "@/apis/interface/myInterface";
 export default {
   data() {
     return {
@@ -33,6 +34,10 @@ export default {
       type: Boolean,
       default: false,
     },
+    noteDetailInfoString: {
+      type: String,
+      default: "",
+    },
   },
   watch: {
     isClear(val) {
@@ -50,12 +55,16 @@ export default {
     },
   },
   setup(props, { emit }) {
-    alert("得到了");
+    // alert("得到了");
     // @ts-ignore
     console.log(props.noteDetailInfoString);
+    let noteDetailInfo = ref({} as theNotesInfoType);
+    if (props.noteDetailInfoString) {
+      noteDetailInfo.value = JSON.parse(props.noteDetailInfoString);
+    }
     /* tag对应的代码 */
     const inputValue = ref("");
-    const noteTips = ref([] as Array<string>);
+    const noteTips = ref(noteDetailInfo.value.trip);
     const inputVisible = ref(false);
     const InputRef = ref<InstanceType<typeof ElInput>>();
 
@@ -287,11 +296,12 @@ export default {
         });
     };
     requestMyPlansInfo();
-    const planId = ref("");
-    const noteTitle = ref("");
-    const noteCity = ref("");
-    let noteInfo = {} as noteInfoParams;
-    const publishTheNote = async (src: string, info_: any) => {
+    const id = ref(noteDetailInfo.value.id);
+    const planId = ref(noteDetailInfo.value.planId);
+    const noteTitle = ref(noteDetailInfo.value.title);
+    const noteCity = ref(noteDetailInfo.value.city);
+    let noteInfo = {} as noteInfoParams2;
+    const modifyTheNote = async (src: string, info_: any) => {
       if (store.userInfo.id) {
         if (info_ !== null && info_ !== "" && noteTitle.value !== "") {
           defaultTags.value.forEach((e) => {
@@ -307,8 +317,9 @@ export default {
           noteInfo.userId = store.userInfo.id;
           noteInfo.city = noteCity.value;
           noteInfo.trip = noteTips.value;
+          noteInfo.id = id.value;
           console.log(noteInfo);
-          await publishOneNote(noteInfo)
+          await modifyOneNote(noteInfo)
             .then((res: any) => {
               if (res.code != 0) {
                 //@ts-ignore
@@ -357,7 +368,7 @@ export default {
       planId,
       userPlansOption,
       noteTitle,
-      publishTheNote,
+      modifyTheNote,
       successDialogVisible,
       goSeeMyNotes,
       continuePublish,
@@ -422,9 +433,9 @@ export default {
     /* 初始化富文本编辑器 */
     this.seteditor();
     // @ts-ignore
-    this.editor.txt.html(
-      "<p>开始游记创作吧！</p><p>注意：上传的第一张图片将作为游记封面</p>"
-    );
+    this.editor.txt.html(JSON.parse(this.noteDetailInfoString)?.content);
+    this.info_ = JSON.parse(this.noteDetailInfoString)?.content;
+    this.src = JSON.parse(this.noteDetailInfoString)?.url;
     // @ts-ignore
     this.editor.config.UploadInit = this.UPLOADER(this.editor).init();
   },
@@ -535,8 +546,8 @@ export default {
     </div>
   </div>
   <div class="publish-border">
-    <div class="publish-button" @click="publishTheNote(src, info_)">
-      发布游记
+    <div class="publish-button" @click="modifyTheNote(src, info_)">
+      修改游记
     </div>
   </div>
   <el-dialog
@@ -546,14 +557,11 @@ export default {
     draggable
     show-close="false"
   >
-    <span>恭喜爱宝儿，游记发布成功！</span>
+    <span>恭喜爱宝儿，游记修改成功！</span>
     <template #footer>
       <span class="dialog-footer">
         <el-button type="primary" @click="goSeeMyNotes">
           查看我的游记
-        </el-button>
-        <el-button type="success" @click="continuePublish">
-          继续发布
         </el-button>
       </span>
     </template>

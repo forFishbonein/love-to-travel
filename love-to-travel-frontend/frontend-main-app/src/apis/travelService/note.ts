@@ -1,6 +1,9 @@
 import httpRequest from "@/request";
 // import { passLoginInfo, codeLoginInfo } from "@/apis/userService/uInterface";
-import { noteInfoParams } from "@/apis/travelService/tInterface";
+import {
+  noteInfoParams,
+  noteInfoParams2,
+} from "@/apis/travelService/tInterface";
 export const getAllNoteList = () => {
   return httpRequest({
     method: "get",
@@ -144,6 +147,18 @@ export const getRelatedOtherNotes = (noteId: string) => {
   return httpRequest({
     method: "post",
     url: `http://localhost:8082/note/related/note/${noteId}`,
+    // loading: true, //显示加载圈
+  });
+};
+
+/* 修改游记 */
+export const modifyOneNote = (data: noteInfoParams2) => {
+  // alert("修改游记");
+  // console.log(data);
+  return httpRequest({
+    method: "put",
+    data: data,
+    url: "http://localhost:8082/note/",
     // loading: true, //显示加载圈
   });
 };
