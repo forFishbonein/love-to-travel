@@ -264,7 +264,7 @@ public class NoteServiceImpl implements NoteService {
         String currentTimeStamp = dateFormat.format(date);
         update.set("title", noteVo.getTitle())
                 .set("url", noteVo.getUrl())
-                .set("plan", noteVo.getPlanId())
+                .set("planId", noteVo.getPlanId())
                 .set("content", noteVo.getContent())
                 .set("trip", noteVo.getTrip())
                 .set("city", noteVo.getCity())
