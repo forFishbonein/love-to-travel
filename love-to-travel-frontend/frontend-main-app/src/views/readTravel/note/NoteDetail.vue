@@ -1418,14 +1418,22 @@ onMounted(() => {
                             >
                               <p>
                                 <router-link :to="`/user/${i.userId}`"
-                                  ><span style="color: #e8604c">{{
-                                    i.userName
-                                  }}</span></router-link
+                                  ><span
+                                    style="color: #606266; font-size: 14px"
+                                    >{{ i.userName }}</span
+                                  ></router-link
                                 >
-                                &nbsp;
+                              </p>
+                              <p>
                                 <span style="color: #909399">{{
                                   i.createTime
                                 }}</span>
+                                <span
+                                  v-show="item.userId === store.userInfo.id"
+                                  class="span-style-front"
+                                  @click="deleteTheComment(i.id)"
+                                  >删除评论</span
+                                >
                               </p>
                               <p>{{ i.content }}</p>
                             </li>
