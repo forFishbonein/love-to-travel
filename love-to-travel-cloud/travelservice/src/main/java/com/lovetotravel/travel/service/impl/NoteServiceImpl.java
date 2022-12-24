@@ -68,6 +68,24 @@ public class NoteServiceImpl implements NoteService {
     }
 
     @Override
+    public List<Note> getByMore(NoteQueryMore noteQueryMore) {
+
+        Query query = new Query();
+
+        if (!(noteQueryMore.getTitle() == null)) {
+            Pattern pattern= Pattern.compile("^.*"+noteQueryMore.getTitle()+".*$", Pattern.CASE_INSENSITIVE);
+            query.addCriteria(Criteria.where("title").regex(pattern));
+        }
+        if (!(noteQueryMore.getCityName() == null)) {
+            query.addCriteria(Criteria.where("city").is(noteQueryMore.getCityName()));
+        }
+
+        query.addCriteria(Criteria.where("deleted").is("0"));
+        System.out.println(query);
+        return mongoTemplate.find(query, Note.class);
+    }
+
+    @Override
     public List<Note> getRelatedById(String sceneryId) {
 
         QueryWrapper<SceneryRelated> queryWrapper = new QueryWrapper<>();

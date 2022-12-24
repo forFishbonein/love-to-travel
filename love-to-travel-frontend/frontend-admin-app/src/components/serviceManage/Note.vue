@@ -3,14 +3,11 @@
     <template #header>
       <div class="card-header">
         <div class="query">
-          <el-input v-model="queryStr" placeholder="请输入用户名"/> &nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo_u">查询</el-button>
+          <el-input v-model="noteQueryMore.title" placeholder="请输入标题"/> &nbsp;&nbsp;
+          <el-input v-model="noteQueryMore.cityName" placeholder="请输入城市"/> &nbsp;&nbsp;
+          <el-button class="button" round type="primary" @click="queryMore">查询</el-button>
         </div>
 
-        <div class="query">
-          <el-input v-model="input" placeholder="请输入内容"/> &nbsp;&nbsp;
-          <el-button class="button" round type="primary" @click="queryInfo_n">查询</el-button>
-        </div>
 
         <div>
           <el-button class="button" round type="success" @click="openAddDialog">添加</el-button>
@@ -98,7 +95,7 @@
 import {delNote} from "../../apis/serviceManage/delnote.js";
 import {addNote} from "../../apis/serviceManage/addnote.js";
 import {updateNote} from "../../apis/serviceManage/updatenote.js";
-import {pageNote} from "../../apis/serviceManage/pagenote.js";
+import {pageNote, queryMore} from "../../apis/serviceManage/pagenote.js";
 // import {ElMessage,ElMessageBox} from 'element-plus';
 export default {
   data() {
@@ -107,7 +104,10 @@ export default {
       showVisible: false,
       showVisibleForm: {},
       queryStr: "",  //查询条件
-      input: "",
+      noteQueryMore: {
+        title: "",
+        cityName: ""
+      },
       multipleSelection: [], //多选删除
       tableData: [], //游记信息数据
       pageInfo: {},  //分页信息对象
@@ -299,17 +299,19 @@ export default {
             })
           })
     },
-    queryInfo_u() {
-      if (this.queryStr.trim().length > 0) {
-        this.tableData = this.tableData.filter(item => (item.userId).match(this.queryStr.trim()))
-      }
-      console.log("queryInfo...");
-    },
-    queryInfo_n() {
-      if (this.input.trim().length > 0) {
-        this.tableData = this.tableData.filter(item => (item.id).match(this.input.trim()))
-      }
-      console.log("queryInfo...");
+    queryMore() {
+      var _this = this;
+      console.log(_this.noteQueryMore)
+      console.log(_this.noteQueryMore)
+      //this.form.stu_interest = this.form.stu_interest.join(',')
+      queryMore(_this.noteQueryMore).then((response) => {
+        console.log(response)
+        console.log(response)
+        console.log(response)
+        console.log(response)
+
+      })
+
     }
   },
 
