@@ -4,10 +4,7 @@ import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.Scenery;
 import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
-import com.lovetotravel.travel.entity.vo.note.NoteLike;
-import com.lovetotravel.travel.entity.vo.note.NoteStar;
-import com.lovetotravel.travel.entity.vo.note.NoteStatistic;
-import com.lovetotravel.travel.entity.vo.note.NoteVo;
+import com.lovetotravel.travel.entity.vo.note.*;
 import com.lovetotravel.travel.result.Result;
 import com.lovetotravel.travel.service.NoteService;
 import io.swagger.annotations.Api;
@@ -37,13 +34,18 @@ public class NoteController {
         return Result.success(noteService.getById(id));
     }
 
+    @ApiOperation("多条件查询游记")
+    @PostMapping("/query/more")
+    public Result<List<Note>> getByMore(@RequestBody NoteQueryMore noteQueryMore) {
+        return Result.success(noteService.getByMore(noteQueryMore));
+    }
+
     @ApiOperation("根据景区id查询相关游记")
     @GetMapping("/related/{sceneryId}")
     public Result<List<Note>> getRelatedById(@PathVariable("sceneryId") String sceneryId) {
         System.out.println(sceneryId);
         return Result.success(noteService.getRelatedById(sceneryId));
     }
-
 
     @ApiOperation("游记的相关游记推荐")
     @PostMapping("/related/note/{id}")
@@ -75,7 +77,6 @@ public class NoteController {
     public Result<QueryPageVo<Note>> getByStr(@RequestBody QueryPageVo pageVo) {
         return Result.success(noteService.fuzzyQuery(pageVo));
     }
-
 
     @ApiOperation("新增游记")
     @PostMapping

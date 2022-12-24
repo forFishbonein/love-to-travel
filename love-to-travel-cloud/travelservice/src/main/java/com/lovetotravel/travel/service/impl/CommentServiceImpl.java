@@ -94,8 +94,9 @@ public class CommentServiceImpl implements CommentService {
         Query query = new Query();
         query.addCriteria(Criteria.where("id").is(id));
         Comment comment = mongoTemplate.findOne(query, Comment.class);
-        if (comment.getParentId() != "") {
-            //父评论增加评论数
+
+        if (!comment.getParentId().equals("")) {
+            //寻找父评论
             Query query2 = new Query();
             query2.addCriteria(Criteria.where("id").is(comment.getParentId()));
             Comment parentComment = mongoTemplate.findOne(query2, Comment.class);

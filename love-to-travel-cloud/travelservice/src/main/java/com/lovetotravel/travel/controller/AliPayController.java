@@ -6,6 +6,7 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.lovetotravel.travel.entity.AliPay;
 import com.lovetotravel.travel.entity.vo.product.ProductBuy;
 import com.lovetotravel.travel.mapper.ProductBuyMapper;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
+@Api(tags = "支付")
 @RestController
 @RequestMapping("/alipay")
 public class AliPayController {

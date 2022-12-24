@@ -3,16 +3,15 @@ package com.lovetotravel.travel.service;
 import com.lovetotravel.travel.entity.Note;
 import com.lovetotravel.travel.entity.page.PageVo;
 import com.lovetotravel.travel.entity.page.QueryPageVo;
-import com.lovetotravel.travel.entity.vo.note.NoteLike;
-import com.lovetotravel.travel.entity.vo.note.NoteStar;
-import com.lovetotravel.travel.entity.vo.note.NoteStatistic;
-import com.lovetotravel.travel.entity.vo.note.NoteVo;
+import com.lovetotravel.travel.entity.vo.note.*;
 
 import java.util.List;
 
 public interface NoteService {
 
     Note getById(String id);
+
+    List<Note> getByMore(NoteQueryMore noteQueryMore);
 
     List<Note> getRelatedById(String sceneryId);
 

@@ -7,6 +7,7 @@ import com.lovetotravel.travel.entity.canvas.dao.CityRepository;
 import com.lovetotravel.travel.entity.canvas.dao.SceneryRepository;
 import com.lovetotravel.travel.entity.canvas.node.*;
 import com.lovetotravel.travel.result.Result;
+import io.swagger.annotations.Api;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
+@Api(tags = "知识图谱 ")
 @RestController
 @RequestMapping("/canvas")
 public class CanvasController {
