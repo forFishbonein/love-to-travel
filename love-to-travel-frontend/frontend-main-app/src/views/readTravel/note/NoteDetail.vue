@@ -12,6 +12,7 @@ import {
   islikeTheComment,
   unlikeTheComment,
   addAComment,
+  deleteOneComment,
 } from "@/apis/travelService/comment";
 import {
   likeTheNote,
@@ -984,6 +985,62 @@ const requestRelatedOtherNotes = () => {
       });
     });
 };
+/* 删除评论 */
+const deleteTheComment = (commentId: string) => {
+  deleteOneComment(commentId)
+    .then((res: any) => {
+      if (res.code != 0) {
+        //@ts-ignore
+        ElMessage({
+          type: "error",
+          message: res.msg,
+        });
+      } else {
+        //@ts-ignore
+        ElMessage({
+          type: "success",
+          message: "评论删除成功",
+        });
+        setTimeout(
+          () =>
+            //更新评论：这里不用更新commentsLikeFlagLis，因为数据更新了就会自动重新请求显示是否点赞的标识
+            getCommentsByNoteId(noteId)
+              .then((res: any) => {
+                if (res.code != 0) {
+                  //@ts-ignore
+                  ElMessage({
+                    type: "error",
+                    message: res.msg,
+                  });
+                } else {
+                  //这里必须要清空一下
+                  // commentsLikeFlagList.value = [];
+                  noteCommentsInfo.value = [] as theNoteComment[];
+                  finalCommentsArray.value = [] as tranformComments[];
+                  noteCommentsInfo.value = res.data;
+                  commentsFormat(noteCommentsInfo.value);
+                  // alert(finalCommentsArray.value[0].like);
+                }
+              })
+              .catch((error) => {
+                //@ts-ignore
+                ElMessage({
+                  type: "error",
+                  message: error.message,
+                });
+              }),
+          1000
+        );
+      }
+    })
+    .catch((error) => {
+      //@ts-ignore
+      ElMessage({
+        type: "error",
+        message: error.message,
+      });
+    });
+};
 onMounted(() => {
   requestRelatedOtherNotes();
 });
@@ -1283,6 +1340,12 @@ onMounted(() => {
                               </p>
                               <p>
                                 {{ item.createTime }}
+                                <span
+                                  v-show="item.userId === store.userInfo.id"
+                                  class="span-style-front"
+                                  @click="deleteTheComment(item.id)"
+                                  >删除评论</span
+                                >
                               </p>
                             </div>
                             <div class="comment-body">
@@ -1692,5 +1755,23 @@ onMounted(() => {
     width: 60px;
     height: 65px;
   }
+}
+
+.span-style-front {
+  display: inline-block;
+  min-width: 50px;
+  padding: 5px;
+  height: 25px;
+  line-height: 14px;
+  color: #e8604c;
+  font-size: 12px;
+  font-weight: 600;
+  background-color: #ffffff;
+  border-radius: 5px;
+  // margin-right: 10px;
+  margin-left: 5px;
+}
+.span-style-front:hover {
+  background-color: #f7f2ea;
 }
 </style>
