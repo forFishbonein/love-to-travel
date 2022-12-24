@@ -2012,7 +2012,7 @@ onMounted(() => {
             <div class="video-one__video-link">
               <!-- href="http://v.qq.com/txp/iframe/player.html?vid=u0133b4ownh&amp;autoplay=true&amp;tiny=0" -->
               <a
-                href="http://player.bilibili.com/player.html?aid=776480056&bvid=BV1q14y1A7cc&cid=929875835&page=1"
+                href="http://player.bilibili.com/player.html?aid=691651336&bvid=BV1K24y1S72x&cid=935271938&page=1"
                 class="video-popup"
               >
                 <div class="video-one__video-icon">
