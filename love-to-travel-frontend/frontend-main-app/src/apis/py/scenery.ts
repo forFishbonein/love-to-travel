@@ -18,6 +18,9 @@ export const getRealTimeRecommendScenerysList = (
   id2: string,
   id3: string
 ) => {
+  alert(id1);
+  alert(id2);
+  alert(id3);
   return httpRequest({
     method: "get",
     url: `http://localhost:8086/sce/${id1}/${id2}/${id3}`,

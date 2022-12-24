@@ -218,6 +218,7 @@ const initBrowseList = () => {
     // tstore.browseList.forEach((e) => {
     //   bowerInfo = bowerInfo + e + ",";
     // });
+    tstore.getRealTimeFlag = true; //不管怎么样都要变成true，即使请求还没有成功返回，因为比较慢
     tstore
       .getRealTimeRecommendSceneryFromPy(
         tstore.browseList[0],

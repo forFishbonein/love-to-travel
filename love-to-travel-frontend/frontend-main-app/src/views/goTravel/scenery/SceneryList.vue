@@ -241,6 +241,7 @@ const initRealTimeScenerysList = () => {
       // tstore.browseList.forEach((e) => {
       //   bowerInfo = bowerInfo + e + ",";
       // });
+      tstore.getRealTimeFlag = true;
       tstore
         .getRealTimeRecommendSceneryFromPy(
           tstore.browseList[0],

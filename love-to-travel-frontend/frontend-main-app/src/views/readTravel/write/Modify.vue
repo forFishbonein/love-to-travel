@@ -32,7 +32,7 @@ export default {
     isClear: {
       type: Boolean,
       default: false,
-    }
+    },
   },
   watch: {
     isClear(val) {
@@ -49,9 +49,11 @@ export default {
       this.editor.txt.html(val);
     },
   },
-  setup() {
+  setup(props, { emit }) {
+    alert("得到了");
+    // @ts-ignore
+    console.log(props.noteDetailInfoString);
     /* tag对应的代码 */
-
     const inputValue = ref("");
     const noteTips = ref([] as Array<string>);
     const inputVisible = ref(false);
