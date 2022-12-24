@@ -1041,6 +1041,16 @@ const deleteTheComment = (commentId: string) => {
       });
     });
 };
+/* 修改游记 */
+const goToModifyTheNote = () => {
+  router.push({
+    name: "Modify",
+    params: {
+      noteDetailInfo: JSON.stringify(noteInfo.value),
+    },
+  });
+};
+
 onMounted(() => {
   requestRelatedOtherNotes();
 });
@@ -1209,7 +1219,10 @@ onMounted(() => {
                     </button>
                   </div>
                 </div>
-                <div class="col-xl-12" v-if="belongToMeFlag">
+                <div class="col-xl-12 buttons-container" v-if="belongToMeFlag">
+                  <div class="modify-button" @click="goToModifyTheNote">
+                    编辑游记
+                  </div>
                   <div
                     class="delete-button"
                     @click="openTheDeleteConfirmDialog"
@@ -1580,10 +1593,14 @@ onMounted(() => {
   height: 300px;
 }
 /* 相关游记结束 */
+.buttons-container {
+  display: flex;
+  justify-content: end;
+}
 .delete-button {
   width: 150px;
   height: 40px;
-  float: right;
+  // float: right;
   background-color: #e6a23c;
   border-radius: 20px;
   display: flex;
@@ -1595,6 +1612,23 @@ onMounted(() => {
 }
 .delete-button:hover {
   background-color: #b88230;
+}
+.modify-button {
+  width: 150px;
+  height: 40px;
+  // float: right;
+  background-color: #e8604c;
+  border-radius: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  color: #ffffff;
+  cursor: pointer;
+  font-weight: 700;
+  margin-right: 20px;
+}
+.modify-button:hover {
+  background-color: #e74128;
 }
 .news-details {
   padding-top: 70px;

@@ -212,6 +212,22 @@ export const routes: Array<RouteRecordRaw> = [
               requireLogin: true,
             },
           },
+          {
+            path: "modify",
+            name: "Modify",
+            component: () => import("@/views/readTravel/write/Modify.vue"),
+            meta: {
+              title: " 编辑游记",
+              keepAlive: false,
+              showTab: true,
+              requireLogin: true,
+            },
+            props(route) {
+              return {
+                noteDetailInfoString: route.params.noteDetailInfo,
+              };
+            },
+          },
         ],
       },
       {
