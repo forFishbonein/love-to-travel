@@ -69,14 +69,13 @@ public class NoteServiceImpl implements NoteService {
 
     @Override
     public List<Note> getByMore(NoteQueryMore noteQueryMore) {
-
         Query query = new Query();
 
-        if (!(noteQueryMore.getTitle() == null)) {
+        if (!(noteQueryMore.getTitle() == null) && !noteQueryMore.getTitle().equals("")) {
             Pattern pattern= Pattern.compile("^.*"+noteQueryMore.getTitle()+".*$", Pattern.CASE_INSENSITIVE);
             query.addCriteria(Criteria.where("title").regex(pattern));
         }
-        if (!(noteQueryMore.getCityName() == null)) {
+        if (!(noteQueryMore.getCityName() == null) && !noteQueryMore.getCityName().equals("")) {
             query.addCriteria(Criteria.where("city").is(noteQueryMore.getCityName()));
         }
 

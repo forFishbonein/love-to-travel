@@ -120,16 +120,19 @@ export default {
     }
   },
   mounted() {
-    // getNote().then((response) => {
-    //   var _this = this;
-    //   console.log(response.data);
-    //   _this.tableData = response.data;
-    //
-    // })
     this.getPageData(1, 10)
   },
 
   methods: {
+    queryMore() {
+      var _this = this;
+      //this.form.stu_interest = this.form.stu_interest.join(',')
+      queryMore(_this.noteQueryMore).then((response) => {
+        console.log(response)
+        _this.tableData = response.data
+      })
+
+    },
     handleSizeChange(pageSize) {  //选择每一页的记录数
       this.pageSize = pageSize
       this.getPageData(this.currentPage, this.pageSize)
@@ -299,20 +302,7 @@ export default {
             })
           })
     },
-    queryMore() {
-      var _this = this;
-      console.log(_this.noteQueryMore)
-      console.log(_this.noteQueryMore)
-      //this.form.stu_interest = this.form.stu_interest.join(',')
-      queryMore(_this.noteQueryMore).then((response) => {
-        console.log(response)
-        console.log(response)
-        console.log(response)
-        console.log(response)
 
-      })
-
-    }
   },
 
   // mounted(){
