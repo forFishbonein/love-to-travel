@@ -32,7 +32,7 @@
       <el-table-column label="支付时间" prop="payTime" width="180"/>
       <el-table-column fixed="right" label="操作" width="120">
         <template #default="scope">
-          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">修改状态</el-button>
+          <el-button link size="small" type="primary" @click="openUpdateDialog(scope.row)">核销</el-button>
         </template>
       </el-table-column>
       

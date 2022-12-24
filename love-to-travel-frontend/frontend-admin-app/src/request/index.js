@@ -126,7 +126,7 @@ service.interceptors.response.use(
             if (error.message == "Network Error") {
                 error.message == "网络异常，请检查后重试！";
             }
-            error.message = "连接到服务器失败，请联系管理员qq：1558637209";
+            // error.message = "连接到服务器失败，请联系管理员qq：1558637209";
         }
         ElMessage({
             type: "warning",
