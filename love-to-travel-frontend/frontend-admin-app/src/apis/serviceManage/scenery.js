@@ -31,7 +31,7 @@ export const postSceneryInfo = (data) => {
 export const insertProvinceInfo = (data) => {
     return httpRequest({
         method: "post",
-        url: "http://localhost:8082/",
+        url: "http://localhost:8082/scenery",
         data,
         loading: true, //显示加载圈
     });
@@ -45,7 +45,7 @@ export const deleteSceneryInfo = (id) => {
     console.log("========")
     return httpRequest({
         method: "delete",
-        url: "http://localhost:8082/"+id,
+        url: "http://localhost:8082/scenery"+id,
         loading: true, //显示加载圈
     });
 }
@@ -53,7 +53,7 @@ export const deleteSceneryInfo = (id) => {
 export const updateSceneryInfo = (data) => {
     return httpRequest({
         method: "put",
-        url: "http://localhost:8082/",
+        url: "http://localhost:8082/scenery",
         data,
         loading: true, //显示加载圈
     });

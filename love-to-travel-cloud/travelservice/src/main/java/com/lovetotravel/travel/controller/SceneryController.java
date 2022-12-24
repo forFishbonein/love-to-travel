@@ -78,21 +78,21 @@ public class SceneryController {
     }
 
     @ApiOperation("新增景区")
-    @PostMapping
+    @PostMapping("/scenery")
     public Result<String> insert(@RequestBody SceneryInsertVo sceneryInsertVo) {
         sceneryService.insert(sceneryInsertVo);
         return Result.success("新增成功");
     }
 
     @ApiOperation("修改景区")
-    @PutMapping
+    @PutMapping("/scenery")
     public Result<String> update(@RequestBody SceneryUpdateVo sceneryUpdateVo) {
         sceneryService.update(sceneryUpdateVo);
         return Result.success("修改成功");
     }
 
     @ApiOperation("根据id删除景区")
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/scenery/{id}")
     public Result<String> remove(@PathVariable("id") Long id) {
         sceneryService.removeById(id);
         return Result.success("删除成功");
