@@ -65,11 +65,11 @@ export const getCommentsBySceneryId = (sceneryId: string) => {
   });
 };
 
-export const addASceneryComment = (data: sceneryCommentParams) => {
+export const deleteOneComment = (commentId: string) => {
+  alert(commentId);
   return httpRequest({
-    method: "post",
-    data: data,
-    url: "http://localhost:8082/scenery/comment",
+    method: "delete",
+    url: `http://localhost:8082/comment/${commentId}`,
     // loading: true, //显示加载圈
   });
 };

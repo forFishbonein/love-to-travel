@@ -1354,7 +1354,22 @@ const requertRecommendSceneryInfo = () => {
   }
 };
 requertRecommendSceneryInfo();
-onMounted(() => {});
+onMounted(() => {
+  //要放到mounted里面才可以！
+  (function ($) {
+    /* 视频 */
+    if ($(".video-popup").length) {
+      $(".video-popup").magnificPopup({
+        type: "iframe",
+        mainClass: "mfp-fade",
+        removalDelay: 160,
+        preloader: true,
+        fixedContentPos: false,
+      });
+    }
+    // @ts-ignore
+  })(jQuery);
+});
 </script>
 <script lang="ts">
 /* 控制日历弹出 */
@@ -1407,9 +1422,20 @@ onMounted(() => {});
       });
     }
   });
+  // /* 视频 */
+  // if ($(".video-popup").length) {
+  //   $(".video-popup").magnificPopup({
+  //     type: "iframe",
+  //     mainClass: "mfp-fade",
+  //     removalDelay: 160,
+  //     preloader: true,
+  //     fixedContentPos: false,
+  //   });
+  // }
   //@ts-ignore
 })(jQuery);
 </script>
+
 <template>
   <!--Main Slider Start-->
   <section class="main-slider">
@@ -1914,14 +1940,12 @@ onMounted(() => {});
       <div class="why-choose__left">
         <div
           class="why-choose__left-bg"
-          style="
-            background-image: url(/images/backgrounds/why-choose-left-bg.jpg);
-          "
+          style="background-image: url(/images/back/gongga.jpg)"
         ></div>
         <div class="why-choose__toggle">
           <p>
-            Trips <br />
-            & tours
+            Notes <br />
+            & Tours
           </p>
         </div>
       </div>
@@ -1972,6 +1996,42 @@ onMounted(() => {});
     </div>
   </section>
   <!--Why Choose End-->
+  <!--Video Two Start-->
+  <div class="video-two">
+    <div
+      class="video-two-bg jarallax"
+      data-jarallax
+      data-speed="0.2"
+      data-imgPosition="50% 0%"
+      style="background-image: url(/images/back/shanghai.jpg)"
+    ></div>
+    <div class="container">
+      <div class="row">
+        <div class="col-xl-12">
+          <div class="video-two__inner">
+            <div class="video-one__video-link">
+              <!-- href="http://v.qq.com/txp/iframe/player.html?vid=u0133b4ownh&amp;autoplay=true&amp;tiny=0" -->
+              <a
+                href="http://player.bilibili.com/player.html?aid=776480056&bvid=BV1q14y1A7cc&cid=929875835&page=1"
+                class="video-popup"
+              >
+                <div class="video-one__video-icon">
+                  <span class="icon-play-button"></span>
+                  <i class="ripple"></i>
+                </div>
+              </a>
+            </div>
+            <p class="video-one__tagline">Are you ready to travel?</p>
+            <h2 class="video-one__title">
+              爱旅游——新一代旅游网站<br />
+              带给您沉浸式的旅游体验
+            </h2>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!--Video Two End-->
   <!--Brand One Start-->
   <section class="brand-one">
     <div
