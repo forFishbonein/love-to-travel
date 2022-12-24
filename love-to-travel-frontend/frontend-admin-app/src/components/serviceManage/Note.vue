@@ -126,6 +126,13 @@ export default {
   methods: {
     queryMore() {
       var _this = this;
+
+      console.log(_this.noteQueryMore.cityName.length)
+      if ((_this.noteQueryMore.cityName.length===0) && (_this.noteQueryMore.title.length===0)) {
+        _this.getPageData(1, 10);
+      }
+
+
       //this.form.stu_interest = this.form.stu_interest.join(',')
       queryMore(_this.noteQueryMore).then((response) => {
         console.log(response)
