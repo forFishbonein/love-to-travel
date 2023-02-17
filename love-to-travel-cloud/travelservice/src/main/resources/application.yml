@@ -7,7 +7,7 @@ spring:
 
   cloud:
     nacos:
-      server-addr: 116.62.134.8:8848
+      server-addr: 121.41.107.144:8848
 
   main:
     banner-mode: off
