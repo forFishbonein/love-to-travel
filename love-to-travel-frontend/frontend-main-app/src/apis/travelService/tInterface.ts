@@ -20,6 +20,17 @@ export interface noteInfoParams {
   trip: Array<string>;
 }
 
+export interface noteInfoParams2 {
+  id: string;
+  userId: string;
+  planId: string;
+  url: string;
+  title: string;
+  content: string;
+  city: string;
+  trip: Array<string>;
+}
+
 export interface teamInfoParams {
   planId: string;
   teamName: string;
