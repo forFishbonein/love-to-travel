@@ -76,7 +76,16 @@ requestSceneryListInfo();
             <div class="destinations-details__discover">
               <h3 class="destinations-details__title">
                 {{ cityInfo.cityName }}
+                <div class="canvas-button-container">
+                  <div class="canvas-button">
+                    <router-link
+                      :to="`/canvasTravel/detail/${cityInfo.cityName}`"
+                      >相关知识图谱</router-link
+                    >
+                  </div>
+                </div>
               </h3>
+
               <p class="destinations-details__discover-text-1">
                 {{ cityInfo.introduction }}
               </p>
@@ -129,5 +138,36 @@ requestSceneryListInfo();
     width: 100%;
     height: 100%;
   }
+}
+.canvas-button {
+  width: 100px;
+  height: 30px;
+  border-radius: 5px;
+  background-color: #e8604c;
+  transition: all 0.3s linear;
+  border: 2px #e8604c solid;
+  font-size: 15px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.canvas-button > a {
+  color: #ffffff;
+}
+.canvas-button:hover {
+  background-color: #f7f2ea;
+
+  border: 2px #e8604c solid;
+}
+.canvas-button:hover > a {
+  color: #e8604c;
+}
+.canvas-button-container {
+  width: 200px;
+  height: 55px;
+  display: flex;
+  align-items: center;
+  justify-content: right;
+  float: right;
 }
 </style>
