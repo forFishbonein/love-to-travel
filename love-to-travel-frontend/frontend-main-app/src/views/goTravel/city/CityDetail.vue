@@ -6,12 +6,14 @@ import {
   citysInfoType,
   theCityScenerysInfoType,
 } from "@/apis/interface/myInterface";
+import CityCanvas from "@/views/goTravel/city/CityCanvas.vue";
 const props = defineProps<{
   cityId: string;
 }>();
 // alert(props.cityId);
 const cityId = props.cityId;
 const cityInfo = ref({} as citysInfoType);
+const cityInfoFlag = ref(false);
 const requestOneCityInfo = async () => {
   await getOneCityInfoById(cityId)
     .then((res: any) => {
@@ -25,6 +27,7 @@ const requestOneCityInfo = async () => {
         // alert("得到数据了2！");
         cityInfo.value = res.data;
         console.log(cityInfo.value);
+        cityInfoFlag.value = true;
       }
     })
     .catch((error) => {
@@ -90,6 +93,10 @@ requestSceneryListInfo();
                 {{ cityInfo.introduction }}
               </p>
             </div>
+            <div class="city-canvas-container" v-if="cityInfoFlag">
+              <CityCanvas :cityName="cityInfo.cityName"></CityCanvas>
+              <!-- <CityCanvas></CityCanvas> -->
+            </div>
           </div>
         </div>
         <div class="col-xl-4 col-lg-5">
@@ -150,6 +157,7 @@ requestSceneryListInfo();
   display: flex;
   justify-content: center;
   align-items: center;
+  margin-left: 90px;
 }
 .canvas-button > a {
   color: #ffffff;
@@ -167,7 +175,11 @@ requestSceneryListInfo();
   height: 55px;
   display: flex;
   align-items: center;
-  justify-content: right;
   float: right;
+}
+.city-canvas-container {
+  width: 100%;
+  // border: 1px #e8604c solid;
+  height: auto;
 }
 </style>
