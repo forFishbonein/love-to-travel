@@ -1,5 +1,4 @@
 <template>
-
   <div class="container">
     <div class="left-board">
       <p>欢迎登录</p>
@@ -7,61 +6,65 @@
     </div>
     <div class="right-board">
       <div style="margin-top: 90px">
-        <input class="input-box" type="text" v-model="email" placeholder="请输入邮箱">
+        <input
+          class="input-box"
+          type="text"
+          v-model="email"
+          placeholder="请输入邮箱"
+        />
       </div>
       <div style="margin-top: 30px">
-        <input class="input-box" type="password" v-model="password" placeholder="请输入密码">
+        <input
+          class="input-box"
+          type="password"
+          v-model="password"
+          placeholder="请输入密码"
+        />
       </div>
-      <div class="login-button" @click="doLogin(this.email,this.password)">登录</div>
+      <div class="login-button" @click="doLogin(this.email, this.password)">
+        登录
+      </div>
     </div>
   </div>
-
-
 </template>
 
 <script>
-import {login} from "@apis/login.js";
-
+import { login } from "@apis/login.js";
 
 export default {
   name: "Login",
   data() {
     return {
       email: "",
-      password: ""
-
+      password: "",
     };
   },
-  mounted() {
-
-  },
+  mounted() {},
   methods: {
     doLogin(email, password) {
-      console.log({email:this.email, password:this.password})
-      login({email:this.email, password:this.password}).then((response) => {
-        console.log(response.data === "登陆成功")
-        console.log("登陆成功")
-        console.log(response.data)
-        if (response.data === "登陆成功") {
-          this.$router.push(
-              {
-                path: "/home",
-                query: {email: this.email}
-              }
-          )
+      console.log({ email: this.email, password: this.password });
+      login({ email: this.email, password: this.password }).then((response) => {
+        console.log(response.data === "登陆成功");
+        console.log("登陆成功");
+        console.log("=====");
+        console.log(response.data);
+        console.log("=====");
+        if (response.code === 0) {
+          this.$router.push({
+            path: "/home",
+            query: { email: this.email },
+          });
         }
 
-        this.$session.set("key",value);
-        console.log(response)
-      })
-
-    }
-  }
-}
+        // this.$session.set("key", value);
+        console.log(response);
+      });
+    },
+  },
+};
 </script>
 
 <style scoped>
-
 .container {
   margin: 100px auto;
   width: 1200px;
@@ -121,11 +124,9 @@ export default {
   width: 65px;
   height: 30px;
   color: white;
-  background-color: #E8604C;
+  background-color: #e8604c;
   text-align: center;
   line-height: 30px;
   border-radius: 4px;
 }
-
-
 </style>
