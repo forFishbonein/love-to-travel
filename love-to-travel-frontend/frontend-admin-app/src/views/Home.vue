@@ -39,7 +39,13 @@ export default {
 
     getDataList() {
       var date = new Date();
-      this.dateList.push(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), this.subDate(date, 1), this.subDate(date, 2), this.subDate(date, 3), this.subDate(date, 4), this.subDate(date, 5), this.subDate(date, 6))
+
+      if (date.getMonth() < 10) {
+        this.dateList.push(date.getFullYear() + '-0' + (date.getMonth() + 1) + '-' + date.getDate(), this.subDate(date, 1), this.subDate(date, 2), this.subDate(date, 3), this.subDate(date, 4), this.subDate(date, 5), this.subDate(date, 6))
+      } else {
+        this.dateList.push(date.getFullYear() + '-' + (date.getMonth() + 1) + '-' + date.getDate(), this.subDate(date, 1), this.subDate(date, 2), this.subDate(date, 3), this.subDate(date, 4), this.subDate(date, 5), this.subDate(date, 6))
+      }
+
 
     },
     async getNewUserNum() {
@@ -145,9 +151,14 @@ export default {
       }
       var date = new Date(date);
       date.setDate(date.getDate() + days);
+
       var month = date.getMonth() + 1; //月份从0开始所以需要+1
       var day = date.getDate();
-      return date.getFullYear() + '-' + month + '-' + day;
+      if (date.getMonth() < 10) {
+        return date.getFullYear() + '-0' + month + '-' + day;
+      } else {
+        return date.getFullYear() + '-' + month + '-' + day;
+      }
     },
     subDate(date, days) {
       if (days == undefined || days == '') {
@@ -157,8 +168,11 @@ export default {
       date.setDate(date.getDate() - days);
       var month = date.getMonth() + 1; //月份从0开始所以需要+1
       var day = date.getDate();
-      return date.getFullYear() + '-' + month + '-' + day;
-    },
+      if (date.getMonth() < 10) {
+        return date.getFullYear() + '-0' + month + '-' + day;
+      } else {
+        return date.getFullYear() + '-' + month + '-' + day;
+      }    },
 
     getLoadEcharts() {
       var myChart = this.$echarts.init(
