@@ -133,46 +133,46 @@ var a_idx = 0;
       }
     });
     /* 点击漂文字效果 */
-    $("body").click(function (e) {
-      var a = new Array(
-        "爱旅游",
-        "人间烟火",
-        "流水江南",
-        "古城旧梦",
-        "诗和远方",
-        "以梦为马",
-        "奔赴山海",
-        "岁月山河",
-        "岁月漫长",
-        "随遇而安",
-        "面朝大海",
-        "春暖花开"
-      );
-      var $i = $("<span/>").text(a[a_idx]);
-      a_idx = (a_idx + 1) % a.length;
-      var x = e.pageX,
-        y = e.pageY;
-      $i.css({
-        "z-index": 999999999999999999999999999999999999999999999999999999999999999999999,
-        top: y - 20,
-        left: x,
-        position: "absolute",
-        "font-weight": "bold",
-        color: "#e8604c",
-        "font-size": "16px",
-      });
-      $("body").append($i);
-      $i.animate(
-        {
-          top: y - 180,
-          opacity: 0,
-        },
-        1500,
-        function () {
-          $i.remove();
-        }
-      );
-    });
+    // $("body").click(function (e) {
+    //   var a = new Array(
+    //     "爱旅游",
+    //     "人间烟火",
+    //     "流水江南",
+    //     "古城旧梦",
+    //     "诗和远方",
+    //     "以梦为马",
+    //     "奔赴山海",
+    //     "岁月山河",
+    //     "岁月漫长",
+    //     "随遇而安",
+    //     "面朝大海",
+    //     "春暖花开"
+    //   );
+    //   var $i = $("<span/>").text(a[a_idx]);
+    //   a_idx = (a_idx + 1) % a.length;
+    //   var x = e.pageX,
+    //     y = e.pageY;
+    //   $i.css({
+    //     "z-index": 999999999999999999999999999999999999999999999999999999999999999999999,
+    //     top: y - 20,
+    //     left: x,
+    //     position: "absolute",
+    //     "font-weight": "bold",
+    //     color: "#e8604c",
+    //     "font-size": "16px",
+    //   });
+    //   $("body").append($i);
+    //   $i.animate(
+    //     {
+    //       top: y - 180,
+    //       opacity: 0,
+    //     },
+    //     1500,
+    //     function () {
+    //       $i.remove();
+    //     }
+    //   );
+    // });
   });
   //@ts-ignore
 })(jQuery);
