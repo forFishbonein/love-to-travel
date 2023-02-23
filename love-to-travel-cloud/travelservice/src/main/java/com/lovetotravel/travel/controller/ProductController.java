@@ -188,9 +188,11 @@ public class ProductController {
     @GetMapping("/isbuy/{id}")
     public Result<Boolean> isBuy(@PathVariable("id") String id) {
         QueryWrapper<ProductBuy> queryWrapper = new QueryWrapper<>();
-        queryWrapper.lambda().eq(ProductBuy::getId, id).eq(ProductBuy::getPaystate, 1);
+        queryWrapper.lambda().eq(ProductBuy::getId, id);
         ProductBuy productBuyInMysql = productBuyMapper.selectOne(queryWrapper);
-        if (productBuyInMysql != null) {
+        if (productBuyInMysql.getPayTime() != null) {
+            productBuyInMysql.setPaystate(1);
+            productBuyMapper.update(productBuyInMysql, queryWrapper);
             return Result.success(true);
         }
         return Result.success(false);
