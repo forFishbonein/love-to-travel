@@ -4,7 +4,7 @@ export const getSceneryListByCityId = (id: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/scenery/city/${id}`,
-    loading: true, //显示加载圈
+    loading: false, //显示加载圈
   });
 };
 
@@ -13,7 +13,7 @@ export const getAllSceneryList = () => {
   return httpRequest({
     method: "get",
     url: "http://localhost:8082/scenery",
-    loading: true, //显示加载圈
+    loading: false, //显示加载圈
   });
 };
 export const getPageScenerysInfo = (page: number, limit: number) => {
@@ -24,28 +24,28 @@ export const getPageScenerysInfo = (page: number, limit: number) => {
       pageSize: limit,
     },
     url: "http://localhost:8082/scenery/page",
-    loading: true, //显示加载圈
+    loading: false, //显示加载圈
   });
 };
 export const getOneSceneryInfoById = (sceneryId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/scenery/${sceneryId}`,
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };
 export const getRecommondSceneryByUserId = (userId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/scenery/recommond/user/${userId}`,
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };
 export const getRecommondUsersByUserId = (userId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8081/user/scenery/recommond/${userId}`,
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };
 
@@ -54,6 +54,6 @@ export const getRecommondNotesBySceneryId = (sceneryId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/note/related/${sceneryId}`,
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };

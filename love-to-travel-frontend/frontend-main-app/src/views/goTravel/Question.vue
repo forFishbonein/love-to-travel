@@ -53,7 +53,7 @@ onMounted(() => {
       name="iframeContain"
       seamless
       scrolling="no"
-      src="https://chatbot.aliyuncs.com/intl/index.htm?from=FsviSWX3wu"
+      src="https://chatbot.aliyuncs.com/intl/index.htm?from=8oecRChYVn"
     >
     </iframe>
   </div>

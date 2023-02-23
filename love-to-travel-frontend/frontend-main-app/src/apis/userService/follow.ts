@@ -7,7 +7,7 @@ export const getUserFollowersNum = (userId: string) => {
       id: userId,
     },
     method: "post",
-    // loading: true,
+    // loading: false,
   });
 };
 export const getUserFolloweesNum = (userId: string) => {
@@ -17,7 +17,7 @@ export const getUserFolloweesNum = (userId: string) => {
       id: userId,
     },
     method: "post",
-    // loading: true,
+    // loading: false,
   });
 };
 /* 根据用户id获取其所有粉丝的信息 */
@@ -28,7 +28,7 @@ export const getUserFollowersInfo = (userId: string) => {
       id: userId,
     },
     method: "post",
-    // loading: true,
+    // loading: false,
   });
 };
 /* 根据用户id获取其所有关注的用户的信息 */
@@ -39,7 +39,7 @@ export const getUserFolloweesInfo = (userId: string) => {
       id: userId,
     },
     method: "post",
-    // loading: true,
+    // loading: false,
   });
 };
 export const followOneUser = (userId: string, followerId: string) => {
@@ -50,7 +50,7 @@ export const followOneUser = (userId: string, followerId: string) => {
       followerId: followerId,
     },
     method: "post",
-    // loading: true,
+    // loading: false,
   });
 };
 export const cancelfollowOneUser = (userId: string, followerId: string) => {
@@ -61,7 +61,7 @@ export const cancelfollowOneUser = (userId: string, followerId: string) => {
       followerId: followerId,
     },
     method: "post",
-    // loading: true,
+    // loading: false,
   });
 };
 
@@ -73,6 +73,6 @@ export const isFollowOneUser = (userId: string, followerId: string) => {
       followerId: followerId,
     },
     method: "post",
-    // loading: true,
+    // loading: false,
   });
 };

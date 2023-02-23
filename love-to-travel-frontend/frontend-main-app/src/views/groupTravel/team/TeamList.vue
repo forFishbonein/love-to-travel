@@ -258,7 +258,7 @@ const openSeeThePlanDialog = async(planId: string)=>{
               }}
             </div>
             <h3 class="tours-list__title">
-              <a href="tour-details.html"
+              <a href="javascript:;"
                 ><span style="color: #e8604c; margin-right: 10px">队名:</span
                 >{{ item.teamName||"暂无" }}</a
               >

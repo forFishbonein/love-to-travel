@@ -28,7 +28,7 @@ service.interceptors.request.use(
       ElLoading.service({
         lock: true,
         text: "Loading...",
-        background: "rgba(0, 0, 0, 0.7)",
+        background: "rgba(0, 0, 0, 0.05)",
       });
     }
 
@@ -51,7 +51,7 @@ service.interceptors.response.use(
     const loading = ElLoading.service({
       lock: true,
       text: "Loading",
-      background: "rgba(0, 0, 0, 0.7)",
+      background: "rgba(0, 0, 0, 0.05)",
     });
     loading.close();
 

@@ -3,6 +3,6 @@ export const getFootsByUserId = (userId: any) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/foot/user/${userId}`,
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };

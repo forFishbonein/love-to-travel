@@ -3,7 +3,7 @@ export const getAllProductsInfo = () => {
   return httpRequest({
     method: "get",
     url: "http://localhost:8082/product/",
-    loading: true, //显示加载圈
+    loading: false, //显示加载圈
   });
 };
 export const getPageProductsInfo = (page: number, limit: number) => {
@@ -14,14 +14,14 @@ export const getPageProductsInfo = (page: number, limit: number) => {
       pageSize: limit,
     },
     url: "http://localhost:8082/product/page",
-    loading: true, //显示加载圈
+    loading: false, //显示加载圈
   });
 };
 export const getOneProductInfoById = (productId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/product/${productId}`,
-    loading: true, //显示加载圈
+    loading: false, //显示加载圈
   });
 };
 
@@ -45,7 +45,7 @@ export const buyOneProduct = (
       cost: pCost,
       payTime: time,
     },
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };
 
@@ -56,7 +56,7 @@ export const searchProductsByUserId = (userId: string) => {
     data: {
       id: userId,
     },
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };
 
@@ -65,6 +65,6 @@ export const searchProductIsBuy = (orderId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8082/product/isbuy/${orderId}`,
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };

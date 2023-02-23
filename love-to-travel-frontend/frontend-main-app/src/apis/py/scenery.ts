@@ -4,7 +4,7 @@ export const getRecommendScenerysList = (userId: string) => {
   return httpRequest({
     method: "get",
     url: `http://localhost:8080/sd/${userId}`,
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };
 // axios.get("http://localhost:8080/sd/" + store.userInfo.id).then((res) => {
@@ -24,6 +24,6 @@ export const getRealTimeRecommendScenerysList = (
   return httpRequest({
     method: "get",
     url: `http://localhost:8086/sce/${id1}/${id2}/${id3}`,
-    // loading: true, //显示加载圈
+    // loading: false, //显示加载圈
   });
 };

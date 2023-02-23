@@ -119,9 +119,9 @@ onMounted(() => {
           :placeholder="routeInfo.originName"
         />
       </el-form-item>
-      <el-form-item label="出发时间" label-width="70px">
+      <el-form-item label="当日出发时间(自定义24小时)" label-width="195px">
         <el-input
-          type="number"
+          type="text"
           v-model="routeInfo.departTime"
           autocomplete="off"
           clearable

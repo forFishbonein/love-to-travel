@@ -1,10 +1,10 @@
 import httpRequest from "@/request";
 
 export const updateNote = (note) => {
-    return httpRequest({
-        method: "put",
-        url: "http://localhost:8082/note/",
-        data: note,
-        loading: true, //显示加载圈
-    });
+  return httpRequest({
+    method: "put",
+    url: "http://localhost:8082/note/",
+    data: note,
+    loading: false, //显示加载圈
+  });
 };
