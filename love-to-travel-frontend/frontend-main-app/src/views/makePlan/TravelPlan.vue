@@ -484,6 +484,33 @@ export default {
       backToHome,
     };
   },
+  mounted() {
+    //@ts-ignore
+    (function ($) {
+      $(document).ready(function () {
+        $(".change-model-button").on("click", function () {
+          // console.log($(".main-left").attr("transform"));
+          console.log($(".main-left").css("transform"));
+          if ($(".main-left").css("transform") === "matrix(1, 0, 0, 1, 0, 0)") {
+            // @ts-ignore
+            $(this).html(
+              `<i data-v-f86fb796="" class="el-icon" style="--color:#d75663;"><svg data-v-f86fb796="" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M384 192v640l384-320.064z"></path></svg></i>`
+            );
+            $(".main-left").css("transform", "translateX(-92%)");
+            $(".main-right").css("transform", "translateX(-250%)");
+          } else {
+            // @ts-ignore
+            $(this).html(
+              `<i data-v-f86fb796="" class="el-icon" style="--color:#d75663;"><svg data-v-f86fb796="" viewBox="0 0 1024 1024" xmlns="http://www.w3.org/2000/svg"><path fill="currentColor" d="M672 192 288 511.936 672 832z"></path></svg></i>`
+            );
+            $(".main-left").css("transform", "translateX(0%)");
+            $(".main-right").css("transform", "translateX(0%)");
+          }
+        });
+      });
+      //@ts-ignore
+    })(jQuery);
+  },
 };
 </script>
 <template>
@@ -497,6 +524,9 @@ export default {
         <p>选择目的地</p>
         <div class="city-picker-button" @click="openCitySelectDialog">
           城市选择器
+        </div>
+        <div class="change-model-button">
+          <el-icon color="#d75663"> <CaretLeft /></el-icon>
         </div>
       </div>
       <div class="left-body">
@@ -822,6 +852,8 @@ export default {
     float: left;
     box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
     // border: 1px #e8604c solid;
+    transition: 0.8s cubic-bezier(1, -2.02, 0.38, 2.05);
+
     .left-title {
       background-color: #e8604c;
       width: 100%;
@@ -831,6 +863,7 @@ export default {
       display: flex;
       justify-content: center;
       align-items: center;
+      position: relative;
       p {
         display: flex;
         align-items: center;
@@ -1002,6 +1035,8 @@ export default {
     // border: 1px #e8604c solid;
     border-radius: 5px;
     box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.12);
+    transition: 0.8s cubic-bezier(1, -2.02, 0.38, 2.05);
+
     .right-title {
       background-color: #e8604c;
       width: 100%;
@@ -1205,5 +1240,26 @@ export default {
 .back-button:hover {
   background-color: rgba(78, 196, 131, 0.8);
   color: #e0e0e0;
+}
+
+//切换模式的按钮
+.change-model-button {
+  width: 28px;
+  height: 28px;
+  border-radius: 28px;
+  background-color: #e0e0e0;
+  box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.2);
+  position: absolute;
+  right: 5px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 20px;
+  cursor: pointer;
+  transition: all 0.1s linear;
+}
+.change-model-button:hover {
+  box-shadow: 0 2px 27px 6px rgba(0, 0, 0, 0.3);
+  // background-color: #cc0033;
 }
 </style>

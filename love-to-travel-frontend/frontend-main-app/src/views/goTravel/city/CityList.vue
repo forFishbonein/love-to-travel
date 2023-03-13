@@ -248,7 +248,8 @@ const searchTheCity = async () => {
   border: 2px solid #fca38f;
   transition: ease-in-out;
 }
-.search-input-container .search:hover,.search-input-container .search:focus {
+.search-input-container .search:hover,
+.search-input-container .search:focus {
   border: 2px solid #ef7555;
   background-color: #f8f1e1;
 }

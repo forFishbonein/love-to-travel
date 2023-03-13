@@ -83,7 +83,7 @@ requestSceneryListInfo();
                   <div class="canvas-button">
                     <router-link
                       :to="`/canvasTravel/detail/${cityInfo.cityName}`"
-                      >相关知识图谱</router-link
+                      >相关旅行脉络</router-link
                     >
                   </div>
                 </div>
