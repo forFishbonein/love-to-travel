@@ -1,41 +1,17 @@
-# Travel Treasure
+所获荣誉：获得信息管理与信息系统专业综合实训优秀项目一等奖
 
-#### 介绍
+- 项目访问地址：www.lovetotravel.cn（已下线）
+- 前端技术选型与应用：Vue3.2、TypeScript、Vite，SCSS、Pinia、Vue-Router、Jquery、Axios、Element-Plus、Mitt、Echarts、D3.js、WangEditor、高德地图SDK、阿里云OSS、Nginx、Git
+- 项目概述：专业综合实训团队合作开发项目，对标穷游网等旅游网站，业务逻辑完整，从0到1进行项目开发，融入信息系统分析与设计与项目管理流程，最终获得优秀项目一等奖。项目以旅游出行为背景，包括城市景点、游记发布、旅游产品、旅行脉络等功能模块，同时为用户提供强大的旅行路线定制功能，并拥有后台管理系统。
 
-777
-{**以下是 Gitee 平台说明，您可以替换此简介**
-Gitee 是 OSCHINA 推出的基于 Git 的代码托管平台（同时支持 SVN）。专为开发者提供稳定、高效、安全的云端软件开发协作平台
-无论是个人、团队、或是企业，都能够用 Gitee 实现代码托管、项目管理、协作开发。企业项目请看 [https://gitee.com/enterprises](https://gitee.com/enterprises)}
+- 工作内容：
 
-#### 软件架构
-软件架构说明
-
-
-#### 安装教程
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 使用说明
-
-1.  xxxx
-2.  xxxx
-3.  xxxx
-
-#### 参与贡献
-
-1.  Fork 本仓库
-2.  新建 Feat_xxx 分支
-3.  提交代码
-4.  新建 Pull Request
-
-
-#### 特技
-
-1.  使用 Readme\_XXX.md 来支持不同的语言，例如 Readme\_en.md, Readme\_zh.md
-2.  Gitee 官方博客 [blog.gitee.com](https://blog.gitee.com)
-3.  你可以 [https://gitee.com/explore](https://gitee.com/explore) 这个地址来了解 Gitee 上的优秀开源项目
-4.  [GVP](https://gitee.com/gvp) 全称是 Gitee 最有价值开源项目，是综合评定出的优秀开源项目
-5.  Gitee 官方提供的使用手册 [https://gitee.com/help](https://gitee.com/help)
-6.  Gitee 封面人物是一档用来展示 Gitee 会员风采的栏目 [https://gitee.com/gitee-stars/](https://gitee.com/gitee-stars/)
+1. 主导项目需求分析、把控项目进度，负责项目的前端开发技术选型与框架搭建、页面的功能设计与编码实现；
+2. 封装模态框等组件、对ElementUI进行二次封装、封装全局Axios请求、编写ts接口等，提高项目的可维护性；
+3. 重点实现行程定制和旅行脉络功能：构建多层组件，实现复杂数据结构在前端的增删改查，使用D3.js实现Neo4j数据库中知识图谱数据的动态交互效果；
+4. 封装函数实现了Echarts可视化地图的标点与高德地图的标点连线，构建相关逻辑实现二级评论的展示与点赞，使用WangEditer富文本编辑器并实现图片在前端的上传功能；
+5. 实现登录界面的国际化、暗黑主题、背景切换、密码强度检查等功能；
+6. 使用Pinia保存状态，实现在切换页面的情况下对于Python实时计算、猜你喜欢等数据的接收；
+7. 负责后端接口测试与联调，并优化前端页面性能(图片压缩、静态资源上传CDN)；
+8. 利用Git管理项目代码并借助Linux服务器和Nginx进行前端项目部署；
+9. 进行了图片懒加载、虚拟列表和vite的性能优化等。
