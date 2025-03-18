@@ -1,6 +1,7 @@
 所获荣誉：获得信息管理与信息系统专业综合实训优秀项目一等奖
 
-- 项目访问地址：www.lovetotravel.cn（已下线）
+- 项目访问地址：www.lovetotravel.cn（已下线）（由于后端 SpirngCloud 需要进行 Nacos 等部署，以及 Neo4j 数据库的部署，现在服务器过期已不具备部署条件）
+- 产品介绍视频：【爱旅游-哔哩哔哩】 https://b23.tv/aX1w0T4
 - 前端技术选型与应用：Vue3.2、TypeScript、Vite，SCSS、Pinia、Vue-Router、Jquery、Axios、Element-Plus、Mitt、Echarts、D3.js、WangEditor、高德地图SDK、阿里云OSS、Nginx、Git
 - 项目概述：专业综合实训团队合作开发项目，对标穷游网等旅游网站，业务逻辑完整，从0到1进行项目开发，融入信息系统分析与设计与项目管理流程，最终获得优秀项目一等奖。项目以旅游出行为背景，包括城市景点、游记发布、旅游产品、旅行脉络等功能模块，同时为用户提供强大的旅行路线定制功能，并拥有后台管理系统。
 
