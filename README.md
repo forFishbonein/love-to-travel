@@ -2,6 +2,7 @@
 
 - 项目访问地址：www.lovetotravel.cn（已下线）
 - （由于后端 SpirngCloud 需要进行 Nacos 等部署，以及 Neo4j 数据库的部署，现在服务器过期已不具备部署条件）
+- 可访问二期校企合作项目：南欧阳光 项目访问地址：www.funnytrip.com.cn
 - 产品介绍视频：【爱旅游-哔哩哔哩】 https://b23.tv/aX1w0T4
 - 项目介绍 PPT：[爱旅游项目汇报](https://github.com/forFishbonein/love-to-travel/raw/refs/heads/master/%E7%88%B1%E6%97%85%E6%B8%B8%E9%A1%B9%E7%9B%AE%E6%B1%87%E6%8A%A5.pptx)
 - 前端技术选型与应用：Vue3.2、TypeScript、Vite，SCSS、Pinia、Vue-Router、Jquery、Axios、Element-Plus、Mitt、Echarts、D3.js、WangEditor、高德地图SDK、阿里云OSS、Nginx、Git
